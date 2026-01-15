@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import Button from './Button'
 import logoImage from '../images/fulllogo copy.png'
 
 export default function Header() {

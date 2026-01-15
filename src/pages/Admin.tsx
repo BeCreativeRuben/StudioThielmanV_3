@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Button from '../components/Button'
 
 // Types
@@ -18,6 +18,10 @@ interface Submission {
   existingWebsiteUrl?: string
   notes?: string
   internalNotes?: string
+  industry?: string
+  goals?: string[]
+  timeline?: string
+  files?: Array<{ name: string }>
 }
 
 interface ChatMessage {
@@ -52,7 +56,7 @@ export default function Admin() {
   const [loginError, setLoginError] = useState('')
   const [authToken, setAuthToken] = useState<string | null>(null)
   const [submissions, setSubmissions] = useState<Submission[]>([])
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
+  const [, setChatMessages] = useState<ChatMessage[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null)
   const [filterStatus, setFilterStatus] = useState<string>('all')
@@ -787,7 +791,7 @@ export default function Admin() {
                     <div>
                       <h3 className="text-lg font-semibold text-primary mb-3">Uploaded Files</h3>
                       <div className="space-y-2">
-                        {selectedSubmission.files.map((file, index) => (
+                        {selectedSubmission.files.map((file: { name: string }, index: number) => (
                           <div
                             key={index}
                             className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
