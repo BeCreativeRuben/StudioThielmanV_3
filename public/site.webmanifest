@@ -1,0 +1,21 @@
+{
+  "name": "Studio Thielman",
+  "short_name": "Studio Thielman",
+  "description": "Professional websites, no technical knowledge required. AI-powered solutions from €25/month.",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone",
+  "start_url": "/"
+}
