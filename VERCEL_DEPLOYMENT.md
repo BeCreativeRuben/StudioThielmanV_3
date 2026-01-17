@@ -54,6 +54,9 @@ ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH=your-hashed-password
 FRONTEND_URL=https://your-vercel-app.vercel.app
 NODE_ENV=production
+MAILCHIMP_API_KEY=your-mailchimp-api-key
+MAILCHIMP_SERVER_PREFIX=us1
+MAILCHIMP_AUDIENCE_ID=your-mailchimp-audience-id
 ```
 
 ## Deployment Steps
