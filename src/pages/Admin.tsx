@@ -103,14 +103,19 @@ export default function Admin() {
           handleLogout()
           return
         }
-        // Try to parse error as JSON, fallback to text
+        // Read as text first, then try to parse as JSON
         let errorMessage = 'Failed to fetch submissions'
         try {
-          const errorData = await response.json()
-          errorMessage = errorData.error || errorMessage
-        } catch {
           const errorText = await response.text()
-          errorMessage = errorText || errorMessage
+          try {
+            const errorData = JSON.parse(errorText)
+            errorMessage = errorData.error || errorMessage
+          } catch {
+            // Not JSON, use text as-is
+            errorMessage = errorText || errorMessage
+          }
+        } catch {
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`
         }
         throw new Error(errorMessage)
       }
@@ -139,14 +144,19 @@ export default function Admin() {
           handleLogout()
           return
         }
-        // Try to parse error as JSON, fallback to text
+        // Read as text first, then try to parse as JSON
         let errorMessage = 'Failed to fetch chat messages'
         try {
-          const errorData = await response.json()
-          errorMessage = errorData.error || errorMessage
-        } catch {
           const errorText = await response.text()
-          errorMessage = errorText || errorMessage
+          try {
+            const errorData = JSON.parse(errorText)
+            errorMessage = errorData.error || errorMessage
+          } catch {
+            // Not JSON, use text as-is
+            errorMessage = errorText || errorMessage
+          }
+        } catch {
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`
         }
         throw new Error(errorMessage)
       }
@@ -173,14 +183,19 @@ export default function Admin() {
           handleLogout()
           return
         }
-        // Try to parse error as JSON, fallback to text
+        // Read as text first, then try to parse as JSON
         let errorMessage = 'Failed to fetch stats'
         try {
-          const errorData = await response.json()
-          errorMessage = errorData.error || errorMessage
-        } catch {
           const errorText = await response.text()
-          errorMessage = errorText || errorMessage
+          try {
+            const errorData = JSON.parse(errorText)
+            errorMessage = errorData.error || errorMessage
+          } catch {
+            // Not JSON, use text as-is
+            errorMessage = errorText || errorMessage
+          }
+        } catch {
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`
         }
         throw new Error(errorMessage)
       }
@@ -207,15 +222,20 @@ export default function Admin() {
       })
 
       if (!response.ok) {
-        // Try to parse as JSON, fallback to text if it fails
+        // Read as text first, then try to parse as JSON
         let errorMessage = 'Login failed'
         try {
-          const errorData = await response.json()
-          errorMessage = errorData.error || errorMessage
-        } catch {
-          // If response is not JSON, get text
           const errorText = await response.text()
-          errorMessage = errorText || errorMessage
+          try {
+            const errorData = JSON.parse(errorText)
+            errorMessage = errorData.error || errorMessage
+          } catch {
+            // Not JSON, use text as-is
+            errorMessage = errorText || errorMessage
+          }
+        } catch {
+          // Failed to read response
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`
         }
         throw new Error(errorMessage)
       }
@@ -264,14 +284,19 @@ export default function Admin() {
           handleLogout()
           return
         }
-        // Try to parse error as JSON, fallback to text
+        // Read as text first, then try to parse as JSON
         let errorMessage = 'Failed to update submission'
         try {
-          const errorData = await response.json()
-          errorMessage = errorData.error || errorMessage
-        } catch {
           const errorText = await response.text()
-          errorMessage = errorText || errorMessage
+          try {
+            const errorData = JSON.parse(errorText)
+            errorMessage = errorData.error || errorMessage
+          } catch {
+            // Not JSON, use text as-is
+            errorMessage = errorText || errorMessage
+          }
+        } catch {
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`
         }
         throw new Error(errorMessage)
       }

@@ -201,15 +201,19 @@ export default function Home() {
       })
 
       if (!response.ok) {
-        // Try to parse as JSON, fallback to text if it fails
+        // Read as text first, then try to parse as JSON
         let errorMessage = 'Failed to send message'
         try {
-          const errorData = await response.json()
-          errorMessage = errorData.error || errorMessage
-        } catch {
-          // If response is not JSON, get text
           const errorText = await response.text()
-          errorMessage = errorText || errorMessage
+          try {
+            const errorData = JSON.parse(errorText)
+            errorMessage = errorData.error || errorMessage
+          } catch {
+            // Not JSON, use text as-is
+            errorMessage = errorText || errorMessage
+          }
+        } catch {
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`
         }
         throw new Error(errorMessage)
       }
