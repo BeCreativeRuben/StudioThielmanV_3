@@ -79,7 +79,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a 
-                  href="https://instagram.com/yourhandle" 
+                  href="https://www.instagram.com/studio_thielman/" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-body text-white/80 hover:text-white transition-colors group"
@@ -92,7 +92,7 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="https://facebook.com/yourpage" 
+                  href="https://www.facebook.com/profile.php?id=61586029966601" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-body text-white/80 hover:text-white transition-colors group"
@@ -105,7 +105,7 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="https://wa.me/yourphonenumber" 
+                  href="https://wa.me/32493505641" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-body text-white/80 hover:text-white transition-colors group"
@@ -118,7 +118,7 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="https://linkedin.com/company/yourcompany" 
+                  href="https://www.linkedin.com/in/ruben-thielman-6a8963256/" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-body text-white/80 hover:text-white transition-colors group"
