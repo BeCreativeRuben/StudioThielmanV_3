@@ -5,12 +5,37 @@ import { sendChatMessageNotification } from '../../../server/services/emailServi
 import { randomUUID } from 'crypto'
 
 let dbInitialized = false
+let dbInitPromise: Promise<void> | null = null
+
 async function ensureDb() {
-  if (!dbInitialized) {
-    process.env.DATABASE_PATH = process.env.DATABASE_PATH || '/tmp/submissions.db'
-    await initializeDatabase()
-    dbInitialized = true
+  if (dbInitialized) {
+    return
   }
+  
+  // If initialization is in progress, wait for it
+  if (dbInitPromise) {
+    await dbInitPromise
+    return
+  }
+  
+  // Start initialization
+  dbInitPromise = (async () => {
+    try {
+      const dbPath = process.env.DATABASE_PATH || '/tmp/submissions.db'
+      process.env.DATABASE_PATH = dbPath
+      console.log('Initializing database at:', dbPath)
+      await initializeDatabase()
+      dbInitialized = true
+      console.log('Database initialized successfully')
+    } catch (error: any) {
+      console.error('Database initialization failed:', error)
+      dbInitialized = false
+      dbInitPromise = null
+      throw error
+    }
+  })()
+  
+  await dbInitPromise
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

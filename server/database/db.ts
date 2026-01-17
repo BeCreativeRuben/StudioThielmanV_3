@@ -1,13 +1,19 @@
 import sqlite3 from 'sqlite3'
 import { promisify } from 'util'
-import { readFileSync } from 'fs'
+import { readFileSync, mkdirSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const DB_PATH = process.env.DATABASE_PATH || join(__dirname, 'submissions.db')
+function getDbPath(): string {
+  // Use environment variable if set, otherwise default
+  if (process.env.DATABASE_PATH) {
+    return process.env.DATABASE_PATH
+  }
+  return join(__dirname, 'submissions.db')
+}
 
 let db: sqlite3.Database | null = null
 
@@ -20,8 +26,25 @@ export function getDatabase(): sqlite3.Database {
 
 export async function initializeDatabase(): Promise<void> {
   return new Promise((resolve, reject) => {
-    db = new sqlite3.Database(DB_PATH, (err) => {
+    const dbPath = getDbPath()
+    
+    // Ensure directory exists (for /tmp or custom paths)
+    try {
+      const dbDir = dirname(dbPath)
+      if (dbDir && dbDir !== '.' && dbDir !== '/') {
+        mkdirSync(dbDir, { recursive: true })
+      }
+    } catch (dirError: any) {
+      // Ignore errors if directory already exists
+      if (dirError.code !== 'EEXIST') {
+        console.warn('Could not create database directory:', dirError.message)
+      }
+    }
+    
+    // Open database with WAL mode for better concurrency
+    db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
       if (err) {
+        console.error('Database open error:', err)
         reject(err)
         return
       }
@@ -39,10 +62,16 @@ export async function initializeDatabase(): Promise<void> {
         
         db!.exec(schema, (err) => {
           if (err) {
-            reject(err)
-            return
+            // Ignore "table already exists" errors (schema might have been run before)
+            if (err.message && err.message.includes('already exists')) {
+              console.log('Database schema already initialized')
+              resolve()
+            } else {
+              reject(err)
+            }
+          } else {
+            resolve()
           }
-          resolve()
         })
       })
     })

@@ -14,23 +14,46 @@ function generateToken(userId: number, username: string): string {
 }
 
 let dbInitialized = false
+let dbInitPromise: Promise<void> | null = null
+
 async function ensureDb() {
-  if (!dbInitialized) {
-    process.env.DATABASE_PATH = process.env.DATABASE_PATH || '/tmp/submissions.db'
-    await initializeDatabase()
-    
-    // Initialize admin user if needed
-    const admin = await dbGet('SELECT * FROM admin_users WHERE username = ?', ['admin'])
-    if (!admin) {
-      const defaultHash = await bcrypt.hash('admin123', 10)
-      await dbRun(
-        'INSERT INTO admin_users (username, passwordHash) VALUES (?, ?)',
-        ['admin', defaultHash]
-      )
-    }
-    
-    dbInitialized = true
+  if (dbInitialized) {
+    return
   }
+  
+  if (dbInitPromise) {
+    await dbInitPromise
+    return
+  }
+  
+  dbInitPromise = (async () => {
+    try {
+      const dbPath = process.env.DATABASE_PATH || '/tmp/submissions.db'
+      process.env.DATABASE_PATH = dbPath
+      console.log('Initializing database at:', dbPath)
+      await initializeDatabase()
+      
+      // Initialize admin user if needed
+      const admin = await dbGet('SELECT * FROM admin_users WHERE username = ?', ['admin'])
+      if (!admin) {
+        const defaultHash = await bcrypt.hash('admin123', 10)
+        await dbRun(
+          'INSERT INTO admin_users (username, passwordHash) VALUES (?, ?)',
+          ['admin', defaultHash]
+        )
+      }
+      
+      dbInitialized = true
+      console.log('Database initialized successfully')
+    } catch (error: any) {
+      console.error('Database initialization failed:', error)
+      dbInitialized = false
+      dbInitPromise = null
+      throw error
+    }
+  })()
+  
+  await dbInitPromise
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

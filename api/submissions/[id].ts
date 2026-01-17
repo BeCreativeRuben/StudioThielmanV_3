@@ -3,12 +3,35 @@ import { initializeDatabase, dbGet, dbRun } from '../../../server/database/db.js
 import { requireAuth } from '../../_utils/auth.js'
 
 let dbInitialized = false
+let dbInitPromise: Promise<void> | null = null
+
 async function ensureDb() {
-  if (!dbInitialized) {
-    process.env.DATABASE_PATH = process.env.DATABASE_PATH || '/tmp/submissions.db'
-    await initializeDatabase()
-    dbInitialized = true
+  if (dbInitialized) {
+    return
   }
+  
+  if (dbInitPromise) {
+    await dbInitPromise
+    return
+  }
+  
+  dbInitPromise = (async () => {
+    try {
+      const dbPath = process.env.DATABASE_PATH || '/tmp/submissions.db'
+      process.env.DATABASE_PATH = dbPath
+      console.log('Initializing database at:', dbPath)
+      await initializeDatabase()
+      dbInitialized = true
+      console.log('Database initialized successfully')
+    } catch (error: any) {
+      console.error('Database initialization failed:', error)
+      dbInitialized = false
+      dbInitPromise = null
+      throw error
+    }
+  })()
+  
+  await dbInitPromise
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
