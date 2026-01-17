@@ -38,8 +38,8 @@ async function ensureDb() {
       if (!admin) {
         const defaultHash = await bcrypt.hash('admin123', 10)
         await dbRun(
-          'INSERT INTO admin_users (username, passwordHash) VALUES (?, ?)',
-          ['admin', defaultHash]
+          'INSERT INTO admin_users (username, passwordHash, email) VALUES (?, ?, ?)',
+          ['admin', defaultHash, 'admin@studiothielman.com']
         )
       }
       
@@ -69,15 +69,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Wrap everything in try-catch to ensure JSON responses
   try {
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method not allowed' })
+    }
+
     try {
       await ensureDb()
     } catch (dbError: any) {
       console.error('Database initialization error:', dbError)
-      return res.status(500).json({ error: 'Database initialization failed' })
-    }
-
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Method not allowed' })
+      console.error('Error stack:', dbError.stack)
+      return res.status(500).json({ 
+        error: 'Database initialization failed',
+        message: dbError.message || 'Unknown database error'
+      })
     }
 
     try {
@@ -87,25 +91,46 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(400).json({ error: 'Username and password are required' })
       }
 
-      // Get admin user
-      const admin = await dbGet<{ id: number; username: string; passwordHash: string }>(
-        'SELECT id, username, passwordHash FROM admin_users WHERE username = ?',
-        [username]
-      )
+      // Get admin user with error handling
+      let admin: { id: number; username: string; passwordHash: string } | undefined
+      try {
+        admin = await dbGet<{ id: number; username: string; passwordHash: string }>(
+          'SELECT id, username, passwordHash FROM admin_users WHERE username = ?',
+          [username]
+        )
+      } catch (dbQueryError: any) {
+        console.error('Database query error:', dbQueryError)
+        return res.status(500).json({ 
+          error: 'Database query failed',
+          message: dbQueryError.message || 'Unknown database query error'
+        })
+      }
 
       if (!admin) {
         return res.status(401).json({ error: 'Invalid credentials' })
       }
 
       // Verify password
-      const isValid = await bcrypt.compare(password, admin.passwordHash)
+      let isValid = false
+      try {
+        isValid = await bcrypt.compare(password, admin.passwordHash)
+      } catch (bcryptError: any) {
+        console.error('Password comparison error:', bcryptError)
+        return res.status(500).json({ error: 'Password verification failed' })
+      }
 
       if (!isValid) {
         return res.status(401).json({ error: 'Invalid credentials' })
       }
 
       // Generate token
-      const token = generateToken(admin.id, admin.username)
+      let token: string
+      try {
+        token = generateToken(admin.id, admin.username)
+      } catch (tokenError: any) {
+        console.error('Token generation error:', tokenError)
+        return res.status(500).json({ error: 'Token generation failed' })
+      }
 
       return res.json({
         success: true,
@@ -113,15 +138,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         username: admin.username
       })
     } catch (error: any) {
-      console.error('Login error:', error)
-      return res.status(500).json({ error: 'Failed to process login' })
+      console.error('Login processing error:', error)
+      console.error('Error stack:', error.stack)
+      return res.status(500).json({ 
+        error: 'Failed to process login',
+        message: error.message || 'Unknown error'
+      })
     }
   } catch (error: any) {
     // Catch any unexpected errors and return JSON
     console.error('Unexpected error in login handler:', error)
+    console.error('Error stack:', error.stack)
     return res.status(500).json({ 
       error: 'An unexpected error occurred',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: error.message || 'Unknown error',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
     })
   }
 }
