@@ -166,7 +166,9 @@ export default function Header() {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
               className={`md:hidden overflow-hidden border-t transition-colors duration-300 ${
-                isScrolled ? 'border-border' : 'border-white/10'
+                isScrolled 
+                  ? 'border-border bg-white/95 backdrop-blur-sm' 
+                  : 'border-white/10 bg-black/95 backdrop-blur-sm'
               }`}
             >
               <div className="py-4 space-y-4">
