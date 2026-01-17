@@ -5,6 +5,8 @@ import ScrollToTop from './components/ScrollToTop'
 import Home from './pages/Home'
 import Packages from './pages/Packages'
 import Portfolio from './pages/Portfolio'
+import PortfolioDetail from './pages/PortfolioDetail'
+import CurrentProjects from './pages/CurrentProjects'
 import HowItWorks from './pages/HowItWorks'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -33,6 +35,8 @@ function App() {
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/packages" element={<MainLayout><Packages /></MainLayout>} />
         <Route path="/portfolio" element={<MainLayout><Portfolio /></MainLayout>} />
+        <Route path="/portfolio/:slug" element={<MainLayout><PortfolioDetail /></MainLayout>} />
+        <Route path="/current-projects" element={<MainLayout><CurrentProjects /></MainLayout>} />
         <Route path="/how-it-works" element={<MainLayout><HowItWorks /></MainLayout>} />
         <Route path="/about" element={<MainLayout><About /></MainLayout>} />
         <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />

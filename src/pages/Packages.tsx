@@ -77,7 +77,8 @@ export default function Packages() {
         'AI-powered service platforms',
         'Businesses requiring advanced automation'
       ],
-      highlighted: false
+      highlighted: false,
+      comingSoon: true
     }
   ]
 
@@ -145,21 +146,28 @@ export default function Packages() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
                 <Card 
-                  hover 
-                  className={`h-full flex flex-col ${pkg.highlighted ? 'border-2 border-cta shadow-xl' : ''}`}
+                  hover={!pkg.comingSoon}
+                  className={`h-full flex flex-col ${pkg.highlighted ? 'border-2 border-cta shadow-xl' : ''} ${pkg.comingSoon ? 'opacity-75' : ''}`}
                 >
                   {pkg.highlighted && (
                     <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-body-sm font-bold px-4 py-2 rounded-full inline-block mb-4 shadow-lg uppercase tracking-wider">
                       MOST POPULAR
                     </div>
                   )}
+                  {pkg.comingSoon && (
+                    <div className="bg-gray-500 text-white text-body-sm font-bold px-4 py-2 rounded-full inline-block mb-4 shadow-lg uppercase tracking-wider">
+                      COMING SOON
+                    </div>
+                  )}
                   
                   <div className="flex-grow">
                     <h3 className="text-3xl font-bold text-primary mb-2">{pkg.name}</h3>
-                    <div className="mb-4">
-                      <div className="text-4xl font-bold text-primary">{pkg.price}</div>
-                      <div className="text-body-sm text-text-secondary mt-1">{pkg.startupFee}</div>
-                    </div>
+                    {!pkg.comingSoon && (
+                      <div className="mb-4">
+                        <div className="text-4xl font-bold text-primary">{pkg.price}</div>
+                        <div className="text-body-sm text-text-secondary mt-1">{pkg.startupFee}</div>
+                      </div>
+                    )}
                     <p className="text-body text-text-primary mb-6">{pkg.description}</p>
 
                     <div className="mb-6">
@@ -188,15 +196,26 @@ export default function Packages() {
                   </div>
 
                   <div className="mt-auto pt-6">
-                    <Link to="/contact#contact-form">
+                    {pkg.comingSoon ? (
                       <Button 
-                        variant={pkg.highlighted ? 'cta' : 'outline'} 
+                        variant="outline" 
                         size="md" 
                         className="w-full"
+                        disabled={true}
                       >
-                        Choose {pkg.name}
+                        Coming Soon
                       </Button>
-                    </Link>
+                    ) : (
+                      <Link to="/contact#contact-form">
+                        <Button 
+                          variant={pkg.highlighted ? 'cta' : 'outline'} 
+                          size="md" 
+                          className="w-full"
+                        >
+                          Choose {pkg.name}
+                        </Button>
+                      </Link>
+                    )}
                   </div>
                 </Card>
               </motion.div>

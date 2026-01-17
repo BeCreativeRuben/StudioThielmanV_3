@@ -2,13 +2,184 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../components/Button'
+import { portfolioItems as allPortfolioItems } from '../data/portfolio'
+import { currentProjects } from '../data/currentProjects'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 import heroVideo from '../images/z_Upload-Image---Internal-Only-Style-6bab5259.mp4'
 import officeImage from '../images/c2ea26ea-23d3-4ee1-8710-74211f2d80be.jpeg'
 
+// Service Images - Using Unsplash placeholders that match each service theme
+const serviceImages = {
+  webDesign: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop&q=80', // Web design/development workspace
+  branding: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop&q=80', // Branding materials and design
+  seo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&q=80', // Analytics and data visualization
+  ecommerce: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop&q=80', // Online shopping and e-commerce
+  ai: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80', // AI and technology
+  cms: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=400&fit=crop&q=80' // Content management dashboard
+}
+
+// Typewriter Text Component
+function TypewriterText() {
+  const services = [
+    'Web Design',
+    'SEO and Digital Marketing',
+    'E-Commerce Solutions',
+    'AI Integration & Automation',
+    'CMS Systems'
+  ]
+  
+  const [currentServiceIndex, setCurrentServiceIndex] = useState(0)
+  const [displayText, setDisplayText] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [typingSpeed, setTypingSpeed] = useState(100)
+
+  useEffect(() => {
+    const currentService = services[currentServiceIndex]
+    
+    if (!isDeleting && displayText === currentService) {
+      // Finished typing, wait then start deleting
+      const timeout = setTimeout(() => {
+        setIsDeleting(true)
+        setTypingSpeed(50)
+      }, 2000)
+      return () => clearTimeout(timeout)
+    }
+    
+    if (isDeleting && displayText === '') {
+      // Finished deleting, move to next service
+      setIsDeleting(false)
+      setCurrentServiceIndex((prev) => (prev + 1) % services.length)
+      setTypingSpeed(100)
+      return
+    }
+
+    const timeout = setTimeout(() => {
+      if (isDeleting) {
+        setDisplayText(currentService.substring(0, displayText.length - 1))
+      } else {
+        setDisplayText(currentService.substring(0, displayText.length + 1))
+      }
+    }, typingSpeed)
+
+    return () => clearTimeout(timeout)
+  }, [displayText, isDeleting, currentServiceIndex, typingSpeed, services])
+
+  return (
+    <div className="text-8xl font-bold text-white/10 mb-8">
+      {displayText}
+      <span className="animate-pulse">|</span>
+    </div>
+  )
+}
+
+// Blog Countdown Component
+function BlogCountdown() {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    total: 0
+  })
+
+  useEffect(() => {
+    // Target: 18/01/2026 at 14:00 UTC+1 (13:00 UTC)
+    const targetDate = new Date('2026-01-18T13:00:00Z')
+    
+    const updateTimer = () => {
+      const now = new Date().getTime()
+      const distance = targetDate.getTime() - now
+
+      if (distance > 0) {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000),
+          total: distance
+        })
+      } else {
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+          total: 0
+        })
+      }
+    }
+
+    updateTimer()
+    const interval = setInterval(updateTimer, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const timeUnits = [
+    { label: 'Days', value: timeLeft.days },
+    { label: 'Hours', value: timeLeft.hours },
+    { label: 'Minutes', value: timeLeft.minutes },
+    { label: 'Seconds', value: timeLeft.seconds }
+  ]
+
+  if (timeLeft.total <= 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="max-w-2xl mx-auto text-center"
+      >
+        <div className="bg-accent border border-gray-200 rounded-lg p-8">
+          <h3 className="text-2xl font-bold text-primary mb-2">Blog is Live</h3>
+          <p className="text-body text-text-primary">The first blog post is now available.</p>
+        </div>
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4 }}
+      className="max-w-3xl mx-auto"
+    >
+      <div className="bg-accent border border-gray-200 rounded-lg p-8 md:p-10">
+        <div className="text-center mb-8">
+          <h3 className="text-2xl md:text-3xl font-bold text-primary mb-3">
+            First Blog Post Coming Soon
+          </h3>
+          <p className="text-body text-text-primary">
+            Releasing on <span className="font-semibold">January 18, 2026 at 14:00 UTC+1</span>
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {timeUnits.map((unit) => (
+            <div
+              key={unit.label}
+              className="text-center"
+            >
+              <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                  {String(unit.value).padStart(2, '0')}
+                </div>
+                <div className="text-xs text-text-secondary uppercase tracking-wider">
+                  {unit.label}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 export default function Home() {
   const [expandedService, setExpandedService] = useState(0)
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [showChatWidget, setShowChatWidget] = useState(false)
   const [showHelpMessage, setShowHelpMessage] = useState(false)
   const [message, setMessage] = useState('')
@@ -39,34 +210,24 @@ export default function Home() {
     return () => clearTimeout(timer)
   }, [])
 
-  const testimonials = [
+  const values = [
     {
-      quote: 'Studio Thielman transformed our outdated website into a sleek, professional platform that perfectly reflects our brand. Their team was responsive, innovative, and delivered beyond our expectations. We\'ve seen a significant increase in client engagement since the redesign!',
-      author: 'Sarah T.',
-      role: 'CEO, Stellar Nova Consulting',
-      initials: 'ST'
+      title: 'Professionalism',
+      description: 'We are experts. Our work speaks. No compromises on quality.'
     },
     {
-      quote: 'Working with Studio Thielman was a game-changer for our business. They understood our vision and brought it to life with a website that not only looks amazing but also converts visitors into customers. Highly recommend!',
-      author: 'Michael R.',
-      role: 'Founder, TechStart Solutions',
-      initials: 'MR'
+      title: 'Accessibility',
+      description: 'Enterprise-grade solutions at startup prices. Everyone deserves a professional web presence.'
     },
     {
-      quote: 'The team at Studio Thielman exceeded all our expectations. From the initial consultation to the final launch, they were professional, creative, and always available to answer our questions. Our new website has been a huge success!',
-      author: 'Emily L.',
-      role: 'Marketing Director, GreenLeaf Agency',
-      initials: 'EL'
+      title: 'Innovation',
+      description: 'AI-powered solutions that give you a competitive edge. We stay ahead of the curve.'
+    },
+    {
+      title: 'Partnership',
+      description: 'We\'re invested in your success. Personal support included. Your growth is our success.'
     }
   ]
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 10000) // 10 seconds
-
-    return () => clearInterval(interval)
-  }, [testimonials.length])
 
 
   // Function to handle sending message
@@ -165,39 +326,102 @@ export default function Home() {
   const services = [
     {
       title: 'Custom Web Design',
-      description: 'We create unique, responsive websites tailored to your brand and business needs.',
+      description: 'We create unique, responsive websites tailored to your brand and business needs. Every website is built from scratch, ensuring your brand stands out with a design that perfectly represents your vision.',
       features: [
-        'SEO & Digital Marketing',
-        'E-commerce Solutions',
-        'Mobile Responsive Design'
+        'Fully responsive design (mobile, tablet, desktop)',
+        'Custom UI/UX design based on your brand',
+        'Fast loading times and optimized performance',
+        'Cross-browser compatibility',
+        'Modern animations and interactions',
+        'Accessibility compliance (WCAG 2.1 AA)'
       ],
-      image: 'Service Image'
+      image: serviceImages.webDesign,
+      benefits: 'Get a website that looks professional, loads fast, and works perfectly on every device.'
     },
     {
       title: 'Branding & Graphic Design',
-      description: 'Complete branding solutions to establish your visual identity.',
-      features: []
+      description: 'Complete branding solutions to establish your visual identity. From logo design to brand guidelines, we help you create a cohesive brand presence that resonates with your audience.',
+      features: [
+        'Logo design and brand identity',
+        'Color palette and typography selection',
+        'Brand style guide creation',
+        'Social media asset design',
+        'Business card and print materials',
+        'Brand consistency across all touchpoints'
+      ],
+      image: serviceImages.branding,
+      benefits: 'Build a memorable brand that customers recognize and trust.'
     },
     {
       title: 'SEO & Digital Marketing',
-      description: 'Boost your online visibility and reach your target audience effectively.',
-      features: []
+      description: 'Boost your online visibility and reach your target audience effectively. We implement proven SEO strategies and digital marketing tactics to drive organic traffic and conversions.',
+      features: [
+        'On-page SEO optimization',
+        'Keyword research and strategy',
+        'Content optimization',
+        'Technical SEO audits',
+        'Google Analytics integration',
+        'Monthly performance reports',
+        'Local SEO for businesses',
+        'Link building strategies'
+      ],
+      image: serviceImages.seo,
+      benefits: 'Rank higher in search results and attract more qualified visitors to your website.'
     },
     {
       title: 'E-commerce Solutions',
-      description: 'Full-featured online stores with secure payment processing.',
-      features: []
+      description: 'Full-featured online stores with secure payment processing. We build e-commerce platforms that make it easy for customers to browse, purchase, and return to your store.',
+      features: [
+        'Product catalog management',
+        'Shopping cart and checkout',
+        'Secure payment gateways (Stripe, PayPal)',
+        'Inventory management',
+        'Order tracking system',
+        'Customer account management',
+        'Product reviews and ratings',
+        'Shipping integration',
+        'Tax calculation',
+        'Abandoned cart recovery'
+      ],
+      image: serviceImages.ecommerce,
+      benefits: 'Sell products online with a secure, user-friendly platform that converts visitors into customers.'
+    },
+    {
+      title: 'AI Integration & Automation',
+      description: 'Leverage the power of AI to automate your business processes. From chatbots to workflow automation, we integrate AI solutions that save time and improve customer experience.',
+      features: [
+        'AI-powered chatbots',
+        'Customer support automation',
+        'Workflow automation (N8N)',
+        'AI content generation',
+        'Predictive analytics',
+        'Personalization engines',
+        'Email automation sequences',
+        'Lead qualification systems'
+      ],
+      image: serviceImages.ai,
+      benefits: 'Automate repetitive tasks and provide 24/7 customer support with AI-powered solutions.'
+    },
+    {
+      title: 'Content Management Systems',
+      description: 'Take control of your website content with easy-to-use CMS solutions. Update your website anytime, anywhere, without needing technical knowledge.',
+      features: [
+        'User-friendly content editor',
+        'Media library management',
+        'Page builder functionality',
+        'Blog and article management',
+        'User role permissions',
+        'Version control and backups',
+        'Multi-language support',
+        'Scheduled content publishing'
+      ],
+      image: serviceImages.cms,
+      benefits: 'Manage your website content independently, make updates instantly, and keep your site fresh.'
     }
   ]
 
-  const portfolioItems = [
-    { title: 'This Project', description: 'A comprehensive web solution for modern businesses', date: 'FEB 10, 2023' },
-    { title: 'This Project', description: 'Innovative design meets functionality', date: 'JAN 25, 2023' },
-    { title: 'This Project', description: 'Transforming digital experiences', date: 'JAN 1, 2023' },
-    { title: 'This Project', description: 'Creative solutions for growth', date: 'OCT 4, 2022' },
-    { title: 'This Project', description: 'Modern web development excellence', date: 'JUL 8, 2022' },
-    { title: 'This Project', description: 'Strategic digital transformation', date: 'MAY 18, 2022' }
-  ]
+  // Filter portfolio items to show only active (non-coming-soon) items, limit to 6 for homepage
+  const portfolioItems = allPortfolioItems.filter(item => !item.comingSoon).slice(0, 6)
 
   return (
     <div className="relative">
@@ -259,8 +483,8 @@ export default function Home() {
           <source src={heroVideo} type="video/mp4" />
         </video>
         {/* Background Overlay */}
-        <div className="absolute left-0 right-0 w-full bg-black/60 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}></div>
-        <div className="absolute left-0 right-0 w-full bg-gradient-to-r from-black/80 to-black/40 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}></div>
+        <div className="absolute left-0 right-0 w-full bg-black/50 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}></div>
+        <div className="absolute left-0 right-0 w-full bg-gradient-to-r from-black/60 to-black/40 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -317,7 +541,7 @@ export default function Home() {
               className="hidden lg:block"
             >
               <div className="text-right relative">
-                <div className="text-8xl font-bold text-white/10 mb-8">WEB DESIGN</div>
+                <TypewriterText />
               </div>
             </motion.div>
           </div>
@@ -493,11 +717,11 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-2 gap-8 mb-8">
                 <div>
-                  <div className="text-5xl font-bold text-primary mb-2">150+</div>
+                  <div className="text-5xl font-bold text-primary mb-2">30+</div>
                   <div className="text-body text-text-secondary">Projects Delivered</div>
                 </div>
                 <div>
-                  <div className="text-5xl font-bold text-primary mb-2">98%</div>
+                  <div className="text-5xl font-bold text-primary mb-2">85%</div>
                   <div className="text-body text-text-secondary">Client Satisfaction</div>
                 </div>
               </div>
@@ -527,19 +751,39 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {portfolioItems.map((item, index) => (
               <motion.div
-                key={index}
+                key={item.slug}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <div className="bg-accent rounded-lg h-64 mb-4 flex items-center justify-center">
-                  <span className="text-text-secondary">Project Image</span>
-                </div>
-                <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">Case Study</div>
-                <h3 className="text-h3 text-primary mb-2">{item.title}</h3>
-                <p className="text-body text-text-primary mb-2">{item.description}</p>
-                <div className="text-body-sm text-text-secondary">{item.date}</div>
+                <Link to={`/portfolio/${item.slug}`}>
+                  <div className="group cursor-pointer">
+                    <div className="bg-accent rounded-lg h-64 mb-4 flex items-center justify-center overflow-hidden">
+                      {item.screenshots && item.screenshots.length > 0 ? (
+                        <img
+                          src={item.screenshots[0]}
+                          alt={item.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement
+                            target.style.display = 'none'
+                            const parent = target.parentElement
+                            if (parent) {
+                              parent.innerHTML = '<span class="text-text-secondary">Project Image</span>'
+                            }
+                          }}
+                        />
+                      ) : (
+                        <span className="text-text-secondary">Project Image</span>
+                      )}
+                    </div>
+                    <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">Case Study</div>
+                    <h3 className="text-h3 text-primary mb-2 group-hover:text-cta transition-colors">{item.title}</h3>
+                    <p className="text-body text-text-primary mb-2">{item.description}</p>
+                    <div className="text-body-sm text-text-secondary">{item.date}</div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -617,31 +861,58 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </button>
-                    {expandedService === index && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="px-6 pb-6"
-                      >
-                        <div className="bg-accent rounded-lg h-48 mb-4 flex items-center justify-center">
-                          <span className="text-text-secondary">{service.image}</span>
+                    <AnimatePresence>
+                      {expandedService === index && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeInOut' }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-6 pb-6">
+                        <div className="bg-accent rounded-lg h-48 mb-4 overflow-hidden">
+                          <img 
+                            src={service.image} 
+                            alt={service.title}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
                         </div>
-                        <p className="text-body text-text-primary mb-4">{service.description}</p>
-                        {service.features.length > 0 && (
-                          <ul className="space-y-2 mb-4">
-                            {service.features.map((feature, idx) => (
-                              <li key={idx} className="text-body text-text-primary flex items-center">
-                                <span className="text-cta mr-2">✓</span>
-                                {feature}
-                              </li>
-                            ))}
-                          </ul>
+                        <p className="text-body text-text-primary mb-4 leading-relaxed">{service.description}</p>
+                        
+                        {service.benefits && (
+                          <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                            <div className="text-sm font-semibold text-primary mb-1">Key Benefit</div>
+                            <div className="text-body-sm text-text-primary">{service.benefits}</div>
+                          </div>
                         )}
-                        <Button variant="outline" size="sm">Learn More →</Button>
-                      </motion.div>
-                    )}
+                        
+                        {service.features.length > 0 && (
+                          <div className="mb-4">
+                            <div className="text-sm font-semibold text-primary mb-3">What's Included:</div>
+                            <ul className="space-y-2">
+                              {service.features.map((feature, idx) => (
+                                <li key={idx} className="text-body-sm text-text-primary flex items-start">
+                                  <span className="text-cta mr-2 mt-1 font-bold flex-shrink-0">✓</span>
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        <div className="flex gap-3">
+                          <Link to="/packages">
+                            <Button variant="outline" size="sm">View Packages →</Button>
+                          </Link>
+                          <Link to="/contact#contact-form">
+                            <Button variant="primary" size="sm">Get Started</Button>
+                          </Link>
+                        </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </motion.div>
               ))}
@@ -650,51 +921,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonial Section */}
+      {/* Values Section */}
       <section className="py-20 bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="text-6xl text-white/20 mb-8">"</div>
-            <AnimatePresence mode="wait">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              What We Stand For
+            </h2>
+            <div className="w-20 h-1 bg-cta mx-auto"></div>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {values.map((value, index) => (
               <motion.div
-                key={currentTestimonial}
+                key={index}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group"
               >
-                <p className="text-2xl md:text-3xl text-white mb-8 leading-relaxed min-h-[120px] flex items-center justify-center">
-                  {testimonials[currentTestimonial].quote}
-                </p>
-                <div className="flex items-center justify-center gap-4 mb-4">
-                  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/30 bg-white/20 flex items-center justify-center">
-                    <span className="text-white text-xl font-semibold">
-                      {testimonials[currentTestimonial].initials}
-                    </span>
-                  </div>
-                  <div className="text-left">
-                    <div className="text-white font-semibold text-lg">
-                      {testimonials[currentTestimonial].author}
-                    </div>
-                    <div className="text-white/70">
-                      {testimonials[currentTestimonial].role}
-                    </div>
-                  </div>
+                <div className="bg-white/5 border-l-4 border-cta/50 hover:border-cta rounded-lg p-6 hover:bg-white/10 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cta transition-colors">
+                    {value.title}
+                  </h3>
+                  <p className="text-body text-white/80 leading-relaxed">
+                    {value.description}
+                  </p>
                 </div>
               </motion.div>
-            </AnimatePresence>
-            <div className="flex justify-center gap-2 mt-6">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentTestimonial(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentTestimonial ? 'bg-white w-8' : 'bg-white/30'
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -702,48 +964,113 @@ export default function Home() {
       {/* Blog/Expert Insights Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">BLOG</div>
-              <h2 className="text-4xl md:text-5xl font-bold text-primary">
-                Our expert insights.
-              </h2>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Button variant="primary">View All Posts</Button>
-            </motion.div>
-          </div>
-          
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
           >
-            {[1, 2, 3].map((item) => (
-              <div key={item}>
-                <div className="bg-accent rounded-lg h-64 mb-4 flex items-center justify-center">
-                  <span className="text-text-secondary">Blog Image</span>
+            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">BLOG</div>
+            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+              Our expert insights.
+            </h2>
+            <p className="text-body-lg text-text-primary mb-8">
+              Our blog is still a work in progress. The first blog post will be released soon!
+            </p>
+          </motion.div>
+          
+          {/* Countdown Timer */}
+          <BlogCountdown />
+        </div>
+      </section>
+
+      {/* Current Projects Preview */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">WORK IN PROGRESS</div>
+            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+              What I'm Building Now
+            </h2>
+            <p className="text-body-lg text-text-primary max-w-2xl mx-auto">
+              See my current projects, what I'm learning, and what's coming next. Transparency in progress.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {currentProjects.slice(0, 3).map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="text-xl font-bold text-primary flex-1">{project.title}</h3>
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    project.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
+                    project.status === 'planning' ? 'bg-blue-100 text-blue-800' :
+                    project.status === 'testing' ? 'bg-purple-100 text-purple-800' :
+                    'bg-green-100 text-green-800'
+                  }`}>
+                    {project.status === 'in-progress' ? '🚧' : project.status === 'planning' ? '📋' : project.status === 'testing' ? '🧪' : '✨'}
+                  </span>
                 </div>
-                <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">Category</div>
-                <h3 className="text-h4 text-primary mb-2">Key Features Every Business Needs for Success</h3>
-                <p className="text-body text-text-primary mb-4">
-                  Discover the essential features that can transform your business and drive growth in today's competitive market.
-                </p>
-                <Button variant="outline" size="sm">Read More →</Button>
-              </div>
+                <p className="text-body-sm text-text-primary mb-4">{project.description}</p>
+                
+                {/* Progress Bar */}
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-text-secondary">Progress</span>
+                    <span className="text-xs font-semibold text-primary">{project.progress}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-primary to-cta rounded-full"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${project.progress}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1, delay: 0.3 }}
+                    />
+                  </div>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="flex items-center gap-4 text-xs text-text-secondary mb-4">
+                  <span>📅 {project.startDate}</span>
+                  <span>🔧 {project.technologies.length} tech</span>
+                </div>
+
+                <Link to="/current-projects">
+                  <Button variant="outline" size="sm" className="w-full">
+                    View Details →
+                  </Button>
+                </Link>
+              </motion.div>
             ))}
+          </div>
+
+          <motion.div
+            className="text-center mt-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <Link to="/current-projects">
+              <Button variant="primary" size="lg">
+                View All Current Projects
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>

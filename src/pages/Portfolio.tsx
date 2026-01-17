@@ -2,81 +2,19 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
+import { portfolioItems } from '../data/portfolio'
 
 export default function Portfolio() {
   const [filter, setFilter] = useState('All')
 
-  const portfolioItems = [
-    {
-      title: 'Freelance Designer Portfolio',
-      package: 'Starter',
-      description: 'A clean, minimal portfolio to showcase work',
-      image: 'Preview Image',
-      date: 'FEB 10, 2023'
-    },
-    {
-      title: 'Personal Coach Website',
-      package: 'Starter',
-      description: 'One-pager with booking system and testimonials',
-      image: 'Preview Image',
-      date: 'JAN 25, 2023'
-    },
-    {
-      title: 'Photography Studio',
-      package: 'Starter',
-      description: 'Service business with gallery and contact form',
-      image: 'Preview Image',
-      date: 'JAN 1, 2023'
-    },
-    {
-      title: 'Digital Agency',
-      package: 'Growth',
-      description: 'Dynamic service showcase with CMS blog',
-      image: 'Preview Image',
-      date: 'OCT 4, 2022'
-    },
-    {
-      title: 'Solar Energy Company',
-      package: 'Growth',
-      description: 'B2B service company with lead generation',
-      image: 'Preview Image',
-      date: 'JUL 8, 2022'
-    },
-    {
-      title: 'Coaching Business',
-      package: 'Growth',
-      description: 'Online coaching platform with course previews',
-      image: 'Preview Image',
-      date: 'MAY 18, 2022'
-    },
-    {
-      title: 'E-Commerce Store (Clothing)',
-      package: 'Pro Max',
-      description: 'Full online store with AI chatbot',
-      image: 'Preview Image',
-      date: 'APR 12, 2022'
-    },
-    {
-      title: 'E-Commerce Store (General)',
-      package: 'Pro Max',
-      description: 'Multi-category store with advanced features',
-      image: 'Preview Image',
-      date: 'MAR 5, 2022'
-    },
-    {
-      title: 'AI-Powered Service Platform',
-      package: 'Pro Max',
-      description: 'SaaS platform with AI integrations',
-      image: 'Preview Image',
-      date: 'FEB 20, 2022'
-    }
-  ]
+  // Filter out "Coming Soon" items from main display
+  const activeItems = portfolioItems.filter(item => !item.comingSoon)
 
   const filters = ['All', 'Starter', 'Growth', 'Pro Max']
 
   const filteredItems = filter === 'All'
-    ? portfolioItems
-    : portfolioItems.filter(item => item.package === filter)
+    ? activeItems
+    : activeItems.filter(item => item['package'] === filter)
 
   return (
     <div>
@@ -137,35 +75,81 @@ export default function Portfolio() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="group"
                 >
-                  <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div className="relative overflow-hidden">
-                      <div className="w-full h-56 bg-gray-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                        <span className="text-text-secondary">{item.image}</span>
+                  <Link to={`/portfolio/${item.slug}`} className="block h-full">
+                    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+                      <div className="relative overflow-hidden">
+                        <div className="w-full h-56 bg-gray-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                          {item.screenshots && item.screenshots.length > 0 ? (
+                            <img
+                              src={item.screenshots[0]}
+                              alt={item.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement
+                                target.style.display = 'none'
+                                const parent = target.parentElement
+                                if (parent) {
+                                  parent.innerHTML = '<span class="text-text-secondary">Preview Image</span>'
+                                }
+                              }}
+                            />
+                          ) : (
+                            <span className="text-text-secondary">Preview Image</span>
+                          )}
+                        </div>
+                        <div className="absolute top-4 right-4">
+                          <span className="bg-cta text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                            {item['package']}
+                          </span>
+                        </div>
                       </div>
-                      <div className="absolute top-4 right-4">
-                        <span className="bg-cta text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
-                          {item.package}
-                        </span>
-                      </div>
-                    </div>
                     <div className="p-6 flex-grow flex flex-col">
-                      <div className="text-xs text-text-secondary uppercase tracking-wider mb-2">Case Study</div>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-xs text-text-secondary uppercase tracking-wider">Case Study</div>
+                        <span className="text-xs text-text-secondary bg-gray-100 px-2 py-1 rounded">{item.clientType}</span>
+                      </div>
                       <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-cta transition-colors">{item.title}</h3>
-                      <p className="text-body-sm text-text-primary mb-4 flex-grow">{item.description}</p>
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                      <p className="text-body-sm text-text-primary mb-4 flex-grow leading-relaxed">{item.description}</p>
+                      
+                      {/* Key Features */}
+                      {item.keyFeatures && (
+                        <div className="mb-4">
+                          <div className="text-xs text-text-secondary uppercase tracking-wider mb-2">Key Features</div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {item.keyFeatures.slice(0, 3).map((feature, idx) => (
+                              <span key={idx} className="text-xs bg-accent text-text-primary px-2 py-1 rounded">
+                                {feature}
+                              </span>
+                            ))}
+                            {item.keyFeatures.length > 3 && (
+                              <span className="text-xs bg-accent text-text-primary px-2 py-1 rounded">
+                                +{item.keyFeatures.length - 3} more
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Results */}
+                      {item.results && (
+                        <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                          <div className="text-xs text-green-700 font-semibold mb-1">Results</div>
+                          <div className="text-sm text-green-800">{item.results}</div>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-auto">
                         <span className="text-xs text-text-secondary uppercase tracking-wider">{item.date}</span>
-                        <Link
-                          to="#"
-                          className="text-sm font-semibold text-primary hover:text-cta transition-colors flex items-center gap-1"
-                        >
+                        <span className="text-sm font-semibold text-primary group-hover:text-cta transition-colors flex items-center gap-1">
                           View Project
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
-                        </Link>
+                        </span>
                       </div>
                     </div>
                   </div>
+                  </Link>
                 </motion.div>
               ))}
             </motion.div>
