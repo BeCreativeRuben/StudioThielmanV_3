@@ -24,6 +24,11 @@ JWT_SECRET=your-secret-key-change-this-in-production
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH=hashed-password-here
 FRONTEND_URL=http://localhost:5173
+
+# Mailchimp Configuration (for contact management and auto-replies)
+MAILCHIMP_API_KEY=your-api-key-here
+MAILCHIMP_SERVER_PREFIX=us1
+MAILCHIMP_AUDIENCE_ID=your-audience-id-here
 ```
 
 **Important Notes:**

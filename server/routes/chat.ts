@@ -2,6 +2,7 @@ import express from 'express'
 import rateLimit from 'express-rate-limit'
 import { dbRun, dbGet, dbAll } from '../database/db.js'
 import { authenticateToken } from '../middleware/auth.js'
+import { sendChatMessageNotification } from '../services/emailService.js'
 import { randomUUID } from 'crypto'
 
 const router = express.Router()
@@ -31,6 +32,17 @@ router.post('/messages', chatLimiter, async (req, res) => {
        VALUES (?, ?, ?, ?)`,
       [finalSessionId, userName || null, userEmail || null, message.trim()]
     )
+
+    // Send email notification (non-blocking)
+    if (userEmail) {
+      sendChatMessageNotification({
+        userName: userName || undefined,
+        userEmail,
+        message: message.trim()
+      }).catch(err => {
+        console.error('Email notification error:', err)
+      })
+    }
 
     res.status(201).json({
       success: true,

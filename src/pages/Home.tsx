@@ -18,60 +18,6 @@ const serviceImages = {
   cms: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=400&fit=crop&q=80' // Content management dashboard
 }
 
-// Typewriter Text Component
-function TypewriterText() {
-  const services = [
-    'Web Design',
-    'SEO and Digital Marketing',
-    'E-Commerce Solutions',
-    'AI Integration & Automation',
-    'CMS Systems'
-  ]
-  
-  const [currentServiceIndex, setCurrentServiceIndex] = useState(0)
-  const [displayText, setDisplayText] = useState('')
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [typingSpeed, setTypingSpeed] = useState(100)
-
-  useEffect(() => {
-    const currentService = services[currentServiceIndex]
-    
-    if (!isDeleting && displayText === currentService) {
-      // Finished typing, wait then start deleting
-      const timeout = setTimeout(() => {
-        setIsDeleting(true)
-        setTypingSpeed(50)
-      }, 2000)
-      return () => clearTimeout(timeout)
-    }
-    
-    if (isDeleting && displayText === '') {
-      // Finished deleting, move to next service
-      setIsDeleting(false)
-      setCurrentServiceIndex((prev) => (prev + 1) % services.length)
-      setTypingSpeed(100)
-      return
-    }
-
-    const timeout = setTimeout(() => {
-      if (isDeleting) {
-        setDisplayText(currentService.substring(0, displayText.length - 1))
-      } else {
-        setDisplayText(currentService.substring(0, displayText.length + 1))
-      }
-    }, typingSpeed)
-
-    return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, currentServiceIndex, typingSpeed, services])
-
-  return (
-    <div className="text-8xl font-bold text-white/10 mb-8">
-      {displayText}
-      <span className="animate-pulse">|</span>
-    </div>
-  )
-}
-
 // Blog Countdown Component
 function BlogCountdown() {
   const [timeLeft, setTimeLeft] = useState({
@@ -533,17 +479,6 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Right Content - Category/Visual */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="hidden lg:block"
-            >
-              <div className="text-right relative">
-                <TypewriterText />
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>

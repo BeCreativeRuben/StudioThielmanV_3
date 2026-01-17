@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import { addContactToMailchimp, getAutoReplyTemplate } from './mailchimpService.js'
 
 interface SubmissionData {
   businessName: string
@@ -10,6 +11,12 @@ interface SubmissionData {
   packageOther?: string
   hasExistingWebsite?: string
   existingWebsiteUrl?: string
+}
+
+interface ChatMessageData {
+  userName?: string
+  userEmail: string
+  message: string
 }
 
 const GMAIL_USER = process.env.GMAIL_USER
@@ -26,6 +33,33 @@ const transporter = nodemailer.createTransport({
     pass: GMAIL_APP_PASSWORD
   }
 })
+
+/**
+ * Send friendly auto-reply to user
+ */
+async function sendAutoReply(email: string, userName?: string): Promise<void> {
+  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
+    console.log('Auto-reply skipped - Gmail not configured')
+    return
+  }
+
+  try {
+    const template = getAutoReplyTemplate(userName)
+    
+    await transporter.sendMail({
+      from: `"Ruben Thielman" <${GMAIL_USER}>`,
+      to: email,
+      subject: template.subject,
+      text: template.text,
+      html: template.html,
+    })
+    
+    console.log(`Auto-reply sent to: ${email}`)
+  } catch (error) {
+    console.error('Failed to send auto-reply:', error)
+    // Don't throw - we don't want auto-reply failures to break form submission
+  }
+}
 
 export async function sendSubmissionNotification(data: SubmissionData): Promise<void> {
   if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
@@ -72,6 +106,7 @@ Submitted at: ${new Date().toLocaleString()}
   `
 
   try {
+    // Send notification to admin
     await transporter.sendMail({
       from: GMAIL_USER,
       to: GMAIL_USER, // Send to yourself
@@ -81,9 +116,77 @@ Submitted at: ${new Date().toLocaleString()}
       replyTo: data.email // So you can reply directly
     })
     console.log('Submission notification email sent successfully')
+
+    // Send auto-reply to user
+    await sendAutoReply(data.email, data.name).catch(err => {
+      console.error('Auto-reply error:', err)
+    })
+
+    // Add to Mailchimp
+    await addContactToMailchimp(data.email, data.name, undefined, ['Contact Form', 'Lead']).catch(err => {
+      console.error('Mailchimp error:', err)
+    })
   } catch (error) {
     console.error('Failed to send submission notification email:', error)
     // Don't throw - we don't want email failures to break form submission
+  }
+}
+
+/**
+ * Send notification for chat messages
+ */
+export async function sendChatMessageNotification(data: ChatMessageData): Promise<void> {
+  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
+    console.log('Chat notification skipped - Gmail not configured')
+    return
+  }
+
+  const htmlBody = `
+    <h2>New Chat Message</h2>
+    <p><strong>Name:</strong> ${escapeHtml(data.userName || 'Anonymous')}</p>
+    <p><strong>Email:</strong> ${escapeHtml(data.userEmail || 'Not provided')}</p>
+    <p><strong>Message:</strong></p>
+    <p>${escapeHtml(data.message)}</p>
+    <hr>
+    <p><small>Received at: ${new Date().toLocaleString()}</small></p>
+  `
+
+  const textBody = `
+New Chat Message
+
+Name: ${data.userName || 'Anonymous'}
+Email: ${data.userEmail || 'Not provided'}
+Message: ${data.message}
+
+Received at: ${new Date().toLocaleString()}
+  `
+
+  try {
+    // Send notification to admin
+    await transporter.sendMail({
+      from: GMAIL_USER,
+      to: GMAIL_USER,
+      subject: `New Chat Message${data.userName ? ` from ${data.userName}` : ''}`,
+      text: textBody,
+      html: htmlBody,
+      replyTo: data.userEmail || undefined
+    })
+    console.log('Chat notification email sent successfully')
+
+    // Send auto-reply to user if email provided
+    if (data.userEmail) {
+      await sendAutoReply(data.userEmail, data.userName).catch(err => {
+        console.error('Auto-reply error:', err)
+      })
+
+      // Add to Mailchimp
+      await addContactToMailchimp(data.userEmail, data.userName, undefined, ['Chat Message', 'Lead']).catch(err => {
+        console.error('Mailchimp error:', err)
+      })
+    }
+  } catch (error) {
+    console.error('Failed to send chat notification email:', error)
+    // Don't throw - we don't want email failures to break chat submission
   }
 }
 
