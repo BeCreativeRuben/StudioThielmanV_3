@@ -201,8 +201,17 @@ export default function Home() {
       })
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to send message')
+        // Try to parse as JSON, fallback to text if it fails
+        let errorMessage = 'Failed to send message'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          // If response is not JSON, get text
+          const errorText = await response.text()
+          errorMessage = errorText || errorMessage
+        }
+        throw new Error(errorMessage)
       }
 
       const result = await response.json()
@@ -212,7 +221,8 @@ export default function Home() {
       alert('Message sent! We\'ll get back to you soon.')
     } catch (error: any) {
       console.error('Send message error:', error)
-      alert(`Failed to send message: ${error.message}. Please try again.`)
+      const errorMessage = error.message || 'Failed to send message. Please try again.'
+      alert(`Failed to send message: ${errorMessage}`)
       setMessage(messageToSend) // Restore message on error
     } finally {
       setIsSendingMessage(false)

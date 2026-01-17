@@ -136,8 +136,17 @@ export default function Contact() {
       })
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to submit form')
+        // Try to parse as JSON, fallback to text if it fails
+        let errorMessage = 'Failed to submit form'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          // If response is not JSON, get text
+          const errorText = await response.text()
+          errorMessage = errorText || errorMessage
+        }
+        throw new Error(errorMessage)
       }
 
       const result = await response.json()
@@ -145,7 +154,8 @@ export default function Contact() {
       setSubmitted(true)
     } catch (error: any) {
       console.error('Submission error:', error)
-      alert(`Failed to submit form: ${error.message}. Please try again.`)
+      const errorMessage = error.message || 'Failed to submit form. Please try again.'
+      alert(`Failed to submit form: ${errorMessage}`)
     } finally {
       setIsSubmitting(false)
     }
