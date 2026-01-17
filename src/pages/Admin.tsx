@@ -103,7 +103,16 @@ export default function Admin() {
           handleLogout()
           return
         }
-        throw new Error('Failed to fetch submissions')
+        // Try to parse error as JSON, fallback to text
+        let errorMessage = 'Failed to fetch submissions'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          const errorText = await response.text()
+          errorMessage = errorText || errorMessage
+        }
+        throw new Error(errorMessage)
       }
 
       const data = await response.json()
@@ -130,7 +139,16 @@ export default function Admin() {
           handleLogout()
           return
         }
-        throw new Error('Failed to fetch chat messages')
+        // Try to parse error as JSON, fallback to text
+        let errorMessage = 'Failed to fetch chat messages'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          const errorText = await response.text()
+          errorMessage = errorText || errorMessage
+        }
+        throw new Error(errorMessage)
       }
 
       const data = await response.json()
@@ -155,7 +173,16 @@ export default function Admin() {
           handleLogout()
           return
         }
-        throw new Error('Failed to fetch stats')
+        // Try to parse error as JSON, fallback to text
+        let errorMessage = 'Failed to fetch stats'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          const errorText = await response.text()
+          errorMessage = errorText || errorMessage
+        }
+        throw new Error(errorMessage)
       }
 
       const data = await response.json()
@@ -180,8 +207,17 @@ export default function Admin() {
       })
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Login failed')
+        // Try to parse as JSON, fallback to text if it fails
+        let errorMessage = 'Login failed'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          // If response is not JSON, get text
+          const errorText = await response.text()
+          errorMessage = errorText || errorMessage
+        }
+        throw new Error(errorMessage)
       }
 
       const data = await response.json()
@@ -190,7 +226,9 @@ export default function Admin() {
       localStorage.setItem('admin_token', data.token)
       localStorage.setItem('admin_username', data.username)
     } catch (error: any) {
-      setLoginError(error.message || 'Invalid username or password')
+      const errorMessage = error.message || 'Invalid username or password'
+      setLoginError(errorMessage)
+      console.error('Login error:', error)
     } finally {
       setLoading(false)
     }
@@ -226,7 +264,16 @@ export default function Admin() {
           handleLogout()
           return
         }
-        throw new Error('Failed to update submission')
+        // Try to parse error as JSON, fallback to text
+        let errorMessage = 'Failed to update submission'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          const errorText = await response.text()
+          errorMessage = errorText || errorMessage
+        }
+        throw new Error(errorMessage)
       }
 
       const updated = await response.json()
@@ -235,9 +282,10 @@ export default function Admin() {
         setSelectedSubmission(updated)
       }
       fetchStats() // Refresh stats
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating submission:', error)
-      alert('Failed to update submission. Please try again.')
+      const errorMessage = error.message || 'Failed to update submission. Please try again.'
+      alert(errorMessage)
     }
   }
 

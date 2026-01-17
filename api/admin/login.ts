@@ -57,46 +57,71 @@ async function ensureDb() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  await ensureDb()
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end()
   }
 
+  // Wrap everything in try-catch to ensure JSON responses
   try {
-    const { username, password } = req.body
-
-    if (!username || !password) {
-      return res.status(400).json({ error: 'Username and password are required' })
+    try {
+      await ensureDb()
+    } catch (dbError: any) {
+      console.error('Database initialization error:', dbError)
+      return res.status(500).json({ error: 'Database initialization failed' })
     }
 
-    // Get admin user
-    const admin = await dbGet<{ id: number; username: string; passwordHash: string }>(
-      'SELECT id, username, passwordHash FROM admin_users WHERE username = ?',
-      [username]
-    )
-
-    if (!admin) {
-      return res.status(401).json({ error: 'Invalid credentials' })
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method not allowed' })
     }
 
-    // Verify password
-    const isValid = await bcrypt.compare(password, admin.passwordHash)
+    try {
+      const { username, password } = req.body
 
-    if (!isValid) {
-      return res.status(401).json({ error: 'Invalid credentials' })
+      if (!username || !password) {
+        return res.status(400).json({ error: 'Username and password are required' })
+      }
+
+      // Get admin user
+      const admin = await dbGet<{ id: number; username: string; passwordHash: string }>(
+        'SELECT id, username, passwordHash FROM admin_users WHERE username = ?',
+        [username]
+      )
+
+      if (!admin) {
+        return res.status(401).json({ error: 'Invalid credentials' })
+      }
+
+      // Verify password
+      const isValid = await bcrypt.compare(password, admin.passwordHash)
+
+      if (!isValid) {
+        return res.status(401).json({ error: 'Invalid credentials' })
+      }
+
+      // Generate token
+      const token = generateToken(admin.id, admin.username)
+
+      return res.json({
+        success: true,
+        token,
+        username: admin.username
+      })
+    } catch (error: any) {
+      console.error('Login error:', error)
+      return res.status(500).json({ error: 'Failed to process login' })
     }
-
-    // Generate token
-    const token = generateToken(admin.id, admin.username)
-
-    return res.json({
-      success: true,
-      token,
-      username: admin.username
-    })
   } catch (error: any) {
-    console.error('Login error:', error)
-    return res.status(500).json({ error: 'Failed to process login' })
+    // Catch any unexpected errors and return JSON
+    console.error('Unexpected error in login handler:', error)
+    return res.status(500).json({ 
+      error: 'An unexpected error occurred',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
   }
 }
