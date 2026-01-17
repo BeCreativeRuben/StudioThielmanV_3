@@ -1,4 +1,38 @@
-import { sql } from '@vercel/postgres'
+import { Pool } from 'pg'
+
+// Create a connection pool (reused across invocations)
+let pool: Pool | null = null
+
+function getPool(): Pool {
+  if (!pool) {
+    // Use POSTGRES_URL from environment (works with Neon, Vercel Postgres, etc.)
+    const connectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL
+    
+    if (!connectionString) {
+      throw new Error('POSTGRES_URL or DATABASE_URL environment variable is required')
+    }
+    
+    pool = new Pool({
+      connectionString,
+      ssl: connectionString.includes('sslmode=require') ? { rejectUnauthorized: false } : undefined,
+      max: 1, // Serverless-friendly: single connection per function
+    })
+  }
+  
+  return pool
+}
+
+// Export sql for compatibility
+export const sql = {
+  query: async (query: string, params: any[] = []) => {
+    const pool = getPool()
+    const result = await pool.query(query, params)
+    return {
+      rows: result.rows,
+      rowCount: result.rowCount || 0
+    }
+  }
+}
 
 // PostgreSQL schema initialization
 const schema = `

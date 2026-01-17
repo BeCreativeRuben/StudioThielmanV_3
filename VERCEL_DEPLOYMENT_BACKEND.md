@@ -33,22 +33,22 @@ JWT_SECRET=your-secret-key-change-this-in-production
 # Frontend URL (your custom domain - studiothielman.com)
 FRONTEND_URL=https://studiothielman.com
 
-# Vercel Postgres (automatically added when you create the database)
-POSTGRES_URL=postgres://...
-POSTGRES_PRISMA_URL=postgres://...
-POSTGRES_URL_NON_POOLING=postgres://...
-POSTGRES_USER=...
-POSTGRES_HOST=...
-POSTGRES_PASSWORD=...
-POSTGRES_DATABASE=...
+# Neon Database Connection
+POSTGRES_URL=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+POSTGRES_URL_NON_POOLING=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+POSTGRES_USER=neondb_owner
+POSTGRES_HOST=ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech
+POSTGRES_PASSWORD=npg_Q5kHBRAf1mOd
+POSTGRES_DATABASE=neondb
+POSTGRES_PRISMA_URL=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech/neondb?connect_timeout=15&sslmode=require
 ```
 
 ## ⚠️ Important Notes
 
-### ✅ Vercel Postgres Database
-- **Migrated to Vercel Postgres** - No more data resets!
+### ✅ Neon Postgres Database
+- **Migrated to Neon (Serverless Postgres)** - No more data resets!
 - Persistent, scalable, and reliable
-- See `VERCEL_POSTGRES_MIGRATION.md` for setup instructions
+- See `NEON_SETUP.md` for setup instructions
 
 ### Current Setup
 - ✅ Vercel Postgres database (persistent)

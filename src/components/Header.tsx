@@ -67,7 +67,9 @@ export default function Header() {
       className={`sticky top-0 z-50 backdrop-blur-sm border-b transition-all duration-300 ${
         isScrolled 
           ? 'bg-white/95 border-border' 
-          : 'bg-transparent border-white/20'
+          : mobileMenuOpen
+            ? 'bg-black/95 border-white/20'
+            : 'bg-transparent border-white/20'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -161,11 +163,10 @@ export default function Header() {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, scaleY: 0 }}
-              animate={{ opacity: 1, scaleY: 1 }}
-              exit={{ opacity: 0, scaleY: 0 }}
-              transition={{ duration: 0.2 }}
-              style={{ transformOrigin: 'top' }}
+              initial={{ opacity: 0, maxHeight: 0 }}
+              animate={{ opacity: 1, maxHeight: 400 }}
+              exit={{ opacity: 0, maxHeight: 0 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
               className={`md:hidden overflow-hidden border-t transition-colors duration-300 ${
                 isScrolled 
                   ? 'border-border bg-white/95 backdrop-blur-sm' 

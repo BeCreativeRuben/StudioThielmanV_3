@@ -1,49 +1,30 @@
-# Vercel Postgres Migration Guide
+# Neon Postgres Migration Guide
 
 ## ✅ Migration Complete
 
-Your application has been migrated from SQLite to Vercel Postgres!
+Your application has been migrated from SQLite to Neon (Serverless Postgres)!
 
 ## 📋 Setup Steps
 
-### 1. Create Vercel Postgres Database
+### 1. Neon Database Setup
 
-1. Go to your Vercel Dashboard
-2. Navigate to your project
-3. Go to **Storage** tab
-4. Click **Create Database**
-5. Select **Postgres**
-6. Choose a name (e.g., `studio-thielman-db`)
-7. Select a region (choose closest to your users)
-8. Click **Create**
+✅ **Already Created!** Your Neon database is set up.
 
-### 2. Get Connection String
+### 2. Add Environment Variables to Vercel
 
-After creating the database:
-1. Click on your database
-2. Go to the **.env.local** tab
-3. Copy the `POSTGRES_URL` connection string
-4. You'll also see:
-   - `POSTGRES_PRISMA_URL`
-   - `POSTGRES_URL_NON_POOLING`
-   - `POSTGRES_USER`
-   - `POSTGRES_HOST`
-   - `POSTGRES_PASSWORD`
-   - `POSTGRES_DATABASE`
-
-### 3. Add Environment Variables to Vercel
+Go to **Vercel Dashboard → Your Project → Settings → Environment Variables** and add the following from your Neon quickstart:
 
 Go to **Vercel Dashboard → Your Project → Settings → Environment Variables** and add:
 
 ```env
-# Vercel Postgres (automatically added when you create the database)
-POSTGRES_URL=postgres://...
-POSTGRES_PRISMA_URL=postgres://...
-POSTGRES_URL_NON_POOLING=postgres://...
-POSTGRES_USER=...
-POSTGRES_HOST=...
-POSTGRES_PASSWORD=...
-POSTGRES_DATABASE=...
+# Neon Database Connection
+POSTGRES_URL=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+POSTGRES_URL_NON_POOLING=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+POSTGRES_USER=neondb_owner
+POSTGRES_HOST=ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech
+POSTGRES_PASSWORD=npg_Q5kHBRAf1mOd
+POSTGRES_DATABASE=neondb
+POSTGRES_PRISMA_URL=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech/neondb?connect_timeout=15&sslmode=require
 
 # Existing environment variables (keep these)
 MAILCHIMP_API_KEY=your-mailchimp-api-key-here
