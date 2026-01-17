@@ -33,27 +33,29 @@ JWT_SECRET=your-secret-key-change-this-in-production
 # Frontend URL (your custom domain - studiothielman.com)
 FRONTEND_URL=https://studiothielman.com
 
-# Database (optional - defaults to /tmp)
-DATABASE_PATH=/tmp/submissions.db
+# Vercel Postgres (automatically added when you create the database)
+POSTGRES_URL=postgres://...
+POSTGRES_PRISMA_URL=postgres://...
+POSTGRES_URL_NON_POOLING=postgres://...
+POSTGRES_USER=...
+POSTGRES_HOST=...
+POSTGRES_PASSWORD=...
+POSTGRES_DATABASE=...
 ```
 
 ## ⚠️ Important Notes
 
-### SQLite Database Limitation
-- SQLite database is stored in `/tmp` on Vercel
-- **Data will be reset on each deployment** (this is a Vercel limitation)
-- For production, consider migrating to:
-  - **Vercel Postgres** (recommended)
-  - **Supabase** (free tier available)
-  - **PlanetScale** (MySQL)
-  - **Railway** or **Render** (for persistent SQLite)
+### ✅ Vercel Postgres Database
+- **Migrated to Vercel Postgres** - No more data resets!
+- Persistent, scalable, and reliable
+- See `VERCEL_POSTGRES_MIGRATION.md` for setup instructions
 
 ### Current Setup
-- ✅ Works for testing and development
+- ✅ Vercel Postgres database (persistent)
 - ✅ All API endpoints functional
 - ✅ Email notifications working
 - ✅ Mailchimp integration working
-- ⚠️ Database resets on deploy (use cloud DB for production)
+- ✅ Database persists across deployments
 
 ## 🚀 Deployment Steps
 

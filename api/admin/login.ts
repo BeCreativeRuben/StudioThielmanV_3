@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { initializeDatabase, dbGet, dbRun } from '../../../server/database/db.js'
+import { initializeDatabase, dbGet, dbRun } from '../../../server/database/postgres.js'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret'
 
@@ -13,47 +13,32 @@ function generateToken(userId: number, username: string): string {
   )
 }
 
-let dbInitialized = false
 let dbInitPromise: Promise<void> | null = null
 
 async function ensureDb() {
-  if (dbInitialized) {
-    return
-  }
-  
   if (dbInitPromise) {
-    await dbInitPromise
-    return
+    return dbInitPromise
   }
   
   dbInitPromise = (async () => {
-    try {
-      const dbPath = process.env.DATABASE_PATH || '/tmp/submissions.db'
-      process.env.DATABASE_PATH = dbPath
-      console.log('Initializing database at:', dbPath)
-      await initializeDatabase()
-      
-      // Initialize admin user if needed
-      const admin = await dbGet('SELECT * FROM admin_users WHERE username = ?', ['admin'])
-      if (!admin) {
-        const defaultHash = await bcrypt.hash('admin123', 10)
-        await dbRun(
-          'INSERT INTO admin_users (username, passwordHash, email) VALUES (?, ?, ?)',
-          ['admin', defaultHash, 'admin@studiothielman.com']
-        )
-      }
-      
-      dbInitialized = true
-      console.log('Database initialized successfully')
-    } catch (error: any) {
-      console.error('Database initialization failed:', error)
-      dbInitialized = false
-      dbInitPromise = null
-      throw error
+    await initializeDatabase()
+    
+    // Initialize admin user if needed
+    const admin = await dbGet('SELECT * FROM admin_users WHERE username = $1', ['admin'])
+    if (!admin) {
+      const defaultHash = await bcrypt.hash('admin123', 10)
+      await dbRun(
+        'INSERT INTO admin_users (username, passwordHash, email) VALUES ($1, $2, $3)',
+        ['admin', defaultHash, 'admin@studiothielman.com']
+      )
     }
-  })()
+  })().catch((error: any) => {
+    console.error('Database initialization failed:', error)
+    dbInitPromise = null
+    throw error
+  })
   
-  await dbInitPromise
+  return dbInitPromise
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -95,7 +80,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       let admin: { id: number; username: string; passwordHash: string } | undefined
       try {
         admin = await dbGet<{ id: number; username: string; passwordHash: string }>(
-          'SELECT id, username, passwordHash FROM admin_users WHERE username = ?',
+          'SELECT id, username, passwordHash FROM admin_users WHERE username = $1',
           [username]
         )
       } catch (dbQueryError: any) {

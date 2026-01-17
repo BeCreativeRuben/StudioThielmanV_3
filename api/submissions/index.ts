@@ -1,42 +1,23 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { initializeDatabase, dbRun, dbGet, dbAll } from '../../server/database/db.js'
+import { initializeDatabase, dbRun, dbGet, dbAll } from '../../server/database/postgres.js'
 import { sendSubmissionNotification } from '../../server/services/emailService.js'
 import { requireAuth } from '../_utils/auth.js'
 
-// Initialize database on first import (will be reused across invocations)
-let dbInitialized = false
+// Initialize database (PostgreSQL - idempotent, safe to call multiple times)
 let dbInitPromise: Promise<void> | null = null
 
 async function ensureDb() {
-  if (dbInitialized) {
-    return
-  }
-  
-  // If initialization is in progress, wait for it
   if (dbInitPromise) {
-    await dbInitPromise
-    return
+    return dbInitPromise
   }
   
-  // Start initialization
-  dbInitPromise = (async () => {
-    try {
-      // Use /tmp for Vercel serverless (temporary storage)
-      const dbPath = process.env.DATABASE_PATH || '/tmp/submissions.db'
-      process.env.DATABASE_PATH = dbPath
-      console.log('Initializing database at:', dbPath)
-      await initializeDatabase()
-      dbInitialized = true
-      console.log('Database initialized successfully')
-    } catch (error: any) {
-      console.error('Database initialization failed:', error)
-      dbInitialized = false
-      dbInitPromise = null
-      throw error
-    }
-  })()
+  dbInitPromise = initializeDatabase().catch((error: any) => {
+    console.error('Database initialization failed:', error)
+    dbInitPromise = null
+    throw error
+  })
   
-  await dbInitPromise
+  return dbInitPromise
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

@@ -161,10 +161,11 @@ export default function Header() {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
+              initial={{ opacity: 0, scaleY: 0 }}
+              animate={{ opacity: 1, scaleY: 1 }}
+              exit={{ opacity: 0, scaleY: 0 }}
               transition={{ duration: 0.2 }}
+              style={{ transformOrigin: 'top' }}
               className={`md:hidden overflow-hidden border-t transition-colors duration-300 ${
                 isScrolled 
                   ? 'border-border bg-white/95 backdrop-blur-sm' 
