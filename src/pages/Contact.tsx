@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
+import { getApiUrl } from '../utils/api'
 
 export default function Contact() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({})
@@ -125,7 +126,7 @@ export default function Contact() {
     setIsSubmitting(true)
     
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+      const API_URL = getApiUrl()
       const response = await fetch(`${API_URL}/api/submissions`, {
         method: 'POST',
         headers: {

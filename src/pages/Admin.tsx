@@ -47,7 +47,8 @@ interface Stats {
   }
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+import { getApiUrl } from '../utils/api.js'
+const API_URL = getApiUrl()
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)

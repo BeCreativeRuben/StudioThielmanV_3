@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../components/Button'
 import { portfolioItems as allPortfolioItems } from '../data/portfolio'
 import { currentProjects } from '../data/currentProjects'
+import { getApiUrl } from '../utils/api'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 import heroVideo from '../images/z_Upload-Image---Internal-Only-Style-6bab5259.mp4'
 import officeImage from '../images/c2ea26ea-23d3-4ee1-8710-74211f2d80be.jpeg'
@@ -185,7 +186,7 @@ export default function Home() {
     setMessage('') // Clear input immediately for better UX
     
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+      const API_URL = getApiUrl()
       const response = await fetch(`${API_URL}/api/chat/messages`, {
         method: 'POST',
         headers: {
