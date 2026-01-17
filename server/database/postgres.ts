@@ -9,13 +9,27 @@ function getPool(): Pool {
     const connectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL
     
     if (!connectionString) {
-      throw new Error('POSTGRES_URL or DATABASE_URL environment variable is required')
+      const error = new Error('POSTGRES_URL or DATABASE_URL environment variable is required')
+      console.error('Database connection error:', error.message)
+      console.error('Available env vars:', Object.keys(process.env).filter(k => k.includes('POSTGRES') || k.includes('DATABASE')))
+      throw error
     }
     
+    console.log('Initializing PostgreSQL connection pool...')
     pool = new Pool({
       connectionString,
-      ssl: connectionString.includes('sslmode=require') ? { rejectUnauthorized: false } : undefined,
+      ssl: connectionString.includes('sslmode=require') || connectionString.includes('neon.tech') 
+        ? { rejectUnauthorized: false } 
+        : undefined,
       max: 1, // Serverless-friendly: single connection per function
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 10000,
+    })
+    
+    // Handle pool errors
+    pool.on('error', (err) => {
+      console.error('Unexpected database pool error:', err)
+      pool = null // Reset pool on error
     })
   }
   
@@ -25,11 +39,17 @@ function getPool(): Pool {
 // Export sql for compatibility
 export const sql = {
   query: async (query: string, params: any[] = []) => {
-    const pool = getPool()
-    const result = await pool.query(query, params)
-    return {
-      rows: result.rows,
-      rowCount: result.rowCount || 0
+    try {
+      const pool = getPool()
+      const result = await pool.query(query, params)
+      return {
+        rows: result.rows,
+        rowCount: result.rowCount || 0
+      }
+    } catch (error: any) {
+      console.error('SQL query error:', error.message)
+      console.error('Query:', query.substring(0, 100))
+      throw error
     }
   }
 }
@@ -90,19 +110,37 @@ export async function initializeDatabase(): Promise<void> {
   }
 
   try {
-    // Execute schema (PostgreSQL will ignore IF NOT EXISTS for tables that already exist)
-    await sql.query(schema)
+    // Split schema into individual statements and execute them one by one
+    const statements = schema
+      .split(';')
+      .map(s => s.trim())
+      .filter(s => s.length > 0 && !s.startsWith('--'))
+
+    for (const statement of statements) {
+      if (statement.trim()) {
+        try {
+          await sql.query(statement + ';')
+        } catch (stmtError: any) {
+          // Ignore "already exists" errors for tables and indexes
+          if (stmtError.message && (
+            stmtError.message.includes('already exists') ||
+            stmtError.message.includes('duplicate')
+          )) {
+            console.log('Schema element already exists, skipping:', statement.substring(0, 50))
+          } else {
+            // Re-throw other errors
+            throw stmtError
+          }
+        }
+      }
+    }
+    
     schemaInitialized = true
     console.log('PostgreSQL schema initialized successfully')
   } catch (error: any) {
-    // Ignore "already exists" errors
-    if (error.message && error.message.includes('already exists')) {
-      console.log('PostgreSQL schema already initialized')
-      schemaInitialized = true
-    } else {
-      console.error('PostgreSQL schema initialization error:', error)
-      throw error
-    }
+    console.error('PostgreSQL schema initialization error:', error)
+    console.error('Error details:', error.message, error.stack)
+    throw error
   }
 }
 

@@ -37,7 +37,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       await ensureDb()
     } catch (dbError: any) {
       console.error('Database initialization error:', dbError)
-      return res.status(500).json({ error: 'Database initialization failed' })
+      console.error('Error message:', dbError.message)
+      console.error('Error stack:', dbError.stack)
+      return res.status(500).json({ 
+        error: 'Database initialization failed',
+        message: dbError.message || 'Unknown database error',
+        details: process.env.NODE_ENV === 'development' ? dbError.stack : undefined
+      })
     }
 
     if (req.method === 'POST') {
