@@ -30,8 +30,8 @@ GMAIL_APP_PASSWORD=your-gmail-app-password
 # JWT Secret (for admin authentication)
 JWT_SECRET=your-secret-key-change-this-in-production
 
-# Frontend URL (your Vercel domain)
-FRONTEND_URL=https://your-app.vercel.app
+# Frontend URL (your custom domain - studiothielman.com)
+FRONTEND_URL=https://studiothielman.com
 
 # Database (optional - defaults to /tmp)
 DATABASE_PATH=/tmp/submissions.db
@@ -67,7 +67,7 @@ DATABASE_PATH=/tmp/submissions.db
    - **Redeploy** after adding variables
 
 4. **Test the deployment**:
-   - Visit `https://your-app.vercel.app/api/health`
+   - Visit `https://studiothielman.com/api/health`
    - Should return: `{"status":"ok","timestamp":"..."}`
    - Test form submission
    - Test chat widget
@@ -75,10 +75,10 @@ DATABASE_PATH=/tmp/submissions.db
 ## 🔍 Testing API Endpoints
 
 After deployment, test these URLs:
-- `https://your-app.vercel.app/api/health` - Health check
-- `https://your-app.vercel.app/api/submissions` - POST form submission
-- `https://your-app.vercel.app/api/chat/messages` - POST chat message
-- `https://your-app.vercel.app/api/admin/login` - POST admin login
+- `https://studiothielman.com/api/health` - Health check
+- `https://studiothielman.com/api/submissions` - POST form submission
+- `https://studiothielman.com/api/chat/messages` - POST chat message
+- `https://studiothielman.com/api/admin/login` - POST admin login
 
 ## 📝 Next Steps for Production
 
@@ -91,9 +91,11 @@ After deployment, test these URLs:
    - Check Vercel dashboard → Functions → Logs
    - Monitor for any errors
 
-3. **Set up Custom Domain** (optional):
-   - Add domain in Vercel settings
-   - Update `FRONTEND_URL` environment variable
+3. **Set up Custom Domain** (studiothielman.com):
+   - Add domain `studiothielman.com` in Vercel settings → Domains
+   - Follow DNS configuration instructions
+   - Update `FRONTEND_URL` environment variable to `https://studiothielman.com`
+   - SSL certificates are automatically provisioned
 
 ## 🐛 Troubleshooting
 
