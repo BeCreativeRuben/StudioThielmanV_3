@@ -24,7 +24,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Waarom een website en online zichtbaarheid echt niet meer mogen ontbreken voor je zaak',
     excerpt: 'Stel je voor: iemand in jouw buurt heeft dringend een loodgieter, kapper of webdesigner nodig. Wat doet die persoon? Juist, smartphone bovenhalen, "loodgieter nabij" intikken en scrollen door Google Maps. Als jij daar niet tussenstaat, ziet die klant je concurrent wél. Simpel zat.',
     date: 'JAN 2026',
-    featuredImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop&q=80', // Placeholder - can be replaced with actual image
+    featuredImage: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&h=600&fit=crop&q=80', // Business person using smartphone
     sections: [
       {
         type: 'paragraph',
@@ -41,7 +41,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'image',
-        content: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&q=80', // Placeholder for Google Maps screenshot
+        content: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=400&fit=crop&q=80', // Google Maps on smartphone
         alt: 'Google Maps zoekresultaten voor lokale bedrijven'
       },
       {
@@ -51,11 +51,11 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        content: 'Een verzorgde website met echte foto\'s, reviews en contactinfo? Dat straalt betrouwbaarheid uit. Mensen denken: "Oké, deze zaak ziet er goed uit, ik bel ze." Geen gedoe met gele pagina\'s of mondelinge aanbevelingen – online is king.'
+        content: 'Een verzorgde website met echte foto\'s, reviews en contactinfo? Dat straalt betrouwbaarheid uit. Mensen denken: "Oké, deze zaak ziet er goed uit, ik bel ze." Online is king.'
       },
       {
         type: 'image',
-        content: 'https://images.unsplash.com/photo-1521791136064-7986b292a6ad?w=800&h=400&fit=crop&q=80', // Placeholder for satisfied customer at laptop
+        content: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop&q=80', // Person working on laptop with coffee
         alt: 'Tevreden klant aan laptop'
       },
       {
@@ -65,7 +65,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        content: 'Google Maps is goud voor lokale zaakvoerders. Mensen die "webshop laten bouwen Brussel" zoeken, zijn vaak al half overtuigd. Ze klikken, bellen of sturen bericht, en hop, afspraak in de agenda. Geen koude prospectie nodig, ze komen vanzelf.'
+        content: 'Google Maps is goud voor lokale zaakvoerders. Mensen die "webshop laten bouwen Brussel" zoeken, zijn vaak al half overtuigd. Ze klikken, bellen of sturen bericht, en hop, afspraak in de agenda. Geen cold calls nodig, ze komen vanzelf.'
       },
       {
         type: 'heading',
@@ -74,7 +74,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        content: 'Zet SEO een beetje juist en je Maps-profiel op punt, en klanten stromen binnen zonder dat je elk jaar fortuinen aan ads spendeert. Het bouwt zich op: één blije klant deelt je link, de volgende vindt je via search, en zo groeit je agenda vanzelf.'
+        content: 'Zet SEO een beetje juist en je Maps-profiel op punt, en klanten stromen binnen zonder dat je elk jaar fortuinen aan ads spendeert. Het bouwt zich op: 1 enthousiaste klant deelt je link, de volgende vind je via google, en zo groeit je klantenbestand vanzelf.'
       }
     ],
     cta: {
