@@ -78,7 +78,7 @@ export const blogPosts: BlogPost[] = [
       }
     ],
     cta: {
-      text: 'Laat me jouw online présence fixen – contacteer Studio Tilman vandaag nog!',
+      text: 'Laat me jouw online présence fixen – contacteer Studio Thielman vandaag nog!',
       link: '/contact'
     }
   }

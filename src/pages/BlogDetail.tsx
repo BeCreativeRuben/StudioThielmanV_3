@@ -182,7 +182,7 @@ export default function BlogDetail() {
             </h2>
             <Link to={post.cta.link}>
               <Button variant="cta" size="lg">
-                Contacteer Studio Tilman
+                Contacteer Studio Thielman
               </Button>
             </Link>
           </motion.div>
