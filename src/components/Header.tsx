@@ -57,6 +57,7 @@ export default function Header() {
     { path: '/', label: 'Home' },
     { path: '/packages', label: 'Packages' },
     { path: '/portfolio', label: 'Portfolio' },
+    { path: '/blog', label: 'Blog' },
     { path: '/how-it-works', label: 'How we work' },
     { path: '/about', label: 'About' },
     { path: '/contact', label: 'Contact' },

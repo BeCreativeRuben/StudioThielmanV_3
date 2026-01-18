@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../components/Button'
 import { portfolioItems as allPortfolioItems } from '../data/portfolio'
 import { currentProjects } from '../data/currentProjects'
+import { getLatestBlogPost } from '../data/blog'
 import { getApiUrl } from '../utils/api'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 import heroVideo from '../images/z_Upload-Image---Internal-Only-Style-6bab5259.mp4'
@@ -70,6 +71,53 @@ function BlogCountdown() {
   ]
 
   if (timeLeft.total <= 0) {
+    const latestPost = getLatestBlogPost()
+    
+    if (latestPost) {
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+            {latestPost.featuredImage && (
+              <div className="w-full h-64 bg-gray-100 overflow-hidden">
+                <img
+                  src={latestPost.featuredImage}
+                  alt={latestPost.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.style.display = 'none'
+                  }}
+                />
+              </div>
+            )}
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs text-text-secondary uppercase tracking-wider bg-accent px-3 py-1 rounded-full">Latest Article</span>
+                <span className="text-xs text-text-secondary">{latestPost.date}</span>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">{latestPost.title}</h3>
+              <p className="text-body text-text-primary mb-6 line-clamp-3">{latestPost.excerpt}</p>
+              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                <Link to={`/blog/${latestPost.slug}`}>
+                  <Button variant="primary">
+                    Read Full Article
+                  </Button>
+                </Link>
+                <Link to="/blog" className="text-sm text-text-secondary hover:text-primary transition-colors">
+                  View All Posts →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )
+    }
+    
     return (
       <motion.div
         initial={{ opacity: 0 }}

@@ -6,6 +6,8 @@ import Home from './pages/Home'
 import Packages from './pages/Packages'
 import Portfolio from './pages/Portfolio'
 import PortfolioDetail from './pages/PortfolioDetail'
+import Blog from './pages/Blog'
+import BlogDetail from './pages/BlogDetail'
 import CurrentProjects from './pages/CurrentProjects'
 import HowItWorks from './pages/HowItWorks'
 import About from './pages/About'
@@ -36,6 +38,8 @@ function App() {
         <Route path="/packages" element={<MainLayout><Packages /></MainLayout>} />
         <Route path="/portfolio" element={<MainLayout><Portfolio /></MainLayout>} />
         <Route path="/portfolio/:slug" element={<MainLayout><PortfolioDetail /></MainLayout>} />
+        <Route path="/blog" element={<MainLayout><Blog /></MainLayout>} />
+        <Route path="/blog/:slug" element={<MainLayout><BlogDetail /></MainLayout>} />
         <Route path="/current-projects" element={<MainLayout><CurrentProjects /></MainLayout>} />
         <Route path="/how-it-works" element={<MainLayout><HowItWorks /></MainLayout>} />
         <Route path="/about" element={<MainLayout><About /></MainLayout>} />
