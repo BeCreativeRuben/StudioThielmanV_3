@@ -22,7 +22,7 @@ export const currentProjects: CurrentProject[] = [
     title: 'Studio Thielman Website',
     description: 'Building out the complete Studio Thielman website with portfolio, services, and client management features.',
     status: 'in-progress',
-    progress: 75,
+    progress: 95,
     category: 'Web Development',
     technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'],
     plannedFeatures: [
@@ -46,16 +46,16 @@ export const currentProjects: CurrentProject[] = [
     ],
     startDate: 'Jan 2025',
     estimatedCompletion: 'Feb 2025',
-    notes: 'Making great progress on the core features!'
+    notes: 'Almost there! Squashing bugs and giving the backend some love 🐛💚'
   },
   {
     id: 'project-2',
-    title: 'AI Integration Platform',
-    description: 'Exploring AI integrations and automation workflows for business solutions.',
+    title: 'AI Integration Discoveries',
+    description: 'Research and exploration of AI integrations and automation workflows for future projects.',
     status: 'planning',
     progress: 25,
     category: 'AI & Automation',
-    technologies: ['Python', 'OpenAI API', 'N8N', 'React'],
+    technologies: ['OpenAI API', 'N8N', 'Python'],
     plannedFeatures: [
       'AI chatbot integration',
       'Workflow automation',
@@ -76,7 +76,7 @@ export const currentProjects: CurrentProject[] = [
     ],
     startDate: 'Jan 2025',
     estimatedCompletion: 'Mar 2025',
-    notes: 'Early planning phase - exciting possibilities!'
+    notes: 'Research phase - discovering AI possibilities for future projects!'
   },
   {
     id: 'project-3',
@@ -90,7 +90,8 @@ export const currentProjects: CurrentProject[] = [
     discoveredItems: [],
     todoItems: [],
     startDate: 'Jan 2026',
-    estimatedCompletion: 'Feb 2026'
+    estimatedCompletion: 'Feb 2026',
+    notes: 'Excited to bring this 3D printing business online! Can\'t wait to showcase their amazing work 🚀✨'
   },
   {
     id: 'project-4',
@@ -104,7 +105,8 @@ export const currentProjects: CurrentProject[] = [
     discoveredItems: [],
     todoItems: [],
     startDate: 'Jan 2026',
-    estimatedCompletion: 'Mar 2026'
+    estimatedCompletion: 'Mar 2026',
+    notes: 'Finetuning and marketing prep to roll out to the entire niche 🎯'
   },
   {
     id: 'project-5',
@@ -118,7 +120,8 @@ export const currentProjects: CurrentProject[] = [
     discoveredItems: [],
     todoItems: [],
     startDate: 'Feb 2026',
-    estimatedCompletion: 'Mar 2026'
+    estimatedCompletion: 'Mar 2026',
+    notes: 'Prepping Pro-Max package & ensuring smooth rollout for future clients 🚀'
   },
   {
     id: 'project-6',
@@ -132,7 +135,8 @@ export const currentProjects: CurrentProject[] = [
     discoveredItems: [],
     todoItems: [],
     startDate: 'Feb 2026',
-    estimatedCompletion: 'Mar 2026'
+    estimatedCompletion: 'Mar 2026',
+    notes: 'Planning and exploring web design possibilities & getting 3D assets made 🎨'
   }
 ]
 

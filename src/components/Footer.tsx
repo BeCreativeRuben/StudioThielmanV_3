@@ -51,24 +51,24 @@ export default function Footer() {
             <h4 className="text-h4 text-white font-semibold mb-4">Services</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-body text-white/80 hover:text-white transition-colors">
+                <Link to="/#service-custom-web" className="text-body text-white/80 hover:text-white transition-colors">
                   Custom Web
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-body text-white/80 hover:text-white transition-colors">
+                <Link to="/#service-branding" className="text-body text-white/80 hover:text-white transition-colors">
                   Branding
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-body text-white/80 hover:text-white transition-colors">
+                <Link to="/#service-seo" className="text-body text-white/80 hover:text-white transition-colors">
                   SEO
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-body text-white/80 hover:text-white transition-colors">
+                <Link to="/#service-ecommerce" className="text-body text-white/80 hover:text-white transition-colors">
                   E-commerce
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

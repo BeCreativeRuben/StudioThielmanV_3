@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../components/Button'
 import { portfolioItems as allPortfolioItems } from '../data/portfolio'
@@ -174,6 +174,7 @@ function BlogCountdown() {
 }
 
 export default function Home() {
+  const location = useLocation()
   const [expandedService, setExpandedService] = useState(0)
   const [showChatWidget, setShowChatWidget] = useState(false)
   const [showHelpMessage, setShowHelpMessage] = useState(false)
@@ -204,6 +205,77 @@ export default function Home() {
 
     return () => clearTimeout(timer)
   }, [])
+
+  // Handle hash navigation to services
+  useEffect(() => {
+    const handleHashNavigation = () => {
+      const hash = location.hash || window.location.hash
+      if (hash) {
+        let serviceIndex = -1
+        let serviceId = ''
+        if (hash === '#service-custom-web') {
+          serviceIndex = 0
+          serviceId = 'custom-web'
+        } else if (hash === '#service-branding') {
+          serviceIndex = 1
+          serviceId = 'branding'
+        } else if (hash === '#service-seo') {
+          serviceIndex = 2
+          serviceId = 'seo'
+        } else if (hash === '#service-ecommerce') {
+          serviceIndex = 3
+          serviceId = 'ecommerce'
+        }
+
+        if (serviceIndex !== -1) {
+          // E-commerce (index 3) is coming soon, so just scroll without expanding
+          if (serviceIndex === 3) {
+            setTimeout(() => {
+              const element = document.getElementById(`service-${serviceId}`)
+              if (element) {
+                const headerOffset = 100
+                const elementPosition = element.getBoundingClientRect().top
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+                window.scrollTo({
+                  top: offsetPosition,
+                  behavior: 'smooth'
+                })
+              }
+            }, 100)
+            return
+          }
+          
+          // First expand the service
+          setExpandedService(serviceIndex)
+          
+          // Then scroll to it after a delay to ensure it's expanded
+          setTimeout(() => {
+            const element = document.getElementById(`service-${serviceId}`)
+            if (element) {
+              const headerOffset = 100
+              const elementPosition = element.getBoundingClientRect().top
+              const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+              })
+            }
+          }, 500) // Delay to ensure accordion is fully expanded
+        }
+      }
+    }
+
+    // Check hash on mount and when location changes (with delay to ensure DOM is ready)
+    const timeoutId = setTimeout(handleHashNavigation, 300)
+
+    // Also listen for hash changes in the URL
+    window.addEventListener('hashchange', handleHashNavigation)
+
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener('hashchange', handleHashNavigation)
+    }
+  }, [location.hash])
 
   const values = [
     {
@@ -380,6 +452,7 @@ export default function Home() {
     {
       title: 'E-commerce Solutions',
       description: 'Full-featured online stores with secure payment processing. We build e-commerce platforms that make it easy for customers to browse, purchase, and return to your store.',
+      comingSoon: true,
       features: [
         'Product catalog management',
         'Shopping cart and checkout',
@@ -518,7 +591,7 @@ export default function Home() {
                 </Link>
               </div>
               {/* Social Media Section */}
-              <div className="mt-8">
+              <div className="mt-8 mb-8 md:mb-0">
                 <p className="text-white/80 text-sm mb-4 font-medium">Connect with us</p>
                 <div className="flex flex-wrap gap-4">
                   {socialLinks.map((social) => (
@@ -801,7 +874,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-white">
+      <section id="services" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Content */}
@@ -837,27 +910,36 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
                   <div
+                    id={`service-${index === 0 ? 'custom-web' : index === 1 ? 'branding' : index === 2 ? 'seo' : 'ecommerce'}`}
                     className={`border border-border rounded-lg overflow-hidden transition-all duration-300 ${
                       expandedService === index ? 'shadow-lg' : ''
                     }`}
                   >
                     <button
-                      onClick={() => setExpandedService(expandedService === index ? -1 : index)}
+                      onClick={() => !service.comingSoon && setExpandedService(expandedService === index ? -1 : index)}
                       className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-accent transition-colors"
+                      disabled={service.comingSoon}
                     >
-                      <span className="text-h4 text-primary font-semibold">
+                      <span className="text-h4 text-primary font-semibold flex items-center gap-3">
                         ({String(index + 1).padStart(2, '0')}) {service.title}
+                        {service.comingSoon && (
+                          <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full font-medium">
+                            Coming Soon
+                          </span>
+                        )}
                       </span>
-                      <svg
-                        className={`w-6 h-6 text-primary transition-transform ${
-                          expandedService === index ? 'rotate-180' : ''
-                        }`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
+                      {!service.comingSoon && (
+                        <svg
+                          className={`w-6 h-6 text-primary transition-transform ${
+                            expandedService === index ? 'rotate-180' : ''
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      )}
                     </button>
                     <AnimatePresence>
                       {expandedService === index && (
