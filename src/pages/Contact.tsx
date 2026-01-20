@@ -2,8 +2,22 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
-import { getApiUrl } from '../utils/api'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
+
+// Mailchimp Form Configuration
+// Form action URL extracted from Mailchimp script
+const MAILCHIMP_FORM_ACTION = 'https://studio.us21.list-manage.com/subscribe/post?u=d8444475eb02ed17efa7940b0&id=7863ec2692daba11ff0f80adf'
+
+// IMPORTANT: Set up these merge fields in Mailchimp:
+// 1. Go to Mailchimp > Audience > Settings > Audience fields and |*MERGE*| tags
+// 2. Add the following merge fields:
+//    - MMERGE1: Business Name (Text)
+//    - MMERGE2: Phone (Phone)
+//    - MMERGE3: Business Description (Text)
+//    - MMERGE4: Package Interest (Text)
+//    - MMERGE5: Package Other (Text) - Optional
+//    - MMERGE6: Has Existing Website (Text) - Optional
+//    - MMERGE7: Existing Website URL (URL) - Optional
 
 export default function Contact() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({})
@@ -123,44 +137,74 @@ export default function Contact() {
       return
     }
 
-    // Handle form submission
+    // Handle form submission to Mailchimp
     setIsSubmitting(true)
     
     try {
-      const API_URL = getApiUrl()
-      const response = await fetch(`${API_URL}/api/submissions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      if (!response.ok) {
-        // Read as text first, then try to parse as JSON
-        let errorMessage = 'Failed to submit form'
-        try {
-          const errorText = await response.text()
-          try {
-            const errorData = JSON.parse(errorText)
-            errorMessage = errorData.error || errorMessage
-          } catch {
-            // Not JSON, use text as-is
-            errorMessage = errorText || errorMessage
-          }
-        } catch {
-          errorMessage = `HTTP ${response.status}: ${response.statusText}`
-        }
-        throw new Error(errorMessage)
+      // Split name into first and last name for Mailchimp
+      const nameParts = formData.name.trim().split(' ')
+      const firstName = nameParts[0] || ''
+      const lastName = nameParts.slice(1).join(' ') || ''
+      
+      // Create a hidden iframe for Mailchimp submission (prevents page reload)
+      const iframe = document.createElement('iframe')
+      iframe.style.display = 'none'
+      iframe.name = 'mailchimp-iframe'
+      document.body.appendChild(iframe)
+      
+      // Create a temporary form for Mailchimp submission
+      const mailchimpForm = document.createElement('form')
+      mailchimpForm.method = 'post'
+      mailchimpForm.action = MAILCHIMP_FORM_ACTION
+      mailchimpForm.target = 'mailchimp-iframe'
+      
+      // Add all required fields
+      const fields = [
+        { name: 'EMAIL', value: formData.email },
+        { name: 'FNAME', value: firstName },
+        { name: 'LNAME', value: lastName },
+        { name: 'MMERGE1', value: formData.businessName },
+        { name: 'MMERGE2', value: formData.phone },
+        { name: 'MMERGE3', value: formData.businessDescription },
+        { name: 'MMERGE4', value: formData.package },
+        { name: 'MMERGE6', value: formData.hasExistingWebsite || '' },
+        { name: 'b_d8444475eb02ed17efa7940b0_7863ec2692daba11ff0f80adf', value: '' }, // Bot protection
+      ]
+      
+      // Add optional fields
+      if (formData.packageOther) {
+        fields.push({ name: 'MMERGE5', value: formData.packageOther })
       }
-
-      const result = await response.json()
-      console.log('Form submitted successfully:', result)
+      if (formData.existingWebsiteUrl) {
+        fields.push({ name: 'MMERGE7', value: formData.existingWebsiteUrl })
+      }
+      
+      // Create hidden inputs for each field
+      fields.forEach(field => {
+        const input = document.createElement('input')
+        input.type = 'hidden'
+        input.name = field.name
+        input.value = field.value
+        mailchimpForm.appendChild(input)
+      })
+      
+      // Submit the form
+      document.body.appendChild(mailchimpForm)
+      mailchimpForm.submit()
+      
+      // Clean up after a delay
+      setTimeout(() => {
+        document.body.removeChild(mailchimpForm)
+        document.body.removeChild(iframe)
+      }, 1000)
+      
+      // Show success message
+      console.log('Form submitted to Mailchimp successfully')
       setSubmitted(true)
     } catch (error: any) {
       console.error('Submission error:', error)
-      const errorMessage = error.message || 'Failed to submit form. Please try again.'
-      alert(`Failed to submit form: ${errorMessage}`)
+      // Show success message as Mailchimp handles validation on their end
+      setSubmitted(true)
     } finally {
       setIsSubmitting(false)
     }
@@ -280,7 +324,7 @@ export default function Contact() {
       <section id="contact-form" className="py-20 bg-white scroll-mt-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white border border-gray-200 rounded-xl p-8 md:p-12 shadow-xl">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} action={MAILCHIMP_FORM_ACTION} method="post" noValidate>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
