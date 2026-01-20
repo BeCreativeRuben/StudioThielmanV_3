@@ -198,8 +198,19 @@ export default function Contact() {
       
       // Create script tag for JSONP request
       const script = document.createElement('script')
-      // Replace /post? with /post-json? and add callback parameter
-      const jsonpUrl = `${MAILCHIMP_FORM_ACTION.replace('/post?', '/post-json?')}&${params.toString()}&c=${callbackName}`
+      // Replace /post? with /post-json? and properly construct URL with all parameters
+      const baseUrl = MAILCHIMP_FORM_ACTION.replace('/post?', '/post-json?')
+      const urlObj = new URL(baseUrl)
+      
+      // Add callback parameter
+      urlObj.searchParams.append('c', callbackName)
+      
+      // Add all form parameters
+      params.forEach((value, key) => {
+        urlObj.searchParams.append(key, value)
+      })
+      
+      const jsonpUrl = urlObj.toString()
       
       console.log('Submitting to Mailchimp:', jsonpUrl)
       
