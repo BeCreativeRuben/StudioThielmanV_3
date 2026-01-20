@@ -159,13 +159,11 @@ export default function Contact() {
       // Create form for Mailchimp submission
       const mailchimpForm = document.createElement('form')
       mailchimpForm.method = 'post'
-      // Try to get form action from Mailchimp script, fallback to constant
-      const formAction = getMailchimpFormAction()
-      mailchimpForm.action = formAction
+      mailchimpForm.action = MAILCHIMP_FORM_ACTION
       mailchimpForm.target = 'mailchimp-hidden-iframe'
       mailchimpForm.style.display = 'none'
       
-      console.log('Using Mailchimp form action:', formAction)
+      console.log('Using Mailchimp form action:', MAILCHIMP_FORM_ACTION)
       
       // Create hidden inputs for all fields
       const createInput = (name: string, value: string) => {
