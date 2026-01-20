@@ -137,7 +137,7 @@ export default function Contact() {
       return
     }
 
-    // Handle form submission to Mailchimp
+    // Handle form submission to Mailchimp using AJAX/JSONP
     setIsSubmitting(true)
     
     try {
@@ -146,67 +146,67 @@ export default function Contact() {
       const firstName = nameParts[0] || ''
       const lastName = nameParts.slice(1).join(' ') || ''
       
-      // Create a hidden iframe for Mailchimp submission (prevents page reload)
-      const iframe = document.createElement('iframe')
-      iframe.style.display = 'none'
-      iframe.name = 'mailchimp-iframe'
-      document.body.appendChild(iframe)
-      
-      // Create a temporary form for Mailchimp submission
-      const mailchimpForm = document.createElement('form')
-      mailchimpForm.method = 'post'
-      mailchimpForm.action = MAILCHIMP_FORM_ACTION
-      mailchimpForm.target = 'mailchimp-iframe'
-      
-      // Add all required fields
-      const fields = [
-        { name: 'EMAIL', value: formData.email },
-        { name: 'FNAME', value: firstName },
-        { name: 'LNAME', value: lastName },
-        { name: 'MMERGE1', value: formData.businessName },
-        { name: 'MMERGE2', value: formData.phone },
-        { name: 'MMERGE3', value: formData.businessDescription },
-        { name: 'MMERGE4', value: formData.package },
-        { name: 'MMERGE6', value: formData.hasExistingWebsite || '' },
-        { name: 'b_d8444475eb02ed17efa7940b0_7863ec2692daba11ff0f80adf', value: '' }, // Bot protection
-      ]
+      // Build query parameters for Mailchimp
+      const params = new URLSearchParams()
+      params.append('EMAIL', formData.email)
+      params.append('FNAME', firstName)
+      params.append('LNAME', lastName)
+      params.append('MMERGE1', formData.businessName)
+      params.append('MMERGE2', formData.phone)
+      params.append('MMERGE3', formData.businessDescription)
+      params.append('MMERGE4', formData.package)
+      params.append('MMERGE6', formData.hasExistingWebsite || '')
       
       // Add optional fields
       if (formData.packageOther) {
-        fields.push({ name: 'MMERGE5', value: formData.packageOther })
+        params.append('MMERGE5', formData.packageOther)
       }
       if (formData.existingWebsiteUrl) {
-        fields.push({ name: 'MMERGE7', value: formData.existingWebsiteUrl })
+        params.append('MMERGE7', formData.existingWebsiteUrl)
       }
       
-      // Create hidden inputs for each field
-      fields.forEach(field => {
-        const input = document.createElement('input')
-        input.type = 'hidden'
-        input.name = field.name
-        input.value = field.value
-        mailchimpForm.appendChild(input)
-      })
+      // Add bot protection field
+      params.append('b_d8444475eb02ed17efa7940b0_7863ec2692daba11ff0f80adf', '')
       
-      // Submit the form
-      document.body.appendChild(mailchimpForm)
-      mailchimpForm.submit()
+      // Create unique callback name for JSONP
+      const callbackName = `mailchimpCallback_${Date.now()}`
       
-      // Clean up after a delay
-      setTimeout(() => {
-        document.body.removeChild(mailchimpForm)
-        document.body.removeChild(iframe)
-      }, 1000)
+      // Create the JSONP callback function
+      ;(window as any)[callbackName] = (data: any) => {
+        // Clean up callback
+        delete (window as any)[callbackName]
+        document.body.removeChild(script)
+        
+        setIsSubmitting(false)
+        
+        if (data.result === 'success') {
+          console.log('Form submitted to Mailchimp successfully:', data)
+          setSubmitted(true)
+        } else {
+          console.error('Mailchimp submission error:', data)
+          alert(`Failed to submit form: ${data.msg || 'Unknown error'}`)
+        }
+      }
       
-      // Show success message
-      console.log('Form submitted to Mailchimp successfully')
-      setSubmitted(true)
+      // Create script tag for JSONP request
+      const script = document.createElement('script')
+      const jsonpUrl = `${MAILCHIMP_FORM_ACTION.replace('/post?', '/post-json?')}&${params.toString()}&c=${callbackName}`
+      script.src = jsonpUrl
+      script.onerror = () => {
+        // Clean up on error
+        delete (window as any)[callbackName]
+        if (document.body.contains(script)) {
+          document.body.removeChild(script)
+        }
+        setIsSubmitting(false)
+        alert('Failed to submit form. Please check your connection and try again.')
+      }
+      
+      document.body.appendChild(script)
     } catch (error: any) {
       console.error('Submission error:', error)
-      // Show success message as Mailchimp handles validation on their end
-      setSubmitted(true)
-    } finally {
       setIsSubmitting(false)
+      alert(`Failed to submit form: ${error.message || 'Unknown error'}`)
     }
   }
 
