@@ -5,8 +5,9 @@ import Button from '../components/Button'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 
 // Mailchimp Form Configuration
-// Form action URL extracted from Mailchimp script
-const MAILCHIMP_FORM_ACTION = 'https://studio.us21.list-manage.com/subscribe/post?u=d8444475eb02ed17efa7940b0&id=7863ec2692daba11ff0f80adf'
+// Form action URL from Mailchimp embedded form
+// Extracted from: <form action="https://studiothielman.us1.list-manage.com/subscribe/post?u=d8444475eb02ed17efa7940b0&id=054dfd1817&f_id=002ccee4f0" ...>
+const MAILCHIMP_FORM_ACTION = 'https://studiothielman.us1.list-manage.com/subscribe/post?u=d8444475eb02ed17efa7940b0&id=054dfd1817&f_id=002ccee4f0'
 
 // IMPORTANT: Set up these merge fields in Mailchimp:
 // 1. Go to Mailchimp > Audience > Settings > Audience fields and |*MERGE*| tags
@@ -158,9 +159,13 @@ export default function Contact() {
       // Create form for Mailchimp submission
       const mailchimpForm = document.createElement('form')
       mailchimpForm.method = 'post'
-      mailchimpForm.action = MAILCHIMP_FORM_ACTION
+      // Try to get form action from Mailchimp script, fallback to constant
+      const formAction = getMailchimpFormAction()
+      mailchimpForm.action = formAction
       mailchimpForm.target = 'mailchimp-hidden-iframe'
       mailchimpForm.style.display = 'none'
+      
+      console.log('Using Mailchimp form action:', formAction)
       
       // Create hidden inputs for all fields
       const createInput = (name: string, value: string) => {
@@ -188,8 +193,8 @@ export default function Contact() {
         mailchimpForm.appendChild(createInput('MMERGE7', formData.existingWebsiteUrl))
       }
       
-      // Add bot protection field
-      mailchimpForm.appendChild(createInput('b_d8444475eb02ed17efa7940b0_7863ec2692daba11ff0f80adf', ''))
+      // Add bot protection field (format: b_[user_id]_[list_id])
+      mailchimpForm.appendChild(createInput('b_d8444475eb02ed17efa7940b0_054dfd1817', ''))
       
       // Append form to body and submit
       document.body.appendChild(mailchimpForm)
