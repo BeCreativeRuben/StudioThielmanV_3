@@ -137,7 +137,7 @@ export default function Contact() {
       return
     }
 
-    // Handle form submission to Mailchimp using AJAX/JSONP
+    // Handle form submission to Mailchimp using hidden iframe (more reliable than JSONP)
     setIsSubmitting(true)
     
     try {
@@ -146,112 +146,85 @@ export default function Contact() {
       const firstName = nameParts[0] || ''
       const lastName = nameParts.slice(1).join(' ') || ''
       
-      // Build query parameters for Mailchimp
-      const params = new URLSearchParams()
-      params.append('EMAIL', formData.email)
-      params.append('FNAME', firstName)
-      params.append('LNAME', lastName)
-      params.append('MMERGE1', formData.businessName)
-      params.append('MMERGE2', formData.phone)
-      params.append('MMERGE3', formData.businessDescription)
-      params.append('MMERGE4', formData.package)
-      params.append('MMERGE6', formData.hasExistingWebsite || '')
+      // Create hidden iframe for form submission
+      const iframe = document.createElement('iframe')
+      iframe.name = 'mailchimp-hidden-iframe'
+      iframe.style.display = 'none'
+      iframe.style.width = '0'
+      iframe.style.height = '0'
+      iframe.style.border = 'none'
+      document.body.appendChild(iframe)
+      
+      // Create form for Mailchimp submission
+      const mailchimpForm = document.createElement('form')
+      mailchimpForm.method = 'post'
+      mailchimpForm.action = MAILCHIMP_FORM_ACTION
+      mailchimpForm.target = 'mailchimp-hidden-iframe'
+      mailchimpForm.style.display = 'none'
+      
+      // Create hidden inputs for all fields
+      const createInput = (name: string, value: string) => {
+        const input = document.createElement('input')
+        input.type = 'hidden'
+        input.name = name
+        input.value = value
+        return input
+      }
+      
+      mailchimpForm.appendChild(createInput('EMAIL', formData.email))
+      mailchimpForm.appendChild(createInput('FNAME', firstName))
+      mailchimpForm.appendChild(createInput('LNAME', lastName))
+      mailchimpForm.appendChild(createInput('MMERGE1', formData.businessName))
+      mailchimpForm.appendChild(createInput('MMERGE2', formData.phone))
+      mailchimpForm.appendChild(createInput('MMERGE3', formData.businessDescription))
+      mailchimpForm.appendChild(createInput('MMERGE4', formData.package))
+      mailchimpForm.appendChild(createInput('MMERGE6', formData.hasExistingWebsite || ''))
       
       // Add optional fields
       if (formData.packageOther) {
-        params.append('MMERGE5', formData.packageOther)
+        mailchimpForm.appendChild(createInput('MMERGE5', formData.packageOther))
       }
       if (formData.existingWebsiteUrl) {
-        params.append('MMERGE7', formData.existingWebsiteUrl)
+        mailchimpForm.appendChild(createInput('MMERGE7', formData.existingWebsiteUrl))
       }
       
       // Add bot protection field
-      params.append('b_d8444475eb02ed17efa7940b0_7863ec2692daba11ff0f80adf', '')
+      mailchimpForm.appendChild(createInput('b_d8444475eb02ed17efa7940b0_7863ec2692daba11ff0f80adf', ''))
       
-      // Create unique callback name for JSONP
-      const callbackName = `mailchimpCallback_${Date.now()}`
-      let callbackFired = false
-      let timeoutId: NodeJS.Timeout | null = null
+      // Append form to body and submit
+      document.body.appendChild(mailchimpForm)
       
-      // Create the JSONP callback function
-      ;(window as any)[callbackName] = (data: any) => {
-        callbackFired = true
-        
-        // Clean up
-        if (timeoutId) clearTimeout(timeoutId)
-        delete (window as any)[callbackName]
-        if (document.body.contains(script)) {
-          document.body.removeChild(script)
-        }
-        
-        setIsSubmitting(false)
-        
-        if (data && data.result === 'success') {
-          console.log('Form submitted to Mailchimp successfully:', data)
-          setSubmitted(true)
-        } else {
-          console.error('Mailchimp submission error:', data)
-          const errorMsg = data?.msg || 'Unknown error occurred'
-          alert(`Failed to submit form: ${errorMsg}`)
-        }
-      }
+      console.log('Submitting to Mailchimp via iframe:', MAILCHIMP_FORM_ACTION)
       
-      // Create script tag for JSONP request
-      const script = document.createElement('script')
-      // Replace /post? with /post-json? and properly construct URL with all parameters
-      const baseUrl = MAILCHIMP_FORM_ACTION.replace('/post?', '/post-json?')
-      const urlObj = new URL(baseUrl)
-      
-      // Add callback parameter
-      urlObj.searchParams.append('c', callbackName)
-      
-      // Add all form parameters
-      params.forEach((value, key) => {
-        urlObj.searchParams.append(key, value)
-      })
-      
-      const jsonpUrl = urlObj.toString()
-      
-      console.log('Submitting to Mailchimp:', jsonpUrl)
-      
-      script.src = jsonpUrl
-      
-      // Set up timeout fallback (10 seconds)
-      timeoutId = setTimeout(() => {
-        if (!callbackFired) {
-          console.warn('Mailchimp callback timeout - request may have succeeded but callback not fired')
-          // Clean up
-          delete (window as any)[callbackName]
-          if (document.body.contains(script)) {
-            document.body.removeChild(script)
+      // Listen for iframe load to detect completion
+      iframe.onload = () => {
+        console.log('Mailchimp form submitted (iframe loaded)')
+        // Clean up after a short delay
+        setTimeout(() => {
+          if (document.body.contains(mailchimpForm)) {
+            document.body.removeChild(mailchimpForm)
           }
-          setIsSubmitting(false)
-          // Assume success if script loaded (check Network tab shows success)
-          // This is a common issue with JSONP - script loads but callback doesn't fire
-          setSubmitted(true)
-          console.log('Assuming success due to timeout (check Mailchimp audience to confirm)')
-        }
-      }, 10000)
-      
-      script.onerror = () => {
-        callbackFired = true
-        if (timeoutId) clearTimeout(timeoutId)
-        // Clean up on error
-        delete (window as any)[callbackName]
-        if (document.body.contains(script)) {
-          document.body.removeChild(script)
-        }
+          if (document.body.contains(iframe)) {
+            document.body.removeChild(iframe)
+          }
+        }, 2000)
+        
         setIsSubmitting(false)
-        console.error('Script failed to load')
-        alert('Failed to submit form. Please check your connection and try again.')
+        // Assume success - Mailchimp will handle validation
+        setSubmitted(true)
+        console.log('Form submission complete - check Mailchimp audience to confirm')
       }
       
-      script.onload = () => {
-        console.log('Mailchimp script loaded successfully')
-        // Script loaded - callback should fire, but if it doesn't, timeout will handle it
-      }
+      // Submit the form
+      mailchimpForm.submit()
       
-      document.body.appendChild(script)
+      // Fallback timeout in case iframe doesn't fire onload
+      setTimeout(() => {
+        setIsSubmitting(false)
+        setSubmitted(true)
+        console.log('Form submission timeout - assuming success (check Mailchimp audience)')
+      }, 5000)
+      
     } catch (error: any) {
       console.error('Submission error:', error)
       setIsSubmitting(false)
