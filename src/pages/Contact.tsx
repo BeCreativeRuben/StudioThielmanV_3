@@ -9,6 +9,21 @@ import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 // Extracted from: <form action="https://studiothielman.us1.list-manage.com/subscribe/post?u=d8444475eb02ed17efa7940b0&id=054dfd1817&f_id=002ccee4f0" ...>
 const MAILCHIMP_FORM_ACTION = 'https://studiothielman.us1.list-manage.com/subscribe/post?u=d8444475eb02ed17efa7940b0&id=054dfd1817&f_id=002ccee4f0'
 
+function sanitizeMailchimpText(input: string): string {
+  // Strict: keep only ASCII letters/numbers/spaces. Remove accents and punctuation.
+  return (input || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '') // strip diacritics
+    .replace(/[^A-Za-z0-9 ]+/g, ' ') // replace everything else with spaces
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function sanitizeMailchimpPhone(input: string): string {
+  // Mailchimp "Phone" merge fields can be strict; safest is digits only.
+  return (input || '').replace(/\D+/g, '').trim()
+}
+
 // IMPORTANT: Set up these merge fields in Mailchimp:
 // 1. Go to Mailchimp > Audience > Settings > Audience fields and |*MERGE*| tags
 // 2. Add the following merge fields:
@@ -173,23 +188,32 @@ export default function Contact() {
         input.value = value
         return input
       }
-<<<<<<< HEAD
-      
+
+      const safeFirstName = sanitizeMailchimpText(firstName)
+      const safeLastName = sanitizeMailchimpText(lastName)
+      const safeBusinessName = sanitizeMailchimpText(formData.businessName)
+      const safePhone = sanitizeMailchimpPhone(formData.phone)
+      const safeBusinessDescription = sanitizeMailchimpText(formData.businessDescription)
+      const safePackage = sanitizeMailchimpText(formData.package)
+      const safePackageOther = sanitizeMailchimpText(formData.packageOther || '')
+      const safeHasExistingWebsite = sanitizeMailchimpText(formData.hasExistingWebsite || '')
+      const safeExistingWebsiteUrl = sanitizeMailchimpText(formData.existingWebsiteUrl || '')
+
       mailchimpForm.appendChild(createInput('EMAIL', formData.email))
-      mailchimpForm.appendChild(createInput('FNAME', firstName))
-      mailchimpForm.appendChild(createInput('LNAME', lastName))
-      mailchimpForm.appendChild(createInput('MMERGE1', formData.businessName))
-      mailchimpForm.appendChild(createInput('MMERGE2', formData.phone))
-      mailchimpForm.appendChild(createInput('MMERGE3', formData.businessDescription))
-      mailchimpForm.appendChild(createInput('MMERGE4', formData.package))
-      mailchimpForm.appendChild(createInput('MMERGE6', formData.hasExistingWebsite || ''))
+      mailchimpForm.appendChild(createInput('FNAME', safeFirstName))
+      mailchimpForm.appendChild(createInput('LNAME', safeLastName))
+      mailchimpForm.appendChild(createInput('MMERGE1', safeBusinessName))
+      mailchimpForm.appendChild(createInput('MMERGE2', safePhone))
+      mailchimpForm.appendChild(createInput('MMERGE3', safeBusinessDescription))
+      mailchimpForm.appendChild(createInput('MMERGE4', safePackage))
+      mailchimpForm.appendChild(createInput('MMERGE6', safeHasExistingWebsite))
       
       // Add optional fields
-      if (formData.packageOther) {
-        mailchimpForm.appendChild(createInput('MMERGE5', formData.packageOther))
+      if (safePackageOther) {
+        mailchimpForm.appendChild(createInput('MMERGE5', safePackageOther))
       }
-      if (formData.existingWebsiteUrl) {
-        mailchimpForm.appendChild(createInput('MMERGE7', formData.existingWebsiteUrl))
+      if (safeExistingWebsiteUrl) {
+        mailchimpForm.appendChild(createInput('MMERGE7', safeExistingWebsiteUrl))
       }
       
       // Add bot protection field (format: b_[user_id]_[list_id])
