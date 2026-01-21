@@ -10,19 +10,19 @@ Add these environment variables to **Vercel Dashboard → Your Project → Setti
 
 ```env
 # Neon Database Connection (Primary - with connection pooling)
-POSTGRES_URL=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+POSTGRES_URL=postgresql://<user>:<password>@<host>/<db>?sslmode=require
 
 # Non-pooling connection (for migrations, etc.)
-POSTGRES_URL_NON_POOLING=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+POSTGRES_URL_NON_POOLING=postgresql://<user>:<password>@<host>/<db>?sslmode=require
 
 # Individual connection parameters
-POSTGRES_USER=neondb_owner
-POSTGRES_HOST=ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech
-POSTGRES_PASSWORD=npg_Q5kHBRAf1mOd
-POSTGRES_DATABASE=neondb
+POSTGRES_USER=<user>
+POSTGRES_HOST=<host>
+POSTGRES_PASSWORD=<password>
+POSTGRES_DATABASE=<db>
 
 # Prisma URL (if using Prisma)
-POSTGRES_PRISMA_URL=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech/neondb?connect_timeout=15&sslmode=require
+POSTGRES_PRISMA_URL=postgresql://<user>:<password>@<host>/<db>?connect_timeout=15&sslmode=require
 
 # Existing environment variables (keep these)
 MAILCHIMP_API_KEY=your-mailchimp-api-key-here
@@ -33,6 +33,9 @@ GMAIL_APP_PASSWORD=your-gmail-app-password
 JWT_SECRET=your-secret-key-change-this-in-production
 FRONTEND_URL=https://studiothielman.com
 ```
+
+## 🔐 Security note
+Never commit real database URLs/passwords to git. If credentials were previously committed, **rotate them in Neon immediately** and treat them as leaked.
 
 ## 🚀 Next Steps
 

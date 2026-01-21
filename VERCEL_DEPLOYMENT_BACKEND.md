@@ -34,14 +34,17 @@ JWT_SECRET=your-secret-key-change-this-in-production
 FRONTEND_URL=https://studiothielman.com
 
 # Neon Database Connection
-POSTGRES_URL=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
-POSTGRES_URL_NON_POOLING=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
-POSTGRES_USER=neondb_owner
-POSTGRES_HOST=ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech
-POSTGRES_PASSWORD=npg_Q5kHBRAf1mOd
-POSTGRES_DATABASE=neondb
-POSTGRES_PRISMA_URL=postgresql://neondb_owner:npg_Q5kHBRAf1mOd@ep-purple-snow-agroupoz-pooler.c-2.eu-central-1.aws.neon.tech/neondb?connect_timeout=15&sslmode=require
+POSTGRES_URL=postgresql://<user>:<password>@<host>/<db>?sslmode=require
+POSTGRES_URL_NON_POOLING=postgresql://<user>:<password>@<host>/<db>?sslmode=require
+POSTGRES_USER=<user>
+POSTGRES_HOST=<host>
+POSTGRES_PASSWORD=<password>
+POSTGRES_DATABASE=<db>
+POSTGRES_PRISMA_URL=postgresql://<user>:<password>@<host>/<db>?connect_timeout=15&sslmode=require
 ```
+
+## 🔐 Security note
+Never commit real database URLs/passwords to git. If credentials were previously committed, **rotate them in Neon immediately** and update Vercel env vars.
 
 ## ⚠️ Important Notes
 

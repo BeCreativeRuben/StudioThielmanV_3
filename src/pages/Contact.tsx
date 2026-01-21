@@ -175,7 +175,8 @@ export default function Contact() {
         let errorMessage = 'Failed to submit form'
         try {
           const data = await response.json()
-          errorMessage = data?.error || data?.message || errorMessage
+          // Prefer a detailed message (e.g. missing env vars) over the generic error label
+          errorMessage = data?.message || data?.error || errorMessage
         } catch {
           // ignore
         }
