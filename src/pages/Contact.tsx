@@ -4,11 +4,6 @@ import { Link } from 'react-router-dom'
 import Button from '../components/Button'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 
-// Mailchimp Form Configuration
-// Form action URL from Mailchimp embedded form
-// Extracted from: <form action="https://studiothielman.us1.list-manage.com/subscribe/post?u=d8444475eb02ed17efa7940b0&id=054dfd1817&f_id=002ccee4f0" ...>
-const MAILCHIMP_FORM_ACTION = 'https://studiothielman.us1.list-manage.com/subscribe/post?u=d8444475eb02ed17efa7940b0&id=054dfd1817&f_id=002ccee4f0'
-
 function sanitizeMailchimpText(input: string): string {
   // Strict: keep only ASCII letters/numbers/spaces. Remove accents and punctuation.
   return (input || '')
@@ -153,128 +148,55 @@ export default function Contact() {
       return
     }
 
-    // Handle form submission to Mailchimp using hidden iframe (more reliable than JSONP)
+    // Submit to our backend so we only show success when Mailchimp accepts
     setIsSubmitting(true)
     
     try {
-      // Split name into first and last name for Mailchimp
-      const nameParts = formData.name.trim().split(' ')
-      const firstName = nameParts[0] || ''
-      const lastName = nameParts.slice(1).join(' ') || ''
-      
-      // Create hidden iframe for form submission
-      const iframe = document.createElement('iframe')
-      iframe.name = 'mailchimp-hidden-iframe'
-      iframe.style.display = 'none'
-      iframe.style.width = '0'
-      iframe.style.height = '0'
-      iframe.style.border = 'none'
-      document.body.appendChild(iframe)
-      
-      // Create form for Mailchimp submission
-      const mailchimpForm = document.createElement('form')
-      mailchimpForm.method = 'post'
-      mailchimpForm.action = MAILCHIMP_FORM_ACTION
-      mailchimpForm.target = 'mailchimp-hidden-iframe'
-      mailchimpForm.style.display = 'none'
-      
-      console.log('Using Mailchimp form action:', MAILCHIMP_FORM_ACTION)
-      
-      // Create hidden inputs for all fields
-      const createInput = (name: string, value: string) => {
-        const input = document.createElement('input')
-        input.type = 'hidden'
-        input.name = name
-        input.value = value
-        return input
+      const payload = {
+        ...formData,
+        businessName: sanitizeMailchimpText(formData.businessName),
+        name: sanitizeMailchimpText(formData.name),
+        phone: sanitizeMailchimpPhone(formData.phone),
+        businessDescription: sanitizeMailchimpText(formData.businessDescription),
+        package: sanitizeMailchimpText(formData.package),
+        packageOther: formData.packageOther ? sanitizeMailchimpText(formData.packageOther) : '',
+        hasExistingWebsite: formData.hasExistingWebsite ? sanitizeMailchimpText(formData.hasExistingWebsite) : '',
+        // Don't destroy URL formatting; backend will validate and only send to Mailchimp if valid
+        existingWebsiteUrl: (formData.existingWebsiteUrl || '').trim()
       }
 
-      const safeFirstName = sanitizeMailchimpText(firstName)
-      const safeLastName = sanitizeMailchimpText(lastName)
-      const safeBusinessName = sanitizeMailchimpText(formData.businessName)
-      const safePhone = sanitizeMailchimpPhone(formData.phone)
-      const safeBusinessDescription = sanitizeMailchimpText(formData.businessDescription)
-      const safePackage = sanitizeMailchimpText(formData.package)
-      const safePackageOther = sanitizeMailchimpText(formData.packageOther || '')
-      const safeHasExistingWebsite = sanitizeMailchimpText(formData.hasExistingWebsite || '')
-      const safeExistingWebsiteUrl = sanitizeMailchimpText(formData.existingWebsiteUrl || '')
+      const response = await fetch('/api/submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
 
-      mailchimpForm.appendChild(createInput('EMAIL', formData.email))
-      mailchimpForm.appendChild(createInput('FNAME', safeFirstName))
-      mailchimpForm.appendChild(createInput('LNAME', safeLastName))
-      mailchimpForm.appendChild(createInput('MMERGE1', safeBusinessName))
-      mailchimpForm.appendChild(createInput('MMERGE2', safePhone))
-      mailchimpForm.appendChild(createInput('MMERGE3', safeBusinessDescription))
-      mailchimpForm.appendChild(createInput('MMERGE4', safePackage))
-      mailchimpForm.appendChild(createInput('MMERGE6', safeHasExistingWebsite))
-      
-      // Add optional fields
-      if (safePackageOther) {
-        mailchimpForm.appendChild(createInput('MMERGE5', safePackageOther))
+      if (!response.ok) {
+        let errorMessage = 'Failed to submit form'
+        try {
+          const data = await response.json()
+          errorMessage = data?.error || data?.message || errorMessage
+        } catch {
+          // ignore
+        }
+        throw new Error(errorMessage)
       }
-      if (safeExistingWebsiteUrl) {
-        mailchimpForm.appendChild(createInput('MMERGE7', safeExistingWebsiteUrl))
-      }
-      
-      // Add bot protection field (format: b_[user_id]_[list_id])
-      mailchimpForm.appendChild(createInput('b_d8444475eb02ed17efa7940b0_054dfd1817', ''))
-      
-      // Append form to body and submit
-      document.body.appendChild(mailchimpForm)
-      
-      console.log('Submitting to Mailchimp via iframe:', MAILCHIMP_FORM_ACTION)
-      
-      // Listen for iframe load to detect completion
-      iframe.onload = () => {
-        console.log('Mailchimp form submitted (iframe loaded)')
-        // Clean up after a short delay
-        setTimeout(() => {
-          if (document.body.contains(mailchimpForm)) {
-            document.body.removeChild(mailchimpForm)
-          }
-          if (document.body.contains(iframe)) {
-            document.body.removeChild(iframe)
-          }
-        }, 2000)
-        
-        setIsSubmitting(false)
-        
-        // Scroll to top of page before showing success message
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        })
-        
-        // Small delay to ensure scroll completes before showing success message
-        setTimeout(() => {
-          setSubmitted(true)
-          console.log('Form submission complete - check Mailchimp audience to confirm')
-        }, 300)
-      }
-      
-      // Submit the form
-      mailchimpForm.submit()
-      
-      // Fallback timeout in case iframe doesn't fire onload
+
+      // Scroll to top of page before showing success message
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+
+      // Small delay to ensure scroll completes before showing success message
       setTimeout(() => {
-        setIsSubmitting(false)
-        
-        // Scroll to top of page before showing success message
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        })
-        
-        // Small delay to ensure scroll completes before showing success message
-        setTimeout(() => {
-          setSubmitted(true)
-          console.log('Form submission timeout - assuming success (check Mailchimp audience)')
-        }, 300)
-      }, 5000)
+        setSubmitted(true)
+      }, 300)
     } catch (error: any) {
       console.error('Submission error:', error)
-      setIsSubmitting(false)
       alert(`Failed to submit form: ${error.message || 'Unknown error'}`)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -392,7 +314,7 @@ export default function Contact() {
       <section id="contact-form" className="py-20 bg-white scroll-mt-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white border border-gray-200 rounded-xl p-8 md:p-12 shadow-xl">
-            <form onSubmit={handleSubmit} action={MAILCHIMP_FORM_ACTION} method="post" noValidate>
+            <form onSubmit={handleSubmit} noValidate>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

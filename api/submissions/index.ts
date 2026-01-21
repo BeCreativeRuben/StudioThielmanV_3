@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { initializeDatabase, dbRun, dbGet, dbAll } from '../../server/database/postgres.js'
 import { sendSubmissionNotification } from '../../server/services/emailService.js'
+import { upsertMailchimpMember } from '../../server/services/mailchimpService.js'
 import { requireAuth } from '../_utils/auth.js'
 
 // Initialize database (PostgreSQL - idempotent, safe to call multiple times)
@@ -18,6 +19,28 @@ async function ensureDb() {
   })
   
   return dbInitPromise
+}
+
+function sanitizeMailchimpText(input: string): string {
+  return (input || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '') // strip diacritics
+    .replace(/[^A-Za-z0-9 ]+/g, ' ') // replace everything else with spaces
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function sanitizeMailchimpPhone(input: string): string {
+  return (input || '').replace(/\D+/g, '').trim()
+}
+
+function isValidHttpUrl(value: string): boolean {
+  try {
+    const url = new URL(value)
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  } catch {
+    return false
+  }
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -76,6 +99,40 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           return res.status(400).json({ error: 'Business description must be 100 characters or less' })
         }
 
+        // Upsert into Mailchimp first so the frontend can trust success == Mailchimp accepted it
+        const nameParts = String(name).trim().split(/\s+/)
+        const firstName = sanitizeMailchimpText(nameParts[0] || '')
+        const lastName = sanitizeMailchimpText(nameParts.slice(1).join(' ') || '')
+
+        const safeBusinessName = sanitizeMailchimpText(String(businessName))
+        const safePhone = sanitizeMailchimpPhone(String(phone))
+        const safeBusinessDescription = sanitizeMailchimpText(String(businessDescription))
+        const safePackage = sanitizeMailchimpText(String(packageName))
+        const safePackageOther = packageOther ? sanitizeMailchimpText(String(packageOther)) : ''
+        const safeHasExistingWebsite = hasExistingWebsite ? sanitizeMailchimpText(String(hasExistingWebsite)) : ''
+
+        const rawExistingWebsiteUrl = String(existingWebsiteUrl || '').trim()
+        const safeExistingWebsiteUrl = rawExistingWebsiteUrl && isValidHttpUrl(rawExistingWebsiteUrl)
+          ? rawExistingWebsiteUrl
+          : ''
+
+        await upsertMailchimpMember({
+          email,
+          statusIfNew: 'subscribed',
+          mergeFields: {
+            FNAME: firstName,
+            LNAME: lastName,
+            MMERGE1: safeBusinessName,
+            MMERGE2: safePhone,
+            MMERGE3: safeBusinessDescription,
+            MMERGE4: safePackage,
+            ...(safePackageOther ? { MMERGE5: safePackageOther } : {}),
+            ...(safeHasExistingWebsite ? { MMERGE6: safeHasExistingWebsite } : {}),
+            ...(safeExistingWebsiteUrl ? { MMERGE7: safeExistingWebsiteUrl } : {}),
+          },
+          tags: ['Contact Form', 'Lead'],
+        })
+
         // Insert submission
         const result = await dbRun(
           `INSERT INTO submissions 
@@ -104,6 +161,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(201).json({
           success: true,
           id: submissionId,
+          mailchimpAccepted: true,
           message: 'Submission received successfully'
         })
       } catch (error: any) {

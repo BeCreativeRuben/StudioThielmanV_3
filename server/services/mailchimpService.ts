@@ -1,4 +1,5 @@
 import mailchimp from '@mailchimp/mailchimp_marketing'
+import { createHash } from 'crypto'
 
 // Initialize Mailchimp
 const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY
@@ -12,6 +13,46 @@ if (MAILCHIMP_API_KEY) {
   })
 } else {
   console.warn('Mailchimp API key not configured. Contact management will be disabled.')
+}
+
+function getSubscriberHash(email: string): string {
+  // Mailchimp requires MD5 hash of lowercase email
+  return createHash('md5').update(email.toLowerCase()).digest('hex')
+}
+
+export type MailchimpMergeFields = Record<string, any>
+
+/**
+ * Upsert a Mailchimp member and (optionally) apply tags.
+ * Throws on failure so callers can accurately detect acceptance.
+ */
+export async function upsertMailchimpMember(params: {
+  email: string
+  statusIfNew?: 'subscribed' | 'unsubscribed' | 'cleaned' | 'pending'
+  mergeFields?: MailchimpMergeFields
+  tags?: string[]
+}): Promise<void> {
+  const { email, statusIfNew = 'subscribed', mergeFields = {}, tags = [] } = params
+
+  if (!MAILCHIMP_API_KEY || !MAILCHIMP_AUDIENCE_ID) {
+    throw new Error('Mailchimp not configured')
+  }
+
+  const subscriberHash = getSubscriberHash(email)
+
+  // Upsert member
+  await mailchimp.lists.setListMember(MAILCHIMP_AUDIENCE_ID, subscriberHash, {
+    email_address: email,
+    status_if_new: statusIfNew,
+    merge_fields: mergeFields,
+  })
+
+  // Apply tags (Mailchimp requires a separate tags endpoint)
+  if (tags.length > 0) {
+    await mailchimp.lists.updateListMemberTags(MAILCHIMP_AUDIENCE_ID, subscriberHash, {
+      tags: tags.map((name) => ({ name, status: 'active' })),
+    })
+  }
 }
 
 /**
@@ -40,8 +81,14 @@ export async function addContactToMailchimp(
         FNAME: fName,
         LNAME: lName,
       },
-      tags: tags || [],
     })
+
+    if (tags && tags.length > 0) {
+      const subscriberHash = getSubscriberHash(email)
+      await mailchimp.lists.updateListMemberTags(MAILCHIMP_AUDIENCE_ID, subscriberHash, {
+        tags: tags.map((name) => ({ name, status: 'active' })),
+      })
+    }
 
     console.log(`Contact added to Mailchimp: ${email}`)
   } catch (error: any) {
@@ -52,9 +99,9 @@ export async function addContactToMailchimp(
       // Update existing contact with tags if provided
       if (tags && tags.length > 0) {
         try {
-          const subscriberHash = Buffer.from(email.toLowerCase()).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-          await mailchimp.lists.updateListMember(MAILCHIMP_AUDIENCE_ID, subscriberHash, {
-            tags: tags,
+          const subscriberHash = getSubscriberHash(email)
+          await mailchimp.lists.updateListMemberTags(MAILCHIMP_AUDIENCE_ID, subscriberHash, {
+            tags: tags.map((name) => ({ name, status: 'active' })),
           })
         } catch (updateError) {
           console.error('Failed to update Mailchimp contact tags:', updateError)
