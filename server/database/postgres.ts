@@ -113,8 +113,14 @@ export async function initializeDatabase(): Promise<void> {
     // Split schema into individual statements and execute them one by one
     const statements = schema
       .split(';')
-      .map(s => s.trim())
-      .filter(s => s.length > 0 && !s.startsWith('--'))
+      .map((s) =>
+        s
+          .split('\n')
+          .filter((line) => !line.trim().startsWith('--'))
+          .join('\n')
+          .trim()
+      )
+      .filter((s) => s.length > 0)
 
     for (const statement of statements) {
       if (statement.trim()) {
