@@ -173,6 +173,7 @@ export default function Contact() {
         input.value = value
         return input
       }
+<<<<<<< HEAD
       
       mailchimpForm.appendChild(createInput('EMAIL', formData.email))
       mailchimpForm.appendChild(createInput('FNAME', firstName))
@@ -213,9 +214,18 @@ export default function Contact() {
         }, 2000)
         
         setIsSubmitting(false)
-        // Assume success - Mailchimp will handle validation
-        setSubmitted(true)
-        console.log('Form submission complete - check Mailchimp audience to confirm')
+        
+        // Scroll to top of page before showing success message
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+        
+        // Small delay to ensure scroll completes before showing success message
+        setTimeout(() => {
+          setSubmitted(true)
+          console.log('Form submission complete - check Mailchimp audience to confirm')
+        }, 300)
       }
       
       // Submit the form
@@ -224,10 +234,19 @@ export default function Contact() {
       // Fallback timeout in case iframe doesn't fire onload
       setTimeout(() => {
         setIsSubmitting(false)
-        setSubmitted(true)
-        console.log('Form submission timeout - assuming success (check Mailchimp audience)')
+        
+        // Scroll to top of page before showing success message
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+        
+        // Small delay to ensure scroll completes before showing success message
+        setTimeout(() => {
+          setSubmitted(true)
+          console.log('Form submission timeout - assuming success (check Mailchimp audience)')
+        }, 300)
       }, 5000)
-      
     } catch (error: any) {
       console.error('Submission error:', error)
       setIsSubmitting(false)
@@ -237,14 +256,14 @@ export default function Contact() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-20">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-20 px-4">
         <motion.div
-          className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          className="max-w-2xl mx-auto w-full text-center"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="bg-white border border-gray-200 rounded-xl p-12 shadow-xl">
+          <div className="bg-white border border-gray-200 rounded-xl p-8 md:p-12 shadow-xl">
             <div className="w-20 h-20 bg-green-500 rounded-full mx-auto mb-6 flex items-center justify-center">
               <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
