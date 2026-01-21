@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom'
 
 export default function Footer() {
+  const openCookiePreferences = () => {
+    window.dispatchEvent(new Event('st:open-cookie-preferences'))
+  }
+
   return (
     <footer className="bg-gray-900 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -145,6 +149,13 @@ export default function Footer() {
             <Link to="/terms" className="text-body-sm text-white/60 hover:text-white transition-colors">
               Terms of Service
             </Link>
+            <button
+              type="button"
+              onClick={openCookiePreferences}
+              className="text-body-sm text-white/60 hover:text-white transition-colors"
+            >
+              Cookie Preferences
+            </button>
           </div>
         </div>
       </div>

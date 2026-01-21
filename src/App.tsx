@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
+import CookieConsentBanner from './components/CookieConsentBanner'
 import Home from './pages/Home'
 import Packages from './pages/Packages'
 import Portfolio from './pages/Portfolio'
@@ -24,6 +25,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <Footer />
+      <CookieConsentBanner />
     </div>
   )
 }

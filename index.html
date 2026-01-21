@@ -26,6 +26,35 @@
     <meta name="twitter:image" content="/og-image.svg" />
     
     <title>Studio Thielman | Professional Websites Starting at €25/month</title>
+
+    <!-- Google Consent Mode v2 (advanced) + GA4 -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      // Read persisted choice early so returning visitors don't get tracked
+      // before React can run consent updates.
+      var stConsentChoice = null;
+      try { stConsentChoice = localStorage.getItem('st_cookie_consent_v1'); } catch (e) {}
+
+      var analyticsDefault = (stConsentChoice === 'reject') ? 'denied' : 'granted';
+      var adsDefault = (stConsentChoice === 'accept') ? 'granted' : 'denied';
+
+      gtag('consent', 'default', {
+        // Default: analytics allowed (unless user previously rejected); ads denied (unless user accepted)
+        'analytics_storage': analyticsDefault,
+        'ad_storage': adsDefault,
+        'ad_user_data': adsDefault,
+        'ad_personalization': adsDefault,
+        // Allow banner to update quickly on first load
+        'wait_for_update': 500
+      });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVLESW1G3L"></script>
+    <script>
+      gtag('js', new Date());
+      gtag('config', 'G-RVLESW1G3L');
+    </script>
   </head>
   <body>
     <div id="root"></div>
