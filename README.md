@@ -141,7 +141,7 @@ const studioThielman = {
 ### Connect
 
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/BeCreativeRuben)
-[![Website](https://img.shields.io/badge/Website-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://studiothielman.be)
+[![Website](https://img.shields.io/badge/Website-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://studiothielman.com)
 
 ---
 
@@ -151,6 +151,6 @@ const studioThielman = {
 
 ---
 
-⭐ **Interested in working together? Visit [studiothielman.be](https://studiothielman.be) to get started!** ⭐
+⭐ **Interested in working together? Visit [studiothielman.com](https://studiothielman.com) to get started!** ⭐
 
 *Last Updated: January 2026*
