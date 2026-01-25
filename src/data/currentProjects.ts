@@ -2,7 +2,7 @@ export interface CurrentProject {
   id: string
   title: string
   description: string
-  status: 'planning' | 'in-progress' | 'testing' | 'almost-done'
+  status: 'planning' | 'in-progress' | 'testing' | 'almost-done' | 'completed'
   progress: number // 0-100
   category: string
   technologies: string[]
@@ -13,40 +13,57 @@ export interface CurrentProject {
   estimatedCompletion?: string
   githubUrl?: string
   liveUrl?: string
+  liveUrlText?: string
   notes?: string
 }
 
-export const currentProjects: CurrentProject[] = [
+// Finished Projects
+export const finishedProjects: CurrentProject[] = [
   {
-    id: 'project-1',
+    id: 'finished-1',
     title: 'Studio Thielman Website',
-    description: 'Building out the complete Studio Thielman website with portfolio, services, and client management features.',
-    status: 'in-progress',
-    progress: 95,
+    description: 'The complete Studio Thielman website with portfolio, services, blog, and client management features. Ongoing support and maintenance included.',
+    status: 'completed',
+    progress: 100,
     category: 'Web Development',
-    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'],
+    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Vercel'],
     plannedFeatures: [
       'Portfolio showcase with detail pages',
       'Service packages with pricing',
       'Contact form with multi-step process',
-      'Admin dashboard for submissions',
-      'Chat widget integration'
+      'Blog section',
+      'Cookie consent management'
     ],
     discoveredItems: [
       'Best practices for portfolio detail pages',
       'Dynamic routing with React Router',
       'Iframe embedding best practices'
     ],
-    todoItems: [
-      'Add more portfolio projects',
-      'Implement blog section',
-      'Add client testimonials',
-      'Optimize images and performance',
-      'Add analytics tracking'
-    ],
+    todoItems: [],
     startDate: 'Jan 2025',
-    estimatedCompletion: 'Feb 2025',
-    notes: 'Almost there! Squashing bugs and giving the backend some love 🐛💚'
+    estimatedCompletion: 'Jan 2026',
+    liveUrl: 'https://studiothielman.com',
+    liveUrlText: 'Check it out!',
+    notes: 'Website is live! Continued support and maintenance for this project, as with all our projects 🚀✨'
+  }
+]
+
+// Current Projects (in progress)
+export const currentProjects: CurrentProject[] = [
+  {
+    id: 'project-1',
+    title: 'Chromattic Website',
+    description: 'Website for Chromattic. Finalizing the website for launch.',
+    status: 'almost-done',
+    progress: 90,
+    category: 'Web Development',
+    technologies: [],
+    plannedFeatures: [],
+    discoveredItems: [],
+    todoItems: [],
+    startDate: 'Feb 2026',
+    estimatedCompletion: 'Feb 2026',
+    notes: 'Working on finalizing the website for launch 🎨'
   },
   {
     id: 'project-2',
@@ -98,7 +115,7 @@ export const currentProjects: CurrentProject[] = [
     title: 'Accounting Software',
     description: 'Accounting software solution for a specific niche.',
     status: 'in-progress',
-    progress: 50,
+    progress: 65,
     category: 'Software Development',
     technologies: [],
     plannedFeatures: [],
@@ -106,7 +123,7 @@ export const currentProjects: CurrentProject[] = [
     todoItems: [],
     startDate: 'Jan 2026',
     estimatedCompletion: 'Mar 2026',
-    notes: 'Finetuning and marketing prep to roll out to the entire niche 🎯'
+    notes: 'Finalizing the systems before heading to testing & finetuning phases 🎯'
   },
   {
     id: 'project-5',
@@ -127,8 +144,8 @@ export const currentProjects: CurrentProject[] = [
     id: 'project-6',
     title: 'Car Detailing Website',
     description: 'Website for car detailing business.',
-    status: 'planning',
-    progress: 10,
+    status: 'in-progress',
+    progress: 40,
     category: 'Web Development',
     technologies: [],
     plannedFeatures: [],
@@ -136,7 +153,7 @@ export const currentProjects: CurrentProject[] = [
     todoItems: [],
     startDate: 'Feb 2026',
     estimatedCompletion: 'Mar 2026',
-    notes: 'Planning and exploring web design possibilities & getting 3D assets made 🎨'
+    notes: 'Actively building out the website 🚗✨'
   }
 ]
 
