@@ -22,13 +22,13 @@ export const blogPosts: BlogPost[] = [
   {
     slug: 'waarom-website-online-zichtbaarheid-niet-meer-mogen-ontbreken',
     title: 'Waarom een website en online zichtbaarheid echt niet meer mogen ontbreken voor je zaak',
-    excerpt: 'Stel je voor: iemand in jouw buurt heeft dringend een loodgieter, kapper of webdesigner nodig. Wat doet die persoon? Juist, smartphone bovenhalen, "loodgieter nabij" intikken en scrollen door Google Maps. Als jij daar niet tussenstaat, ziet die klant je concurrent wél. Simpel zat.',
+    excerpt: 'Stel je voor: iemand in jouw buurt heeft dringend een loodgieter, kapper of webdesigner nodig. Wat doet die persoon? Juist, smartphone bovenhalen, "loodgieter nabij" intikken en scrollen door Google Maps. Als jij daar niet tussenstaat, ziet die klant je concurrent wél. Zo simpel kan het zijn.',
     date: 'JAN 2026',
     featuredImage: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&h=600&fit=crop&q=80', // Business person using smartphone
     sections: [
       {
         type: 'paragraph',
-        content: 'Stel je voor: iemand in jouw buurt heeft dringend een loodgieter, kapper of webdesigner nodig. Wat doet die persoon? Juist, smartphone bovenhalen, "loodgieter nabij" intikken en scrollen door Google Maps. Als jij daar niet tussenstaat, ziet die klant je concurrent wél. Simpel zat.'
+        content: 'Stel je voor: iemand in jouw buurt heeft dringend een loodgieter, kapper of webdesigner nodig. Wat doet die persoon? Juist, smartphone bovenhalen, "loodgieter nabij" intikken en scrollen door Google Maps. Als jij daar niet tussenstaat, ziet die klant je concurrent wél. Zo simpel kan het zijn.'
       },
       {
         type: 'heading',
@@ -74,7 +74,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        content: 'Zet SEO een beetje juist en je Maps-profiel op punt, en klanten stromen binnen zonder dat je elk jaar fortuinen aan ads spendeert. Het bouwt zich op: 1 enthousiaste klant deelt je link, de volgende vind je via google, en zo groeit je klantenbestand vanzelf.'
+        content: 'Optimaliseer SEO en je Maps-profiel en klanten stromen binnen zonder dat je elk jaar fortuinen aan ads spendeert. Het bouwt zich op: 1 enthousiaste klant deelt je link, de volgende vind je via google, en zo groeit je klantenbestand vanzelf.'
       }
     ],
     cta: {
