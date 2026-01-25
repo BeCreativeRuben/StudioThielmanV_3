@@ -43,136 +43,9 @@ export default function CurrentProjects() {
         </motion.div>
       </section>
 
-      {/* Finished Projects Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Finished Projects</h2>
-            <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Completed projects with ongoing support and maintenance.
-            </p>
-          </motion.div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {finishedProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white border-2 border-emerald-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300"
-              >
-                {/* Header */}
-                <div className="p-6 border-b border-gray-200">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h2 className="text-2xl font-bold text-primary mb-2">{project.title}</h2>
-                      <p className="text-body text-text-primary">{project.description}</p>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${statusColors[project.status]}`}>
-                      {statusLabels[project.status]}
-                    </span>
-                  </div>
-                  
-                  {/* Progress Bar */}
-                  <div className="mt-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-text-secondary">Progress</span>
-                      <span className="text-sm font-semibold text-emerald-600">{project.progress}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                      <motion.div
-                        className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${project.progress}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.3 }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  {/* Technologies */}
-                  {project.technologies.length > 0 && (
-                    <div className="mb-4">
-                      <div className="text-xs text-text-secondary uppercase tracking-wider mb-2">Technologies</div>
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.map((tech, idx) => (
-                          <span key={idx} className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded border border-emerald-200">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Quick Stats */}
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <div className="text-xs text-text-secondary uppercase tracking-wider mb-1">Started</div>
-                      <div className="text-sm font-semibold text-primary">{project.startDate}</div>
-                    </div>
-                    {project.estimatedCompletion && (
-                      <div>
-                        <div className="text-xs text-text-secondary uppercase tracking-wider mb-1">Completed</div>
-                        <div className="text-sm font-semibold text-emerald-600">{project.estimatedCompletion}</div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Notes */}
-                  {project.notes && (
-                    <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-                      <p className="text-sm text-text-primary italic">"{project.notes}"</p>
-                    </div>
-                  )}
-
-                  {/* Links */}
-                  <div className="flex gap-2 pt-4 border-t border-gray-200">
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                        {project.liveUrlText || 'Visit Website'}
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Current Projects Grid */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Current Projects</h2>
-            <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Projects currently in development.
-            </p>
-          </motion.div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {currentProjects.map((project, index) => (
               <motion.div
@@ -349,6 +222,121 @@ export default function CurrentProjects() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                         Live Demo
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Finished Projects Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Finished Projects</h2>
+            <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+              Completed projects with ongoing support and maintenance.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {finishedProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white border-2 border-emerald-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300"
+              >
+                {/* Header */}
+                <div className="p-6 border-b border-gray-200">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <h2 className="text-2xl font-bold text-primary mb-2">{project.title}</h2>
+                      <p className="text-body text-text-primary">{project.description}</p>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${statusColors[project.status]}`}>
+                      {statusLabels[project.status]}
+                    </span>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="mt-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-text-secondary">Progress</span>
+                      <span className="text-sm font-semibold text-emerald-600">{project.progress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <motion.div
+                        className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400"
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${project.progress}%` }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, delay: 0.3 }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+                  {/* Technologies */}
+                  {project.technologies.length > 0 && (
+                    <div className="mb-4">
+                      <div className="text-xs text-text-secondary uppercase tracking-wider mb-2">Technologies</div>
+                      <div className="flex flex-wrap gap-2">
+                        {project.technologies.map((tech, idx) => (
+                          <span key={idx} className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded border border-emerald-200">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Quick Stats */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <div className="text-xs text-text-secondary uppercase tracking-wider mb-1">Started</div>
+                      <div className="text-sm font-semibold text-primary">{project.startDate}</div>
+                    </div>
+                    {project.estimatedCompletion && (
+                      <div>
+                        <div className="text-xs text-text-secondary uppercase tracking-wider mb-1">Completed</div>
+                        <div className="text-sm font-semibold text-emerald-600">{project.estimatedCompletion}</div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Notes */}
+                  {project.notes && (
+                    <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                      <p className="text-sm text-text-primary italic">"{project.notes}"</p>
+                    </div>
+                  )}
+
+                  {/* Links */}
+                  <div className="flex gap-2 pt-4 border-t border-gray-200">
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        {project.liveUrlText || 'Visit Website'}
                       </a>
                     )}
                   </div>
