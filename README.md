@@ -1,79 +1,156 @@
-# Studio Thielman Website
+# 🎨 Studio Thielman - Web Development Studio
 
-Professional website for Studio Thielman - offering web development services starting at €25/month.
+![Live Website](https://img.shields.io/badge/Website-Live-brightgreen)
+![React](https://img.shields.io/badge/React-18-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)
 
-## Tech Stack
+**Professional Web Development | Affordable Websites | Belgian Quality**
 
-- **React 18** with TypeScript
-- **Vite** for fast development and building
-- **Tailwind CSS** for styling
-- **Framer Motion** for animations
-- **React Router** for navigation
+---
 
-## Getting Started
+## 🚀 About This Project
 
-### Installation
-
-```bash
-npm install
+```javascript
+const studioThielman = {
+    name: "Studio Thielman",
+    description: "Professional web development studio based in Belgium",
+    purpose: "Help local businesses establish their online presence",
+    
+    coreServices: [
+        "🌐 Custom website design & development",
+        "📱 Fully responsive, mobile-first approach",
+        "🚀 Fast, modern websites with smooth animations",
+        "💼 Affordable packages starting at €25/month",
+        "🔧 Ongoing support & maintenance",
+        "📈 SEO-optimized for local visibility"
+    ],
+    
+    techStack: {
+        frontend: ["React", "TypeScript", "Tailwind CSS"],
+        animations: ["Framer Motion"],
+        build: ["Vite"],
+        deployment: ["Vercel"]
+    },
+    
+    targetClients: ["Small businesses", "Entrepreneurs", "Local shops"],
+    location: "Belgium 🇧🇪",
+    website: "https://studiothielman.be"
+};
 ```
 
-### Development
+---
 
-```bash
-npm run dev
-```
+## 🏆 What Makes Studio Thielman Special
 
-The site will be available at `http://localhost:5173`
+| Feature | Description | Status |
+|---------|-------------|--------|
+| **Affordable Pricing** | Quality websites from €25/month | ✅ Available |
+| **Modern Design** | Clean, professional aesthetics | ✅ Included |
+| **Mobile-First** | Perfect on all devices | ✅ Standard |
+| **Fast Performance** | Optimized loading speeds | ✅ Guaranteed |
+| **SEO Ready** | Built for search engines | ✅ Included |
+| **Personal Support** | Direct contact with developer | ✅ Always |
 
-### Build
+---
 
-```bash
-npm run build
-```
+## 🛠️ Tech Stack
 
-### Preview Production Build
+### Frontend Technologies 🎨
 
-```bash
-npm run preview
-```
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-## Project Structure
+### Animation & Build ⚡
 
-```
-src/
-├── components/     # Reusable components (Button, Card, Header, Footer)
-├── pages/         # Page components (Home, Packages, Portfolio, etc.)
-├── App.tsx        # Main app component with routing
-├── main.tsx       # Entry point
-└── index.css      # Global styles and Tailwind imports
-```
+![Framer](https://img.shields.io/badge/Framer_Motion-black?style=for-the-badge&logo=framer&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 
-## Features
+### Deployment 🌍
 
-- ✅ Responsive design (mobile, tablet, desktop)
-- ✅ Smooth animations with Framer Motion
-- ✅ Multi-step contact form
-- ✅ Portfolio showcase with filtering
-- ✅ Package comparison
-- ✅ SEO-friendly structure
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-## Design System
+---
 
-- **Colors**: Black (#000000), White (#FFFFFF), Gray (#F5F5F5), Dark Gray (#2D2D2D)
-- **Typography**: System fonts (Apple system font stack)
-- **Spacing**: 8px base unit (8px, 16px, 24px, 32px, 48px, 64px)
-- **Border Radius**: 6px (inputs), 8px (cards), 12px (large elements)
+## 📱 Website Features
 
-## Pages
+### ✨ Modern Design
+- Clean, minimalist aesthetic
+- Professional typography
+- Smooth scroll animations
+- Intuitive navigation
 
-- `/` - Home page
-- `/packages` - Package details and pricing
-- `/portfolio` - Portfolio showcase
-- `/how-it-works` - Process explanation
-- `/about` - About Studio Thielman
-- `/contact` - Contact form
+### 📊 Portfolio Showcase
+- Project galleries
+- Case studies
+- Client testimonials
+- Before/after comparisons
 
-## License
+### 📋 Service Packages
+- Clear pricing tiers
+- Feature comparisons
+- Transparent offerings
+- Easy decision making
+
+### 📬 Contact System
+- Multi-step contact form
+- Quick response times
+- Direct communication
+- Project inquiry handling
+
+### 🍪 Privacy Compliant
+- Cookie consent management
+- GDPR friendly
+- Transparent data handling
+
+---
+
+## 🎯 Target Audience
+
+| Client Type | Needs We Solve |
+|-------------|----------------|
+| **Small Businesses** | Professional online presence without breaking the bank |
+| **Entrepreneurs** | Launch their brand with a modern website |
+| **Local Shops** | Get found by customers in their area |
+| **Startups** | Establish credibility with quality web design |
+
+---
+
+## 💡 Why Choose Studio Thielman?
+
+> **"A great website doesn't have to cost a fortune. It just needs the right expertise and a passion for helping businesses grow."**
+
+- 🇧🇪 **Local Expertise** - Understanding of Belgian market
+- 💬 **Personal Approach** - Direct contact, no middlemen
+- 🎨 **Quality Design** - Modern, professional aesthetics
+- 💰 **Fair Pricing** - Affordable without compromising quality
+- 🔧 **Full Service** - From design to deployment and beyond
+
+---
+
+## 👤 About the Creator
+
+**Ruben Thielman** - Web Developer & Designer
+
+- 🚀 Building modern web experiences
+- 💼 Focus on small business solutions
+- 🎨 Eye for clean, effective design
+- 🇧🇪 Based in Belgium
+
+### Connect
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/BeCreativeRuben)
+[![Website](https://img.shields.io/badge/Website-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://studiothielman.be)
+
+---
+
+## 📜 License
 
 © 2026 Studio Thielman. All rights reserved.
+
+---
+
+⭐ **Interested in working together? Visit [studiothielman.be](https://studiothielman.be) to get started!** ⭐
+
+*Last Updated: January 2026*
