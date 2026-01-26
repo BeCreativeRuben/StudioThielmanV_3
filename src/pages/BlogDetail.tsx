@@ -37,7 +37,7 @@ export default function BlogDetail() {
     }
 
     // Load jQuery if not already loaded (required for Mailchimp validation)
-    if (typeof window.jQuery === 'undefined') {
+    if (typeof (window as any).jQuery === 'undefined') {
       const script = document.createElement('script')
       script.src = 'https://code.jquery.com/jquery-3.6.0.min.js'
       script.integrity = 'sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4='
