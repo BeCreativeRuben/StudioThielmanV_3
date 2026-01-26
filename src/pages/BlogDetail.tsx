@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Button from '../components/Button'
@@ -8,6 +8,7 @@ export default function BlogDetail() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const [post, setPost] = useState<BlogPost | null>(null)
+  const htmlSectionRefs = useRef<{ [key: number]: HTMLDivElement | null }>({})
 
   useEffect(() => {
     if (slug) {
@@ -20,6 +21,58 @@ export default function BlogDetail() {
       }
     }
   }, [slug, navigate])
+
+  // Execute scripts in HTML sections after they're rendered
+  useEffect(() => {
+    if (!post) return
+
+    // Load Mailchimp CSS if not already loaded
+    const mailchimpCSS = '//cdn-images.mailchimp.com/embedcode/classic-061523.css'
+    if (!document.querySelector(`link[href="${mailchimpCSS}"]`)) {
+      const link = document.createElement('link')
+      link.href = mailchimpCSS
+      link.rel = 'stylesheet'
+      link.type = 'text/css'
+      document.head.appendChild(link)
+    }
+
+    // Load jQuery if not already loaded (required for Mailchimp validation)
+    if (typeof window.jQuery === 'undefined') {
+      const script = document.createElement('script')
+      script.src = 'https://code.jquery.com/jquery-3.6.0.min.js'
+      script.integrity = 'sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4='
+      script.crossOrigin = 'anonymous'
+      document.head.appendChild(script)
+      
+      script.onload = () => {
+        // Execute Mailchimp scripts after jQuery loads
+        executeMailchimpScripts()
+      }
+    } else {
+      executeMailchimpScripts()
+    }
+
+    function executeMailchimpScripts() {
+      // Execute scripts in all HTML sections
+      Object.values(htmlSectionRefs.current).forEach((container) => {
+        if (!container) return
+
+        const scripts = container.querySelectorAll('script')
+        scripts.forEach((oldScript) => {
+          // Skip if script already executed
+          if (oldScript.dataset.executed === 'true') return
+          
+          const newScript = document.createElement('script')
+          Array.from(oldScript.attributes).forEach((attr) => {
+            newScript.setAttribute(attr.name, attr.value)
+          })
+          newScript.textContent = oldScript.textContent
+          oldScript.dataset.executed = 'true'
+          oldScript.parentNode?.replaceChild(newScript, oldScript)
+        })
+      })
+    }
+  }, [post])
 
   if (!post) {
     return (
@@ -90,6 +143,21 @@ export default function BlogDetail() {
               />
             </div>
           </motion.div>
+        )
+      case 'html':
+        return (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="my-8"
+            ref={(el) => {
+              htmlSectionRefs.current[index] = el
+            }}
+            dangerouslySetInnerHTML={{ __html: section.content }}
+          />
         )
       default:
         return null

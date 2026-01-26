@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
-import { blogPosts } from '../data/blog'
+import { visibleBlogPosts } from '../data/blog'
 
 export default function Blog() {
   return (
@@ -31,7 +31,7 @@ export default function Blog() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            {blogPosts.map((post, index) => (
+            {visibleBlogPosts.map((post, index) => (
               <motion.div
                 key={post.slug}
                 initial={{ opacity: 0, y: 30 }}
