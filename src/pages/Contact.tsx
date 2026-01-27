@@ -195,7 +195,28 @@ export default function Contact() {
       }, 300)
     } catch (error: any) {
       console.error('Submission error:', error)
-      alert(`Failed to submit form: ${error.message || 'Unknown error'}`)
+      // Show error message and scroll to Get In Touch section
+      setTimeout(() => {
+        const getInTouchSection = document.getElementById('get-in-touch')
+        if (getInTouchSection) {
+          const headerHeight = 80
+          const elementPosition = getInTouchSection.getBoundingClientRect().top + window.pageYOffset
+          const offsetPosition = elementPosition - headerHeight - 20
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+          
+          // Highlight the section briefly
+          getInTouchSection.classList.add('ring-4', 'ring-red-500', 'ring-opacity-50')
+          setTimeout(() => {
+            getInTouchSection.classList.remove('ring-4', 'ring-red-500', 'ring-opacity-50')
+          }, 3000)
+        }
+      }, 100)
+      
+      alert('Our system seems to be experiencing some issues at the moment. Contact us directly instead!')
     } finally {
       setIsSubmitting(false)
     }
@@ -253,7 +274,7 @@ export default function Contact() {
       </section>
 
       {/* Contact Info Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="get-in-touch" className="py-20 bg-gray-50 scroll-mt-20 transition-all">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
@@ -289,6 +310,19 @@ export default function Contact() {
                       <p className="text-body-lg text-text-primary font-medium">Address</p>
                       <p className="text-body text-text-primary">Pereboomsteenweg 49</p>
                       <p className="text-body text-text-primary">Moerbeke 9180</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-6 h-6 mt-1">
+                      <svg className="w-6 h-6 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-body-lg text-text-primary font-medium">Email</p>
+                      <a href="mailto:ruben.thielman@gmail.com" className="text-body text-cta hover:text-cta/80 transition-colors">
+                        ruben.thielman@gmail.com
+                      </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
