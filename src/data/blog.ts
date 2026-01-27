@@ -51,11 +51,11 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        content: 'In de wereld van accountancy zorgt AI voor een stille revolutie. Waar een boekhouder vroeger uren besteedde aan het handmatig invoeren van facturen en het matchen van bankafschriften, neemt intelligente software dit nu in een fractie van een seconde over. AI herkent patronen en signaleert onmiddellijk afwijkingen die voor het menselijk oog onzichtbaar blijven, wat de kans op fouten drastisch verkleint.'
+        content: 'In de wereld van accountancy zorgt AI voor een stille revolutie. Waar een boekhouder vroeger uren besteedde aan het handmatig invoeren van facturen en het matchen van bankafschriften, neemt intelligente software dit nu in een fractie van een seconde over. AI kan patronen snel analyseren en mogelijke afwijkingen signaleren, wat de boekhouder veel tijd bespaart en de kans op fouten drastisch verkleint.'
       },
       {
         type: 'paragraph',
-        content: 'De echte winst zit echter in de toekomstvisie. AI kan op basis van historische data nauwkeurige cashflow-prognoses maken. Zo verandert de rol van de boekhouder: van iemand die vertelt hoe het kwartaal was, naar een strategisch partner die op basis van data adviseert over de stappen van morgen.'
+        content: 'De echte winst zit echter in de toekomstvisie. AI kan op basis van historische data snel nauwkeurige cashflow-prognoses genereren, wat de boekhouder helpt om naast het rapporteren over het verleden ook strategisch advies te geven over de toekomst. Zo krijgt de boekhouder meer ruimte om als strategisch partner te fungeren en klanten te begeleiden bij belangrijke beslissingen.'
       },
       {
         type: 'heading',
@@ -576,79 +576,37 @@ export const blogPosts: BlogPost[] = [
     sections: [
       {
         type: 'paragraph',
-        content: 'Als web- en softwareontwikkelaars weten we één ding zeker: een aantrekkelijk design is een mooi begin, maar een platform dat écht rendeert en met je meegroeit is de uiteindelijke winst. Dat verschil maken wij door middel van een doordacht en transparant stappenplan. In deze blog nemen we je mee achter de schermen van onze werkwijze en ontdek je hoe we elk project van de eerste schets tot de uiteindelijke lancering naar een topresultaat begeleiden.'
+        content: 'Als web- en softwareontwikkelaars weten we één ding zeker: een aantrekkelijk design is een mooi begin, maar een platform dat écht rendeert en met je meegroeit is de uiteindelijke winst. Dat verschil maken wij door middel van een doordacht en transparant stappenplan.'
+      },
+      {
+        type: 'paragraph',
+        content: 'Veel bureaus doen het verkeerd. Ze duiken direct in het visuele ontwerp zonder de essentie van het bedrijf écht te doorgronden. Wij pakken het fundamenteel anders aan. Geen gokwerk, maar een proces dat gericht is op jouw bedrijfsdoelen en de behoeften van je klant.'
       },
       {
         type: 'heading',
-        content: 'De fundering van een sterk project',
+        content: 'Fase 1: Van Strategie tot Realisatie',
         level: 2
       },
       {
         type: 'paragraph',
-        content: 'Veel bureaus maken de fout om direct in het visuele ontwerp te duiken zonder de essentie van een bedrijf te doorgronden. Wij pakken het fundamenteel anders aan. Ons proces is erop ingericht dat elke creatieve of technische beslissing gegrond is in jouw specifieke bedrijfsdoelen en de behoeften van je eindgebruiker. Zo voorkomen we gokwerk en bouwen we aan een resultaat dat niet alleen vandaag werkt, maar ook klaar is voor de uitdagingen van morgen.'
+        content: 'Alles begint bij de juiste fundering. In de strategie- en ontwerpfase graven we diep: wie is je doelgroep en wat wil je echt bereiken? Of het nu gaat om meer verkoop of een vlotter boekingssysteem, we leggen de KPI\'s vast die er écht toe doen. Dit vertalen we naar een logische structuur (wireframes) en sterke content die zowel je klant als Google aanspreekt.'
+      },
+      {
+        type: 'paragraph',
+        content: 'Zodra de blauwdruk staat, brengen we het project visueel tot leven met een design dat op elk device perfect werkt. Onze developers nemen het daarna over om een geoliede machine te bouwen. We kiezen voor moderne technieken en schone code. Geen trage templates of onnodige ballast, maar een razendsnelle website die klaar is voor de toekomst.'
       },
       {
         type: 'heading',
-        content: 'Fase 1: Discovery & Strategie',
+        content: 'Fase 2: Lancering en Continue Groei',
         level: 2
       },
       {
         type: 'paragraph',
-        content: 'Alles begint bij het stellen van de juiste vragen. In de strategische fase graven we diep in de kern van jouw organisatie. We onderzoeken wie je doelgroep is en tegen welke pijnpunten zij aanlopen, maar kijken ook kritisch naar wat jou onderscheidt van de concurrentie. Of het doel nu meer directe verkoop, kwalitatieve leads of een efficiënter boekingssysteem is: we leggen de KPI\'s vast die er écht toe doen. Het resultaat van deze fase is een helder strategisch document dat als blauwdruk dient voor alles wat volgt. Zonder deze sterke strategie bouwen we blind, en dat is precies wat we voorkomen.'
-      },
-      {
-        type: 'heading',
-        content: 'Fase 2: Architectuur en de User Journey',
-        level: 2
+        content: 'Een website is bij ons nooit "klaar" op de dag van lancering. Voordat we live gaan, onderwerpen we alles aan een strenge kwaliteitscontrole. We testen elke link, elk formulier en de snelheid op alle browsers. Pas als alles vlekkeloos werkt, drukken we op de knop.'
       },
       {
         type: 'paragraph',
-        content: 'Met de strategie als leidraad vertalen we de plannen naar een logische structuur. Dit begint bij de sitemap, waarbij we de hiërarchie en de onderlinge samenhang van alle pagina\'s bepalen. Vervolgens werken we dit uit in wireframes: functionele bouwtekeningen waarin we de indeling vastleggen zonder de afleiding van kleur of beeld. Hierin staat de \'User Journey\' centraal. We zorgen ervoor dat bezoekers intuïtief hun weg vinden en binnen enkele klikken op hun bestemming aankomen. Zie het als de architectuur van een gebouw; pas als de muren en de routing kloppen, kijken we naar de inrichting.'
-      },
-      {
-        type: 'heading',
-        content: 'Fase 3: Content als drijvende kracht',
-        level: 2
-      },
-      {
-        type: 'paragraph',
-        content: 'Een website zonder sterke inhoud is als een huls zonder kern. Daarom besteden we uitgebreid aandacht aan de content-voorbereiding. Samen kijken we welke teksten en Calls-to-Action de meeste impact maken en welke visuele elementen, zoals fotografie en video, jouw merkversterken. We schrijven en selecteren content met de eindgebruiker in gedachten, terwijl we tegelijkertijd zorgen dat alles technisch geoptimaliseerd is voor zoekmachines (SEO). Zo spreekt de website zowel je klant als Google aan.'
-      },
-      {
-        type: 'heading',
-        content: 'Fase 4: Design & Brand Expression',
-        level: 2
-      },
-      {
-        type: 'paragraph',
-        content: 'Pas als de structuur en de inhoud staan, brengen we het project visueel tot leven. Het design is bij Studio Thielman veel meer dan een verzameling mooie plaatjes; het is een doordachte vertaling van je merkidentiteit. We creëren een unieke visuele taal met zorgvuldig gekozen typografie, kleuren en witruimtes die op elk device — van smartphone tot desktop — perfect tot hun recht komen. Elke pixel heeft een functie en draagt bij aan een consistente, professionele ervaring die vertrouwen wekt bij je bezoekers.'
-      },
-      {
-        type: 'heading',
-        content: 'Fase 5: Development & De bouw',
-        level: 2
-      },
-      {
-        type: 'paragraph',
-        content: 'Zodra het ontwerp staat, nemen onze developers het stokje over. Afhankelijk van jouw specifieke behoeften kiezen we de juiste tech-stack, of dat nu een flexibel WordPress-systeem, een moderne React-oplossing of een krachtig Headless CMS is. We bouwen volgens een \'performance-first\' principe: dat betekent razendsnelle laadtijden, schone code zonder overbodige ballast en een ijzersterke beveiliging. Jouw website wordt gebouwd als een geoliede machine die moeiteloos presteert onder druk.'
-      },
-      {
-        type: 'heading',
-        content: 'Fase 6: Kwaliteitscontrole en Lancering',
-        level: 2
-      },
-      {
-        type: 'paragraph',
-        content: 'Voordat we de wereld laten zien wat we gemaakt hebben, onderwerpen we het project aan een strenge keuring. Tijdens deze testing-fase controleren we of elke link, elk formulier en elke koppeling vlekkeloos werkt. We testen de snelheid op verschillende browsers en zorgen dat de mobiele ervaring op elk type scherm foutloos is. Pas als we zeker weten dat alles optimaal functioneert, drukken we op de knop voor de livegang.'
-      },
-      {
-        type: 'heading',
-        content: 'Fase 7: Groei en Optimalisatie',
-        level: 2
-      },
-      {
-        type: 'paragraph',
-        content: 'De lancering is voor ons niet het eindpunt, maar juist het begin. Een succesvolle website is een levend bezit dat aandacht nodig heeft om te blijven groeien. Na de livegang blijven we betrokken door de prestaties nauwgezet te monitoren. We analyseren het gedrag van gebruikers en voeren op basis van die data verbeteringen door. Door middel van periodiek onderhoud en proactieve support zorgen we ervoor dat je platform altijd veilig, snel en relevant blijft.'
+        content: 'Wij zien de lancering als dag één, niet als de laatste dag. Een succesvol platform moet namelijk groeien. Na de livegang blijven we betrokken door de prestaties te monitoren en het gedrag van je bezoekers te analyseren. Op basis van die data voeren we verbeteringen door, zodat je website niet alleen online staat, maar ook echt voor je blijft werken.'
       },
       {
         type: 'heading',
@@ -657,11 +615,15 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        content: 'Onze werkwijze rust op drie belangrijke pijlers: strategie boven esthetiek, echte samenwerking en een moderne, lean bouw. We bouwen eerst de motor van je digitale business en zorgen daarna pas voor het glimmende lakwerk. Daarbij werken we niet simpelweg voor jou, maar echt met jou; jouw expertise in je eigen vakgebied is immers onmisbaar voor het beste resultaat. Door te kiezen voor moderne technieken en een eerlijk proces, leveren we een platform dat niet alleen vandaag indruk maakt, maar ook klaar is voor de toekomst.'
+        content: 'Onze werkwijze rust op een simpel principe: strategie boven esthetiek. Een mooi design zonder plan is als een Ferrari zonder motor; het ziet er leuk uit, maar je komt nergens. Door echte samenwerking en een moderne basis leveren we een platform dat direct resultaat levert.'
       },
       {
         type: 'paragraph',
-        content: 'Benieuwd hoe we dit proces kunnen inzetten voor jouw volgende digitale uitdaging?'
+        content: 'We scheiden de bijzaken van de hoofdzaken en stellen onszelf bij elke stap één vraag: "Helpt dit onze klant echt vooruit?" Dat is hoe wij het verschil maken.'
+      },
+      {
+        type: 'paragraph',
+        content: 'Benieuwd hoe we dit proces kunnen inzetten voor jouw volgende digitale uitdaging? Contacteer Studio Thielman'
       }
     ],
     cta: {
