@@ -99,7 +99,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           return res.status(400).json({ error: 'Business description must be 100 characters or less' })
         }
 
-        // Upsert into Mailchimp first so the frontend can trust success == Mailchimp accepted it
+        // Prepare Mailchimp data
         const nameParts = String(name).trim().split(/\s+/)
         const firstName = sanitizeMailchimpText(nameParts[0] || '')
         const lastName = sanitizeMailchimpText(nameParts.slice(1).join(' ') || '')
@@ -116,32 +116,51 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           ? rawExistingWebsiteUrl
           : ''
 
-        await upsertMailchimpMember({
-          email,
-          statusIfNew: 'subscribed',
-          mergeFields: {
-            FNAME: firstName,
-            LNAME: lastName,
-            MMERGE1: safeBusinessName,
-            MMERGE2: safePhone,
-            MMERGE3: safeBusinessDescription,
-            MMERGE4: safePackage,
-            ...(safePackageOther ? { MMERGE5: safePackageOther } : {}),
-            ...(safeHasExistingWebsite ? { MMERGE6: safeHasExistingWebsite } : {}),
-            ...(safeExistingWebsiteUrl ? { MMERGE7: safeExistingWebsiteUrl } : {}),
-          },
-          tags: ['Contact Form', 'Lead'],
-        })
+        // Insert submission first (database is more reliable)
+        let submissionId: number | undefined
+        try {
+          const result = await dbRun(
+            `INSERT INTO submissions 
+             (businessName, name, email, phone, businessDescription, package, packageOther, hasExistingWebsite, existingWebsiteUrl)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [businessName, name, email, phone, businessDescription, packageName, packageOther || null, hasExistingWebsite || null, existingWebsiteUrl || null]
+          )
+          submissionId = result.lastID
+        } catch (dbError: any) {
+          console.error('Database insert error:', dbError)
+          return res.status(500).json({ 
+            error: 'Failed to save submission',
+            message: 'Database error occurred. Please try again later.',
+            details: process.env.NODE_ENV === 'development' ? dbError.message : undefined
+          })
+        }
 
-        // Insert submission
-        const result = await dbRun(
-          `INSERT INTO submissions 
-           (businessName, name, email, phone, businessDescription, package, packageOther, hasExistingWebsite, existingWebsiteUrl)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          [businessName, name, email, phone, businessDescription, packageName, packageOther || null, hasExistingWebsite || null, existingWebsiteUrl || null]
-        )
-
-        const submissionId = result.lastID
+        // Try to upsert into Mailchimp (non-blocking - don't fail if Mailchimp is down)
+        let mailchimpAccepted = false
+        let mailchimpError: string | undefined
+        try {
+          await upsertMailchimpMember({
+            email,
+            statusIfNew: 'subscribed',
+            mergeFields: {
+              FNAME: firstName,
+              LNAME: lastName,
+              MMERGE1: safeBusinessName,
+              MMERGE2: safePhone,
+              MMERGE3: safeBusinessDescription,
+              MMERGE4: safePackage,
+              ...(safePackageOther ? { MMERGE5: safePackageOther } : {}),
+              ...(safeHasExistingWebsite ? { MMERGE6: safeHasExistingWebsite } : {}),
+              ...(safeExistingWebsiteUrl ? { MMERGE7: safeExistingWebsiteUrl } : {}),
+            },
+            tags: ['Contact Form', 'Lead'],
+          })
+          mailchimpAccepted = true
+        } catch (mailchimpErr: any) {
+          console.error('Mailchimp error:', mailchimpErr)
+          mailchimpError = mailchimpErr.message || 'Mailchimp service unavailable'
+          // Continue anyway - submission is saved to database
+        }
 
         // Send email notification (non-blocking)
         sendSubmissionNotification({
@@ -158,17 +177,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           console.error('Email notification error:', err)
         })
 
+        // Return success even if Mailchimp failed (submission is saved)
         return res.status(201).json({
           success: true,
           id: submissionId,
-          mailchimpAccepted: true,
-          message: 'Submission received successfully'
+          mailchimpAccepted,
+          message: 'Submission received successfully',
+          ...(mailchimpError && { mailchimpWarning: mailchimpError })
         })
       } catch (error: any) {
         console.error('Submission error:', error)
+        console.error('Error stack:', error.stack)
         return res.status(500).json({ 
           error: 'Failed to process submission',
-          details: process.env.NODE_ENV === 'development' ? error.message : undefined
+          message: error.message || 'An unexpected error occurred',
+          details: process.env.NODE_ENV === 'development' ? error.stack : undefined
         })
       }
     }

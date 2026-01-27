@@ -24,11 +24,11 @@ async function ensureDb() {
     await initializeDatabase()
     
     // Initialize admin user if needed
-    const admin = await dbGet('SELECT * FROM admin_users WHERE username = $1', ['admin'])
+    const admin = await dbGet('SELECT * FROM admin_users WHERE username = ?', ['admin'])
     if (!admin) {
       const defaultHash = await bcrypt.hash('admin123', 10)
       await dbRun(
-        'INSERT INTO admin_users (username, passwordHash, email) VALUES ($1, $2, $3)',
+        'INSERT INTO admin_users (username, passwordHash, email) VALUES (?, ?, ?)',
         ['admin', defaultHash, 'admin@studiothielman.com']
       )
     }
@@ -80,14 +80,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       let admin: { id: number; username: string; passwordHash: string } | undefined
       try {
         admin = await dbGet<{ id: number; username: string; passwordHash: string }>(
-          'SELECT id, username, passwordHash FROM admin_users WHERE username = $1',
+          'SELECT id, username, passwordHash FROM admin_users WHERE username = ?',
           [username]
         )
       } catch (dbQueryError: any) {
         console.error('Database query error:', dbQueryError)
+        console.error('Error stack:', dbQueryError.stack)
         return res.status(500).json({ 
           error: 'Database query failed',
-          message: dbQueryError.message || 'Unknown database query error'
+          message: dbQueryError.message || 'Unknown database query error',
+          details: process.env.NODE_ENV === 'development' ? dbQueryError.stack : undefined
         })
       }
 
