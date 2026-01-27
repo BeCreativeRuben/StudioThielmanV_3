@@ -54,13 +54,13 @@ export default function Privacy() {
                     <strong>Company Name:</strong> Studio Thielman
                   </p>
                   <p className="text-body leading-relaxed mb-2">
-                    <strong>Address:</strong> [Your Business Address, Belgium]
+                    <strong>Address:</strong> Pereboomsteenweg 49, 9180 Moerbeke, Belgium
                   </p>
                   <p className="text-body leading-relaxed mb-2">
-                    <strong>Email:</strong> [Your Contact Email]
+                    <strong>Email:</strong> ruben.thielman@gmail.com
                   </p>
                   <p className="text-body leading-relaxed">
-                    <strong>VAT Number:</strong> [Your VAT Number]
+                    <strong>Phone:</strong> +32 493 50 56 41
                   </p>
                 </div>
               </div>
@@ -187,10 +187,13 @@ export default function Privacy() {
                 </p>
                 <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                   <p className="text-body leading-relaxed mb-2">
-                    <strong>Email:</strong> [Your Contact Email]
+                    <strong>Email:</strong> ruben.thielman@gmail.com
+                  </p>
+                  <p className="text-body leading-relaxed mb-2">
+                    <strong>Phone:</strong> +32 493 50 56 41
                   </p>
                   <p className="text-body leading-relaxed">
-                    <strong>Address:</strong> [Your Business Address, Belgium]
+                    <strong>Address:</strong> Pereboomsteenweg 49, 9180 Moerbeke, Belgium
                   </p>
                 </div>
               </div>

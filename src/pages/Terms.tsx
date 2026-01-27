@@ -53,13 +53,13 @@ export default function Terms() {
                   <strong>Company Name:</strong> Studio Thielman
                 </p>
                 <p className="text-body leading-relaxed mb-2">
-                  <strong>Address:</strong> [Your Business Address, Belgium]
+                  <strong>Address:</strong> Pereboomsteenweg 49, 9180 Moerbeke, Belgium
                 </p>
                 <p className="text-body leading-relaxed mb-2">
-                  <strong>Email:</strong> [Your Contact Email]
+                  <strong>Email:</strong> ruben.thielman@gmail.com
                 </p>
                 <p className="text-body leading-relaxed">
-                  <strong>VAT Number:</strong> [Your VAT Number]
+                  <strong>Phone:</strong> +32 493 50 56 41
                 </p>
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function Terms() {
               <ul className="list-disc list-inside space-y-2 text-body ml-4 mb-4">
                 <li>For one-time projects: [To be specified - e.g., 50% deposit upon agreement, 50% upon completion]</li>
                 <li>For monthly packages: Payment is due monthly in advance</li>
-                <li>All prices are in EUR and exclude VAT unless stated otherwise</li>
+                <li>All prices are in EUR</li>
               </ul>
               <p className="text-body leading-relaxed mb-4">
                 <strong>Late Payment:</strong> If payment is not received within [X] days of the due date, we reserve the right to suspend services until payment is received. Late payments may incur interest charges as permitted by Belgian law.
@@ -207,7 +207,7 @@ export default function Terms() {
             <div>
               <h2 className="text-3xl font-bold text-primary mb-4">12. Governing Law and Dispute Resolution</h2>
               <p className="text-body leading-relaxed mb-4">
-                These terms are governed by Belgian law. Any disputes arising from these terms or our services shall be subject to the exclusive jurisdiction of the courts of [Your City, Belgium].
+                These terms are governed by Belgian law. Any disputes arising from these terms or our services shall be subject to the exclusive jurisdiction of the courts of Belgium.
               </p>
               <p className="text-body leading-relaxed">
                 Before initiating legal proceedings, parties agree to attempt to resolve disputes through good faith negotiation. If negotiation fails, disputes may be resolved through mediation or arbitration as agreed by both parties.
@@ -222,10 +222,13 @@ export default function Terms() {
               </p>
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                 <p className="text-body leading-relaxed mb-2">
-                  <strong>Email:</strong> [Your Contact Email]
+                  <strong>Email:</strong> ruben.thielman@gmail.com
+                </p>
+                <p className="text-body leading-relaxed mb-2">
+                  <strong>Phone:</strong> +32 493 50 56 41
                 </p>
                 <p className="text-body leading-relaxed">
-                  <strong>Address:</strong> [Your Business Address, Belgium]
+                  <strong>Address:</strong> Pereboomsteenweg 49, 9180 Moerbeke, Belgium
                 </p>
               </div>
             </div>
