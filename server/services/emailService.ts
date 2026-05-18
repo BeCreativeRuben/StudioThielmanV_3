@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer'
-import { addContactToMailchimp, getAutoReplyTemplate } from './mailchimpService.js'
+import { Resend } from 'resend'
+import { getAutoReplyTemplate } from './emailTemplates.js'
 
 interface SubmissionData {
   businessName: string
@@ -19,63 +19,102 @@ interface ChatMessageData {
   message: string
 }
 
-const GMAIL_USER = process.env.GMAIL_USER
-const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD
+let resendClient: Resend | null = null
 
-if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
-  console.warn('Gmail credentials not configured. Email notifications will be disabled.')
+function getResend(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    return null
+  }
+  if (!resendClient) {
+    resendClient = new Resend(apiKey)
+  }
+  return resendClient
 }
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: GMAIL_USER,
-    pass: GMAIL_APP_PASSWORD
-  }
-})
+function isResendConfigured(): boolean {
+  return Boolean(
+    process.env.RESEND_API_KEY &&
+    process.env.RESEND_FROM &&
+    process.env.RESEND_NOTIFY_EMAIL
+  )
+}
 
-/**
- * Send friendly auto-reply to user
- */
+if (!isResendConfigured()) {
+  console.warn(
+    'Resend not fully configured (RESEND_API_KEY, RESEND_FROM, RESEND_NOTIFY_EMAIL). Email notifications will be disabled.'
+  )
+}
+
+async function sendEmail(params: {
+  to: string | string[]
+  subject: string
+  html: string
+  text: string
+  replyTo?: string
+}): Promise<void> {
+  const resend = getResend()
+  const from = process.env.RESEND_FROM
+
+  if (!resend || !from) {
+    console.log('Email skipped - Resend not configured')
+    return
+  }
+
+  const { error } = await resend.emails.send({
+    from,
+    to: params.to,
+    subject: params.subject,
+    html: params.html,
+    text: params.text,
+    replyTo: params.replyTo,
+  })
+
+  if (error) {
+    throw new Error(error.message)
+  }
+}
+
 async function sendAutoReply(email: string, userName?: string): Promise<void> {
-  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
-    console.log('Auto-reply skipped - Gmail not configured')
+  if (!isResendConfigured()) {
+    console.log('Auto-reply skipped - Resend not configured')
     return
   }
 
   try {
     const template = getAutoReplyTemplate(userName)
-    
-    await transporter.sendMail({
-      from: `"Ruben Thielman" <${GMAIL_USER}>`,
+
+    await sendEmail({
       to: email,
       subject: template.subject,
       text: template.text,
       html: template.html,
     })
-    
+
     console.log(`Auto-reply sent to: ${email}`)
   } catch (error) {
     console.error('Failed to send auto-reply:', error)
-    // Don't throw - we don't want auto-reply failures to break form submission
   }
 }
 
 export async function sendSubmissionNotification(data: SubmissionData): Promise<void> {
-  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
-    console.log('Email notification skipped - Gmail not configured')
+  if (!isResendConfigured()) {
+    console.log('Email notification skipped - Resend not configured')
     return
   }
 
-  const packageText = data.package === 'Other' && data.packageOther 
-    ? `${data.package} (${data.packageOther})`
-    : data.package
+  const notifyEmail = process.env.RESEND_NOTIFY_EMAIL!
+  const packageText =
+    data.package === 'Other' && data.packageOther
+      ? `${data.package} (${data.packageOther})`
+      : data.package
 
-  const websiteInfo = data.hasExistingWebsite === 'yes' && data.existingWebsiteUrl
-    ? `Yes - ${data.existingWebsiteUrl}`
-    : data.hasExistingWebsite === 'yes'
-    ? 'Yes (URL not provided)'
-    : 'No'
+  const websiteInfo =
+    data.hasExistingWebsite === 'yes' && data.existingWebsiteUrl
+      ? `Yes - ${data.existingWebsiteUrl}`
+      : data.hasExistingWebsite === 'yes'
+        ? 'Yes (URL not provided)'
+        : 'No'
 
   const htmlBody = `
     <h2>New Contact Form Submission</h2>
@@ -106,40 +145,28 @@ Submitted at: ${new Date().toLocaleString()}
   `
 
   try {
-    // Send notification to admin
-    await transporter.sendMail({
-      from: GMAIL_USER,
-      to: GMAIL_USER, // Send to yourself
+    await sendEmail({
+      to: notifyEmail,
       subject: `New Contact Form Submission: ${data.businessName}`,
       text: textBody,
       html: htmlBody,
-      replyTo: data.email // So you can reply directly
+      replyTo: data.email,
     })
     console.log('Submission notification email sent successfully')
 
-    // Send auto-reply to user
-    await sendAutoReply(data.email, data.name).catch(err => {
-      console.error('Auto-reply error:', err)
-    })
-
-    // Add to Mailchimp
-    await addContactToMailchimp(data.email, data.name, undefined, ['Contact Form', 'Lead']).catch(err => {
-      console.error('Mailchimp error:', err)
-    })
+    await sendAutoReply(data.email, data.name)
   } catch (error) {
     console.error('Failed to send submission notification email:', error)
-    // Don't throw - we don't want email failures to break form submission
   }
 }
 
-/**
- * Send notification for chat messages
- */
 export async function sendChatMessageNotification(data: ChatMessageData): Promise<void> {
-  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
-    console.log('Chat notification skipped - Gmail not configured')
+  if (!isResendConfigured()) {
+    console.log('Chat notification skipped - Resend not configured')
     return
   }
+
+  const notifyEmail = process.env.RESEND_NOTIFY_EMAIL!
 
   const htmlBody = `
     <h2>New Chat Message</h2>
@@ -162,31 +189,20 @@ Received at: ${new Date().toLocaleString()}
   `
 
   try {
-    // Send notification to admin
-    await transporter.sendMail({
-      from: GMAIL_USER,
-      to: GMAIL_USER,
+    await sendEmail({
+      to: notifyEmail,
       subject: `New Chat Message${data.userName ? ` from ${data.userName}` : ''}`,
       text: textBody,
       html: htmlBody,
-      replyTo: data.userEmail || undefined
+      replyTo: data.userEmail || undefined,
     })
     console.log('Chat notification email sent successfully')
 
-    // Send auto-reply to user if email provided
     if (data.userEmail) {
-      await sendAutoReply(data.userEmail, data.userName).catch(err => {
-        console.error('Auto-reply error:', err)
-      })
-
-      // Add to Mailchimp
-      await addContactToMailchimp(data.userEmail, data.userName, undefined, ['Chat Message', 'Lead']).catch(err => {
-        console.error('Mailchimp error:', err)
-      })
+      await sendAutoReply(data.userEmail, data.userName)
     }
   } catch (error) {
     console.error('Failed to send chat notification email:', error)
-    // Don't throw - we don't want email failures to break chat submission
   }
 }
 
@@ -196,7 +212,7 @@ function escapeHtml(text: string): string {
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
-    "'": '&#039;'
+    "'": '&#039;',
   }
   return text.replace(/[&<>"']/g, (m) => map[m])
 }

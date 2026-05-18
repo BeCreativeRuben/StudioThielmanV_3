@@ -47,16 +47,14 @@ VITE_API_URL=https://your-vercel-app.vercel.app/api
 ```
 PORT=3001
 DATABASE_PATH=/tmp/submissions.db
-GMAIL_USER=your-email@gmail.com
-GMAIL_APP_PASSWORD=your-gmail-app-password
+RESEND_API_KEY=re_xxxxxxxx
+RESEND_FROM=Studio Thielman <contact@yourdomain.com>
+RESEND_NOTIFY_EMAIL=you@yourdomain.com
 JWT_SECRET=your-secret-key-change-this-in-production
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH=your-hashed-password
 FRONTEND_URL=https://your-vercel-app.vercel.app
 NODE_ENV=production
-MAILCHIMP_API_KEY=your-mailchimp-api-key
-MAILCHIMP_SERVER_PREFIX=us1
-MAILCHIMP_AUDIENCE_ID=your-mailchimp-audience-id
 ```
 
 ## Deployment Steps

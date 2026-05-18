@@ -18,27 +18,18 @@ Create a `.env` file in the `server/` directory:
 ```env
 PORT=3001
 DATABASE_PATH=./server/database/submissions.db
-GMAIL_USER=your-email@gmail.com
-GMAIL_APP_PASSWORD=your-app-password
+RESEND_API_KEY=re_xxxxxxxx
+RESEND_FROM=Studio Thielman <contact@yourdomain.com>
+RESEND_NOTIFY_EMAIL=you@yourdomain.com
 JWT_SECRET=your-secret-key-change-this-in-production
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH=hashed-password-here
 FRONTEND_URL=http://localhost:5173
-
-# Mailchimp Configuration (for contact management and auto-replies)
-MAILCHIMP_API_KEY=your-api-key-here
-MAILCHIMP_SERVER_PREFIX=us1
-MAILCHIMP_AUDIENCE_ID=your-audience-id-here
 ```
 
-**Important Notes:**
+See [RESEND_SETUP.md](./RESEND_SETUP.md) for Resend domain verification and API key setup.
 
-- **Gmail App Password**: To get a Gmail app password:
-  1. Go to your Google Account settings
-  2. Enable 2-Step Verification
-  3. Go to App Passwords
-  4. Generate a new app password for "Mail"
-  5. Use this password (not your regular Gmail password) in `GMAIL_APP_PASSWORD`
+**Important Notes:**
 
 - **Admin Password**: The admin password should be hashed using bcrypt. You can use the included script or hash it manually:
   ```bash
@@ -124,15 +115,15 @@ The SQLite database is automatically created on first run at `server/database/su
 
 ## Email Notifications
 
-When a new form submission is received, an email notification is sent to the address specified in `GMAIL_USER`. The email includes all submission details and the reply-to is set to the submitter's email for easy response.
+When a new form submission or chat message is received, Resend sends:
+
+1. A notification to `RESEND_NOTIFY_EMAIL` (with `replyTo` set to the visitor)
+2. An auto-reply thank-you email to the visitor
 
 ## Troubleshooting
 
 **Database errors:** Ensure the `server/database/` directory exists and is writable.
 
-**Email not sending:** 
-- Verify Gmail app password is correct
-- Check that 2-Step Verification is enabled
-- Ensure `GMAIL_USER` and `GMAIL_APP_PASSWORD` are set correctly
+**Email not sending:** See [RESEND_SETUP.md](./RESEND_SETUP.md). Confirm `RESEND_API_KEY`, `RESEND_FROM`, and `RESEND_NOTIFY_EMAIL` are set and your domain is verified in Resend.
 
 **CORS errors:** Update `FRONTEND_URL` in `.env` to match your frontend URL.

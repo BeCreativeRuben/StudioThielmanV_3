@@ -110,7 +110,7 @@ async function initializeAdminUser(): Promise<void> {
       // Create default admin user
       await dbRun(
         'INSERT INTO admin_users (username, passwordHash, email) VALUES (?, ?, ?)',
-        [adminUsername, adminPasswordHash, process.env.GMAIL_USER || '']
+        [adminUsername, adminPasswordHash, process.env.RESEND_NOTIFY_EMAIL || '']
       )
       console.log('Default admin user created')
     } else if (!existing) {
@@ -119,7 +119,7 @@ async function initializeAdminUser(): Promise<void> {
       const hash = await bcrypt.hash(defaultPassword, 10)
       await dbRun(
         'INSERT INTO admin_users (username, passwordHash, email) VALUES (?, ?, ?)',
-        [adminUsername, hash, process.env.GMAIL_USER || '']
+        [adminUsername, hash, process.env.RESEND_NOTIFY_EMAIL || '']
       )
       console.log(`Default admin user created with username: ${adminUsername}, password: ${defaultPassword}`)
       console.log('⚠️  Please change the default password after first login!')

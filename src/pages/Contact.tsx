@@ -5,19 +5,6 @@ import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 
-function sanitizeMailchimpText(input: string): string {
-  return (input || '')
-    .normalize('NFKD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^A-Za-z0-9 ]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
-function sanitizeMailchimpPhone(input: string): string {
-  return (input || '').replace(/\D+/g, '').trim()
-}
-
 const PACKAGE_OPTIONS = [
   { value: 'Starter', labelKey: 'starter' as const },
   { value: 'Growth', labelKey: 'growth' as const },
@@ -141,13 +128,6 @@ export default function Contact() {
     try {
       const payload = {
         ...formData,
-        businessName: sanitizeMailchimpText(formData.businessName),
-        name: sanitizeMailchimpText(formData.name),
-        phone: sanitizeMailchimpPhone(formData.phone),
-        businessDescription: sanitizeMailchimpText(formData.businessDescription),
-        package: sanitizeMailchimpText(formData.package),
-        packageOther: formData.packageOther ? sanitizeMailchimpText(formData.packageOther) : '',
-        hasExistingWebsite: formData.hasExistingWebsite ? sanitizeMailchimpText(formData.hasExistingWebsite) : '',
         existingWebsiteUrl: (formData.existingWebsiteUrl || '').trim(),
       }
 

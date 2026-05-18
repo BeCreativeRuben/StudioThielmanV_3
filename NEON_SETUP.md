@@ -25,11 +25,9 @@ POSTGRES_DATABASE=<db>
 POSTGRES_PRISMA_URL=postgresql://<user>:<password>@<host>/<db>?connect_timeout=15&sslmode=require
 
 # Existing environment variables (keep these)
-MAILCHIMP_API_KEY=your-mailchimp-api-key-here
-MAILCHIMP_SERVER_PREFIX=us1
-MAILCHIMP_AUDIENCE_ID=your-mailchimp-audience-id-here
-GMAIL_USER=your-email@gmail.com
-GMAIL_APP_PASSWORD=your-gmail-app-password
+RESEND_API_KEY=re_xxxxxxxx
+RESEND_FROM=Studio Thielman <contact@yourdomain.com>
+RESEND_NOTIFY_EMAIL=you@yourdomain.com
 JWT_SECRET=your-secret-key-change-this-in-production
 FRONTEND_URL=https://studiothielman.com
 ```
