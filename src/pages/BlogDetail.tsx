@@ -223,16 +223,10 @@ export default function BlogDetail() {
       {/* Blog Content */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
             <div className="prose prose-lg max-w-none">
               {post.sections.map((section, index) => renderSection(section, index))}
             </div>
-          </motion.div>
+
         </div>
       </section>
 

@@ -59,10 +59,18 @@ function parsePortfolioSlugs(portfolioSource) {
 
 function parseVisibleBlogSlugs(blogSource) {
   const source = normalize(blogSource)
-  const start = source.indexOf('export const blogPosts')
-  const end = source.indexOf('// Filter function', start)
-  const block = source.slice(start, end)
-  return extractSlugsFromBlock(block, { respectVisibleFrom: true })
+  const markers = ['export const newBlogPosts', 'export const blogPosts']
+  const slugs = []
+
+  for (const marker of markers) {
+    const start = source.indexOf(marker)
+    if (start === -1) continue
+    const end = source.indexOf('\n]', start)
+    const block = end === -1 ? source.slice(start) : source.slice(start, end + 2)
+    slugs.push(...extractSlugsFromBlock(block, { respectVisibleFrom: true }))
+  }
+
+  return [...new Set(slugs)]
 }
 
 const lastmod = new Date().toISOString().slice(0, 10)
@@ -78,7 +86,9 @@ function urlEntry(path, changefreq, priority) {
 }
 
 const portfolioSource = readFileSync(join(process.cwd(), 'src/data/portfolio.ts'), 'utf8')
-const blogSource = readFileSync(join(process.cwd(), 'src/data/blog.ts'), 'utf8')
+const blogSource =
+  readFileSync(join(process.cwd(), 'src/data/blog.ts'), 'utf8') +
+  readFileSync(join(process.cwd(), 'src/data/blog/newPosts.ts'), 'utf8')
 
 const portfolioSlugs = parsePortfolioSlugs(portfolioSource)
 const blogSlugs = parseVisibleBlogSlugs(blogSource)

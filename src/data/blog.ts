@@ -1,25 +1,10 @@
-export interface BlogSection {
-  type: 'heading' | 'paragraph' | 'image' | 'html'
-  content: string
-  level?: number // For headings (2 = h2, 3 = h3, etc.)
-  alt?: string // For images
-}
+import { newBlogPosts } from './blog/newPosts'
 
-export interface BlogPost {
-  slug: string
-  title: string
-  excerpt: string
-  date: string
-  featuredImage?: string
-  sections: BlogSection[]
-  cta: {
-    text: string
-    link: string
-  }
-  visibleFrom?: string // ISO date string (YYYY-MM-DD) - post will be hidden until this date
-}
+export type { BlogPost, BlogSection } from './blog/types'
+import type { BlogPost } from './blog/types'
 
 export const blogPosts: BlogPost[] = [
+  ...newBlogPosts,
   {
     slug: 'ai-in-de-praktijk-van-slimme-loodgieters-tot-de-dietist-van-de-toekomst',
     title: 'AI in de Praktijk: Van Slimme Loodgieters tot de Diëtist van de Toekomst',
