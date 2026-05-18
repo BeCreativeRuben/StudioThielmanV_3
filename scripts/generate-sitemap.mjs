@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 const SITE_URL = 'https://studiothielman.com'
+const NL_PREFIX = '/nl'
 
 const staticPaths = [
   '/',
@@ -93,13 +94,17 @@ const blogSource =
 const portfolioSlugs = parsePortfolioSlugs(portfolioSource)
 const blogSlugs = parseVisibleBlogSlugs(blogSource)
 
-const urls = [
-  ...staticPaths.map((path) =>
-    urlEntry(path, path === '/' ? 'weekly' : 'monthly', path === '/' ? '1.0' : '0.8')
-  ),
-  ...portfolioSlugs.map((slug) => urlEntry(`/portfolio/${slug}`, 'monthly', '0.7')),
-  ...blogSlugs.map((slug) => urlEntry(`/blog/${slug}`, 'monthly', '0.6')),
+const allPaths = [
+  ...staticPaths,
+  ...staticPaths.map((p) => (p === '/' ? NL_PREFIX : `${NL_PREFIX}${p}`)),
+  ...portfolioSlugs.map((slug) => `/portfolio/${slug}`),
+  ...portfolioSlugs.map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
+  ...blogSlugs.map((slug) => `${NL_PREFIX}/blog/${slug}`),
 ]
+
+const urls = allPaths.map((path) =>
+  urlEntry(path, path === '/' || path === NL_PREFIX ? 'weekly' : 'monthly', path === '/' || path === NL_PREFIX ? '1.0' : path.includes('/blog/') ? '0.6' : '0.8')
+)
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

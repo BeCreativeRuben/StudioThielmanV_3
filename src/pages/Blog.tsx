@@ -1,9 +1,14 @@
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
 import Button from '../components/Button'
-import { visibleBlogPosts } from '../data/blog'
+import LocalizedLink from '../i18n/LocalizedLink'
+import { useLocale } from '../i18n/LocaleProvider'
+import { getVisibleBlogPostsForLocale } from '../data/blog'
 
 export default function Blog() {
+  const { locale, messages } = useLocale()
+  const copy = messages.blog
+  const posts = getVisibleBlogPostsForLocale(locale === 'nl-BE' ? 'nl-BE' : 'en')
+
   return (
     <div>
       {/* Hero Section - Dark Background */}

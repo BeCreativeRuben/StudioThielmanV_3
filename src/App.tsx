@@ -4,6 +4,7 @@ import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import SeoRouteSync from './components/SeoRouteSync'
 import CookieConsentBanner from './components/CookieConsentBanner'
+import { LocaleProvider } from './i18n/LocaleProvider'
 import Home from './pages/Home'
 import Packages from './pages/Packages'
 import Portfolio from './pages/Portfolio'
@@ -22,35 +23,52 @@ function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow">
-        {children}
-      </main>
+      <main className="flex-grow">{children}</main>
       <Footer />
       <CookieConsentBanner />
     </div>
   )
 }
 
+const publicRoutes = [
+  { path: '/', element: <Home /> },
+  { path: '/packages', element: <Packages /> },
+  { path: '/portfolio', element: <Portfolio /> },
+  { path: '/portfolio/:slug', element: <PortfolioDetail /> },
+  { path: '/blog', element: <Blog /> },
+  { path: '/blog/:slug', element: <BlogDetail /> },
+  { path: '/current-projects', element: <CurrentProjects /> },
+  { path: '/how-it-works', element: <HowItWorks /> },
+  { path: '/about', element: <About /> },
+  { path: '/contact', element: <Contact /> },
+  { path: '/privacy', element: <Privacy /> },
+  { path: '/terms', element: <Terms /> },
+] as const
+
 function App() {
   return (
     <Router>
-      <ScrollToTop />
-      <SeoRouteSync />
-      <Routes>
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
-        <Route path="/packages" element={<MainLayout><Packages /></MainLayout>} />
-        <Route path="/portfolio" element={<MainLayout><Portfolio /></MainLayout>} />
-        <Route path="/portfolio/:slug" element={<MainLayout><PortfolioDetail /></MainLayout>} />
-        <Route path="/blog" element={<MainLayout><Blog /></MainLayout>} />
-        <Route path="/blog/:slug" element={<MainLayout><BlogDetail /></MainLayout>} />
-        <Route path="/current-projects" element={<MainLayout><CurrentProjects /></MainLayout>} />
-        <Route path="/how-it-works" element={<MainLayout><HowItWorks /></MainLayout>} />
-        <Route path="/about" element={<MainLayout><About /></MainLayout>} />
-        <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
-        <Route path="/privacy" element={<MainLayout><Privacy /></MainLayout>} />
-        <Route path="/terms" element={<MainLayout><Terms /></MainLayout>} />
-      </Routes>
+      <LocaleProvider>
+        <ScrollToTop />
+        <SeoRouteSync />
+        <Routes>
+          <Route path="/admin" element={<Admin />} />
+          {publicRoutes.map(({ path, element }) => (
+            <Route
+              key={path}
+              path={path}
+              element={<MainLayout>{element}</MainLayout>}
+            />
+          ))}
+          {publicRoutes.map(({ path, element }) => (
+            <Route
+              key={`nl-${path}`}
+              path={path === '/' ? '/nl' : `/nl${path}`}
+              element={<MainLayout>{element}</MainLayout>}
+            />
+          ))}
+        </Routes>
+      </LocaleProvider>
     </Router>
   )
 }

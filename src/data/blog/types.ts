@@ -5,6 +5,8 @@ export interface BlogSection {
   alt?: string
 }
 
+export type BlogLocale = 'en' | 'nl-BE'
+
 export interface BlogPost {
   slug: string
   title: string
@@ -17,4 +19,6 @@ export interface BlogPost {
     link: string
   }
   visibleFrom?: string
+  /** Defaults to nl-BE for existing posts */
+  locale?: BlogLocale
 }

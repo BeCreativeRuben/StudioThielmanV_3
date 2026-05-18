@@ -1,7 +1,14 @@
 import { Helmet } from 'react-helmet-async'
+import { useLocale } from '../i18n/LocaleProvider'
+import { LOCALE_HTML_LANG } from '../i18n/config'
 import { BUSINESS, SITE_NAME, SITE_URL } from '../seo/site'
 
 export default function StructuredData() {
+  const { locale, messages } = useLocale()
+  const inLanguage = LOCALE_HTML_LANG[locale]
+  const areaServed = messages.seo.structured.areaServed
+  const serviceDescription = messages.seo.structured.serviceDescription
+
   const organization = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -10,7 +17,7 @@ export default function StructuredData() {
     logo: `${SITE_URL}/favicon.png`,
     email: BUSINESS.email,
     telephone: BUSINESS.phone,
-    areaServed: BUSINESS.areaServed,
+    areaServed,
     sameAs: [BUSINESS.instagram, BUSINESS.linkedIn],
   }
 
@@ -19,7 +26,7 @@ export default function StructuredData() {
     '@type': 'WebSite',
     name: SITE_NAME,
     url: SITE_URL,
-    inLanguage: 'nl-BE',
+    inLanguage,
     publisher: {
       '@type': 'Organization',
       name: SITE_NAME,
@@ -35,11 +42,10 @@ export default function StructuredData() {
     telephone: BUSINESS.phone,
     areaServed: {
       '@type': 'Country',
-      name: 'Belgium',
+      name: locale === 'nl-BE' ? 'Belgium' : 'Worldwide',
     },
     priceRange: '€€',
-    description:
-      'Web design and development studio offering professional websites, SEO, and AI integrations for Belgian businesses.',
+    description: serviceDescription,
   }
 
   return (

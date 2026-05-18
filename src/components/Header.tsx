@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import logoImage from '../images/fulllogo copy.png'
-
+import { useLocale } from '../i18n/LocaleProvider'
+import LocalizedLink from '../i18n/LocalizedLink'
+import LanguageSwitcher from './LanguageSwitcher'
 export default function Header() {
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -53,15 +55,19 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [location.pathname])
   
+  const { t, pathWithoutLocale } = useLocale()
+
   const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/packages', label: 'Packages' },
-    { path: '/portfolio', label: 'Portfolio' },
-    { path: '/blog', label: 'Blog' },
-    { path: '/how-it-works', label: 'How we work' },
-    { path: '/about', label: 'About' },
-    { path: '/contact', label: 'Contact' },
+    { path: '/', label: t('common.nav.home') },
+    { path: '/packages', label: t('common.nav.packages') },
+    { path: '/portfolio', label: t('common.nav.portfolio') },
+    { path: '/blog', label: t('common.nav.blog') },
+    { path: '/how-it-works', label: t('common.nav.howItWorks') },
+    { path: '/about', label: t('common.nav.about') },
+    { path: '/contact', label: t('common.nav.contact') },
   ]
+
+  const isActive = (path: string) => pathWithoutLocale === path
   
   return (
     <motion.header
@@ -79,27 +85,27 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
+          <LocalizedLink to="/" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
             <img 
               src={logoImage} 
-              alt="Studio Thielman Logo" 
+              alt={t('common.a11y.logoAlt')} 
               className="h-12 w-auto"
             />
             <span className={`font-bold text-xl tracking-tight hidden sm:block transition-colors duration-300 ${
               isScrolled ? 'text-primary' : 'text-white'
             }`}>
-              STUDIO THIELMAN
+              {t('common.brand')}
             </span>
-          </Link>
+          </LocalizedLink>
           
           {/* Navigation Links - Desktop */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             {navLinks.map((link) => (
-              <Link
+              <LocalizedLink
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
-                  location.pathname === link.path
+                  isActive(link.path)
                     ? isScrolled 
                       ? 'text-primary font-semibold' 
                       : 'text-white font-semibold'
@@ -109,13 +115,13 @@ export default function Header() {
                 }`}
               >
                 {link.label}
-              </Link>
+              </LocalizedLink>
             ))}
           </div>
           
           {/* CTA Button - Desktop */}
-          <div className="hidden md:block">
-            <Link to="/contact#contact-form">
+          <div className="hidden md:flex items-center gap-3 shrink-0">
+            <LocalizedLink to="/contact#contact-form">
               {isScrolled ? (
                 <motion.button
                   type="button"
@@ -124,7 +130,7 @@ export default function Header() {
                   whileTap={{ scale: 0.98 }}
                   style={{ color: '#FFFFFF', WebkitTextFillColor: '#FFFFFF', backgroundColor: '#000000' }}
                 >
-                  <span style={{ color: '#FFFFFF' }}>Book a Call</span>
+                  <span style={{ color: '#FFFFFF' }}>{t('common.cta.bookCall')}</span>
                 </motion.button>
               ) : (
                 <motion.button
@@ -134,10 +140,10 @@ export default function Header() {
                   whileTap={{ scale: 0.98 }}
                   style={{ color: '#1F2937', WebkitTextFillColor: '#1F2937' }}
                 >
-                  <span style={{ color: '#1F2937' }}>Book a Call</span>
+                  <span style={{ color: '#1F2937' }}>{t('common.cta.bookCall')}</span>
                 </motion.button>
               )}
-            </Link>
+            </LocalizedLink>
           </div>
           
           {/* Mobile Menu Button */}
@@ -146,7 +152,7 @@ export default function Header() {
               isScrolled ? 'text-primary' : 'text-white'
             }`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={t('common.a11y.toggleMenu')}
           >
             {mobileMenuOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,12 +182,12 @@ export default function Header() {
             >
               <div className="py-4 space-y-4">
                 {navLinks.map((link) => (
-                  <Link
+                  <LocalizedLink
                     key={link.path}
                     to={link.path}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`block px-4 text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
-                      location.pathname === link.path
+                      isActive(link.path)
                         ? isScrolled
                           ? 'text-primary font-semibold'
                           : 'text-white font-semibold'
@@ -191,10 +197,13 @@ export default function Header() {
                     }`}
                   >
                     {link.label}
-                  </Link>
+                  </LocalizedLink>
                 ))}
+                <div className="px-4">
+                  <LanguageSwitcher className={isScrolled ? 'text-text-primary' : 'text-white/90'} />
+                </div>
                 <div className="px-4 pt-2">
-                  <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
+                  <LocalizedLink to="/contact" onClick={() => setMobileMenuOpen(false)}>
                     {isScrolled ? (
                       <motion.button
                         type="button"
@@ -203,7 +212,7 @@ export default function Header() {
                         whileTap={{ scale: 0.98 }}
                         style={{ color: '#FFFFFF', WebkitTextFillColor: '#FFFFFF', backgroundColor: '#000000' }}
                       >
-                        <span style={{ color: '#FFFFFF' }}>Book a Call</span>
+                        <span style={{ color: '#FFFFFF' }}>{t('common.cta.bookCall')}</span>
                       </motion.button>
                     ) : (
                       <motion.button
@@ -213,10 +222,10 @@ export default function Header() {
                         whileTap={{ scale: 0.98 }}
                         style={{ color: '#1F2937', WebkitTextFillColor: '#1F2937' }}
                       >
-                        <span style={{ color: '#1F2937' }}>Book a Call</span>
+                        <span style={{ color: '#1F2937' }}>{t('common.cta.bookCall')}</span>
                       </motion.button>
                     )}
-                  </Link>
+                  </LocalizedLink>
                 </div>
               </div>
             </motion.div>
