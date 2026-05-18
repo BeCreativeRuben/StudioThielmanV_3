@@ -19,6 +19,15 @@ interface ChatMessageData {
   message: string
 }
 
+export type EmailStepStatus = 'sent' | 'skipped' | 'failed'
+
+export interface EmailDeliveryResult {
+  configured: boolean
+  notification: EmailStepStatus
+  autoReply: EmailStepStatus
+  error?: string
+}
+
 let resendClient: Resend | null = null
 
 function getResend(): Resend | null {
@@ -32,12 +41,26 @@ function getResend(): Resend | null {
   return resendClient
 }
 
-function isResendConfigured(): boolean {
+export function isResendConfigured(): boolean {
   return Boolean(
     process.env.RESEND_API_KEY &&
     process.env.RESEND_FROM &&
     process.env.RESEND_NOTIFY_EMAIL
   )
+}
+
+export function getResendConfigStatus(): {
+  hasApiKey: boolean
+  hasFrom: boolean
+  hasNotifyEmail: boolean
+  ready: boolean
+} {
+  return {
+    hasApiKey: Boolean(process.env.RESEND_API_KEY),
+    hasFrom: Boolean(process.env.RESEND_FROM),
+    hasNotifyEmail: Boolean(process.env.RESEND_NOTIFY_EMAIL),
+    ready: isResendConfigured(),
+  }
 }
 
 if (!isResendConfigured()) {
@@ -57,11 +80,10 @@ async function sendEmail(params: {
   const from = process.env.RESEND_FROM
 
   if (!resend || !from) {
-    console.log('Email skipped - Resend not configured')
-    return
+    throw new Error('Resend not configured')
   }
 
-  const { error } = await resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from,
     to: params.to,
     subject: params.subject,
@@ -73,34 +95,34 @@ async function sendEmail(params: {
   if (error) {
     throw new Error(error.message)
   }
+
+  console.log('Resend email sent:', { id: data?.id, to: params.to, subject: params.subject })
 }
 
 async function sendAutoReply(email: string, userName?: string): Promise<void> {
-  if (!isResendConfigured()) {
-    console.log('Auto-reply skipped - Resend not configured')
-    return
-  }
+  const template = getAutoReplyTemplate(userName)
 
-  try {
-    const template = getAutoReplyTemplate(userName)
+  await sendEmail({
+    to: email,
+    subject: template.subject,
+    text: template.text,
+    html: template.html,
+  })
 
-    await sendEmail({
-      to: email,
-      subject: template.subject,
-      text: template.text,
-      html: template.html,
-    })
-
-    console.log(`Auto-reply sent to: ${email}`)
-  } catch (error) {
-    console.error('Failed to send auto-reply:', error)
-  }
+  console.log(`Auto-reply sent to: ${email}`)
 }
 
-export async function sendSubmissionNotification(data: SubmissionData): Promise<void> {
-  if (!isResendConfigured()) {
+export async function sendSubmissionNotification(data: SubmissionData): Promise<EmailDeliveryResult> {
+  const result: EmailDeliveryResult = {
+    configured: isResendConfigured(),
+    notification: 'skipped',
+    autoReply: 'skipped',
+  }
+
+  if (!result.configured) {
+    result.error = 'Missing RESEND_API_KEY, RESEND_FROM, or RESEND_NOTIFY_EMAIL'
     console.log('Email notification skipped - Resend not configured')
-    return
+    return result
   }
 
   const notifyEmail = process.env.RESEND_NOTIFY_EMAIL!
@@ -152,18 +174,44 @@ Submitted at: ${new Date().toLocaleString()}
       html: htmlBody,
       replyTo: data.email,
     })
+    result.notification = 'sent'
     console.log('Submission notification email sent successfully')
-
-    await sendAutoReply(data.email, data.name)
   } catch (error) {
+    result.notification = 'failed'
+    result.error = error instanceof Error ? error.message : 'Notification email failed'
     console.error('Failed to send submission notification email:', error)
+    return result
   }
+
+  try {
+    await sendAutoReply(data.email, data.name)
+    result.autoReply = 'sent'
+  } catch (error) {
+    result.autoReply = 'failed'
+    const autoReplyError = error instanceof Error ? error.message : 'Auto-reply failed'
+    result.error = result.error ? `${result.error}; ${autoReplyError}` : autoReplyError
+    console.error('Failed to send auto-reply:', error)
+  }
+
+  return result
 }
 
-export async function sendChatMessageNotification(data: ChatMessageData): Promise<void> {
-  if (!isResendConfigured()) {
+export async function sendChatMessageNotification(data: ChatMessageData): Promise<EmailDeliveryResult> {
+  const result: EmailDeliveryResult = {
+    configured: isResendConfigured(),
+    notification: 'skipped',
+    autoReply: 'skipped',
+  }
+
+  if (!result.configured) {
+    result.error = 'Missing RESEND_API_KEY, RESEND_FROM, or RESEND_NOTIFY_EMAIL'
     console.log('Chat notification skipped - Resend not configured')
-    return
+    return result
+  }
+
+  if (!data.userEmail) {
+    result.error = 'No visitor email provided'
+    return result
   }
 
   const notifyEmail = process.env.RESEND_NOTIFY_EMAIL!
@@ -196,14 +244,26 @@ Received at: ${new Date().toLocaleString()}
       html: htmlBody,
       replyTo: data.userEmail || undefined,
     })
+    result.notification = 'sent'
     console.log('Chat notification email sent successfully')
-
-    if (data.userEmail) {
-      await sendAutoReply(data.userEmail, data.userName)
-    }
   } catch (error) {
+    result.notification = 'failed'
+    result.error = error instanceof Error ? error.message : 'Chat notification failed'
     console.error('Failed to send chat notification email:', error)
+    return result
   }
+
+  try {
+    await sendAutoReply(data.userEmail, data.userName)
+    result.autoReply = 'sent'
+  } catch (error) {
+    result.autoReply = 'failed'
+    const autoReplyError = error instanceof Error ? error.message : 'Auto-reply failed'
+    result.error = result.error ? `${result.error}; ${autoReplyError}` : autoReplyError
+    console.error('Failed to send chat auto-reply:', error)
+  }
+
+  return result
 }
 
 function escapeHtml(text: string): string {

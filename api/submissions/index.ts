@@ -105,25 +105,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           })
         }
 
-        // Send email notification (non-blocking)
-        sendSubmissionNotification({
-          businessName,
-          name,
-          email,
-          phone,
-          businessDescription,
-          package: packageName,
-          packageOther,
-          hasExistingWebsite,
-          existingWebsiteUrl,
-        }).catch((err) => {
+        // Await email so Vercel does not terminate the function before Resend finishes
+        let email: Awaited<ReturnType<typeof sendSubmissionNotification>> | undefined
+        try {
+          email = await sendSubmissionNotification({
+            businessName,
+            name,
+            email,
+            phone,
+            businessDescription,
+            package: packageName,
+            packageOther,
+            hasExistingWebsite,
+            existingWebsiteUrl,
+          })
+        } catch (err) {
           console.error('Email notification error:', err)
-        })
+          email = {
+            configured: false,
+            notification: 'failed',
+            autoReply: 'failed',
+            error: err instanceof Error ? err.message : 'Email send failed',
+          }
+        }
 
         return res.status(201).json({
           success: true,
           id: submissionId,
           message: 'Submission received successfully',
+          email,
         })
       } catch (error: any) {
         console.error('Submission error:', error)

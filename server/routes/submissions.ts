@@ -54,25 +54,28 @@ router.post('/', submissionLimiter, async (req, res) => {
 
     const submissionId = result.lastID
 
-    // Send email notification (non-blocking)
-    sendSubmissionNotification({
-      businessName,
-      name,
-      email,
-      phone,
-      businessDescription,
-      package: packageName,
-      packageOther,
-      hasExistingWebsite,
-      existingWebsiteUrl
-    }).catch(err => {
+    let email: Awaited<ReturnType<typeof sendSubmissionNotification>> | undefined
+    try {
+      email = await sendSubmissionNotification({
+        businessName,
+        name,
+        email,
+        phone,
+        businessDescription,
+        package: packageName,
+        packageOther,
+        hasExistingWebsite,
+        existingWebsiteUrl,
+      })
+    } catch (err) {
       console.error('Email notification error:', err)
-    })
+    }
 
     res.status(201).json({
       success: true,
       id: submissionId,
-      message: 'Submission received successfully'
+      message: 'Submission received successfully',
+      ...(email && { email }),
     })
   } catch (error: any) {
     console.error('Submission error:', error)

@@ -56,22 +56,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         [finalSessionId, userName || null, userEmail || null, message.trim()]
       )
 
-      // Send email notification (non-blocking)
+      let email: Awaited<ReturnType<typeof sendChatMessageNotification>> | undefined
       if (userEmail) {
-        sendChatMessageNotification({
-          userName: userName || undefined,
-          userEmail,
-          message: message.trim()
-        }).catch(err => {
+        try {
+          email = await sendChatMessageNotification({
+            userName: userName || undefined,
+            userEmail,
+            message: message.trim(),
+          })
+        } catch (err) {
           console.error('Email notification error:', err)
-        })
+          email = {
+            configured: false,
+            notification: 'failed',
+            autoReply: 'failed',
+            error: err instanceof Error ? err.message : 'Email send failed',
+          }
+        }
       }
 
       return res.status(201).json({
         success: true,
         id: result.lastID,
         sessionId: finalSessionId,
-        message: 'Message saved successfully'
+        message: 'Message saved successfully',
+        ...(email && { email }),
       })
     } catch (error: any) {
       console.error('Chat message error:', error)

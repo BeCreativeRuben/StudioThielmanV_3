@@ -35,11 +35,11 @@ router.post('/messages', chatLimiter, async (req, res) => {
 
     // Send email notification (non-blocking)
     if (userEmail) {
-      sendChatMessageNotification({
+      await sendChatMessageNotification({
         userName: userName || undefined,
         userEmail,
-        message: message.trim()
-      }).catch(err => {
+        message: message.trim(),
+      }).catch((err) => {
         console.error('Email notification error:', err)
       })
     }
