@@ -1,5 +1,9 @@
 import { Resend } from 'resend'
-import { getAutoReplyTemplate } from './emailTemplates.js'
+import {
+  getAutoReplyTemplate,
+  getChatNotificationTemplate,
+  getSubmissionNotificationTemplate,
+} from './emailTemplates.js'
 
 interface SubmissionData {
   businessName: string
@@ -112,6 +116,14 @@ async function sendAutoReply(email: string, userName?: string): Promise<void> {
   console.log(`Auto-reply sent to: ${email}`)
 }
 
+function formatSubmittedAt(): string {
+  return new Date().toLocaleString('en-GB', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: 'Europe/Brussels',
+  })
+}
+
 export async function sendSubmissionNotification(data: SubmissionData): Promise<EmailDeliveryResult> {
   const result: EmailDeliveryResult = {
     configured: isResendConfigured(),
@@ -133,45 +145,28 @@ export async function sendSubmissionNotification(data: SubmissionData): Promise<
 
   const websiteInfo =
     data.hasExistingWebsite === 'yes' && data.existingWebsiteUrl
-      ? `Yes - ${data.existingWebsiteUrl}`
+      ? data.existingWebsiteUrl
       : data.hasExistingWebsite === 'yes'
         ? 'Yes (URL not provided)'
         : 'No'
 
-  const htmlBody = `
-    <h2>New Contact Form Submission</h2>
-    <p><strong>Business Name:</strong> ${escapeHtml(data.businessName)}</p>
-    <p><strong>Contact Name:</strong> ${escapeHtml(data.name)}</p>
-    <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
-    <p><strong>Phone:</strong> ${escapeHtml(data.phone)}</p>
-    <p><strong>Package Interest:</strong> ${escapeHtml(packageText)}</p>
-    <p><strong>Business Description:</strong></p>
-    <p>${escapeHtml(data.businessDescription)}</p>
-    <p><strong>Existing Website:</strong> ${escapeHtml(websiteInfo)}</p>
-    <hr>
-    <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
-  `
-
-  const textBody = `
-New Contact Form Submission
-
-Business Name: ${data.businessName}
-Contact Name: ${data.name}
-Email: ${data.email}
-Phone: ${data.phone}
-Package Interest: ${packageText}
-Business Description: ${data.businessDescription}
-Existing Website: ${websiteInfo}
-
-Submitted at: ${new Date().toLocaleString()}
-  `
+  const template = getSubmissionNotificationTemplate({
+    businessName: data.businessName,
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    packageText,
+    businessDescription: data.businessDescription,
+    websiteInfo,
+    submittedAt: formatSubmittedAt(),
+  })
 
   try {
     await sendEmail({
       to: notifyEmail,
-      subject: `New Contact Form Submission: ${data.businessName}`,
-      text: textBody,
-      html: htmlBody,
+      subject: template.subject,
+      text: template.text,
+      html: template.html,
       replyTo: data.email,
     })
     result.notification = 'sent'
@@ -215,34 +210,20 @@ export async function sendChatMessageNotification(data: ChatMessageData): Promis
   }
 
   const notifyEmail = process.env.RESEND_NOTIFY_EMAIL!
-
-  const htmlBody = `
-    <h2>New Chat Message</h2>
-    <p><strong>Name:</strong> ${escapeHtml(data.userName || 'Anonymous')}</p>
-    <p><strong>Email:</strong> ${escapeHtml(data.userEmail || 'Not provided')}</p>
-    <p><strong>Message:</strong></p>
-    <p>${escapeHtml(data.message)}</p>
-    <hr>
-    <p><small>Received at: ${new Date().toLocaleString()}</small></p>
-  `
-
-  const textBody = `
-New Chat Message
-
-Name: ${data.userName || 'Anonymous'}
-Email: ${data.userEmail || 'Not provided'}
-Message: ${data.message}
-
-Received at: ${new Date().toLocaleString()}
-  `
+  const template = getChatNotificationTemplate({
+    userName: data.userName || 'Anonymous',
+    userEmail: data.userEmail,
+    message: data.message,
+    receivedAt: formatSubmittedAt(),
+  })
 
   try {
     await sendEmail({
       to: notifyEmail,
-      subject: `New Chat Message${data.userName ? ` from ${data.userName}` : ''}`,
-      text: textBody,
-      html: htmlBody,
-      replyTo: data.userEmail || undefined,
+      subject: template.subject,
+      text: template.text,
+      html: template.html,
+      replyTo: data.userEmail,
     })
     result.notification = 'sent'
     console.log('Chat notification email sent successfully')
@@ -264,15 +245,4 @@ Received at: ${new Date().toLocaleString()}
   }
 
   return result
-}
-
-function escapeHtml(text: string): string {
-  const map: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;',
-  }
-  return text.replace(/[&<>"']/g, (m) => map[m])
 }
