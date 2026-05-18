@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
+import SeoRouteSync from './components/SeoRouteSync'
 import CookieConsentBanner from './components/CookieConsentBanner'
 import Home from './pages/Home'
 import Packages from './pages/Packages'
@@ -34,6 +35,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      <SeoRouteSync />
       <Routes>
         <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />

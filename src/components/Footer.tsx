@@ -43,9 +43,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-body text-white/80 hover:text-white transition-colors">
+                <Link to="/blog" className="text-body text-white/80 hover:text-white transition-colors">
                   Blog
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
