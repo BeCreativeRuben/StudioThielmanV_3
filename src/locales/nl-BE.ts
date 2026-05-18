@@ -36,6 +36,7 @@ export const nlBEMessages = {
     },
     footer: {
       contactLabel: 'CONTACT',
+      contactUs: 'Contacteer ons',
       tagline: 'Van ontwikkeling tot marketing — wij brengen je visie tot leven.',
       quickLinks: 'Snelle links',
       aboutUs: 'Over ons',

@@ -36,6 +36,7 @@ export const enMessages = {
     },
     footer: {
       contactLabel: 'CONTACT US',
+      contactUs: 'Contact Us',
       tagline: 'From development to marketing, we bring your vision to life.',
       quickLinks: 'Quick Links',
       aboutUs: 'About Us',
