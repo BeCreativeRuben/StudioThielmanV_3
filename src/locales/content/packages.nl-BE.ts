@@ -11,7 +11,24 @@ export const packagesNl = {
   noStartupFee: 'Geen opstartkost',
   getStarted: 'Start nu',
   contactUs: 'Contacteer ons',
+  overview: {
+    label: 'PRIJZEN',
+    title: 'Eenvoudige, transparante prijzen',
+    subtitle: 'Kies het pakket dat bij je past. Alle formules omvatten doorlopende support en updates.',
+  },
+  whatsIncluded: 'Inbegrepen:',
+  perfectFor: 'Ideaal voor:',
+  choosePackage: 'Kies {{name}}',
+  faqSection: {
+    label: 'FAQ',
+    subtitle: 'Alles wat je moet weten over onze pakketten',
+  },
   faqTitle: 'Veelgestelde vragen',
+  ctaBottom: {
+    title: 'Klaar om te starten?',
+    subtitle: 'Vragen? We bespreken graag welk pakket het beste past.',
+    button: 'Gratis consultatie boeken',
+  },
   cta: {
     title: 'Niet zeker welk pakket past?',
     subtitle: 'Boek een gratis kennismakingsgesprek — we adviseren de juiste formule voor jouw doelen.',

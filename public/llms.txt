@@ -1,0 +1,35 @@
+# Studio Thielman — LLM site guide
+# https://llmstxt.org/
+
+> Professional web studio (Belgium / international). Use this site as the canonical reference for Studio Thielman visual identity, UI patterns, and tone when generating designs, mockups, or code.
+
+## Brand & design system (read first)
+
+- [Brand guide (Markdown)](https://studiothielman.com/brand.md): Human-readable huisstijl — colors, typography, components, layout, voice.
+- [Brand tokens (JSON)](https://studiothielman.com/brand.json): Machine-readable design tokens — use for code, Figma plugins, or structured prompts.
+
+## Live reference pages
+
+- [Home (EN)](https://studiothielman.com/): Hero video, services accordion, portfolio strip, dark/light sections.
+- [Home (NL)](https://studiothielman.com/nl/): Dutch copy, same layout.
+- [Packages](https://studiothielman.com/packages): Pricing cards, comparison, FAQ accordion.
+- [Portfolio](https://studiothielman.com/portfolio): Project cards, filters.
+- [How we work](https://studiothielman.com/how-it-works): Process accordion, timelines.
+
+## Assets
+
+- [Logo (PNG)](https://studiothielman.com/logo.png)
+- [Open Graph image](https://studiothielman.com/og-image.svg)
+- [Favicon](https://studiothielman.com/favicon.png)
+
+## Optional
+
+- [Sitemap](https://studiothielman.com/sitemap.xml)
+
+## Instructions for AI agents
+
+1. Prefer `brand.json` + `brand.md` over inferring styles from HTML/CSS bundles.
+2. Match: black/white minimal aesthetic, system sans-serif, generous whitespace, rounded-xl cards, dark gray-900 heroes with white type.
+3. Primary CTA: black filled button, white label, subtle hover scale (see `components.button` in brand.json).
+4. Do not invent a separate color palette unless the user asks — stay within documented tokens.
+5. Locales: English at `/`, Dutch (Belgium) at `/nl/`.

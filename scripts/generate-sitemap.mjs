@@ -58,9 +58,9 @@ function parsePortfolioSlugs(portfolioSource) {
   return extractSlugsFromBlock(block, { skipComingSoon: true })
 }
 
-function parseVisibleBlogSlugs(blogSource) {
-  const source = normalize(blogSource)
-  const markers = ['export const newBlogPosts', 'export const blogPosts']
+function parseVisibleBlogSlugsFromFile(filePath) {
+  const source = normalize(readFileSync(join(process.cwd(), filePath), 'utf8'))
+  const markers = ['export const postsNl', 'export const postsEn', 'export const newBlogPosts', 'export const blogPosts']
   const slugs = []
 
   for (const marker of markers) {
@@ -87,19 +87,21 @@ function urlEntry(path, changefreq, priority) {
 }
 
 const portfolioSource = readFileSync(join(process.cwd(), 'src/data/portfolio.ts'), 'utf8')
-const blogSource =
-  readFileSync(join(process.cwd(), 'src/data/blog.ts'), 'utf8') +
-  readFileSync(join(process.cwd(), 'src/data/blog/newPosts.ts'), 'utf8')
 
 const portfolioSlugs = parsePortfolioSlugs(portfolioSource)
-const blogSlugs = parseVisibleBlogSlugs(blogSource)
+const blogSlugsNl = [
+  ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.nl-BE.ts'),
+  ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.nl-BE.additional.ts'),
+]
+const blogSlugsEn = parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.ts')
 
 const allPaths = [
   ...staticPaths,
   ...staticPaths.map((p) => (p === '/' ? NL_PREFIX : `${NL_PREFIX}${p}`)),
   ...portfolioSlugs.map((slug) => `/portfolio/${slug}`),
   ...portfolioSlugs.map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
-  ...blogSlugs.map((slug) => `${NL_PREFIX}/blog/${slug}`),
+  ...blogSlugsEn.map((slug) => `/blog/${slug}`),
+  ...blogSlugsNl.map((slug) => `${NL_PREFIX}/blog/${slug}`),
 ]
 
 const urls = allPaths.map((path) =>

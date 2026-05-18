@@ -1,0 +1,147 @@
+{
+  "$comment": "Canonical Studio Thielman design tokens. Keep in sync with tailwind.config.js. Fetch URL: https://studiothielman.com/brand.json",
+  "meta": {
+    "brand": "Studio Thielman",
+    "site": "https://studiothielman.com",
+    "version": "1.0.0",
+    "updated": "2026-05-18",
+    "sourceOfTruth": ["tailwind.config.js", "src/index.css", "public/brand.md"]
+  },
+  "voice": {
+    "tone": ["professional", "clear", "confident", "approachable", "no jargon"],
+    "audience": ["SMEs", "entrepreneurs", "Belgian and international businesses"],
+    "headlineStyle": "Short, benefit-led; mix uppercase section labels with bold H1",
+    "languages": {
+      "en": { "path": "/", "locale": "en" },
+      "nl-BE": { "path": "/nl/", "locale": "nl-BE", "note": "Dutch (Belgium)" }
+    }
+  },
+  "colors": {
+    "primary": { "hex": "#000000", "usage": "Headings, primary buttons, brand mark" },
+    "secondary": { "hex": "#FFFFFF", "usage": "Page backgrounds, inverse text on dark" },
+    "accent": { "hex": "#F5F5F5", "usage": "Subtle backgrounds, secondary surfaces" },
+    "cta": { "hex": "#000000", "usage": "Primary call-to-action buttons (same as primary)" },
+    "text": {
+      "primary": { "hex": "#2D2D2D", "usage": "Body copy" },
+      "secondary": { "hex": "#666666", "usage": "Labels, captions, meta" }
+    },
+    "border": { "hex": "#E5E5E5", "usage": "Cards, dividers" },
+    "semantic": {
+      "success": "#10B981",
+      "error": "#EF4444",
+      "info": "#3B82F6"
+    },
+    "sections": {
+      "heroDark": { "background": "#111827", "tailwind": "bg-gray-900", "text": "#FFFFFF" },
+      "heroOverlay": "linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4))",
+      "footer": { "background": "#111827", "tailwind": "bg-gray-900", "border": "#1F2937" }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "sans": "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif",
+      "mono": "'Courier New', Monaco, monospace"
+    },
+    "scale": {
+      "h1": { "size": "48px", "lineHeight": 1.2, "weight": 600 },
+      "h2": { "size": "36px", "lineHeight": 1.3, "weight": 600 },
+      "h3": { "size": "28px", "lineHeight": 1.3, "weight": 600 },
+      "h4": { "size": "24px", "lineHeight": 1.4, "weight": 600 },
+      "bodyLg": { "size": "18px", "lineHeight": 1.6, "weight": 400 },
+      "body": { "size": "16px", "lineHeight": 1.6, "weight": 400 },
+      "bodySm": { "size": "14px", "lineHeight": 1.5, "weight": 400 },
+      "caption": { "size": "12px", "lineHeight": 1.5, "weight": 400 }
+    },
+    "tailwindClasses": {
+      "h1": "text-4xl md:text-6xl font-bold",
+      "h2": "text-4xl md:text-5xl font-bold",
+      "sectionLabel": "text-sm uppercase tracking-wider text-white/60 or text-text-secondary",
+      "body": "text-body text-text-primary",
+      "bodyLarge": "text-body-lg text-text-primary"
+    }
+  },
+  "spacing": {
+    "scale": { "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px", "xl": "32px", "2xl": "48px", "3xl": "64px" },
+    "sectionPadding": "py-20 (80px vertical blocks)",
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "narrowContainer": "max-w-4xl or max-w-5xl for hero/CTA"
+  },
+  "layout": {
+    "grid": {
+      "cards": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8",
+      "twoCol": "grid grid-cols-1 md:grid-cols-2 gap-12"
+    },
+    "hero": {
+      "pattern": "Full-width dark section (bg-gray-900 + gradient overlay), centered copy, -mt-20 pt-20 to tuck under fixed header",
+      "title": "text-4xl md:text-6xl font-bold text-white",
+      "subtitle": "text-xl text-white/80 max-w-2xl mx-auto"
+    },
+    "header": {
+      "behavior": "Fixed top; transparent on hero, solid white with shadow after scroll",
+      "height": "~80px"
+    }
+  },
+  "components": {
+    "button": {
+      "base": "font-semibold rounded-lg transition-all duration-150 focus:ring-2 focus:ring-cta/50",
+      "variants": {
+        "cta": "bg-cta text-white border-2 border-cta shadow-lg hover:shadow-xl font-bold px-8 py-4",
+        "primary": "bg-primary text-white hover:bg-gray-900",
+        "outline": "bg-transparent border-2 border-primary text-primary hover:bg-accent",
+        "secondary": "bg-accent text-primary border-2 border-primary"
+      },
+      "sizes": { "sm": "px-4 py-2 text-sm", "md": "px-8 py-3", "lg": "px-8 py-4 text-lg" },
+      "motion": "hover scale 1.02, tap 0.98 (Framer Motion)"
+    },
+    "card": {
+      "default": "bg-white border border-gray-200 rounded-xl p-6 md:p-8",
+      "hover": "hover:shadow-xl transition-all duration-300 hover:-translate-y-1",
+      "interactive": "cursor-pointer group; title hover:text-cta"
+    },
+    "input": {
+      "default": "w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-50 focus:border-cta focus:ring-cta/20",
+      "error": "border-red-500 bg-red-50"
+    },
+    "accordion": {
+      "process": "border-2 border-gray-200 rounded-2xl shadow-xl; step title text-4xl md:text-5xl font-bold",
+      "faq": "border border-gray-200 rounded-xl; chevron rotate on expand"
+    },
+    "badge": {
+      "popular": "bg-cta text-white text-xs font-bold px-3 py-1 rounded-full uppercase",
+      "comingSoon": "muted pill on service cards"
+    }
+  },
+  "motion": {
+    "library": "framer-motion",
+    "defaults": {
+      "fadeUp": { "initial": { "opacity": 0, "y": 20 }, "animate": { "opacity": 1, "y": 0 }, "duration": 0.6 },
+      "staggerCards": "delay index * 0.1",
+      "accordion": "height auto, opacity 0.3s"
+    },
+    "marquee": "25s linear infinite horizontal scroll (services strip)"
+  },
+  "imagery": {
+    "style": ["clean", "professional", "real projects", "rounded-xl crops", "optional Unsplash placeholders for services"],
+    "avatars": "rounded-full border-4 border-cta shadow-lg",
+    "aspectRatios": { "cardThumb": "h-56 object-cover", "heroVideo": "full-bleed background video on home" }
+  },
+  "assets": {
+    "logo": "https://studiothielman.com/logo.png",
+    "ogImage": "https://studiothielman.com/og-image.svg",
+    "favicon": "https://studiothielman.com/favicon.png"
+  },
+  "do": [
+    "Use black & white as dominant palette with gray-50 section alternation",
+    "Use uppercase tracking-wider labels above section titles",
+    "Keep generous whitespace and max-w-7xl centered containers",
+    "Use rounded-xl for cards and rounded-lg for buttons/inputs",
+    "Use dark heroes with white text for page intros"
+  ],
+  "dont": [
+    "Do not use bright saturated brand colors (no blue/purple primary)",
+    "Do not use decorative serif headlines unless explicitly requested",
+    "Do not use heavy gradients except hero dark overlays",
+    "Do not use sharp 0-radius buttons (brand uses rounded-lg+)"
+  ],
+  "promptSnippet": "Design in Studio Thielman style: minimal black-and-white web studio aesthetic, system sans-serif, gray-900 dark heroes with white H1, uppercase section labels, white cards with border-gray-200 rounded-xl and subtle hover lift, black CTA buttons with white text, max-w-7xl containers, py-20 sections. Colors: primary #000, text #2D2D2D, secondary text #666, accent bg #F5F5F5."
+}

@@ -4,3 +4,6 @@ Allow: /
 Disallow: /admin
 
 Sitemap: https://studiothielman.com/sitemap.xml
+
+# Machine-readable brand guide for AI assistants
+# https://studiothielman.com/llms.txt

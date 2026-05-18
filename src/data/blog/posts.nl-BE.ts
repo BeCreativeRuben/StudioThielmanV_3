@@ -1,13 +1,15 @@
 import type { BlogPost } from './types'
+import { postsNlAdditional } from './posts.nl-BE.additional'
 
 const contactCta = {
   text: 'Benieuwd wat dit voor jouw zaak kan betekenen? Neem contact op met Studio Thielman.',
   link: '/contact',
 }
 
-export const newBlogPosts: BlogPost[] = [
+export const postsNl: BlogPost[] = [
   {
     slug: 'waarom-ik-studio-thielman-heb-opgericht',
+    locale: 'nl-BE',
     title: 'Waarom ik Studio Thielman heb opgericht',
     excerpt:
       'Ik zag zelfstandigen en KMO\'s betalen voor websites die te duur, te complex of te traag waren. Studio Thielman is mijn antwoord: professioneel online, vanaf €25 per maand, zonder technische stress.',
@@ -65,6 +67,7 @@ export const newBlogPosts: BlogPost[] = [
   },
   {
     slug: 'wat-kost-een-website-in-2026-eerlijk-overzicht',
+    locale: 'nl-BE',
     title: 'Wat kost een website in 2026? Een eerlijk overzicht',
     excerpt:
       'Freelancer, bureau, DIY-builder of abonnement? We zetten de opties naast elkaar met realistische prijzen voor België — en leggen uit waar €25 per maand past als slimme middenweg.',
@@ -145,6 +148,7 @@ export const newBlogPosts: BlogPost[] = [
   },
   {
     slug: 'ai-bouwde-deel-van-je-website-wat-betekent-dat',
+    locale: 'nl-BE',
     title: 'AI bouwde deel van je website. Wat betekent dat eigenlijk?',
     excerpt:
       'Geen magie, geen robot die je zaak overneemt. AI helpt mij sneller en consistenter bouwen — jij krijgt een menselijke partner die alles nakeek voordat het live gaat.',
@@ -202,6 +206,7 @@ export const newBlogPosts: BlogPost[] = [
   },
   {
     slug: 'wix-squarespace-vs-studio-thielman-eerlijke-vergelijking',
+    locale: 'nl-BE',
     title: 'Wix vs Squarespace vs Studio Thielman — een eerlijke vergelijking',
     excerpt:
       'DIY-platforms zijn sterk — voor de juiste persoon. We vergelijken eerlijk waar zelf bouwen wint, en waar een beheerde site met menselijke support beter past.',
@@ -262,6 +267,7 @@ export const newBlogPosts: BlogPost[] = [
   },
   {
     slug: 'verborgen-kosten-gratis-website-builders',
+    locale: 'nl-BE',
     title: "De verborgen kosten van 'gratis' website builders",
     excerpt:
       "Gratis bestaat zelden online. Domein, premium features, tijd, frustratie — tel het op en €25 per maand ziet er plots heel rationeel uit.",
@@ -319,6 +325,7 @@ export const newBlogPosts: BlogPost[] = [
   },
   {
     slug: 'wat-ik-leerde-van-belgische-ondernemers-online',
+    locale: 'nl-BE',
     title: "Wat ik leerde van Belgische bedrijven die online gaan",
     excerpt:
       'Terugkerende angsten, veelgemaakte fouten, en wat écht verschil maakt — van een studio die dagelijks met Vlaamse en Belgische KMO\'s werkt.',
@@ -374,4 +381,5 @@ export const newBlogPosts: BlogPost[] = [
     ],
     cta: contactCta,
   },
+  ...postsNlAdditional,
 ]

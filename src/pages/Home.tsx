@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../components/Button'
-import { portfolioItems as allPortfolioItems } from '../data/portfolio'
-import { currentProjects } from '../data/currentProjects'
+import { getPortfolioItems } from '../data/portfolio'
+import { getCurrentProjects } from '../data/currentProjects'
 import { getLatestBlogPost } from '../data/blog'
 import { getApiUrl } from '../utils/api'
+import { useLocale } from '../i18n/LocaleProvider'
+import LocalizedLink from '../i18n/LocalizedLink'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 import heroVideo from '../images/z_Upload-Image---Internal-Only-Style-6bab5259.mp4'
 import officeImage from '../images/c2ea26ea-23d3-4ee1-8710-74211f2d80be.jpeg'
@@ -20,8 +22,15 @@ const serviceImages = {
   cms: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=400&fit=crop&q=80' // Content management dashboard
 }
 
+const serviceImageKeys = ['webDesign', 'branding', 'seo', 'ecommerce', 'ai', 'cms'] as const
+
 // Blog Countdown Component
 function BlogCountdown() {
+  const { locale, messages } = useLocale()
+  const h = messages.home
+  const c = messages.common
+  const blogLocale = locale === 'nl-BE' ? 'nl-BE' : 'en'
+
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -64,14 +73,14 @@ function BlogCountdown() {
   }, [])
 
   const timeUnits = [
-    { label: 'Days', value: timeLeft.days },
-    { label: 'Hours', value: timeLeft.hours },
-    { label: 'Minutes', value: timeLeft.minutes },
-    { label: 'Seconds', value: timeLeft.seconds }
+    { label: h.blog.days, value: timeLeft.days },
+    { label: h.blog.hours, value: timeLeft.hours },
+    { label: h.blog.minutes, value: timeLeft.minutes },
+    { label: h.blog.seconds, value: timeLeft.seconds },
   ]
 
   if (timeLeft.total <= 0) {
-    const latestPost = getLatestBlogPost()
+    const latestPost = getLatestBlogPost(blogLocale)
     
     if (latestPost) {
       return (
@@ -97,20 +106,20 @@ function BlogCountdown() {
             )}
             <div className="p-8">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs text-text-secondary uppercase tracking-wider bg-accent px-3 py-1 rounded-full">Latest Article</span>
+                <span className="text-xs text-text-secondary uppercase tracking-wider bg-accent px-3 py-1 rounded-full">{h.blog.latestArticle}</span>
                 <span className="text-xs text-text-secondary">{latestPost.date}</span>
               </div>
               <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">{latestPost.title}</h3>
               <p className="text-body text-text-primary mb-6 line-clamp-3">{latestPost.excerpt}</p>
               <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                <Link to={`/blog/${latestPost.slug}`}>
+                <LocalizedLink to={`/blog/${latestPost.slug}`}>
                   <Button variant="primary">
-                    Read Full Article
+                    {c.cta.readMore}
                   </Button>
-                </Link>
-                <Link to="/blog" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  View All Posts →
-                </Link>
+                </LocalizedLink>
+                <LocalizedLink to="/blog" className="text-sm text-text-secondary hover:text-primary transition-colors">
+                  {c.nav.blog} →
+                </LocalizedLink>
               </div>
             </div>
           </div>
@@ -126,8 +135,8 @@ function BlogCountdown() {
         className="max-w-2xl mx-auto text-center"
       >
         <div className="bg-accent border border-gray-200 rounded-lg p-8">
-          <h3 className="text-2xl font-bold text-primary mb-2">Blog is Live</h3>
-          <p className="text-body text-text-primary">The first blog post is now available.</p>
+          <h3 className="text-2xl font-bold text-primary mb-2">{h.blog.blogLive}</h3>
+          <p className="text-body text-text-primary">{h.blog.subtitle}</p>
         </div>
       </motion.div>
     )
@@ -144,10 +153,10 @@ function BlogCountdown() {
       <div className="bg-accent border border-gray-200 rounded-lg p-8 md:p-10">
         <div className="text-center mb-8">
           <h3 className="text-2xl md:text-3xl font-bold text-primary mb-3">
-            First Blog Post Coming Soon
+            {h.blog.title}
           </h3>
           <p className="text-body text-text-primary">
-            Releasing on <span className="font-semibold">January 18, 2026 at 14:00 UTC+1</span>
+            {h.blog.subtitle}
           </p>
         </div>
 
@@ -175,6 +184,9 @@ function BlogCountdown() {
 
 export default function Home() {
   const location = useLocation()
+  const { locale, messages, localizedPath, t } = useLocale()
+  const h = messages.home
+  const c = messages.common
   const [expandedService, setExpandedService] = useState(0)
   const [showChatWidget, setShowChatWidget] = useState(false)
   const [showHelpMessage, setShowHelpMessage] = useState(false)
@@ -228,8 +240,9 @@ export default function Home() {
         }
 
         if (serviceIndex !== -1) {
-          // E-commerce (index 3) is coming soon, so just scroll without expanding
-          if (serviceIndex === 3) {
+          const serviceItem = h.services.items[serviceIndex]
+          const isComingSoon = serviceItem && 'comingSoon' in serviceItem && serviceItem.comingSoon
+          if (isComingSoon) {
             setTimeout(() => {
               const element = document.getElementById(`service-${serviceId}`)
               if (element) {
@@ -275,27 +288,15 @@ export default function Home() {
       clearTimeout(timeoutId)
       window.removeEventListener('hashchange', handleHashNavigation)
     }
-  }, [location.hash])
+  }, [location.hash, locale, h.services.items])
 
-  const values = [
-    {
-      title: 'Professionalism',
-      description: 'We are experts. Our work speaks. No compromises on quality.'
-    },
-    {
-      title: 'Accessibility',
-      description: 'Enterprise-grade solutions at startup prices. Everyone deserves a professional web presence.'
-    },
-    {
-      title: 'Innovation',
-      description: 'AI-powered solutions that give you a competitive edge. We stay ahead of the curve.'
-    },
-    {
-      title: 'Partnership',
-      description: 'We\'re invested in your success. Personal support included. Your growth is our success.'
-    }
-  ]
+  const values = h.values.items
 
+  const services = h.services.items.map((item, index) => ({
+    ...item,
+    image: serviceImages[serviceImageKeys[index]],
+    comingSoon: 'comingSoon' in item ? item.comingSoon : false,
+  }))
 
   // Function to handle sending message
   const handleSendMessage = async () => {
@@ -342,11 +343,11 @@ export default function Home() {
       console.log('Message sent successfully:', result)
       
       // Show success feedback
-      alert('Message sent! We\'ll get back to you soon.')
+      alert(h.chat.sent)
     } catch (error: any) {
       console.error('Send message error:', error)
-      const errorMessage = error.message || 'Failed to send message. Please try again.'
-      alert(`Failed to send message: ${errorMessage}`)
+      const errorMessage = error.message || h.chat.sendFailed
+      alert(`${h.chat.sendFailed}: ${errorMessage}`)
       setMessage(messageToSend) // Restore message on error
     } finally {
       setIsSendingMessage(false)
@@ -404,106 +405,8 @@ export default function Home() {
     // },
   ]
 
-  const services = [
-    {
-      title: 'Custom Web Design',
-      description: 'We create unique, responsive websites tailored to your brand and business needs. Every website is built from scratch, ensuring your brand stands out with a design that perfectly represents your vision.',
-      features: [
-        'Fully responsive design (mobile, tablet, desktop)',
-        'Custom UI/UX design based on your brand',
-        'Fast loading times and optimized performance',
-        'Cross-browser compatibility',
-        'Modern animations and interactions',
-        'Accessibility compliance (WCAG 2.1 AA)'
-      ],
-      image: serviceImages.webDesign,
-      benefits: 'Get a website that looks professional, loads fast, and works perfectly on every device.'
-    },
-    {
-      title: 'Branding & Graphic Design',
-      description: 'Complete branding solutions to establish your visual identity. From logo design to brand guidelines, we help you create a cohesive brand presence that resonates with your audience.',
-      features: [
-        'Logo design and brand identity',
-        'Color palette and typography selection',
-        'Brand style guide creation',
-        'Social media asset design',
-        'Business card and print materials',
-        'Brand consistency across all touchpoints'
-      ],
-      image: serviceImages.branding,
-      benefits: 'Build a memorable brand that customers recognize and trust.'
-    },
-    {
-      title: 'SEO & Digital Marketing',
-      description: 'Boost your online visibility and reach your target audience effectively. We implement proven SEO strategies and digital marketing tactics to drive organic traffic and conversions.',
-      features: [
-        'On-page SEO optimization',
-        'Keyword research and strategy',
-        'Content optimization',
-        'Technical SEO audits',
-        'Google Analytics integration',
-        'Monthly performance reports',
-        'Local SEO for businesses',
-        'Link building strategies'
-      ],
-      image: serviceImages.seo,
-      benefits: 'Rank higher in search results and attract more qualified visitors to your website.'
-    },
-    {
-      title: 'E-commerce Solutions',
-      description: 'Full-featured online stores with secure payment processing. We build e-commerce platforms that make it easy for customers to browse, purchase, and return to your store.',
-      comingSoon: true,
-      features: [
-        'Product catalog management',
-        'Shopping cart and checkout',
-        'Secure payment gateways (Stripe, PayPal)',
-        'Inventory management',
-        'Order tracking system',
-        'Customer account management',
-        'Product reviews and ratings',
-        'Shipping integration',
-        'Tax calculation',
-        'Abandoned cart recovery'
-      ],
-      image: serviceImages.ecommerce,
-      benefits: 'Sell products online with a secure, user-friendly platform that converts visitors into customers.'
-    },
-    {
-      title: 'AI Integration & Automation',
-      description: 'Leverage the power of AI to automate your business processes. From chatbots to workflow automation, we integrate AI solutions that save time and improve customer experience.',
-      features: [
-        'AI-powered chatbots',
-        'Customer support automation',
-        'Workflow automation (N8N)',
-        'AI content generation',
-        'Predictive analytics',
-        'Personalization engines',
-        'Email automation sequences',
-        'Lead qualification systems'
-      ],
-      image: serviceImages.ai,
-      benefits: 'Automate repetitive tasks and provide 24/7 customer support with AI-powered solutions.'
-    },
-    {
-      title: 'Content Management Systems',
-      description: 'Take control of your website content with easy-to-use CMS solutions. Update your website anytime, anywhere, without needing technical knowledge.',
-      features: [
-        'User-friendly content editor',
-        'Media library management',
-        'Page builder functionality',
-        'Blog and article management',
-        'User role permissions',
-        'Version control and backups',
-        'Multi-language support',
-        'Scheduled content publishing'
-      ],
-      image: serviceImages.cms,
-      benefits: 'Manage your website content independently, make updates instantly, and keep your site fresh.'
-    }
-  ]
-
   // Filter portfolio items to show only active (non-coming-soon) items, limit to 3 for homepage
-  const portfolioItems = allPortfolioItems.filter(item => !item.comingSoon).slice(0, 3)
+  const portfolioItems = getPortfolioItems(locale).filter(item => !item.comingSoon).slice(0, 3)
 
   return (
     <div className="relative">
@@ -519,7 +422,7 @@ export default function Home() {
               transition={{ duration: 0.3 }}
               className="mb-2 relative bg-white border-2 border-gray-200 rounded-lg shadow-lg px-4 py-2 text-sm text-primary font-medium whitespace-nowrap"
             >
-              Can I help?
+              {h.chat.help}
               {/* Arrow pointing down to button */}
               <div className="absolute bottom-0 right-6 transform translate-y-full">
                 <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-transparent border-t-gray-200"></div>
@@ -537,7 +440,7 @@ export default function Home() {
           className="w-14 h-14 bg-white border-2 border-gray-200 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center text-cta transition-all duration-300 hover:scale-110"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          aria-label="Toggle chat"
+          aria-label={h.chat.toggle}
         >
           {showChatWidget ? (
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -577,22 +480,22 @@ export default function Home() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                Innovative web solutions for modern business
+                {h.hero.title}
               </h1>
               <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                Whether you're a startup, an established business, or an enterprise, we're here to help you reach new heights online.
+                {h.hero.subtitle}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link to="/contact#contact-form">
-                  <Button size="lg" variant="cta">Book a Call</Button>
-                </Link>
-                <Link to="/packages">
-                  <Button size="lg" variant="secondary">View Packages</Button>
-                </Link>
+                <LocalizedLink to="/contact#contact-form">
+                  <Button size="lg" variant="cta">{c.cta.bookCall}</Button>
+                </LocalizedLink>
+                <LocalizedLink to="/packages">
+                  <Button size="lg" variant="secondary">{c.cta.viewPackages}</Button>
+                </LocalizedLink>
               </div>
               {/* Social Media Section */}
               <div className="mt-8 mb-8 md:mb-0">
-                <p className="text-white/80 text-sm mb-4 font-medium">Connect with us</p>
+                <p className="text-white/80 text-sm mb-4 font-medium">{h.hero.connect}</p>
                 <div className="flex flex-wrap gap-4">
                   {socialLinks.map((social) => (
                     <a
@@ -660,7 +563,7 @@ export default function Home() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-primary text-sm truncate">Ruben Thielman</div>
-                      <div className="text-body-sm text-text-secondary text-xs">Founder & Developer</div>
+                      <div className="text-body-sm text-text-secondary text-xs">{h.chat.founder}</div>
                     </div>
                     <button 
                       onClick={() => setShowChatWidget(false)}
@@ -675,13 +578,13 @@ export default function Home() {
                   {/* Chat Message */}
                   <div className="mb-3">
                     <p className="text-body-sm text-text-primary mb-2 leading-snug">
-                      Hello! 👋 I'm Ruben, founder of Studio Thielman. How can I help you today?
+                      {h.chat.greeting}
                     </p>
                     <div className="flex items-center gap-1.5 text-body-sm text-text-secondary">
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-xs">Usually replies within 1 hour</span>
+                      <span className="text-xs">{h.chat.replyTime}</span>
                     </div>
                   </div>
                   
@@ -693,14 +596,14 @@ export default function Home() {
                         type="text"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
-                        placeholder="Your name (optional)"
+                        placeholder={h.chat.namePlaceholder}
                         className="w-full px-3 py-2 text-sm text-text-primary bg-gray-50 border border-gray-200/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-cta/30 focus:border-cta/50 transition-all duration-200 placeholder:text-text-secondary/60"
                       />
                       <input
                         type="email"
                         value={userEmail}
                         onChange={(e) => setUserEmail(e.target.value)}
-                        placeholder="Your email (optional)"
+                        placeholder={h.chat.emailPlaceholder}
                         className="w-full px-3 py-2 text-sm text-text-primary bg-gray-50 border border-gray-200/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-cta/30 focus:border-cta/50 transition-all duration-200 placeholder:text-text-secondary/60"
                       />
                     </div>
@@ -716,7 +619,7 @@ export default function Home() {
                             }
                           }
                         }}
-                        placeholder="Type your message..."
+                        placeholder={h.chat.messagePlaceholder}
                         className="w-full min-h-[90px] max-h-[140px] px-4 py-3 pr-12 text-sm text-text-primary bg-gray-50 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-cta/30 focus:border-cta/50 transition-all duration-200 resize-none placeholder:text-text-secondary/60"
                         rows={3}
                       />
@@ -724,7 +627,7 @@ export default function Home() {
                         onClick={handleSendMessage}
                         disabled={!message.trim() || isSendingMessage}
                         className="absolute bottom-3 right-3 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow-md disabled:shadow-none"
-                        aria-label="Send message"
+                        aria-label={h.chat.send}
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -732,10 +635,10 @@ export default function Home() {
                       </button>
                     </div>
                     <div className="mt-3 flex items-center justify-between">
-                      <span className="text-xs text-text-secondary/70">Press Enter to send</span>
-                      <Link to="/contact#contact-form" className="text-xs text-cta hover:text-cta/80 transition-colors font-medium">
-                        Contact directly →
-                      </Link>
+                      <span className="text-xs text-text-secondary/70">{c.pressEnter}</span>
+                      <LocalizedLink to="/contact#contact-form" className="text-xs text-cta hover:text-cta/80 transition-colors font-medium">
+                        {c.contactDirectly}
+                      </LocalizedLink>
                     </div>
                   </div>
           </motion.div>
@@ -753,22 +656,22 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">ABOUT US</div>
+              <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.about.label}</div>
               <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-                We build websites that work.
+                {h.about.title}
               </h2>
               <div className="space-y-4 text-lg text-text-primary leading-relaxed">
                 <p>
-                  No fluff. No overpromising. Just clean, effective websites that help your business grow.
+                  {h.about.p1}
                 </p>
                 <p>
-                  We focus on what matters: your goals, your audience, and results that make a difference.
+                  {h.about.p2}
                 </p>
               </div>
               <div className="mt-8">
-                <Link to="/about">
-                  <Button variant="outline">Learn More</Button>
-                </Link>
+                <LocalizedLink to="/about">
+                  <Button variant="outline">{c.cta.learnMore}</Button>
+                </LocalizedLink>
               </div>
             </motion.div>
 
@@ -782,23 +685,23 @@ export default function Home() {
               <div className="rounded-lg h-96 mb-8 overflow-hidden">
                 <img 
                   src={officeImage} 
-                  alt="Office workspace" 
+                  alt={h.about.officeAlt}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="grid grid-cols-2 gap-8 mb-8">
                 <div>
                   <div className="text-5xl font-bold text-primary mb-2">30+</div>
-                  <div className="text-body text-text-secondary">Projects Delivered</div>
+                  <div className="text-body text-text-secondary">{h.about.projects}</div>
                 </div>
                 <div>
                   <div className="text-5xl font-bold text-primary mb-2">85%</div>
-                  <div className="text-body text-text-secondary">Client Satisfaction</div>
+                  <div className="text-body text-text-secondary">{h.about.satisfaction}</div>
                 </div>
               </div>
-              <Link to="/contact#contact-form">
-                <Button variant="primary" className="w-full">Book a Call</Button>
-              </Link>
+              <LocalizedLink to="/contact#contact-form">
+                <Button variant="primary" className="w-full">{c.cta.bookCall}</Button>
+              </LocalizedLink>
             </motion.div>
           </div>
         </div>
@@ -813,9 +716,9 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">OUR WORK</div>
+            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.portfolio.label}</div>
             <h2 className="text-4xl md:text-5xl font-bold text-primary mb-12">
-              Explore Our Portfolio Showcase
+              {h.portfolio.title}
             </h2>
           </motion.div>
           
@@ -828,7 +731,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <Link to={`/portfolio/${item.slug}`}>
+                <LocalizedLink to={`/portfolio/${item.slug}`}>
                   <div className="group cursor-pointer">
                     <div className="bg-accent rounded-lg h-64 mb-4 flex items-center justify-center overflow-hidden">
                       {item.screenshots && item.screenshots.length > 0 ? (
@@ -841,20 +744,20 @@ export default function Home() {
                             target.style.display = 'none'
                             const parent = target.parentElement
                             if (parent) {
-                              parent.innerHTML = '<span class="text-text-secondary">Project Image</span>'
+                              parent.innerHTML = `<span class="text-text-secondary">${c.projectImage}</span>`
                             }
                           }}
                         />
                       ) : (
-                        <span className="text-text-secondary">Project Image</span>
+                        <span className="text-text-secondary">{c.projectImage}</span>
                       )}
                     </div>
-                    <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">Case Study</div>
+                    <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">{c.caseStudy}</div>
                     <h3 className="text-h3 text-primary mb-2 group-hover:text-cta transition-colors">{item.title}</h3>
                     <p className="text-body text-text-primary mb-2">{item.description}</p>
                     <div className="text-body-sm text-text-secondary">{item.date}</div>
                   </div>
-                </Link>
+                </LocalizedLink>
               </motion.div>
             ))}
           </div>
@@ -866,9 +769,9 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <Link to="/portfolio">
-              <Button variant="primary" size="lg">Discover More</Button>
-            </Link>
+            <LocalizedLink to="/portfolio">
+              <Button variant="primary" size="lg">{c.cta.discoverMore}</Button>
+            </LocalizedLink>
           </motion.div>
         </div>
       </section>
@@ -884,19 +787,19 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">OUR SERVICES</div>
+              <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.services.label}</div>
               <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-                Services We Offer
+                {h.services.title}
               </h2>
               <p className="text-body-lg text-text-primary mb-4">
-                We provide comprehensive web solutions tailored to your business needs.
+                {h.services.intro1}
               </p>
               <p className="text-body-lg text-text-primary mb-8">
-                From custom web design to e-commerce solutions, we've got you covered.
+                {h.services.intro2}
               </p>
-              <Link to="/packages">
-                <Button variant="primary">Get a Quote</Button>
-              </Link>
+              <LocalizedLink to="/packages">
+                <Button variant="primary">{c.cta.getQuote}</Button>
+              </LocalizedLink>
             </motion.div>
 
             {/* Right Content - Accordion */}
@@ -924,7 +827,7 @@ export default function Home() {
                         ({String(index + 1).padStart(2, '0')}) {service.title}
                         {service.comingSoon && (
                           <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full font-medium">
-                            Coming Soon
+                            {c.comingSoon}
                           </span>
                         )}
                       </span>
@@ -963,14 +866,14 @@ export default function Home() {
                         
                         {service.benefits && (
                           <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
-                            <div className="text-sm font-semibold text-primary mb-1">Key Benefit</div>
+                            <div className="text-sm font-semibold text-primary mb-1">{c.keyBenefit}</div>
                             <div className="text-body-sm text-text-primary">{service.benefits}</div>
                           </div>
                         )}
                         
                         {service.features.length > 0 && (
                           <div className="mb-4">
-                            <div className="text-sm font-semibold text-primary mb-3">What's Included:</div>
+                            <div className="text-sm font-semibold text-primary mb-3">{c.whatsIncluded}</div>
                             <ul className="space-y-2">
                               {service.features.map((feature, idx) => (
                                 <li key={idx} className="text-body-sm text-text-primary flex items-start">
@@ -982,12 +885,12 @@ export default function Home() {
                           </div>
                         )}
                         <div className="flex gap-3">
-                          <Link to="/packages">
-                            <Button variant="outline" size="sm">View Packages →</Button>
-                          </Link>
-                          <Link to="/contact#contact-form">
-                            <Button variant="primary" size="sm">Get Started</Button>
-                          </Link>
+                          <LocalizedLink to="/packages">
+                            <Button variant="outline" size="sm">{c.viewPackagesArrow}</Button>
+                          </LocalizedLink>
+                          <LocalizedLink to="/contact#contact-form">
+                            <Button variant="primary" size="sm">{c.cta.getStarted}</Button>
+                          </LocalizedLink>
                         </div>
                           </div>
                         </motion.div>
@@ -1012,7 +915,7 @@ export default function Home() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              What We Stand For
+              {h.values.title}
             </h2>
             <div className="w-20 h-1 bg-cta mx-auto"></div>
           </motion.div>
@@ -1051,12 +954,12 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">BLOG</div>
+            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.blog.label}</div>
             <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-              Our expert insights.
+              {h.blog.title}
             </h2>
             <p className="text-body-lg text-text-primary mb-8">
-              Our blog is still a work in progress. The first blog post will be released soon!
+              {h.blog.subtitle}
             </p>
           </motion.div>
           
@@ -1075,17 +978,17 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">WORK IN PROGRESS</div>
+            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.wip.label}</div>
             <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-              What I'm Building Now
+              {h.wip.title}
             </h2>
             <p className="text-body-lg text-text-primary max-w-2xl mx-auto">
-              See my current projects, what I'm learning, and what's coming next. Transparency in progress.
+              {h.wip.subtitle}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {currentProjects.slice(0, 3).map((project, index) => (
+            {getCurrentProjects(locale).slice(0, 3).map((project, index) => (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -1102,7 +1005,13 @@ export default function Home() {
                     project.status === 'testing' ? 'bg-purple-100 text-purple-800' :
                     'bg-green-100 text-green-800'
                   }`}>
-                    {project.status === 'in-progress' ? '🚧' : project.status === 'planning' ? '📋' : project.status === 'testing' ? '🧪' : '✨'}
+                    {project.status === 'in-progress'
+                      ? h.wip.status.inProgress
+                      : project.status === 'planning'
+                        ? h.wip.status.planning
+                        : project.status === 'testing'
+                          ? h.wip.status.testing
+                          : h.wip.status.default}
                   </span>
                 </div>
                 <p className="text-body-sm text-text-primary mb-4">{project.description}</p>
@@ -1110,7 +1019,7 @@ export default function Home() {
                 {/* Progress Bar */}
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-text-secondary">Progress</span>
+                    <span className="text-xs text-text-secondary">{c.progress}</span>
                     <span className="text-xs font-semibold text-primary">{project.progress}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -1130,11 +1039,11 @@ export default function Home() {
                   <span>🔧 {project.technologies.length} tech</span>
                 </div>
 
-                <Link to="/current-projects">
+                <LocalizedLink to="/current-projects">
                   <Button variant="outline" size="sm" className="w-full">
-                    View Details →
+                    {h.wip.viewDetails}
                   </Button>
-                </Link>
+                </LocalizedLink>
               </motion.div>
             ))}
           </div>
@@ -1146,11 +1055,11 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <Link to="/current-projects">
+            <LocalizedLink to="/current-projects">
               <Button variant="primary" size="lg">
-                View All Current Projects
+                {h.wip.viewAll}
               </Button>
-            </Link>
+            </LocalizedLink>
           </motion.div>
         </div>
       </section>
@@ -1160,16 +1069,16 @@ export default function Home() {
         <div className="relative w-full overflow-hidden" data-marquee-container>
           <div className="flex text-5xl md:text-7xl font-bold text-text-secondary/30 uppercase tracking-wider marquee-container">
             <div className="flex whitespace-nowrap items-center marquee-content">
-              <span className="px-20">BUILDING FUTURES TOGETHER</span>
-              <span className="px-20">BUILDING FUTURES TOGETHER</span>
-              <span className="px-20">BUILDING FUTURES TOGETHER</span>
-              <span className="px-20">BUILDING FUTURES TOGETHER</span>
+              <span className="px-20">{h.marquee}</span>
+              <span className="px-20">{h.marquee}</span>
+              <span className="px-20">{h.marquee}</span>
+              <span className="px-20">{h.marquee}</span>
             </div>
             <div className="flex whitespace-nowrap items-center marquee-content" aria-hidden="true">
-              <span className="px-20">BUILDING FUTURES TOGETHER</span>
-              <span className="px-20">BUILDING FUTURES TOGETHER</span>
-              <span className="px-20">BUILDING FUTURES TOGETHER</span>
-              <span className="px-20">BUILDING FUTURES TOGETHER</span>
+              <span className="px-20">{h.marquee}</span>
+              <span className="px-20">{h.marquee}</span>
+              <span className="px-20">{h.marquee}</span>
+              <span className="px-20">{h.marquee}</span>
             </div>
           </div>
         </div>

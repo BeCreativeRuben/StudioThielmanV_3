@@ -30,6 +30,22 @@ export const howItWorksEn = {
         'From development to launch and beyond — build, go live, and ongoing support to help you grow.',
     },
   ],
+  processSection: {
+    label: 'THE PROCESS',
+    title: 'How We Work',
+    subtitle: 'A streamlined process designed to get you online quickly and efficiently.',
+  },
+  timelineSection: {
+    label: 'TIMELINE',
+    title: 'Timeline Expectations',
+    subtitle: 'Realistic timelines based on your chosen package.',
+    mostPopular: 'MOST POPULAR',
+  },
+  faqSection: {
+    label: 'FAQ',
+    title: 'Frequently Asked Questions',
+    subtitle: 'Everything you need to know about our process.',
+  },
   timelineTitle: 'Typical Timelines',
   timelines: [
     { package: 'Starter', duration: '1-2 weeks', description: 'Simple websites with static pages' },

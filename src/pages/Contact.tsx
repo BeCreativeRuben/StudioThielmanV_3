@@ -1,36 +1,33 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
 import Button from '../components/Button'
+import LocalizedLink from '../i18n/LocalizedLink'
+import { useLocale } from '../i18n/LocaleProvider'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 
 function sanitizeMailchimpText(input: string): string {
-  // Strict: keep only ASCII letters/numbers/spaces. Remove accents and punctuation.
   return (input || '')
     .normalize('NFKD')
-    .replace(/[\u0300-\u036f]/g, '') // strip diacritics
-    .replace(/[^A-Za-z0-9 ]+/g, ' ') // replace everything else with spaces
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9 ]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
 }
 
 function sanitizeMailchimpPhone(input: string): string {
-  // Mailchimp "Phone" merge fields can be strict; safest is digits only.
   return (input || '').replace(/\D+/g, '').trim()
 }
 
-// IMPORTANT: Set up these merge fields in Mailchimp:
-// 1. Go to Mailchimp > Audience > Settings > Audience fields and |*MERGE*| tags
-// 2. Add the following merge fields:
-//    - MMERGE1: Business Name (Text)
-//    - MMERGE2: Phone (Phone)
-//    - MMERGE3: Business Description (Text)
-//    - MMERGE4: Package Interest (Text)
-//    - MMERGE5: Package Other (Text) - Optional
-//    - MMERGE6: Has Existing Website (Text) - Optional
-//    - MMERGE7: Existing Website URL (URL) - Optional
+const PACKAGE_OPTIONS = [
+  { value: 'Starter', labelKey: 'starter' as const },
+  { value: 'Growth', labelKey: 'growth' as const },
+  { value: 'Pro Max', labelKey: 'promax' as const },
+  { value: 'Other', labelKey: 'other' as const },
+]
 
 export default function Contact() {
+  const { messages } = useLocale()
+  const c = messages.contact
   const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({})
   const [formData, setFormData] = useState({
     businessName: '',
@@ -41,16 +38,15 @@ export default function Contact() {
     package: '',
     packageOther: '',
     hasExistingWebsite: '',
-    existingWebsiteUrl: ''
+    existingWebsiteUrl: '',
   })
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
-    // Clear error for this field when user starts typing
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
     if (fieldErrors[field]) {
-      setFieldErrors(prev => {
+      setFieldErrors((prev) => {
         const newErrors = { ...prev }
         delete newErrors[field]
         return newErrors
@@ -58,7 +54,6 @@ export default function Contact() {
     }
   }
 
-  // Email validation helper
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
@@ -66,41 +61,35 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    // Validate all fields
+
     const errors: Record<string, boolean> = {}
     let isValid = true
     let firstInvalidField: string | null = null
 
-    // Business name
     if (formData.businessName.trim() === '') {
       errors.businessName = true
       if (!firstInvalidField) firstInvalidField = 'businessName'
       isValid = false
     }
 
-    // Name
     if (formData.name.trim() === '') {
       errors.name = true
       if (!firstInvalidField) firstInvalidField = 'name'
       isValid = false
     }
 
-    // Email
     if (formData.email.trim() === '' || !isValidEmail(formData.email)) {
       errors.email = true
       if (!firstInvalidField) firstInvalidField = 'email'
       isValid = false
     }
 
-    // Phone
     if (formData.phone.trim() === '') {
       errors.phone = true
       if (!firstInvalidField) firstInvalidField = 'phone'
       isValid = false
     }
 
-    // Business description (max 100 characters)
     if (formData.businessDescription.trim() === '') {
       errors.businessDescription = true
       if (!firstInvalidField) firstInvalidField = 'businessDescription'
@@ -111,7 +100,6 @@ export default function Contact() {
       isValid = false
     }
 
-    // Package
     if (formData.package === '') {
       errors.package = true
       if (!firstInvalidField) firstInvalidField = 'package'
@@ -131,12 +119,12 @@ export default function Contact() {
           const headerHeight = 80
           const elementPosition = fieldElement.getBoundingClientRect().top + window.pageYOffset
           const offsetPosition = elementPosition - headerHeight - 20
-          
+
           window.scrollTo({
             top: offsetPosition,
-            behavior: 'smooth'
+            behavior: 'smooth',
           })
-          
+
           setTimeout(() => {
             const input = fieldElement.querySelector('input, textarea, select') as HTMLElement
             if (input) {
@@ -148,9 +136,8 @@ export default function Contact() {
       return
     }
 
-    // Submit to our backend so we only show success when Mailchimp accepts
     setIsSubmitting(true)
-    
+
     try {
       const payload = {
         ...formData,
@@ -161,8 +148,7 @@ export default function Contact() {
         package: sanitizeMailchimpText(formData.package),
         packageOther: formData.packageOther ? sanitizeMailchimpText(formData.packageOther) : '',
         hasExistingWebsite: formData.hasExistingWebsite ? sanitizeMailchimpText(formData.hasExistingWebsite) : '',
-        // Don't destroy URL formatting; backend will validate and only send to Mailchimp if valid
-        existingWebsiteUrl: (formData.existingWebsiteUrl || '').trim()
+        existingWebsiteUrl: (formData.existingWebsiteUrl || '').trim(),
       }
 
       const response = await fetch('/api/submissions', {
@@ -175,7 +161,6 @@ export default function Contact() {
         let errorMessage = 'Failed to submit form'
         try {
           const data = await response.json()
-          // Prefer a detailed message (e.g. missing env vars) over the generic error label
           errorMessage = data?.message || data?.error || errorMessage
         } catch {
           // ignore
@@ -183,40 +168,36 @@ export default function Contact() {
         throw new Error(errorMessage)
       }
 
-      // Scroll to top of page before showing success message
       window.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: 'smooth',
       })
 
-      // Small delay to ensure scroll completes before showing success message
       setTimeout(() => {
         setSubmitted(true)
       }, 300)
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Submission error:', error)
-      // Show error message and scroll to Get In Touch section
       setTimeout(() => {
         const getInTouchSection = document.getElementById('get-in-touch')
         if (getInTouchSection) {
           const headerHeight = 80
           const elementPosition = getInTouchSection.getBoundingClientRect().top + window.pageYOffset
           const offsetPosition = elementPosition - headerHeight - 20
-          
+
           window.scrollTo({
             top: offsetPosition,
-            behavior: 'smooth'
+            behavior: 'smooth',
           })
-          
-          // Highlight the section briefly
+
           getInTouchSection.classList.add('ring-4', 'ring-red-500', 'ring-opacity-50')
           setTimeout(() => {
             getInTouchSection.classList.remove('ring-4', 'ring-red-500', 'ring-opacity-50')
           }, 3000)
         }
       }, 100)
-      
-      alert('Our system seems to be experiencing some issues at the moment. Contact us directly instead!')
+
+      alert(c.form.submitError)
     } finally {
       setIsSubmitting(false)
     }
@@ -237,17 +218,15 @@ export default function Contact() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="text-4xl font-bold text-primary mb-4">Success!</h2>
-            <p className="text-body-lg text-text-primary mb-6">
-              We've received your information. We'll get back to you within 24 hours.
-            </p>
+            <h2 className="text-4xl font-bold text-primary mb-4">{c.success.title}</h2>
+            <p className="text-body-lg text-text-primary mb-6">{c.success.message}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/">
-                <Button variant="outline">Back to Home</Button>
-              </Link>
-              <Link to="/packages">
-                <Button variant="cta">View Packages</Button>
-              </Link>
+              <LocalizedLink to="/">
+                <Button variant="outline">{c.success.home}</Button>
+              </LocalizedLink>
+              <LocalizedLink to="/packages">
+                <Button variant="cta">{c.success.packages}</Button>
+              </LocalizedLink>
             </div>
           </div>
         </motion.div>
@@ -257,23 +236,21 @@ export default function Contact() {
 
   return (
     <div>
-      {/* Hero Section - Dark Background */}
       <section className="relative py-20 md:py-32 overflow-hidden -mt-20 pt-20">
-        <div className="absolute left-0 right-0 w-full bg-gray-900" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}></div>
-        <div className="absolute left-0 right-0 w-full bg-gradient-to-r from-black/80 to-black/40 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}></div>
+        <div className="absolute left-0 right-0 w-full bg-gray-900" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }} />
+        <div className="absolute left-0 right-0 w-full bg-gradient-to-r from-black/80 to-black/40 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }} />
         <motion.div
           className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="text-sm text-white/60 uppercase tracking-wider mb-4">GET IN TOUCH</div>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Let's Get Started</h1>
-          <p className="text-xl text-white/80 max-w-2xl mx-auto">Tell us about your project and we'll get back to you within 24 hours.</p>
+          <div className="text-sm text-white/60 uppercase tracking-wider mb-4">{c.hero.label}</div>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{c.hero.title}</h1>
+          <p className="text-xl text-white/80 max-w-2xl mx-auto">{c.hero.subtitle}</p>
         </motion.div>
       </section>
 
-      {/* Contact Info Section */}
       <section id="get-in-touch" className="py-20 bg-gray-50 scroll-mt-20 transition-all">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -283,21 +260,15 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            {/* Picture */}
             <div className="flex justify-center md:justify-start">
               <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-cta shadow-lg">
-                <img 
-                  src={rubenImage} 
-                  alt="Ruben Thielman"
-                  className="w-full h-full object-cover"
-                />
+                <img src={rubenImage} alt="Ruben Thielman" className="w-full h-full object-cover" />
               </div>
             </div>
 
-            {/* Contact Information */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Get in Touch</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">{c.info.title}</h2>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 w-6 h-6 mt-1">
@@ -307,7 +278,7 @@ export default function Contact() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-body-lg text-text-primary font-medium">Address</p>
+                      <p className="text-body-lg text-text-primary font-medium">{c.info.address}</p>
                       <p className="text-body text-text-primary">Pereboomsteenweg 49</p>
                       <p className="text-body text-text-primary">Moerbeke 9180</p>
                     </div>
@@ -319,7 +290,7 @@ export default function Contact() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-body-lg text-text-primary font-medium">Email</p>
+                      <p className="text-body-lg text-text-primary font-medium">{c.info.email}</p>
                       <a href="mailto:ruben.thielman@gmail.com" className="text-body text-cta hover:text-cta/80 transition-colors">
                         ruben.thielman@gmail.com
                       </a>
@@ -332,7 +303,7 @@ export default function Contact() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-body-lg text-text-primary font-medium">Phone</p>
+                      <p className="text-body-lg text-text-primary font-medium">{c.info.phone}</p>
                       <a href="tel:+32493505641" className="text-body text-cta hover:text-cta/80 transition-colors">
                         +32 493 50 56 41
                       </a>
@@ -345,7 +316,6 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Form Section */}
       <section id="contact-form" className="py-20 bg-white scroll-mt-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white border border-gray-200 rounded-xl p-8 md:p-12 shadow-xl">
@@ -356,10 +326,9 @@ export default function Contact() {
                 transition={{ duration: 0.6 }}
                 className="space-y-6"
               >
-                {/* Business Name */}
                 <div data-field="businessName">
                   <label className={`block text-sm font-semibold mb-2 ${fieldErrors.businessName ? 'text-red-600' : 'text-text-primary'}`}>
-                    Business Name *
+                    {c.form.businessName}
                   </label>
                   <input
                     type="text"
@@ -367,20 +336,19 @@ export default function Contact() {
                     value={formData.businessName}
                     onChange={(e) => handleInputChange('businessName', e.target.value)}
                     className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 ${
-                      fieldErrors.businessName 
-                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200' 
+                      fieldErrors.businessName
+                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200'
                         : 'border-gray-300 focus:border-cta focus:ring-cta/20'
                     }`}
                   />
                   {fieldErrors.businessName && (
-                    <p className="mt-1 text-sm text-red-600">This field is required</p>
+                    <p className="mt-1 text-sm text-red-600">{c.form.errors.required}</p>
                   )}
                 </div>
 
-                {/* Name */}
                 <div data-field="name">
                   <label className={`block text-sm font-semibold mb-2 ${fieldErrors.name ? 'text-red-600' : 'text-text-primary'}`}>
-                    Your Name *
+                    {c.form.yourName}
                   </label>
                   <input
                     type="text"
@@ -388,20 +356,17 @@ export default function Contact() {
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 ${
-                      fieldErrors.name 
-                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200' 
+                      fieldErrors.name
+                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200'
                         : 'border-gray-300 focus:border-cta focus:ring-cta/20'
                     }`}
                   />
-                  {fieldErrors.name && (
-                    <p className="mt-1 text-sm text-red-600">This field is required</p>
-                  )}
+                  {fieldErrors.name && <p className="mt-1 text-sm text-red-600">{c.form.errors.required}</p>}
                 </div>
 
-                {/* Email */}
                 <div data-field="email">
                   <label className={`block text-sm font-semibold mb-2 ${fieldErrors.email ? 'text-red-600' : 'text-text-primary'}`}>
-                    Email *
+                    {c.form.email}
                   </label>
                   <input
                     type="email"
@@ -409,20 +374,17 @@ export default function Contact() {
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 ${
-                      fieldErrors.email 
-                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200' 
+                      fieldErrors.email
+                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200'
                         : 'border-gray-300 focus:border-cta focus:ring-cta/20'
                     }`}
                   />
-                  {fieldErrors.email && (
-                    <p className="mt-1 text-sm text-red-600">Please enter a valid email address</p>
-                  )}
+                  {fieldErrors.email && <p className="mt-1 text-sm text-red-600">{c.form.errors.email}</p>}
                 </div>
 
-                {/* Phone */}
                 <div data-field="phone">
                   <label className={`block text-sm font-semibold mb-2 ${fieldErrors.phone ? 'text-red-600' : 'text-text-primary'}`}>
-                    Telephone *
+                    {c.form.phone}
                   </label>
                   <input
                     type="tel"
@@ -430,20 +392,18 @@ export default function Contact() {
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 ${
-                      fieldErrors.phone 
-                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200' 
+                      fieldErrors.phone
+                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200'
                         : 'border-gray-300 focus:border-cta focus:ring-cta/20'
                     }`}
                   />
-                  {fieldErrors.phone && (
-                    <p className="mt-1 text-sm text-red-600">This field is required</p>
-                  )}
+                  {fieldErrors.phone && <p className="mt-1 text-sm text-red-600">{c.form.errors.required}</p>}
                 </div>
 
-                {/* Business Description */}
                 <div data-field="businessDescription">
                   <label className={`block text-sm font-semibold mb-2 ${fieldErrors.businessDescription ? 'text-red-600' : 'text-text-primary'}`}>
-                    Simple Business Description * <span className="text-text-secondary font-normal">(max 100 characters)</span>
+                    {c.form.businessDescription}{' '}
+                    <span className="text-text-secondary font-normal">{c.form.businessDescriptionHint}</span>
                   </label>
                   <textarea
                     required
@@ -452,14 +412,14 @@ export default function Contact() {
                     maxLength={100}
                     rows={3}
                     className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 resize-none ${
-                      fieldErrors.businessDescription 
-                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200' 
+                      fieldErrors.businessDescription
+                        ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200'
                         : 'border-gray-300 focus:border-cta focus:ring-cta/20'
                     }`}
                   />
                   <div className="flex justify-between items-center mt-1">
                     {fieldErrors.businessDescription && (
-                      <p className="text-sm text-red-600">This field is required</p>
+                      <p className="text-sm text-red-600">{c.form.errors.required}</p>
                     )}
                     <p className={`text-sm ml-auto ${formData.businessDescription.length > 100 ? 'text-red-600' : 'text-text-secondary'}`}>
                       {formData.businessDescription.length}/100
@@ -467,31 +427,28 @@ export default function Contact() {
                   </div>
                 </div>
 
-                {/* Package */}
                 <div data-field="package">
                   <label className={`block text-sm font-semibold mb-3 ${fieldErrors.package ? 'text-red-600' : 'text-text-primary'}`}>
-                    Interested Package *
+                    {c.form.package}
                   </label>
                   <div className="space-y-3">
-                    {['Starter', 'Growth', 'Pro Max', 'Other'].map((pkg) => (
-                      <label 
-                        key={pkg} 
+                    {PACKAGE_OPTIONS.map((pkg) => (
+                      <label
+                        key={pkg.value}
                         className={`flex items-center p-4 border-2 rounded-lg hover:border-cta hover:bg-cta/5 transition-all cursor-pointer ${
-                          fieldErrors.package 
-                            ? 'border-red-500 bg-red-50' 
-                            : 'border-gray-200'
+                          fieldErrors.package ? 'border-red-500 bg-red-50' : 'border-gray-200'
                         }`}
                       >
                         <input
                           type="radio"
                           name="package"
-                          value={pkg}
-                          checked={formData.package === pkg}
+                          value={pkg.value}
+                          checked={formData.package === pkg.value}
                           onChange={(e) => handleInputChange('package', e.target.value)}
                           className="mr-3 w-4 h-4 text-cta focus:ring-cta"
                           required
                         />
-                        <span className="text-body text-text-primary font-medium">{pkg}</span>
+                        <span className="text-body text-text-primary font-medium">{c.form.packages[pkg.labelKey]}</span>
                       </label>
                     ))}
                   </div>
@@ -501,28 +458,25 @@ export default function Contact() {
                         type="text"
                         value={formData.packageOther}
                         onChange={(e) => handleInputChange('packageOther', e.target.value)}
-                        placeholder="Please specify..."
+                        placeholder={c.form.packageOtherPlaceholder}
                         className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 mt-2 ${
-                          fieldErrors.packageOther 
-                            ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200' 
+                          fieldErrors.packageOther
+                            ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-200'
                             : 'border-gray-300 focus:border-cta focus:ring-cta/20'
                         }`}
                       />
                       {fieldErrors.packageOther && (
-                        <p className="mt-1 text-sm text-red-600">Please specify your package interest</p>
+                        <p className="mt-1 text-sm text-red-600">{c.form.errors.packageOther}</p>
                       )}
                     </div>
                   )}
                   {fieldErrors.package && formData.package !== 'Other' && (
-                    <p className="mt-2 text-sm text-red-600">Please select a package</p>
+                    <p className="mt-2 text-sm text-red-600">{c.form.errors.package}</p>
                   )}
                 </div>
 
-                {/* Existing Website */}
                 <div>
-                  <label className="block text-sm font-semibold text-text-primary mb-3">
-                    Do you have an existing website?
-                  </label>
+                  <label className="block text-sm font-semibold text-text-primary mb-3">{c.form.existingWebsite}</label>
                   <div className="space-y-3">
                     <label className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-cta hover:bg-cta/5 transition-all cursor-pointer">
                       <input
@@ -533,7 +487,7 @@ export default function Contact() {
                         onChange={(e) => handleInputChange('hasExistingWebsite', e.target.value)}
                         className="mr-3 w-4 h-4 text-cta focus:ring-cta"
                       />
-                      <span className="text-body text-text-primary font-medium">Yes</span>
+                      <span className="text-body text-text-primary font-medium">{c.form.yes}</span>
                     </label>
                     <label className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-cta hover:bg-cta/5 transition-all cursor-pointer">
                       <input
@@ -544,13 +498,13 @@ export default function Contact() {
                         onChange={(e) => handleInputChange('hasExistingWebsite', e.target.value)}
                         className="mr-3 w-4 h-4 text-cta focus:ring-cta"
                       />
-                      <span className="text-body text-text-primary font-medium">No</span>
+                      <span className="text-body text-text-primary font-medium">{c.form.no}</span>
                     </label>
                   </div>
                   {formData.hasExistingWebsite === 'yes' && (
                     <div className="mt-4">
                       <label className="block text-sm font-semibold text-text-primary mb-2">
-                        Website URL <span className="text-text-secondary font-normal">(optional)</span>
+                        {c.form.websiteUrl} <span className="text-text-secondary font-normal">{c.form.optional}</span>
                       </label>
                       <input
                         type="url"
@@ -563,15 +517,9 @@ export default function Contact() {
                   )}
                 </div>
 
-                {/* Submit Button */}
                 <div className="pt-6">
-                  <Button 
-                    type="submit" 
-                    variant="cta"
-                    className="w-full"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? 'Submitting...' : 'Submit Form'}
+                  <Button type="submit" variant="cta" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? c.form.submitting : c.form.submit}
                   </Button>
                 </div>
               </motion.div>

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useLocale } from '../i18n/LocaleProvider'
+import LocalizedLink from '../i18n/LocalizedLink'
 
 type ConsentChoice = 'accept' | 'reject'
 
@@ -45,12 +46,12 @@ function updateGtagConsent(choice: ConsentChoice) {
     return
   }
 
-  // Fallback: queue into dataLayer if gtag isn't ready yet
   const dataLayer = ((window as any).dataLayer ||= [])
   dataLayer.push(['consent', 'update', update])
 }
 
 export default function CookieConsentBanner() {
+  const { t } = useLocale()
   const savedChoice = useMemo(() => getStoredChoice(), [])
   const [isOpen, setIsOpen] = useState(savedChoice === null)
 
@@ -60,7 +61,6 @@ export default function CookieConsentBanner() {
     return () => window.removeEventListener(OPEN_EVENT_NAME, onOpen)
   }, [])
 
-  // Ensure consent state matches persisted choice on boot
   useEffect(() => {
     if (savedChoice) {
       updateGtagConsent(savedChoice)
@@ -87,13 +87,12 @@ export default function CookieConsentBanner() {
       <div className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-white shadow-2xl">
         <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-sm text-gray-700">
-            <div className="font-semibold text-gray-900">Cookies & tracking</div>
+            <div className="font-semibold text-gray-900">{t('common.cookie.title')}</div>
             <p className="mt-1 text-gray-600">
-              We use cookies to measure site usage and improve performance. You can accept all cookies or reject them.
-              See our{' '}
-              <Link to="/privacy" className="font-semibold underline hover:no-underline">
-                Privacy Policy
-              </Link>
+              {t('common.cookie.description')}{' '}
+              <LocalizedLink to="/privacy" className="font-semibold underline hover:no-underline">
+                {t('common.cookie.privacyLink')}
+              </LocalizedLink>
               .
             </p>
           </div>
@@ -104,14 +103,14 @@ export default function CookieConsentBanner() {
               onClick={rejectAll}
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50 sm:w-auto"
             >
-              Reject all
+              {t('common.cookie.reject')}
             </button>
             <button
               type="button"
               onClick={acceptAll}
               className="w-full rounded-lg bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-gray-900 sm:w-auto"
             >
-              Accept all
+              {t('common.cookie.accept')}
             </button>
           </div>
         </div>
@@ -119,4 +118,3 @@ export default function CookieConsentBanner() {
     </div>
   )
 }
-

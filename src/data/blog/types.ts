@@ -19,6 +19,5 @@ export interface BlogPost {
     link: string
   }
   visibleFrom?: string
-  /** Defaults to nl-BE for existing posts */
-  locale?: BlogLocale
+  locale: BlogLocale
 }

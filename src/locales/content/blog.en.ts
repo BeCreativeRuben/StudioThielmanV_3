@@ -5,10 +5,9 @@ export const blogEn = {
     subtitle: 'Tips, insights, and strategies to help your business thrive online.',
   },
   empty: {
-    title: 'Articles in Dutch',
-    description:
-      'Our in-depth articles are currently available in Dutch for Belgium and the Netherlands. Switch to the Dutch site to read them.',
-    button: 'Read blog in Dutch',
+    title: '',
+    description: '',
+    button: '',
   },
   cta: {
     title: 'Ready to Boost Your Online Presence?',
@@ -17,6 +16,7 @@ export const blogEn = {
   },
   detail: {
     back: 'Back to Blog',
+    loading: 'Loading article...',
     contactCta: 'Contact Studio Thielman',
   },
 }

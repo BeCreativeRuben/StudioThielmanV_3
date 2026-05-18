@@ -1,14 +1,19 @@
+import { privacySectionsEn } from './legal/privacy-sections.en'
+import { termsSectionsEn } from './legal/terms-sections.en'
+
 export const legalEn = {
+  label: 'LEGAL',
   privacy: {
     title: 'Privacy Policy',
     lastUpdated: 'Last updated: January 2026',
     intro:
-      'Studio Thielman respects your privacy. This policy explains how we collect, use, and protect personal data when you use our website or services.',
+      'Your privacy is important to us. This policy explains how we collect, use, and protect your personal data.',
+    sections: privacySectionsEn,
   },
   terms: {
     title: 'Terms of Service',
     lastUpdated: 'Last updated: January 2026',
-    intro:
-      'These terms govern your use of Studio Thielman websites and services. By using our site, you agree to these terms.',
+    intro: 'Please read these terms carefully before using our services.',
+    sections: termsSectionsEn,
   },
 }

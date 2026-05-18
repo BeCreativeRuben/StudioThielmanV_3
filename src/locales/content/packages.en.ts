@@ -11,7 +11,24 @@ export const packagesEn = {
   noStartupFee: 'No startup fee',
   getStarted: 'Get Started',
   contactUs: 'Contact Us',
+  overview: {
+    label: 'PRICING',
+    title: 'Simple, Transparent Pricing',
+    subtitle: 'Choose the package that fits your needs. All packages include ongoing support and updates.',
+  },
+  whatsIncluded: "What's Included:",
+  perfectFor: 'Perfect For:',
+  choosePackage: 'Choose {{name}}',
+  faqSection: {
+    label: 'FAQ',
+    subtitle: 'Everything you need to know about our packages',
+  },
   faqTitle: 'Frequently Asked Questions',
+  ctaBottom: {
+    title: 'Ready to Get Started?',
+    subtitle: "Have questions? Let's discuss which package is right for you.",
+    button: 'Book a Free Consultation',
+  },
   cta: {
     title: 'Not sure which package fits?',
     subtitle: "Book a free discovery call and we'll recommend the right plan for your goals.",

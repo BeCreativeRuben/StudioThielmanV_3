@@ -30,6 +30,22 @@ export const howItWorksNl = {
         'Ontwikkeling, launch en ondersteuning — zodat je site blijft meegroeien.',
     },
   ],
+  processSection: {
+    label: 'HET PROCES',
+    title: 'Zo werken we',
+    subtitle: 'Een gestroomlijnd proces om je snel en efficiënt online te krijgen.',
+  },
+  timelineSection: {
+    label: 'DOORLOOPTIJD',
+    title: 'Verwachte doorlooptijden',
+    subtitle: 'Realistische planning op basis van je gekozen formule.',
+    mostPopular: 'MEEST GEKOZEN',
+  },
+  faqSection: {
+    label: 'FAQ',
+    title: 'Veelgestelde vragen',
+    subtitle: 'Alles wat je moet weten over onze aanpak.',
+  },
   timelineTitle: 'Typische doorlooptijden',
   timelines: [
     { package: 'Starter', duration: '1-2 weken', description: 'Eenvoudige sites met statische pagina\'s' },

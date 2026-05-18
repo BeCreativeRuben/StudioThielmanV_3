@@ -16,6 +16,7 @@ export const blogNl = {
   },
   detail: {
     back: 'Terug naar blog',
+    loading: 'Artikel laden...',
     contactCta: 'Contacteer Studio Thielman',
   },
 }

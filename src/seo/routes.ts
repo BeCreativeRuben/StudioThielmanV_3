@@ -35,7 +35,7 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
   const portfolioMatch = path.match(/^\/portfolio\/([^/]+)$/)
   if (portfolioMatch) {
     const slug = portfolioMatch[1]
-    const project = getPortfolioItemBySlug(slug)
+    const project = getPortfolioItemBySlug(slug, locale)
     if (project && !project.comingSoon) {
       return {
         path: localizedPath(path, locale),
