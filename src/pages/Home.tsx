@@ -502,8 +502,8 @@ export default function Home() {
     }
   ]
 
-  // Filter portfolio items to show only active (non-coming-soon) items, limit to 6 for homepage
-  const portfolioItems = allPortfolioItems.filter(item => !item.comingSoon).slice(0, 6)
+  // Filter portfolio items to show only active (non-coming-soon) items, limit to 3 for homepage
+  const portfolioItems = allPortfolioItems.filter(item => !item.comingSoon).slice(0, 3)
 
   return (
     <div className="relative">
@@ -867,7 +867,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <Link to="/portfolio">
-              <Button variant="primary" size="lg">More Projects</Button>
+              <Button variant="primary" size="lg">Discover More</Button>
             </Link>
           </motion.div>
         </div>
