@@ -54,9 +54,9 @@ router.post('/', submissionLimiter, async (req, res) => {
 
     const submissionId = result.lastID
 
-    let email: Awaited<ReturnType<typeof sendSubmissionNotification>> | undefined
+    let emailDelivery: Awaited<ReturnType<typeof sendSubmissionNotification>> | undefined
     try {
-      email = await sendSubmissionNotification({
+      emailDelivery = await sendSubmissionNotification({
         businessName,
         name,
         email,
@@ -75,7 +75,7 @@ router.post('/', submissionLimiter, async (req, res) => {
       success: true,
       id: submissionId,
       message: 'Submission received successfully',
-      ...(email && { email }),
+      ...(emailDelivery && { email: emailDelivery }),
     })
   } catch (error: any) {
     console.error('Submission error:', error)

@@ -106,9 +106,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         // Await email so Vercel does not terminate the function before Resend finishes
-        let email: Awaited<ReturnType<typeof sendSubmissionNotification>> | undefined
+        let emailDelivery: Awaited<ReturnType<typeof sendSubmissionNotification>> | undefined
         try {
-          email = await sendSubmissionNotification({
+          emailDelivery = await sendSubmissionNotification({
             businessName,
             name,
             email,
@@ -121,7 +121,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           })
         } catch (err) {
           console.error('Email notification error:', err)
-          email = {
+          emailDelivery = {
             configured: false,
             notification: 'failed',
             autoReply: 'failed',
@@ -133,7 +133,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           success: true,
           id: submissionId,
           message: 'Submission received successfully',
-          email,
+          email: emailDelivery,
         })
       } catch (error: any) {
         console.error('Submission error:', error)
