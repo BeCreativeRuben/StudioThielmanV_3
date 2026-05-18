@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import type { AppLocale } from './config'
 import { LOCALE_COOKIE } from './config'
@@ -36,6 +36,11 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
 
   const locale = getLocaleFromPathname(pathname)
+
+  // Keep cookie in sync with URL (e.g. Dutch SEO links to /nl/*) without geo redirects
+  useEffect(() => {
+    setLocaleCookie(locale)
+  }, [locale])
   const pathWithoutLocale = stripLocalePrefix(pathname)
   const messages = getMessages(locale)
 

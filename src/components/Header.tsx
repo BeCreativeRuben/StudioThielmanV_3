@@ -119,8 +119,9 @@ export default function Header() {
             ))}
           </div>
           
-          {/* CTA Button - Desktop */}
+          {/* Language + CTA - Desktop */}
           <div className="hidden md:flex items-center gap-3 shrink-0">
+            <LanguageSwitcher className={isScrolled ? 'text-text-primary' : 'text-white/90'} />
             <LocalizedLink to="/contact#contact-form">
               {isScrolled ? (
                 <motion.button
@@ -146,9 +147,12 @@ export default function Header() {
             </LocalizedLink>
           </div>
           
-          {/* Mobile Menu Button */}
-          <button
-            className={`md:hidden transition-colors duration-300 ${
+          {/* Language + menu - Mobile */}
+          <div className="md:hidden flex items-center gap-3">
+            <LanguageSwitcher className={isScrolled ? 'text-text-primary' : 'text-white/90'} />
+            <button
+            type="button"
+            className={`transition-colors duration-300 ${
               isScrolled ? 'text-primary' : 'text-white'
             }`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -164,6 +168,7 @@ export default function Header() {
               </svg>
             )}
           </button>
+          </div>
         </div>
         
         {/* Mobile Menu */}
@@ -199,9 +204,6 @@ export default function Header() {
                     {link.label}
                   </LocalizedLink>
                 ))}
-                <div className="px-4">
-                  <LanguageSwitcher className={isScrolled ? 'text-text-primary' : 'text-white/90'} />
-                </div>
                 <div className="px-4 pt-2">
                   <LocalizedLink to="/contact" onClick={() => setMobileMenuOpen(false)}>
                     {isScrolled ? (
