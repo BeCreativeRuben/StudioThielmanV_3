@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { getCurrentProjects, getFinishedProjects } from '../data/currentProjects'
+import {
+  CURRENT_PROJECTS_LAST_UPDATED,
+  getCurrentProjects,
+  getFinishedProjects,
+} from '../data/currentProjects'
+import { formatProjectsLastUpdated } from '../utils/formatLastUpdated'
 import Button from '../components/Button'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
@@ -34,6 +39,12 @@ export default function CurrentProjects() {
           <div className="text-sm text-white/60 uppercase tracking-wider mb-4">{cp.hero.label}</div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{cp.hero.title}</h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto">{cp.hero.subtitle}</p>
+          <p className="text-sm text-white/60 mt-3">
+            {cp.hero.lastUpdated}{' '}
+            <time dateTime={CURRENT_PROJECTS_LAST_UPDATED}>
+              {formatProjectsLastUpdated(CURRENT_PROJECTS_LAST_UPDATED, locale)}
+            </time>
+          </p>
         </motion.div>
       </section>
 

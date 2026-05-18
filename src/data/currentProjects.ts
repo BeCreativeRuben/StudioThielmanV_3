@@ -2,6 +2,7 @@ import type { AppLocale } from '../i18n/config'
 import { currentProjectsEn, finishedProjectsEn } from './currentProjects/items.en'
 import { currentProjectsNl, finishedProjectsNl } from './currentProjects/items.nl-BE'
 
+export { CURRENT_PROJECTS_LAST_UPDATED } from './currentProjects/meta'
 export type { CurrentProject } from './currentProjects/types'
 
 export function getCurrentProjects(locale: AppLocale) {

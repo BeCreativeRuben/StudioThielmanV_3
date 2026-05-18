@@ -3,6 +3,7 @@ export const currentProjectsNl = {
     label: 'LOPENDE PROJECTEN',
     title: 'In ontwikkeling',
     subtitle: 'Transparantie over wat we bouwen, leren en binnenkort lanceren.',
+    lastUpdated: 'Laatst bijgewerkt:',
   },
   status: {
     planning: 'Planning',

@@ -3,6 +3,7 @@ export const currentProjectsEn = {
     label: 'CURRENT PROJECTS',
     title: 'Work in Progress',
     subtitle: 'Transparency in what we are building, learning, and shipping next.',
+    lastUpdated: 'Last updated:',
   },
   status: {
     planning: 'Planning',

@@ -3,7 +3,8 @@ import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../components/Button'
 import { getPortfolioItems } from '../data/portfolio'
-import { getCurrentProjects } from '../data/currentProjects'
+import { CURRENT_PROJECTS_LAST_UPDATED, getCurrentProjects } from '../data/currentProjects'
+import { formatProjectsLastUpdated } from '../utils/formatLastUpdated'
 import { getLatestBlogPost } from '../data/blog'
 import { getApiUrl } from '../utils/api'
 import { useLocale } from '../i18n/LocaleProvider'
@@ -985,6 +986,12 @@ export default function Home() {
             <p className="text-body-lg text-text-primary max-w-2xl mx-auto">
               {h.wip.subtitle}
             </p>
+            <p className="text-sm text-text-secondary mt-3">
+              {h.wip.lastUpdated}{' '}
+              <time dateTime={CURRENT_PROJECTS_LAST_UPDATED}>
+                {formatProjectsLastUpdated(CURRENT_PROJECTS_LAST_UPDATED, locale)}
+              </time>
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1000,18 +1007,25 @@ export default function Home() {
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-xl font-bold text-primary flex-1">{project.title}</h3>
                   <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                    project.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
-                    project.status === 'planning' ? 'bg-blue-100 text-blue-800' :
-                    project.status === 'testing' ? 'bg-purple-100 text-purple-800' :
-                    'bg-green-100 text-green-800'
+                    project.status === 'completed'
+                      ? 'bg-emerald-100 text-emerald-800'
+                      : project.status === 'in-progress'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : project.status === 'planning'
+                          ? 'bg-blue-100 text-blue-800'
+                          : project.status === 'testing'
+                            ? 'bg-purple-100 text-purple-800'
+                            : 'bg-green-100 text-green-800'
                   }`}>
-                    {project.status === 'in-progress'
-                      ? h.wip.status.inProgress
-                      : project.status === 'planning'
-                        ? h.wip.status.planning
-                        : project.status === 'testing'
-                          ? h.wip.status.testing
-                          : h.wip.status.default}
+                    {project.status === 'completed'
+                      ? '✅'
+                      : project.status === 'in-progress'
+                        ? h.wip.status.inProgress
+                        : project.status === 'planning'
+                          ? h.wip.status.planning
+                          : project.status === 'testing'
+                            ? h.wip.status.testing
+                            : h.wip.status.default}
                   </span>
                 </div>
                 <p className="text-body-sm text-text-primary mb-4">{project.description}</p>

@@ -157,6 +157,7 @@ export const homeNl = {
     label: 'IN ONTWIKKELING',
     title: 'Waar ik nu aan werk',
     subtitle: 'Huidige projecten, wat ik leer en wat er binnenkort komt — transparant en open.',
+    lastUpdated: 'Laatst bijgewerkt:',
     viewDetails: 'Bekijk details →',
     viewAll: 'Alle lopende projecten',
     status: {

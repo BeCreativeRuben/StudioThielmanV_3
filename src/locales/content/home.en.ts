@@ -157,6 +157,7 @@ export const homeEn = {
     label: 'WORK IN PROGRESS',
     title: "What I'm Building Now",
     subtitle: "See my current projects, what I'm learning, and what's coming next. Transparency in progress.",
+    lastUpdated: 'Last updated:',
     viewDetails: 'View Details →',
     viewAll: 'View All Current Projects',
     status: {
