@@ -9,10 +9,15 @@ export const hackersAndRaversEn = {
     resultBadge: '2nd Place · Builders Battle',
     title: 'Caffeinated Robo Ravers',
     subtitle:
-      'A physical assembly line, live computer vision, a 3D digital twin, and a robot arm — all wired into AI agents through MCP. Built in one day with an inadvisable amount of coffee.',
+      'Four strangers at a coffee machine. One day to build. A robot arm, a digital twin, and a submission we almost missed by seconds.',
     watchDemo: 'Watch demo →',
     github: 'GitHub →',
     securityReview: 'Security review →',
+  },
+  origin: {
+    label: 'How we met',
+    title: 'Coffee machine → build crew',
+    body: 'Our team came together completely organically — we started talking around the coffee machine, clicked immediately, and spent the rest of the day building. No plan, no pitch deck at the start. Just four builders who wanted to ship something real.',
   },
   built: {
     label: 'What we built',
@@ -42,16 +47,10 @@ export const hackersAndRaversEn = {
       },
     ],
   },
-  demo: {
-    label: 'Demo',
-    title: 'Stage pitch video',
-    iframeTitle: 'Caffeinated Robo Ravers — Hackers & Ravers demo',
-  },
   media: {
-    label: 'Behind the build',
-    title: 'The team on the floor',
-    teamAlt: 'Caffeinated Robo Ravers at Hackers and Ravers',
-    teamCaption: 'Caffeinated Robo Ravers — Hackers & Ravers, Wintercircus Ghent',
+    label: 'Live on the line',
+    title: 'Good runs, bad runs',
+    intro: 'Computer vision and the digital twin in action — a clean run side by side with a faulty part flagged on the line.',
     videos: [
       { file: 'good-run-cropcamera.mp4', label: 'Good run — camera feed' },
       { file: 'good-run-digitaltwin.mp4', label: 'Good run — digital twin' },
@@ -59,9 +58,29 @@ export const hackersAndRaversEn = {
       { file: 'badrun_digitaltwin.mp4', label: 'Faulty part — digital twin' },
     ],
   },
+  deadline: {
+    label: 'Submission',
+    title: '5 seconds to spare',
+    p1: 'Before we could pitch, we had to upload our demo to YouTube. The venue WiFi was terrible — the upload started fine, then YouTube switched to processing and estimated 10+ more minutes.',
+    p2: 'With 50 seconds left on the clock, we gave up. Processing wasn\'t going to finish in time.',
+    p3: 'Then, with 15 seconds remaining, the link finally came through. We pasted it in and hit submit — 5 seconds to spare.',
+    p4: 'We celebrated like we\'d won the whole thing.',
+    featured: { file: 'deadline_vid.mp4', label: 'The deadline — full moment' },
+    moments: [
+      { file: 'nohope_deadline.mp4', label: 'No hope — 50 seconds left' },
+      { file: 'LASTSECOND_deadline.mp4', label: 'Last-second submit' },
+      { file: 'Celebration_Deadline.mp4', label: 'Celebration' },
+    ],
+  },
+  demo: {
+    label: 'Demo',
+    title: 'Stage pitch video',
+    intro: 'The demo we almost didn\'t get in on time — the same upload that made it to YouTube with seconds left on the clock.',
+    iframeTitle: 'Caffeinated Robo Ravers — Hackers & Ravers demo',
+  },
   battle: {
     label: 'Builders Battle',
-    title: 'From coffee machine to the podium',
+    title: 'From submission to the podium',
     p1: 'The Builders Battle is for teams who want complete creative freedom. An AI judge shortlists two finalists, each gets a 3-minute stage pitch, and the audience picks the winner.',
     prizeTitle: 'Prize pool',
     prizes: 'Mac Minis · Limousine chauffeur · Team-building activity · Wintercircus memberships · Soda Straw licenses',
@@ -69,12 +88,13 @@ export const hackersAndRaversEn = {
     p2Strong: 'second place',
     p2After: 'First place went to',
     p2End: '— well deserved.',
-    p3: 'Our team came together completely organically — we started talking around the coffee machine, clicked immediately, and spent the rest of the day building. No plan, no pitch deck at the start. Just four builders who wanted to ship something real.',
     winnerName: 'Srikanth Ganta',
   },
   team: {
     label: 'The team',
     title: 'Caffeinated Robo Ravers',
+    teamAlt: 'Caffeinated Robo Ravers at Hackers and Ravers',
+    teamCaption: 'Caffeinated Robo Ravers — Hackers & Ravers, Wintercircus Ghent',
     linkedin: 'LinkedIn →',
     members: [
       { name: 'Sven Pissoort', role: 'Vision / CV' },

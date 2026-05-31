@@ -41,12 +41,28 @@ function ExternalLink({
   )
 }
 
+function SectionLabel({ children }: { children: ReactNode }) {
+  return <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{children}</div>
+}
+
+function VideoCard({ file, label }: { file: string; label: string }) {
+  return (
+    <div className="rounded-xl overflow-hidden shadow-md bg-black">
+      <video controls playsInline preload="metadata" className="w-full aspect-video object-cover">
+        <source src={asset(file)} type="video/mp4" />
+      </video>
+      <p className="text-body-sm text-text-secondary px-4 py-3 bg-accent">{label}</p>
+    </div>
+  )
+}
+
 export default function HackersAndRavers() {
   const { messages } = useLocale()
   const h = messages.hackersAndRavers
 
   return (
     <div>
+      {/* 1. Hero */}
       <section className="relative py-20 md:py-32 overflow-hidden -mt-20 pt-20">
         <div
           className="absolute left-0 right-0 w-full bg-gray-900"
@@ -86,6 +102,7 @@ export default function HackersAndRavers() {
         </motion.div>
       </section>
 
+      {/* 2. Origin */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -94,7 +111,23 @@ export default function HackersAndRavers() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.built.label}</div>
+            <SectionLabel>{h.origin.label}</SectionLabel>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">{h.origin.title}</h2>
+            <p className="text-body-lg text-text-primary leading-relaxed">{h.origin.body}</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 3. What we built */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <SectionLabel>{h.built.label}</SectionLabel>
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">{h.built.title}</h2>
             <p className="text-body-lg text-text-primary leading-relaxed mb-6">{h.built.p1}</p>
             <p className="text-body-lg text-text-primary leading-relaxed">{h.built.p2}</p>
@@ -104,7 +137,7 @@ export default function HackersAndRavers() {
             {h.built.pillars.map((item, index) => (
               <motion.div
                 key={item.title}
-                className="bg-accent rounded-xl p-6 border border-border"
+                className="bg-white rounded-xl p-6 border border-border"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -119,10 +152,62 @@ export default function HackersAndRavers() {
         </div>
       </section>
 
+      {/* 4. Live on the line */}
+      <section className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionLabel>{h.media.label}</SectionLabel>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">{h.media.title}</h2>
+          <p className="text-body-lg text-text-primary leading-relaxed mb-8">{h.media.intro}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {h.media.videos.map((video) => (
+              <VideoCard key={video.file} file={video.file} label={video.label} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Deadline drama */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.demo.label}</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-8">{h.demo.title}</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <SectionLabel>{h.deadline.label}</SectionLabel>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">{h.deadline.title}</h2>
+            <div className="space-y-4 text-body-lg text-text-primary leading-relaxed mb-10">
+              <p>{h.deadline.p1}</p>
+              <p>{h.deadline.p2}</p>
+              <p>{h.deadline.p3}</p>
+              <p>{h.deadline.p4}</p>
+            </div>
+          </motion.div>
+
+          <div className="rounded-xl overflow-hidden shadow-lg bg-black mb-8">
+            <video controls playsInline preload="metadata" className="w-full aspect-video object-cover">
+              <source src={asset(h.deadline.featured.file)} type="video/mp4" />
+            </video>
+            <p className="text-body-sm text-text-secondary px-4 py-3 bg-white border-t border-border">
+              {h.deadline.featured.label}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {h.deadline.moments.map((video) => (
+              <VideoCard key={video.file} file={video.file} label={video.label} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Stage pitch */}
+      <section className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionLabel>{h.demo.label}</SectionLabel>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">{h.demo.title}</h2>
+          <p className="text-body-lg text-text-primary leading-relaxed mb-8">{h.demo.intro}</p>
           <div className="aspect-video rounded-xl overflow-hidden shadow-lg bg-black">
             <iframe
               src="https://www.youtube.com/embed/JwwF4Un7YaU"
@@ -135,50 +220,34 @@ export default function HackersAndRavers() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.media.label}</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-8">{h.media.title}</h2>
-          <figure className="rounded-xl overflow-hidden shadow-lg mb-10">
-            <img src={TEAM_PHOTO} alt={h.media.teamAlt} className="w-full h-auto object-cover" />
-            <figcaption className="text-body-sm text-text-secondary px-4 py-3 bg-accent text-center">
-              {h.media.teamCaption}
-            </figcaption>
-          </figure>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {h.media.videos.map((video) => (
-              <div key={video.file} className="rounded-xl overflow-hidden shadow-md bg-black">
-                <video controls playsInline preload="metadata" className="w-full aspect-video object-cover">
-                  <source src={asset(video.file)} type="video/mp4" />
-                </video>
-                <p className="text-body-sm text-text-secondary px-4 py-3 bg-accent">{video.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      {/* 7. Builders Battle */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.battle.label}</div>
+          <SectionLabel>{h.battle.label}</SectionLabel>
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">{h.battle.title}</h2>
           <p className="text-body-lg text-text-primary leading-relaxed mb-6">{h.battle.p1}</p>
           <div className="bg-white rounded-xl border border-border p-6 mb-8">
             <h3 className="text-h4 font-semibold text-primary mb-3">{h.battle.prizeTitle}</h3>
             <p className="text-body text-text-primary">{h.battle.prizes}</p>
           </div>
-          <p className="text-body-lg text-text-primary leading-relaxed mb-4">
+          <p className="text-body-lg text-text-primary leading-relaxed">
             {h.battle.p2Before} <strong>{h.battle.p2Strong}</strong>. {h.battle.p2After}{' '}
             <ExternalLink href={LINKS.winner}>{h.battle.winnerName}</ExternalLink> {h.battle.p2End}
           </p>
-          <p className="text-body-lg text-text-primary leading-relaxed">{h.battle.p3}</p>
         </div>
       </section>
 
+      {/* 8. Team */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.team.label}</div>
+          <SectionLabel>{h.team.label}</SectionLabel>
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-8">{h.team.title}</h2>
+          <figure className="rounded-xl overflow-hidden shadow-lg mb-10">
+            <img src={TEAM_PHOTO} alt={h.team.teamAlt} className="w-full h-auto object-cover" />
+            <figcaption className="text-body-sm text-text-secondary px-4 py-3 bg-accent text-center">
+              {h.team.teamCaption}
+            </figcaption>
+          </figure>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {h.team.members.map((member) => (
               <a
@@ -199,6 +268,7 @@ export default function HackersAndRavers() {
         </div>
       </section>
 
+      {/* 9. Explore */}
       <section className="py-16 bg-gray-900">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">{h.explore.title}</h2>
