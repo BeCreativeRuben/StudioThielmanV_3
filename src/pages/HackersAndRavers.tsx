@@ -45,10 +45,15 @@ function SectionLabel({ children }: { children: ReactNode }) {
   return <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{children}</div>
 }
 
-function VideoCard({ file, label }: { file: string; label: string }) {
+function VideoCard({ file, label, portrait = false }: { file: string; label: string; portrait?: boolean }) {
   return (
-    <div className="rounded-xl overflow-hidden shadow-md bg-black">
-      <video controls playsInline preload="metadata" className="w-full aspect-video object-cover">
+    <div className={`rounded-xl overflow-hidden shadow-md bg-black ${portrait ? 'max-w-xs mx-auto' : ''}`}>
+      <video
+        controls
+        playsInline
+        preload="metadata"
+        className={`w-full bg-black ${portrait ? 'aspect-[9/16] object-contain' : 'aspect-video object-cover'}`}
+      >
         <source src={asset(file)} type="video/mp4" />
       </video>
       <p className="text-body-sm text-text-secondary px-4 py-3 bg-accent">{label}</p>
@@ -185,8 +190,13 @@ export default function HackersAndRavers() {
             </div>
           </motion.div>
 
-          <div className="rounded-xl overflow-hidden shadow-lg bg-black mb-8">
-            <video controls playsInline preload="metadata" className="w-full aspect-video object-cover">
+          <div className="max-w-xs mx-auto rounded-xl overflow-hidden shadow-lg bg-black mb-8">
+            <video
+              controls
+              playsInline
+              preload="metadata"
+              className="w-full aspect-[9/16] object-contain bg-black"
+            >
               <source src={asset(h.deadline.featured.file)} type="video/mp4" />
             </video>
             <p className="text-body-sm text-text-secondary px-4 py-3 bg-white border-t border-border">
@@ -196,7 +206,7 @@ export default function HackersAndRavers() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {h.deadline.moments.map((video) => (
-              <VideoCard key={video.file} file={video.file} label={video.label} />
+              <VideoCard key={video.file} file={video.file} label={video.label} portrait />
             ))}
           </div>
         </div>
