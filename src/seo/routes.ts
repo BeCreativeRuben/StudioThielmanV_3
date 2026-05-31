@@ -89,6 +89,20 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
     }
   }
 
+  if (path === '/hackers-and-ravers') {
+    const h = messages.hackersAndRavers
+    return {
+      path: localizedPath(path, locale),
+      locale,
+      alternateEnPath: '/hackers-and-ravers',
+      alternateNlPath: '/nl/hackers-and-ravers',
+      title: pageTitle(siteName, h.seo.title),
+      description: h.seo.description,
+      ogImage: '/images/portfolio/hackers-and-ravers/team.webp',
+      noindex: true,
+    }
+  }
+
   return {
     path: localizedPath(path, locale),
     locale,

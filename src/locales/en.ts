@@ -7,6 +7,7 @@ import { blogEn } from './content/blog.en'
 import { portfolioEn } from './content/portfolio.en'
 import { currentProjectsEn } from './content/currentProjects.en'
 import { legalEn } from './content/legal.en'
+import { hackersAndRaversEn } from './content/hackersAndRavers.en'
 
 export const enMessages = {
   common: {
@@ -145,4 +146,5 @@ export const enMessages = {
   portfolio: portfolioEn,
   currentProjects: currentProjectsEn,
   legal: legalEn,
+  hackersAndRavers: hackersAndRaversEn,
 }

@@ -7,6 +7,7 @@ import { blogNl } from './content/blog.nl-BE'
 import { portfolioNl } from './content/portfolio.nl-BE'
 import { currentProjectsNl } from './content/currentProjects.nl-BE'
 import { legalNl } from './content/legal.nl-BE'
+import { hackersAndRaversNl } from './content/hackersAndRavers.nl-BE'
 
 export const nlBEMessages = {
   common: {
@@ -145,4 +146,5 @@ export const nlBEMessages = {
   portfolio: portfolioNl,
   currentProjects: currentProjectsNl,
   legal: legalNl,
+  hackersAndRavers: hackersAndRaversNl,
 }

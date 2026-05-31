@@ -18,6 +18,7 @@ import Contact from './pages/Contact'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import Admin from './pages/Admin'
+import HackersAndRavers from './pages/HackersAndRavers'
 
 function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -53,6 +54,22 @@ function App() {
         <SeoRouteSync />
         <Routes>
           <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/hackers-and-ravers"
+            element={
+              <MainLayout>
+                <HackersAndRavers />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/nl/hackers-and-ravers"
+            element={
+              <MainLayout>
+                <HackersAndRavers />
+              </MainLayout>
+            }
+          />
           {publicRoutes.map(({ path, element }) => (
             <Route
               key={path}
