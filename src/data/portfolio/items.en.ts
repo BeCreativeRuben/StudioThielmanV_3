@@ -4,26 +4,73 @@ import type { PortfolioItem } from './types'
 export const portfolioItemsEn: PortfolioItem[] = [
   {
     slug: 'la-vie-nomade',
-    title: 'La Vie Nomade - Wellness Portal',
+    title: 'ERPA — La Vie Nomade',
     package: 'Pro Max',
-    description: 'An ambitious portal for a brand focused on frequency technologies to heal mind and soul - a central hub for everything they offer.',
-    longDescription: 'La Vie Nomade needed more than a brochure site: a full digital portal that reflects the scale of their vision. The website brings together their services, content, and offerings in one cohesive experience, designed to guide visitors through a brand built on frequency technologies and holistic wellbeing. Rich layouts, clear navigation, and room to grow make it a flagship example of what the Pro Max package delivers.',
-    clientType: 'Wellness & Spirituality',
+    description:
+      'Frequency as a field — custom brand platform with phased launch, members area, and hidden interactions.',
+    longDescription:
+      'ERPA La Vie Nomade is a brand and community platform built around sound, frequency, and healing — rooted in Het Sas, Ghent. Not a standard business site, but a living digital field: slow, breathing, with hidden layers for those who keep listening.',
+    clientType: 'Brand platform · Community · Bookings',
     date: 'APR 2026',
     liveUrl: 'https://lavienomade.com',
-    keyFeatures: [
-      'Multi-section portal architecture',
-      'Service & offering discovery',
-      'Brand-led visual storytelling',
-      'Fully responsive experience',
-      'SEO & performance optimized',
-      'Scalable content structure'
-    ],
-    screenshots: [
-      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=500&fit=crop&q=80'
-    ],
-    packageFitExplanation: 'La Vie Nomade sits in Pro Max territory: a large, multi-faceted website that acts as the central front door for an entire brand ecosystem. The scope called for advanced structure, polished design, and a platform that can evolve as the business grows - exactly what Pro Max is built for.',
-    results: 'A comprehensive portal that unifies the brand\'s offerings and supports their mission to reach people in need of healing'
+    keyFeatures: [],
+    screenshots: ['/images/portfolio/ERPA/Erpa Source Lovable edit.jpeg'],
+    packageFitExplanation: '',
+    results:
+      'A production-ready brand platform that grows through four phases — from whisper to full community with bookings and magazine — without rebuilding. The site feels like ERPA: no noise, just resonance.',
+    caseStudy: {
+      subtitle: 'A website that behaves like a frequency',
+      meta: [{ label: 'URL', value: 'lavienomade.com', href: 'https://lavienomade.com' }],
+      sections: [
+        {
+          title: 'Where I started',
+          paragraphs: [
+            'ERPA isn\'t a brand you explain with five bullet points. Before I typed a single page, I sat in the feeling first: gold on black, slow scrolling, silence between sections. The goal wasn\'t to "display information" but to set a frequency — something that feels like walking into the practice at Het Sas.',
+            'The challenge was clear: this brand lives in atmosphere, rhythm, and trust. The site had to open in phases, carry an exclusive members area, enable bookings and magazine later, and work in eight languages — from Ghent to an international audience. All without breaking the sense of calm.',
+          ],
+        },
+        {
+          title: 'Whisper first, then open',
+          paragraphs: [
+            'I built the site deliberately in two tempos. The whisper phase came first: only a countdown, an email field, no menu. Visitors can sign up, but the brand stays closed until the moment is right.',
+            'When ERPA was ready to be fully visible, I unlocked the live site — origin story, seven fields (art, sport, gastronomy, hospitality, wellbeing, B2B), a living journey timeline, teasers toward shop and magazine. The whisper remains part of the story; the brand "tunes in" before fully opening.',
+          ],
+        },
+        {
+          title: 'Motion as part of the brand',
+          paragraphs: [
+            'I didn\'t want to "add animations" afterward. Scroll-reactive waves, magnetic hover states, and a loading portal on entry are built into the first scroll experience. Smooth scroll gives it that breathing tempo; motion responds to where the visitor is, not what I want to show.',
+            'Optionally, you can activate a 432 Hz soundscape. And for those who keep looking: hidden layers — a Morse quote, a breath moment, a response when you long-press the monogram. Not gimmicks; the brand rewards those who keep listening.',
+          ],
+        },
+        {
+          title: 'Maison de Resonance',
+          paragraphs: [
+            'The members area was the most delicate piece. I didn\'t want a classic login screen, but a ritual: request access, wait for approval, enter via magic link. Each member gets a personal card with a unique frequency.',
+            'From there they can book sessions — everything connected to the same calm and rhythm as the public site. I built the admin panel so ERPA can approve members, manage slots, and follow bookings without a technical middle step.',
+          ],
+        },
+        {
+          title: 'Everything behind the surface',
+          paragraphs: [
+            'Behind the atmosphere sits a fully working platform. I set up member management, booking slots, waitlists, and payments — bookings, membership, donations — with confirmation emails that keep the same tone as the site.',
+            'Contact forms, waitlists, and portal signups send automatic confirmations. Rate limiting and captcha where needed, so the field stays open but protected. Everything end-to-end: concept, UX, frontend, backend, database, payments, email flows, admin, and deploy.',
+          ],
+        },
+        {
+          title: 'Multilingual from Ghent to the world',
+          paragraphs: [
+            'ERPA wants to resonate internationally. I built content in eight languages — NL, EN, FR, ES, AR, JA, RU, PT — through translation files and MDX. No heavy CMS locking content in place; something that can grow phase by phase without breaking the architecture.',
+          ],
+        },
+        {
+          title: 'Growing in phases',
+          paragraphs: [
+            'I structured the platform in four phases: whisper, live, community, magazine. Each phase unlocks features without breaking the foundation. What\'s live today is phase one and two; the rest grows with the brand — without starting over.',
+          ],
+        },
+      ],
+    },
   },
   {
     slug: 'de-storme-design',
@@ -43,7 +90,8 @@ export const portfolioItemsEn: PortfolioItem[] = [
       'Contact & inquiry integration'
     ],
     screenshots: [
-      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&h=500&fit=crop&q=80'
+      '/images/portfolio/destormedesign/hero-home.webp',
+      '/images/portfolio/destormedesign/brand-mark.webp',
     ],
     packageFitExplanation: 'An interior architect\'s site lives or dies on presentation. Growth gave De Storme Design the visual flexibility, smooth interactions, and structured portfolio sections needed to compete online - without overbuilding backend complexity.',
     results: 'Stronger online visibility with a portfolio that puts finished interiors at the centre'
@@ -65,9 +113,7 @@ export const portfolioItemsEn: PortfolioItem[] = [
       'Contact & appointment flows',
       'Trust-building brand presentation'
     ],
-    screenshots: [
-      'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=800&h=500&fit=crop&q=80'
-    ],
+    screenshots: ['/images/portfolio/trcardetail/about-story.webp'],
     packageFitExplanation: 'TR Car Detail combines presentation with functionality - exactly what Growth is for. The booking system and structured service pages go beyond Starter, while staying focused and fast for a local service business.',
     results: 'A single website that represents the business and captures bookings from mobile customers'
   },
@@ -96,10 +142,10 @@ export const portfolioItemsEn: PortfolioItem[] = [
   },
   {
     slug: 'party-up',
-    title: 'Party Up - Party Supplies Rental',
+    title: 'PartyUp — Party Supplies Rental',
     package: 'Growth',
     description: 'A high-end party supplies rental service needed a website where customers can browse and source rental items with ease.',
-    longDescription: 'Party Up offers premium party supplies for hire. We built a website that puts their catalogue front and centre, helping customers discover and source the right items for their event without friction. Clean presentation, clear categories, and a professional look match the high-end positioning of the brand.',
+    longDescription: 'PartyUp offers premium party supplies for hire. We built a website that puts their catalogue front and centre, helping customers discover and source the right items for their event without friction. Clean presentation, clear categories, and a professional look match the high-end positioning of the brand.',
     clientType: 'Event Rental',
     date: 'FEB 2026',
     liveUrl: 'https://party-up.be',
@@ -112,9 +158,10 @@ export const portfolioItemsEn: PortfolioItem[] = [
       'Fast, modern frontend'
     ],
     screenshots: [
-      'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&h=500&fit=crop&q=80'
+      '/images/portfolio/party-up/hero-home.webp',
+      '/images/portfolio/party-up/brand-mark.webp',
     ],
-    packageFitExplanation: 'Party Up needed dynamic, polished pages and a structured way to showcase inventory - a natural fit for the Growth package. Beyond a simple landing page, the site supports real business goals: helping customers find and request the right rental items online.',
+    packageFitExplanation: 'PartyUp needed dynamic, polished pages and a structured way to showcase inventory - a natural fit for the Growth package. Beyond a simple landing page, the site supports real business goals: helping customers find and request the right rental items online.',
     results: 'Customers can explore and source party rental items through a professional, on-brand website'
   },
   {

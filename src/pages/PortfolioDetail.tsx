@@ -57,6 +57,7 @@ export default function PortfolioDetail() {
   }
 
   const similarSubtitle = d.similarSubtitle.replace('{{package}}', project.package)
+  const isNarrative = (project.caseStudy?.sections?.length ?? 0) > 0
 
   return (
     <motion.div>
@@ -86,7 +87,10 @@ export default function PortfolioDetail() {
             </span>
             <span className="text-white/60 text-sm uppercase tracking-wider">{project.clientType}</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{project.title}</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{project.title}</h1>
+          {project.caseStudy?.subtitle && (
+            <p className="text-lg md:text-xl text-white/70 mb-4 max-w-3xl">{project.caseStudy.subtitle}</p>
+          )}
           <p className="text-xl text-white/90 max-w-3xl">{project.description}</p>
         </motion.div>
       </section>
@@ -99,9 +103,34 @@ export default function PortfolioDetail() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">{d.overview}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+              {isNarrative ? d.howIBuiltIt : project.caseStudy ? d.inBrief : d.overview}
+            </h2>
             <div className="prose prose-lg max-w-none">
-              <p className="text-body-lg text-text-primary leading-relaxed mb-4">{project.longDescription}</p>
+              {!isNarrative && (
+                <p className="text-body-lg text-text-primary leading-relaxed mb-4">{project.longDescription}</p>
+              )}
+              {project.caseStudy?.meta && project.caseStudy.meta.length > 0 && (
+                <div className={`grid grid-cols-1 gap-4 mb-8 ${project.caseStudy.meta.length > 1 ? 'sm:grid-cols-3' : 'max-w-sm'}`}>
+                  {project.caseStudy.meta.map((item) => (
+                    <div key={item.label} className="bg-accent rounded-lg p-4 border border-border">
+                      <div className="text-sm text-text-secondary uppercase tracking-wider mb-1">{item.label}</div>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-body text-primary font-semibold hover:underline"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <div className="text-body text-text-primary font-semibold">{item.value}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
               <div className="grid grid-cols-2 gap-6 mt-8 pt-8 border-t border-gray-200">
                 <div>
                   <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">{d.date}</div>
@@ -117,6 +146,29 @@ export default function PortfolioDetail() {
         </motion.div>
       </section>
 
+      {isNarrative &&
+        project.caseStudy!.sections!.map((section, index) => (
+          <section key={section.title} className={index % 2 === 0 ? 'py-20 bg-accent' : 'py-20 bg-white'}>
+            <motion.div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <h3 className="text-2xl md:text-3xl font-bold text-primary mb-6">{section.title}</h3>
+                <div className="space-y-4">
+                  {section.paragraphs.map((paragraph, pIndex) => (
+                    <p key={pIndex} className="text-body-lg text-text-primary leading-relaxed">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </motion.div>
+            </motion.div>
+          </section>
+        ))}
+
       {project.screenshots.length > 0 && (
         <section className="py-20 bg-accent">
           <motion.div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -127,7 +179,7 @@ export default function PortfolioDetail() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-12 text-center">{d.screenshots}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className={`grid gap-8 ${project.screenshots.length === 1 ? 'grid-cols-1 max-w-4xl mx-auto' : 'grid-cols-1 md:grid-cols-2'}`}>
                 {project.screenshots.map((screenshot, index) => (
                   <motion.div
                     key={index}
@@ -137,11 +189,11 @@ export default function PortfolioDetail() {
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     className="bg-white rounded-xl overflow-hidden shadow-lg"
                   >
-                    <div className="w-full h-64 bg-gray-100 flex items-center justify-center">
+                    <div className={`w-full bg-gray-100 flex items-center justify-center ${project.screenshots.length === 1 ? '' : 'h-64'}`}>
                       <img
-                        src={screenshot}
+                        src={encodeURI(screenshot)}
                         alt={`${project.title} screenshot ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        className={project.screenshots.length === 1 ? 'w-full h-auto' : 'w-full h-full object-cover object-top'}
                         onError={(e) => {
                           const target = e.target as HTMLImageElement
                           target.style.display = 'none'
@@ -223,52 +275,58 @@ export default function PortfolioDetail() {
         </motion.div>
       </section>
 
-      <section className="py-20 bg-accent">
-        <motion.div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-8">{d.keyFeatures}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {project.keyFeatures.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex items-start gap-3 bg-white p-4 rounded-lg"
-                >
-                  <span className="text-cta font-bold mt-1">✓</span>
-                  <span className="text-body text-text-primary">{feature}</span>
-                </motion.div>
-              ))}
-            </div>
+      {project.keyFeatures.length > 0 && (
+        <section className="py-20 bg-white">
+          <motion.div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-8">{d.keyFeatures}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {project.keyFeatures.map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="flex items-start gap-3 bg-accent p-4 rounded-lg border border-border"
+                  >
+                    <span className="text-cta font-bold mt-1">✓</span>
+                    <span className="text-body text-text-primary">{feature}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </section>
+        </section>
+      )}
 
-      <section className="py-20 bg-white">
-        <motion.div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">{d.packageFit}</h2>
-            <div className="bg-primary/5 border border-primary/20 rounded-xl p-8">
-              <p className="text-body-lg text-text-primary leading-relaxed">{project.packageFitExplanation}</p>
-            </div>
+      {project.packageFitExplanation && (
+        <section className="py-20 bg-white">
+          <motion.div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+                {project.caseStudy ? d.scope : d.packageFit}
+              </h2>
+              <div className="bg-primary/5 border border-primary/20 rounded-xl p-8">
+                <p className="text-body-lg text-text-primary leading-relaxed">{project.packageFitExplanation}</p>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </section>
+        </section>
+      )}
 
       {project.results && (
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-accent">
           <motion.div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}

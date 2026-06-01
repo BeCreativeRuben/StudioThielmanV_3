@@ -1,3 +1,20 @@
+export interface PortfolioMetaItem {
+  label: string
+  value: string
+  href?: string
+}
+
+export interface PortfolioStorySection {
+  title: string
+  paragraphs: string[]
+}
+
+export interface PortfolioCaseStudy {
+  subtitle?: string
+  meta?: PortfolioMetaItem[]
+  sections?: PortfolioStorySection[]
+}
+
 export interface PortfolioItem {
   slug: string
   title: string
@@ -13,4 +30,5 @@ export interface PortfolioItem {
   packageFitExplanation: string
   comingSoon?: boolean
   results?: string
+  caseStudy?: PortfolioCaseStudy
 }

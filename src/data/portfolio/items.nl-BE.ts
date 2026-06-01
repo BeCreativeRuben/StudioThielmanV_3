@@ -4,26 +4,73 @@ import type { PortfolioItem } from './types'
 export const portfolioItemsNl: PortfolioItem[] = [
   {
     slug: 'la-vie-nomade',
-    title: 'La Vie Nomade - Wellnessportaal',
+    title: 'ERPA — La Vie Nomade',
     package: 'Pro Max',
-    description: 'Een ambitieus portaal voor een merk dat zich richt op frequentietechnologieën om geest en ziel te helen - een centrale hub voor alles wat ze aanbieden.',
-    longDescription: 'La Vie Nomade had meer nodig dan een brochuresite: een volledig digitaal portaal dat de schaal van hun visie weerspiegelt. De website brengt hun diensten, content en aanbod samen in één samenhangende ervaring, ontworpen om bezoekers te begeleiden door een merk gebouwd op frequentietechnologieën en holistisch welzijn. Rijke layouts, duidelijke navigatie en ruimte om te groeien maken het een vlaggenschipvoorbeeld van wat het Pro Max-pakket levert.',
-    clientType: 'Wellness & Spiritualiteit',
+    description:
+      'Frequentie als veld — custom brand platform met gefaseerde lancering, ledenzone en verborgen interacties.',
+    longDescription:
+      'ERPA La Vie Nomade is een merk- en communityplatform rond klank, frequentie en heling — geworteld in Het Sas van Gent. Geen standaard bedrijfssite, maar een levend digitaal veld: traag, ademend, met verborgen lagen voor wie blijft luisteren.',
+    clientType: 'Brand platform · Community · Boekingen',
     date: 'APR 2026',
     liveUrl: 'https://lavienomade.com',
-    keyFeatures: [
-      'Portaalarchitectuur met meerdere secties',
-      'Ontdekking van diensten en aanbod',
-      'Visueel verhaal gedragen door het merk',
-      'Volledig responsieve ervaring',
-      'SEO- en prestatiegeoptimaliseerd',
-      'Schaalbare contentstructuur'
-    ],
-    screenshots: [
-      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=500&fit=crop&q=80'
-    ],
-    packageFitExplanation: 'La Vie Nomade hoort thuis in Pro Max-territorium: een grote, veelzijdige website die fungeert als de centrale voordeur voor een volledig merkecosysteem. De scope vroeg om geavanceerde structuur, verfijnd design en een platform dat kan meegroeien met het bedrijf - precies waarvoor Pro Max is gebouwd.',
-    results: 'Een uitgebreid portaal dat het aanbod van het merk verenigt en hun missie ondersteunt om mensen te bereiken die genezing nodig hebben'
+    keyFeatures: [],
+    screenshots: ['/images/portfolio/ERPA/Erpa Source Lovable edit.jpeg'],
+    packageFitExplanation: '',
+    results:
+      'Een productie-klaar merkplatform dat verder groeit in vier fases — van fluistering tot volledige community met boekingen en magazine — zonder opnieuw te bouwen. De site voelt als ERPA: geen lawaai, wel resonantie.',
+    caseStudy: {
+      subtitle: 'Een website die zich gedraagt als een frequentie',
+      meta: [{ label: 'URL', value: 'lavienomade.com', href: 'https://lavienomade.com' }],
+      sections: [
+        {
+          title: 'Waar ik mee startte',
+          paragraphs: [
+            'ERPA is geen merk dat je uitlegt met vijf bullet points. Voordat ik één pagina type, zat ik eerst in het gevoel: goud op zwart, traag scrollen, stilte tussen secties. Het doel was niet "informatie tonen" maar een frequentie neerzetten — iets dat aanvoelt als je de praktijk in Het Sas binnenstapt.',
+            'De uitdaging was duidelijk: dit merk leeft in sfeer, ritme en vertrouwen. De site moest gefaseerd openen, een exclusieve ledenzone dragen, later boekingen en magazine mogelijk maken, en werken in acht talen — van Gent naar een internationaal publiek. Alles zonder het gevoel van rust te breken.',
+          ],
+        },
+        {
+          title: 'Eerst fluisteren, dan openen',
+          paragraphs: [
+            'Ik bouwde de site bewust in twee tempo\'s. De whisper-fase kwam eerst: alleen een countdown, een e-mailveld, geen menu. Bezoekers kunnen zich inschrijven, maar het merk blijft gesloten tot het moment klopt.',
+            'Pas wanneer ERPA klaar was om volledig zichtbaar te worden, schakelde ik de live site vrij — oorsprongverhaal, zeven velden (kunst, sport, gastronomie, hospitality, wellbeing, B2B), een levende reistijdlijn, teasers naar winkel en magazine. De whisper blijft onderdeel van het verhaal; het merk "stemt af" voordat het volledig opengaat.',
+          ],
+        },
+        {
+          title: 'Motion als onderdeel van het merk',
+          paragraphs: [
+            'Ik wilde niet "animaties toevoegen" achteraf. Scroll-reactieve golven, magnetische hover-states en een loading-portal bij binnenkomst zitten in de eerste scroll-ervaring ingebouwd. Smooth scroll geeft het ademende tempo; motion reageert op waar de bezoeker is, niet op wat ik wil laten zien.',
+            'Optioneel kan je een 432 Hz-geluidspad activeren. En voor wie blijft kijken: verborgen lagen — een Morse-quote, een adem-moment, een reactie wanneer je het monogram lang indrukt. Geen gimmicks; het merk beloont wie blijft luisteren.',
+          ],
+        },
+        {
+          title: 'Maison de Resonance',
+          paragraphs: [
+            'De ledenzone was het meest delicate stuk. Ik wilde geen klassiek login-scherm, maar een ritueel: toegang aanvragen, wachten op goedkeuring, binnenkomen via magic link. Elke member krijgt een persoonlijke lidkaart met een unieke frequentie.',
+            'Van daaruit kunnen ze sessies boeken — alles verbonden met dezelfde rust en hetzelfde ritme als de publieke site. Ik bouwde het admin-paneel zodat ERPA zelf leden kan goedkeuren, slots kan beheren en boekingen kan opvolgen zonder technische tussenstap.',
+          ],
+        },
+        {
+          title: 'Alles wat erachter zit',
+          paragraphs: [
+            'Achter de sfeer zit een volledig werkend platform. Ik zette ledenbeheer, boekingsslots, wachtlijsten en betalingen op — boekingen, lidmaatschap, donaties — met bevestigingsmails die dezelfde toon aanhouden als de site.',
+            'Contactformulieren, wachtlijsten en portal-signups sturen automatisch bevestigingen. Rate limiting en captcha waar het nodig is, zodat het veld open blijft maar beschermd. Alles end-to-end: concept, UX, frontend, backend, database, betalingen, e-mailflows, admin en deploy.',
+          ],
+        },
+        {
+          title: 'Meertalig van Gent naar de wereld',
+          paragraphs: [
+            'ERPA wil internationaal resoneren. Ik bouwde de content in acht talen — NL, EN, FR, ES, AR, JA, RU, PT — via vertaalbestanden en MDX. Geen zware CMS waar content vastzit; wel iets dat per fase kan meegroeien zonder de architectuur te breken.',
+          ],
+        },
+        {
+          title: 'Gefaseerd groeien',
+          paragraphs: [
+            'Ik structureerde het platform in vier fases: whisper, live, community, magazine. Elke fase schakelt features vrij zonder de basis te breken. Wat vandaag live staat, is fase één en twee; de rest groeit mee met het merk — zonder opnieuw te beginnen.',
+          ],
+        },
+      ],
+    },
   },
   {
     slug: 'de-storme-design',
@@ -43,7 +90,8 @@ export const portfolioItemsNl: PortfolioItem[] = [
       'Contact- en aanvraagintegratie'
     ],
     screenshots: [
-      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&h=500&fit=crop&q=80'
+      '/images/portfolio/destormedesign/hero-home.webp',
+      '/images/portfolio/destormedesign/brand-mark.webp',
     ],
     packageFitExplanation: 'De website van een interieurarchitect staat of valt met presentatie. Growth gaf De Storme Design de visuele flexibiliteit, vloeiende interacties en gestructureerde portfoliosecties die nodig zijn om online te concurreren - zonder onnodige backendcomplexiteit.',
     results: 'Sterkere online zichtbaarheid met een portfolio dat afgeronde interieurs centraal stelt'
@@ -65,9 +113,7 @@ export const portfolioItemsNl: PortfolioItem[] = [
       'Contact- en afspraakflows',
       'Merkbpresentatie die vertrouwen opbouwt'
     ],
-    screenshots: [
-      'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=800&h=500&fit=crop&q=80'
-    ],
+    screenshots: ['/images/portfolio/trcardetail/about-story.webp'],
     packageFitExplanation: 'TR Car Detail combineert presentatie met functionaliteit - precies waar Growth voor bedoeld is. Het boekingssysteem en gestructureerde dienstenpagina\'s gaan verder dan Starter, terwijl alles gericht en snel blijft voor een lokale dienstverlener.',
     results: 'Eén website die het bedrijf vertegenwoordigt en boekingen vastlegt van mobiele klanten'
   },
@@ -96,10 +142,10 @@ export const portfolioItemsNl: PortfolioItem[] = [
   },
   {
     slug: 'party-up',
-    title: 'Party Up - Verhuur van feestartikelen',
+    title: 'PartyUp — Verhuur van feestartikelen',
     package: 'Growth',
     description: 'Een high-end verhuurservice voor feestartikelen had een website nodig waar klanten eenvoudig verhuuritems kunnen browsen en vinden.',
-    longDescription: 'Party Up biedt premium feestartikelen te huur. We bouwden een website die hun catalogus centraal stelt en klanten helpt de juiste items voor hun evenement te ontdekken en te vinden zonder frictie. Een strakke presentatie, duidelijke categorieën en een professionele uitstraling passen bij de high-end positionering van het merk.',
+    longDescription: 'PartyUp biedt premium feestartikelen te huur. We bouwden een website die hun catalogus centraal stelt en klanten helpt de juiste items voor hun evenement te ontdekken en te vinden zonder frictie. Een strakke presentatie, duidelijke categorieën en een professionele uitstraling passen bij de high-end positionering van het merk.',
     clientType: 'Evenementverhuur',
     date: 'FEB 2026',
     liveUrl: 'https://party-up.be',
@@ -112,9 +158,10 @@ export const portfolioItemsNl: PortfolioItem[] = [
       'Snelle, moderne frontend'
     ],
     screenshots: [
-      'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&h=500&fit=crop&q=80'
+      '/images/portfolio/party-up/hero-home.webp',
+      '/images/portfolio/party-up/brand-mark.webp',
     ],
-    packageFitExplanation: 'Party Up had dynamische, verfijnde pagina\'s en een gestructureerde manier nodig om inventaris te tonen - een natuurlijke match voor het Growth-pakket. Meer dan een simpele landingspagina ondersteunt de site echte bedrijfsdoelen: klanten helpen de juiste verhuuritems online te vinden en aan te vragen.',
+    packageFitExplanation: 'PartyUp had dynamische, verfijnde pagina\'s en een gestructureerde manier nodig om inventaris te tonen - een natuurlijke match voor het Growth-pakket. Meer dan een simpele landingspagina ondersteunt de site echte bedrijfsdoelen: klanten helpen de juiste verhuuritems online te vinden en aan te vragen.',
     results: 'Klanten kunnen feestverhuuritems verkennen en vinden via een professionele, merkconforme website'
   },
   {
