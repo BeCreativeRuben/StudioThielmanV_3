@@ -41,6 +41,7 @@ export const portfolioEn = {
     loadingPreview: 'Loading preview...',
     previewError: 'Unable to load preview',
     visitLiveSite: 'Visit live site →',
+    checkOutWebsite: 'Check out the website!',
     keyFeatures: 'Key Features',
     whatSiteDoes: 'What the site does',
     moduleColumn: 'Module',

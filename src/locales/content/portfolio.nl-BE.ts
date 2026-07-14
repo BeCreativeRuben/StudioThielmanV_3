@@ -41,6 +41,7 @@ export const portfolioNl = {
     loadingPreview: 'Preview laden...',
     previewError: 'Preview kon niet geladen worden',
     visitLiveSite: 'Bezoek live site →',
+    checkOutWebsite: 'Bekijk de website!',
     keyFeatures: 'Belangrijkste features',
     whatSiteDoes: 'Wat de site doet',
     moduleColumn: 'Onderdeel',

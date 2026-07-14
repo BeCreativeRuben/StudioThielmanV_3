@@ -38,7 +38,7 @@ export const packagesEn = {
     {
       name: 'Starter',
       price: '€25/month',
-      startupFee: 'No startup fee',
+      startupFee: '+ €150 startup',
       description: 'Get online without breaking the bank. A professional web presence for anyone.',
       features: [
         '3-5 static pages OR one-pager',

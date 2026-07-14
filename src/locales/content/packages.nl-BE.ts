@@ -38,7 +38,7 @@ export const packagesNl = {
     {
       name: 'Starter',
       price: '€25/maand',
-      startupFee: 'Geen opstartkost',
+      startupFee: '+ €150 opstart',
       description: 'Professioneel online zonder grote investering. Perfect om te starten.',
       features: [
         '3-5 statische pagina\'s OF one-pager',

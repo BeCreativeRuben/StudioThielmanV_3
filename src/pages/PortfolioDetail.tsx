@@ -59,6 +59,10 @@ export default function PortfolioDetail() {
   const similarSubtitle = d.similarSubtitle.replace('{{package}}', project.package)
   const isNarrative = (project.caseStudy?.sections?.length ?? 0) > 0
 
+  const scrollToLivePreview = () => {
+    document.getElementById('live-preview')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <motion.div>
       <section className="relative py-20 md:py-32 overflow-hidden -mt-20 pt-20">
@@ -116,14 +120,24 @@ export default function PortfolioDetail() {
                     <div key={item.label} className="bg-accent rounded-lg p-4 border border-border">
                       <div className="text-sm text-text-secondary uppercase tracking-wider mb-1">{item.label}</div>
                       {item.href ? (
-                        <a
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-body text-primary font-semibold hover:underline"
-                        >
-                          {item.value}
-                        </a>
+                        <>
+                          <a
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-body text-primary font-semibold hover:underline"
+                          >
+                            {item.value}
+                          </a>
+                          <Button
+                            variant="cta"
+                            size="sm"
+                            className="mt-3 w-full"
+                            onClick={scrollToLivePreview}
+                          >
+                            {d.checkOutWebsite}
+                          </Button>
+                        </>
                       ) : (
                         <div className="text-body text-text-primary font-semibold">{item.value}</div>
                       )}
@@ -212,7 +226,7 @@ export default function PortfolioDetail() {
         </section>
       )}
 
-      <section className="py-20 bg-white">
+      <section id="live-preview" className="py-20 bg-white scroll-mt-24">
         <motion.div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
