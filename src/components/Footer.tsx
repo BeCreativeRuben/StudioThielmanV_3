@@ -74,6 +74,11 @@ export default function Footer() {
                   {t('common.footer.ecommerce')}
                 </LocalizedLink>
               </li>
+              <li>
+                <LocalizedLink to="/workshops" className="text-body text-white/80 hover:text-white transition-colors">
+                  {t('common.footer.workshops')}
+                </LocalizedLink>
+              </li>
             </ul>
           </div>
 

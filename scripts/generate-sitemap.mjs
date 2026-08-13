@@ -13,6 +13,7 @@ const staticPaths = [
   '/how-it-works',
   '/about',
   '/contact',
+  '/workshops',
   '/privacy',
   '/terms',
 ]

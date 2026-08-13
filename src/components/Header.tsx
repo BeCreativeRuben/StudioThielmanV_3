@@ -63,6 +63,7 @@ export default function Header() {
     { path: '/portfolio', label: t('common.nav.portfolio') },
     { path: '/how-it-works', label: t('common.nav.howItWorks') },
     { path: '/about', label: t('common.nav.about') },
+    { path: '/workshops', label: t('common.nav.workshops') },
   ]
 
   const isActive = (path: string) => pathWithoutLocale === path

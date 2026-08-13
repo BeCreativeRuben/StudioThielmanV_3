@@ -15,15 +15,16 @@ import officeImage from '../images/c2ea26ea-23d3-4ee1-8710-74211f2d80be.jpeg'
 
 // Service Images - Using Unsplash placeholders that match each service theme
 const serviceImages = {
-  webDesign: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop&q=80', // Web design/development workspace
-  branding: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop&q=80', // Branding materials and design
-  seo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&q=80', // Analytics and data visualization
-  ecommerce: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop&q=80', // Online shopping and e-commerce
-  ai: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80', // AI and technology
-  cms: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=400&fit=crop&q=80' // Content management dashboard
+  webDesign: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop&q=80',
+  branding: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop&q=80',
+  seo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&q=80',
+  ecommerce: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop&q=80',
+  ai: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80',
+  cms: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=400&fit=crop&q=80',
+  workshops: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=400&fit=crop&q=80',
 }
 
-const serviceImageKeys = ['webDesign', 'branding', 'seo', 'ecommerce', 'ai', 'cms'] as const
+const serviceImageKeys = ['webDesign', 'branding', 'seo', 'ecommerce', 'ai', 'cms', 'workshops'] as const
 
 // Blog Countdown Component
 function BlogCountdown() {
@@ -814,7 +815,7 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
                   <div
-                    id={`service-${index === 0 ? 'custom-web' : index === 1 ? 'branding' : index === 2 ? 'seo' : 'ecommerce'}`}
+                    id={`service-${index === 0 ? 'custom-web' : index === 1 ? 'branding' : index === 2 ? 'seo' : index === 3 ? 'ecommerce' : index === 6 ? 'workshops' : `service-${index}`}`}
                     className={`border border-border rounded-lg overflow-hidden transition-all duration-300 ${
                       expandedService === index ? 'shadow-lg' : ''
                     }`}
@@ -886,8 +887,10 @@ export default function Home() {
                           </div>
                         )}
                         <div className="flex gap-3">
-                          <LocalizedLink to="/packages">
-                            <Button variant="outline" size="sm">{c.viewPackagesArrow}</Button>
+                          <LocalizedLink to={index === 6 ? '/workshops' : '/packages'}>
+                            <Button variant="outline" size="sm">
+                              {index === 6 ? c.cta.learnMore : c.viewPackagesArrow}
+                            </Button>
                           </LocalizedLink>
                           <LocalizedLink to="/contact#contact-form">
                             <Button variant="primary" size="sm">{c.cta.getStarted}</Button>
