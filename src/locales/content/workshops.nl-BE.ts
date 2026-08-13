@@ -49,6 +49,33 @@ export const workshopsNl = {
       },
     ],
   },
+  socialProof: {
+    label: 'UIT DE PRAKTIJK',
+    title: 'Al gegeven. Dit zeiden deelnemers.',
+    intro: 'Vorige week bij Aeriez — een hands-on sessie over AI in de werkdag.',
+    postLinkLabel: 'Lees de post op LinkedIn',
+    postUrl: 'https://www.linkedin.com/feed/update/urn:li:activity:7492876931240087554/',
+    postDate: '11 aug 2026',
+    postAuthor: 'Ruben Thielman',
+    postExcerpt:
+      'Last week at Aeriez, I gave a workshop on how to use AI to accelerate your working day, without outsourcing quality or decisions. The key takeaway was: first build the routine, then use the tool. AI helps remove friction, but you stay in control.',
+    testimonials: [
+      {
+        name: 'Ennio Roels',
+        quote:
+          'An enthousiastic tutor who has a lot of knowledge on coding with AI, setting up coding agents and creating an efficient work schedule.',
+      },
+      {
+        name: 'Ives De Saeger, CEO @ Aeriez',
+        quote: 'Looking forward for more of his approach!!',
+      },
+      {
+        name: 'Aeriez',
+        quote:
+          'Thank you Ruben for integrating AI even more in our daily workflow. You were calm, eager to explain and listened to what we needed. We look forward to the next workshop.',
+      },
+    ],
+  },
   audience: {
     label: 'VOOR WIE',
     title: 'Voor wie',
