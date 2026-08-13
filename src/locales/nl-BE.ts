@@ -134,8 +134,16 @@ export const nlBEMessages = {
         description: 'Voorwaarden voor het gebruik van de website en diensten van Studio Thielman.',
       },
       '/workshops': {
-        title: 'AI-workshops',
-        description: 'Hands-on AI-workshops voor je werkdag. DCCFC-model, labs en een 7-dagenplan. Incompany of open sessie.',
+        title: 'AI-workshops — teams & 1:1',
+        description: 'AI-workshops voor teams (incompany) of 1:1 (twee dagen, €1.000). Hands-on bouwen, geen demo-theater.',
+      },
+      '/workshops/incompany': {
+        title: 'Incompany AI-workshop voor teams',
+        description: 'Hands-on AI-workshop voor je team. DCCFC-model, drie labs, grenzen en een 7-dagenplan. Prijs op aanvraag.',
+      },
+      '/workshops/1-1': {
+        title: '1:1 AI-workshop — twee dagen, €1.000',
+        description: 'Tweedaagse 1:1 AI-workshop: bouw je eerste app of workflow vanaf nul, en ga dieper op merk en betaald werk. €1.000 all-in.',
       },
     },
     structured: {

@@ -125,8 +125,8 @@ export const homeNl = {
       {
         title: 'Workshops',
         description:
-          'Hands-on AI-sessies voor teams die AI in hun echte werkdag willen, niet als hype. Je krijgt een model, drie labs, en een plan voor de week erna.',
-        benefits: 'Je gaat naar huis met één herschreven routine en een hulpmiddel dat je meteen gebruikt.',
+          'Hands-on AI-sessies — incompany voor teams, of 1:1 als je je eerste app of workflow vanaf nul wilt bouwen.',
+        benefits: 'Je team vertrekt met een herschreven routine, of jij loopt buiten met je eigen app. Geen demo-theater.',
         features: [
           'DCCFC-promptmodel (doel, context, constraints, format, check)',
           'Lab: sneller leren',

@@ -134,8 +134,16 @@ export const enMessages = {
         description: 'Terms and conditions for Studio Thielman website and service offerings.',
       },
       '/workshops': {
-        title: 'AI Workshops',
-        description: 'Hands-on AI workshops for your workday. DCCFC model, labs, and a 7-day plan. In-company or open session.',
+        title: 'AI Workshops — Teams & 1:1',
+        description: 'AI workshops for teams (in-company) or 1:1 (two days, €1,000). Hands-on building, no demo theatre.',
+      },
+      '/workshops/incompany': {
+        title: 'In-Company AI Workshop for Teams',
+        description: 'Hands-on AI workshop for your team. DCCFC model, three labs, boundaries, and a 7-day plan. Price on request.',
+      },
+      '/workshops/1-1': {
+        title: '1:1 AI Workshop — Two Days, €1,000',
+        description: 'Two-day 1:1 AI workshop: build your first app or workflow from scratch, then go deeper on brand and paid work. €1,000 all-in.',
       },
     },
     structured: {

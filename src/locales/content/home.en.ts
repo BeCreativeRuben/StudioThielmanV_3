@@ -125,8 +125,8 @@ export const homeEn = {
       {
         title: 'Workshops',
         description:
-          'Hands-on AI sessions for teams that want AI in the actual workday, not as hype. You get a model, three labs, and a plan for the week after.',
-        benefits: 'You leave with one rewritten routine and a helper you can use immediately.',
+          'Hands-on AI sessions — in-company for teams, or 1:1 if you want to build your first app or workflow from scratch.',
+        benefits: 'Your team leaves with a rewritten routine, or you walk out with your own app. No demo theatre.',
         features: [
           'DCCFC prompt model (goal, context, constraints, format, check)',
           'Lab: learn faster',
