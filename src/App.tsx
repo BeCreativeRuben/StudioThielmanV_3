@@ -19,6 +19,7 @@ import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import Admin from './pages/Admin'
 import HackersAndRavers from './pages/HackersAndRavers'
+import Workshops from './pages/Workshops'
 
 function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -42,6 +43,7 @@ const publicRoutes = [
   { path: '/how-it-works', element: <HowItWorks /> },
   { path: '/about', element: <About /> },
   { path: '/contact', element: <Contact /> },
+  { path: '/workshops', element: <Workshops /> },
   { path: '/privacy', element: <Privacy /> },
   { path: '/terms', element: <Terms /> },
 ] as const

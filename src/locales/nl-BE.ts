@@ -8,6 +8,7 @@ import { portfolioNl } from './content/portfolio.nl-BE'
 import { currentProjectsNl } from './content/currentProjects.nl-BE'
 import { legalNl } from './content/legal.nl-BE'
 import { hackersAndRaversNl } from './content/hackersAndRavers.nl-BE'
+import { workshopsNl } from './content/workshops.nl-BE'
 
 export const nlBEMessages = {
   common: {
@@ -19,6 +20,7 @@ export const nlBEMessages = {
       howItWorks: 'Werkwijze',
       about: 'Over ons',
       contact: 'Contact',
+      workshops: 'Workshops',
     },
     cta: {
       bookCall: 'Plan een gesprek',
@@ -48,6 +50,7 @@ export const nlBEMessages = {
       branding: 'Branding',
       seo: 'SEO',
       ecommerce: 'E-commerce',
+      workshops: 'Workshops',
       copyright: '© {{year}} Studio Thielman. Alle rechten voorbehouden.',
       privacy: 'Privacybeleid',
       terms: 'Algemene voorwaarden',
@@ -130,6 +133,10 @@ export const nlBEMessages = {
         title: 'Algemene voorwaarden',
         description: 'Voorwaarden voor het gebruik van de website en diensten van Studio Thielman.',
       },
+      '/workshops': {
+        title: 'AI-workshops',
+        description: 'Hands-on AI-workshops voor je werkdag. DCCFC-model, labs en een 7-dagenplan. Incompany of open sessie.',
+      },
     },
     structured: {
       areaServed: 'België',
@@ -147,4 +154,5 @@ export const nlBEMessages = {
   currentProjects: currentProjectsNl,
   legal: legalNl,
   hackersAndRavers: hackersAndRaversNl,
+  workshops: workshopsNl,
 }

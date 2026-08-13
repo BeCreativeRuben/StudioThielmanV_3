@@ -122,6 +122,19 @@ export const homeNl = {
           'Training en documentatie',
         ],
       },
+      {
+        title: 'Workshops',
+        description:
+          'Hands-on AI-sessies voor teams die AI in hun echte werkdag willen, niet als hype. Je krijgt een model, drie labs, en een plan voor de week erna.',
+        benefits: 'Je gaat naar huis met één herschreven routine en een hulpmiddel dat je meteen gebruikt.',
+        features: [
+          'DCCFC-promptmodel (doel, context, constraints, format, check)',
+          'Lab: sneller leren',
+          'Lab: een terugkerende workflow herschrijven',
+          'Lab: eigen prompt-pack of mini-assistent',
+          'Grenzen, gewoontes, 7-dagenplan',
+        ],
+      },
     ],
   },
   values: {

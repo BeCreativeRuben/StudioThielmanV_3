@@ -122,6 +122,19 @@ export const homeEn = {
           'Training and documentation',
         ],
       },
+      {
+        title: 'Workshops',
+        description:
+          'Hands-on AI sessions for teams that want AI in the actual workday, not as hype. You get a model, three labs, and a plan for the week after.',
+        benefits: 'You leave with one rewritten routine and a helper you can use immediately.',
+        features: [
+          'DCCFC prompt model (goal, context, constraints, format, check)',
+          'Lab: learn faster',
+          'Lab: rewrite a recurring workflow',
+          'Lab: your own prompt pack or mini-assistant',
+          'Boundaries, habits, 7-day plan',
+        ],
+      },
     ],
   },
   values: {

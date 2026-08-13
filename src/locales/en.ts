@@ -8,6 +8,7 @@ import { portfolioEn } from './content/portfolio.en'
 import { currentProjectsEn } from './content/currentProjects.en'
 import { legalEn } from './content/legal.en'
 import { hackersAndRaversEn } from './content/hackersAndRavers.en'
+import { workshopsEn } from './content/workshops.en'
 
 export const enMessages = {
   common: {
@@ -19,6 +20,7 @@ export const enMessages = {
       howItWorks: 'How we work',
       about: 'About',
       contact: 'Contact',
+      workshops: 'Workshops',
     },
     cta: {
       bookCall: 'Book a Call',
@@ -48,6 +50,7 @@ export const enMessages = {
       branding: 'Branding',
       seo: 'SEO',
       ecommerce: 'E-commerce',
+      workshops: 'Workshops',
       copyright: '© {{year}} Studio Thielman. All rights reserved.',
       privacy: 'Privacy Policy',
       terms: 'Terms of Service',
@@ -130,6 +133,10 @@ export const enMessages = {
         title: 'Terms of Service',
         description: 'Terms and conditions for Studio Thielman website and service offerings.',
       },
+      '/workshops': {
+        title: 'AI Workshops',
+        description: 'Hands-on AI workshops for your workday. DCCFC model, labs, and a 7-day plan. In-company or open session.',
+      },
     },
     structured: {
       areaServed: 'Worldwide',
@@ -147,4 +154,5 @@ export const enMessages = {
   currentProjects: currentProjectsEn,
   legal: legalEn,
   hackersAndRavers: hackersAndRaversEn,
+  workshops: workshopsEn,
 }
