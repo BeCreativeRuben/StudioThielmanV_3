@@ -20,6 +20,8 @@ import Terms from './pages/Terms'
 import Admin from './pages/Admin'
 import HackersAndRavers from './pages/HackersAndRavers'
 import Workshops from './pages/Workshops'
+import WorkshopsIncompany from './pages/WorkshopsIncompany'
+import WorkshopsOneOnOne from './pages/WorkshopsOneOnOne'
 
 function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -44,6 +46,8 @@ const publicRoutes = [
   { path: '/about', element: <About /> },
   { path: '/contact', element: <Contact /> },
   { path: '/workshops', element: <Workshops /> },
+  { path: '/workshops/incompany', element: <WorkshopsIncompany /> },
+  { path: '/workshops/1-1', element: <WorkshopsOneOnOne /> },
   { path: '/privacy', element: <Privacy /> },
   { path: '/terms', element: <Terms /> },
 ] as const
