@@ -45,6 +45,11 @@ export default function Footer() {
                 </LocalizedLink>
               </li>
               <li>
+                <LocalizedLink to="/reviews" className="text-body text-white/80 hover:text-white transition-colors">
+                  {t('common.nav.reviews')}
+                </LocalizedLink>
+              </li>
+              <li>
                 <LocalizedLink to="/packages" className="text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.services')}
                 </LocalizedLink>

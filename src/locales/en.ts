@@ -20,6 +20,7 @@ export const enMessages = {
       blog: 'Blog',
       howItWorks: 'How we work',
       about: 'About',
+      reviews: 'Reviews',
       contact: 'Contact',
       workshops: 'Workshops',
     },

@@ -20,6 +20,7 @@ export const nlBEMessages = {
       blog: 'Blog',
       howItWorks: 'Werkwijze',
       about: 'Over ons',
+      reviews: 'Reviews',
       contact: 'Contact',
       workshops: 'Workshops',
     },
