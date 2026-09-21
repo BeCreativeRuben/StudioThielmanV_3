@@ -23,8 +23,8 @@ export const homeEn = {
     title: 'We build websites that work.',
     p1: 'No fluff. No overpromising. Just clean, effective websites that help your business grow.',
     p2: 'We focus on what matters: your goals, your audience, and results that make a difference.',
-    projects: 'Portfolio projects',
-    satisfaction: 'Clients who recommend us',
+    projects: 'Projects realised',
+    reviews: 'reviews',
     officeAlt: 'Office workspace',
   },
   portfolio: {

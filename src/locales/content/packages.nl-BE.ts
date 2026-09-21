@@ -116,7 +116,7 @@ export const packagesNl = {
     },
     {
       question: 'Hoe lang duurt de bouw?',
-      answer: 'Starter: 1-2 weken, Growth: 2-4 weken, Pro Max: 4-6 weken afhankelijk van complexiteit.',
+      answer: 'We passen ons altijd aan jouw wensen aan. Richtlijnen — Starter: 1–2 weken, Growth: 2–4 weken, Pro Max: 4–6 weken — maar heb je hem in een week nodig? Dan regelen we dat. Kwaliteit blijft gegarandeerd.',
     },
   ],
 }

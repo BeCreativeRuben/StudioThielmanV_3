@@ -23,8 +23,8 @@ export const homeNl = {
     title: 'Wij bouwen websites die werken.',
     p1: 'Geen loze beloftes. Geen ruis. Wel heldere, effectieve websites die je bedrijf laten groeien.',
     p2: 'We focussen op wat telt: jouw doelen, je doelgroep en resultaten die het verschil maken.',
-    projects: 'Portfolio-projecten',
-    satisfaction: 'Klanten die ons aanraden',
+    projects: 'Gerealiseerde projecten',
+    reviews: 'reviews',
     officeAlt: 'Kantoor Studio Thielman',
   },
   portfolio: {

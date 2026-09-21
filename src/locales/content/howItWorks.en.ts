@@ -56,7 +56,7 @@ export const howItWorksEn = {
   faqs: [
     {
       question: 'How long does a website take?',
-      answer: 'Starter: 1-2 weeks, Growth: 2-4 weeks, Pro Max: 4-6 weeks. We confirm after the discovery call.',
+      answer: 'We always adapt to what you need. Typical ranges — Starter: 1–2 weeks, Growth: 2–4 weeks, Pro Max: 4–6 weeks — but if you need it in a week, we’ve got you covered. Quality stays assured.',
     },
     {
       question: 'Do I need to know anything technical?',

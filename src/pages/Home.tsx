@@ -10,6 +10,7 @@ import { getApiUrl } from '../utils/api'
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import BookCallLink from '../components/BookCallLink'
+import { getPublishedReviewCount } from '../data/reviews'
 import { BUSINESS } from '../seo/site'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 import heroVideo from '../images/z_Upload-Image---Internal-Only-Style-6bab5259.mp4'
@@ -695,13 +696,19 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-2 gap-8 mb-8">
                 <div>
-                  <div className="text-5xl font-bold text-primary mb-2">7+</div>
+                  <div className="text-5xl font-bold text-primary mb-2">50+</div>
                   <div className="text-body text-text-secondary">{h.about.projects}</div>
                 </div>
-                <div>
-                  <div className="text-5xl font-bold text-primary mb-2">★★★★</div>
-                  <div className="text-body text-text-secondary">{h.about.satisfaction}</div>
-                </div>
+                <LocalizedLink to="/reviews" className="group block hover:opacity-90 transition-opacity">
+                  <div className="text-5xl font-bold text-primary mb-2 group-hover:text-cta transition-colors">
+                    {getPublishedReviewCount()}
+                  </div>
+                  <div className="text-body text-text-secondary underline-offset-4 group-hover:underline">
+                    {getPublishedReviewCount() === 1
+                      ? `1 ${h.about.reviews}`
+                      : `${getPublishedReviewCount()} ${h.about.reviews}`}
+                  </div>
+                </LocalizedLink>
               </div>
               <BookCallLink>
                 <Button variant="primary" className="w-full">{c.cta.bookCall}</Button>

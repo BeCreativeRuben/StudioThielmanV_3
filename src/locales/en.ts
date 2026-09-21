@@ -9,6 +9,7 @@ import { currentProjectsEn } from './content/currentProjects.en'
 import { legalEn } from './content/legal.en'
 import { hackersAndRaversEn } from './content/hackersAndRavers.en'
 import { workshopsEn } from './content/workshops.en'
+import { reviewsEn } from './content/reviews.en'
 
 export const enMessages = {
   common: {
@@ -116,6 +117,11 @@ export const enMessages = {
         description:
           'Our step-by-step process from discovery call to launch: strategy, design, development, and support.',
       },
+      '/reviews': {
+        title: 'Client Reviews',
+        description:
+          'Read what Studio Thielman clients say about our websites, process, and results.',
+      },
       '/about': {
         title: 'About Us',
         description:
@@ -163,4 +169,5 @@ export const enMessages = {
   legal: legalEn,
   hackersAndRavers: hackersAndRaversEn,
   workshops: workshopsEn,
+  reviews: reviewsEn,
 }

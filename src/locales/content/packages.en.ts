@@ -121,7 +121,7 @@ export const packagesEn = {
     },
     {
       question: 'How long does it take to build my website?',
-      answer: 'Starter: 1-2 weeks, Growth: 2-4 weeks, Pro Max: 4-6 weeks depending on complexity.',
+      answer: 'We always adapt to what you need. Typical ranges — Starter: 1–2 weeks, Growth: 2–4 weeks, Pro Max: 4–6 weeks — but if you need it in a week, we’ve got you covered. Quality stays assured.',
     },
   ],
 }
