@@ -27,3 +27,6 @@ server/database/*.db-journal
 *.njsproj
 *.sln
 *.sw?
+
+.env.local
+.env*.local
