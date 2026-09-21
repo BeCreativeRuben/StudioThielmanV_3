@@ -35,11 +35,3 @@ body {
     transform: translateX(-50%);
   }
 }
-
-/* Keep footer Cookie Preferences / CTAs clear of cookie banner + chat */
-html[data-cookie-banner='open'] footer {
-  padding-bottom: 10rem;
-}
-html[data-cookie-banner='open'] main {
-  padding-bottom: 2rem;
-}

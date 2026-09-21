@@ -11,7 +11,6 @@ import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import BookCallLink from '../components/BookCallLink'
 import { BUSINESS } from '../seo/site'
-import { COOKIE_BANNER_STATE_EVENT } from '../components/CookieConsentBanner'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
 import heroVideo from '../images/z_Upload-Image---Internal-Only-Style-6bab5259.mp4'
 import officeImage from '../images/c2ea26ea-23d3-4ee1-8710-74211f2d80be.jpeg'
@@ -194,18 +193,6 @@ export default function Home() {
   const c = messages.common
   const [expandedService, setExpandedService] = useState(0)
   const [showChatWidget, setShowChatWidget] = useState(false)
-  const [cookieBannerOpen, setCookieBannerOpen] = useState(
-    () => typeof document !== 'undefined' && document.documentElement.dataset.cookieBanner === 'open'
-  )
-
-  useEffect(() => {
-    const onCookieState = (e: Event) => {
-      const detail = (e as CustomEvent<{ open: boolean }>).detail
-      setCookieBannerOpen(Boolean(detail?.open))
-    }
-    window.addEventListener(COOKIE_BANNER_STATE_EVENT, onCookieState)
-    return () => window.removeEventListener(COOKIE_BANNER_STATE_EVENT, onCookieState)
-  }, [])
   const [showHelpMessage, setShowHelpMessage] = useState(false)
   const [message, setMessage] = useState('')
   const [userName, setUserName] = useState('')
@@ -428,7 +415,7 @@ export default function Home() {
   return (
     <div className="relative">
       {/* Floating Message Button - Always visible */}
-      <div className={`fixed ${cookieBannerOpen ? 'bottom-44 sm:bottom-36' : 'bottom-6'} right-4 sm:right-6 z-20 flex flex-col items-end`}>
+      <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end">
         {/* "Can I help?" Message Bubble */}
         <AnimatePresence>
           {showHelpMessage && !showChatWidget && (
@@ -564,7 +551,7 @@ export default function Home() {
               damping: 20,
               duration: 0.4
             }}
-            className={`fixed ${cookieBannerOpen ? 'bottom-60 sm:bottom-52' : 'bottom-24'} right-4 sm:right-6 z-20 bg-white/95 backdrop-blur-md rounded-xl shadow-2xl p-4 max-w-xs text-left`}
+            className="fixed bottom-24 right-4 sm:right-6 z-50 bg-white/95 backdrop-blur-md rounded-xl shadow-2xl p-4 max-w-xs text-left"
           >
                   {/* Chat Header */}
                   <div className="flex items-center gap-2 mb-3 pb-3 border-b border-gray-200">
