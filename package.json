@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@calcom/embed-react": "^1.5.3",
     "@vercel/node": "^5.5.23",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^10.16.4",

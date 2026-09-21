@@ -1,5 +1,6 @@
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
+import { BUSINESS } from '../seo/site'
 
 export default function Footer() {
   const { t } = useLocale()
@@ -12,7 +13,7 @@ export default function Footer() {
   const copyright = t('common.footer.copyright').replace('{{year}}', String(year))
 
   return (
-    <footer className="bg-gray-900 border-t border-gray-800">
+    <footer className="bg-gray-900 border-t border-gray-800 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="mb-12">
           <div className="text-sm text-white/60 uppercase tracking-wider mb-4">{t('common.footer.contactLabel')}</div>
@@ -22,6 +23,16 @@ export default function Footer() {
               {t('common.footer.contactUs')}
             </button>
           </LocalizedLink>
+          <div className="mt-4 text-body-sm text-white/70 space-y-1">
+            <p>
+              <a href={`mailto:${BUSINESS.email}`} className="hover:text-white transition-colors">
+                {BUSINESS.email}
+              </a>
+            </p>
+            <p>
+              {BUSINESS.address.street}, {BUSINESS.address.postalCode} {BUSINESS.address.locality}
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
@@ -31,6 +42,11 @@ export default function Footer() {
               <li>
                 <LocalizedLink to="/about" className="text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.aboutUs')}
+                </LocalizedLink>
+              </li>
+              <li>
+                <LocalizedLink to="/reviews" className="text-body text-white/80 hover:text-white transition-colors">
+                  {t('common.nav.reviews')}
                 </LocalizedLink>
               </li>
               <li>
@@ -86,12 +102,12 @@ export default function Footer() {
             <h4 className="text-h4 text-white font-semibold mb-4">{t('common.footer.socialMedia')}</h4>
             <ul className="space-y-3">
               <li>
-                <a href="https://www.instagram.com/studio_thielman/" target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
+                <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
                   Instagram
                 </a>
               </li>
               <li>
-                <a href="https://www.facebook.com/profile.php?id=61586029966601" target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
+                <a href={BUSINESS.facebook} target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
                   Facebook
                 </a>
               </li>
@@ -101,7 +117,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://www.linkedin.com/in/ruben-thielman-6a8963256/" target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
+                <a href={BUSINESS.linkedIn} target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
                   LinkedIn
                 </a>
               </li>
@@ -109,16 +125,20 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 pr-20 md:pr-24">
           <div className="text-body-sm text-white/60">{copyright}</div>
-          <div className="flex gap-6 flex-wrap justify-center">
+          <div className="flex gap-6 flex-wrap justify-center relative z-10">
             <LocalizedLink to="/privacy" className="text-body-sm text-white/60 hover:text-white transition-colors">
               {t('common.footer.privacy')}
             </LocalizedLink>
             <LocalizedLink to="/terms" className="text-body-sm text-white/60 hover:text-white transition-colors">
               {t('common.footer.terms')}
             </LocalizedLink>
-            <button type="button" onClick={openCookiePreferences} className="text-body-sm text-white/60 hover:text-white transition-colors">
+            <button
+              type="button"
+              onClick={openCookiePreferences}
+              className="text-body-sm text-white/60 hover:text-white transition-colors relative z-10"
+            >
               {t('common.footer.cookies')}
             </button>
           </div>

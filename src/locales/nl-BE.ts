@@ -9,6 +9,7 @@ import { currentProjectsNl } from './content/currentProjects.nl-BE'
 import { legalNl } from './content/legal.nl-BE'
 import { hackersAndRaversNl } from './content/hackersAndRavers.nl-BE'
 import { workshopsNl } from './content/workshops.nl-BE'
+import { reviewsNl } from './content/reviews.nl-BE'
 
 export const nlBEMessages = {
   common: {
@@ -19,6 +20,7 @@ export const nlBEMessages = {
       blog: 'Blog',
       howItWorks: 'Werkwijze',
       about: 'Over ons',
+      reviews: 'Reviews',
       contact: 'Contact',
       workshops: 'Workshops',
     },
@@ -116,6 +118,11 @@ export const nlBEMessages = {
         description:
           'Van kennismaking tot launch: strategie, design, ontwikkeling en ondersteuning.',
       },
+      '/reviews': {
+        title: 'Klantreviews',
+        description:
+          'Lees wat klanten van Studio Thielman zeggen over onze websites, aanpak en resultaten.',
+      },
       '/about': {
         title: 'Over ons',
         description:
@@ -163,4 +170,5 @@ export const nlBEMessages = {
   legal: legalNl,
   hackersAndRavers: hackersAndRaversNl,
   workshops: workshopsNl,
+  reviews: reviewsNl,
 }

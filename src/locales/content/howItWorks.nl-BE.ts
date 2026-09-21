@@ -56,7 +56,7 @@ export const howItWorksNl = {
   faqs: [
     {
       question: 'Hoe lang duurt een website?',
-      answer: 'Starter: 1-2 weken, Growth: 2-4 weken, Pro Max: 4-6 weken. Bevestiging na het gesprek.',
+      answer: 'We passen ons altijd aan jouw wensen aan. Richtlijnen — Starter: 1–2 weken, Growth: 2–4 weken, Pro Max: 4–6 weken — maar heb je hem in een week nodig? Dan regelen we dat. Kwaliteit blijft gegarandeerd.',
     },
     {
       question: 'Moet ik technisch zijn?',

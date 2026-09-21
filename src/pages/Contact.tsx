@@ -1,9 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Button from '../components/Button'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
+import { BUSINESS } from '../seo/site'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
+import CalInlineEmbed from '../components/CalInlineEmbed'
+import { getCalLink } from '../config/cal'
 
 const PACKAGE_OPTIONS = [
   { value: 'Starter', labelKey: 'starter' as const },
@@ -12,9 +16,12 @@ const PACKAGE_OPTIONS = [
   { value: 'Other', labelKey: 'other' as const },
 ]
 
+const VALID_PACKAGES = new Set(PACKAGE_OPTIONS.map((p) => p.value))
+
 export default function Contact() {
-  const { messages } = useLocale()
+  const { locale, messages } = useLocale()
   const c = messages.contact
+  const [searchParams] = useSearchParams()
   const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({})
   const [formData, setFormData] = useState({
     businessName: '',
@@ -26,11 +33,19 @@ export default function Contact() {
     packageOther: '',
     hasExistingWebsite: '',
     existingWebsiteUrl: '',
+    privacyConsent: false,
   })
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleInputChange = (field: string, value: string) => {
+  useEffect(() => {
+    const fromQuery = searchParams.get('package')
+    if (fromQuery && VALID_PACKAGES.has(fromQuery)) {
+      setFormData((prev) => (prev.package ? prev : { ...prev, package: fromQuery }))
+    }
+  }, [searchParams])
+
+  const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     if (fieldErrors[field]) {
       setFieldErrors((prev) => {
@@ -94,6 +109,12 @@ export default function Contact() {
     } else if (formData.package === 'Other' && formData.packageOther.trim() === '') {
       errors.packageOther = true
       if (!firstInvalidField) firstInvalidField = 'packageOther'
+      isValid = false
+    }
+
+    if (!formData.privacyConsent) {
+      errors.privacyConsent = true
+      if (!firstInvalidField) firstInvalidField = 'privacyConsent'
       isValid = false
     }
 
@@ -259,8 +280,10 @@ export default function Contact() {
                     </div>
                     <div>
                       <p className="text-body-lg text-text-primary font-medium">{c.info.address}</p>
-                      <p className="text-body text-text-primary">Pereboomsteenweg 49</p>
-                      <p className="text-body text-text-primary">Moerbeke 9180</p>
+                      <p className="text-body text-text-primary">{BUSINESS.address.street}</p>
+                      <p className="text-body text-text-primary">
+                        {BUSINESS.address.postalCode} {BUSINESS.address.locality}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -271,8 +294,8 @@ export default function Contact() {
                     </div>
                     <div>
                       <p className="text-body-lg text-text-primary font-medium">{c.info.email}</p>
-                      <a href="mailto:ruben.thielman@gmail.com" className="text-body text-cta hover:text-cta/80 transition-colors">
-                        ruben.thielman@gmail.com
+                      <a href={`mailto:${BUSINESS.email}`} className="text-body text-cta hover:text-cta/80 transition-colors">
+                        {BUSINESS.email}
                       </a>
                     </div>
                   </div>
@@ -284,7 +307,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <p className="text-body-lg text-text-primary font-medium">{c.info.phone}</p>
-                      <a href="tel:+32493505641" className="text-body text-cta hover:text-cta/80 transition-colors">
+                      <a href={`tel:${BUSINESS.phone}`} className="text-body text-cta hover:text-cta/80 transition-colors">
                         +32 493 50 56 41
                       </a>
                     </div>
@@ -296,9 +319,30 @@ export default function Contact() {
         </div>
       </section>
 
+      {getCalLink() ? (
+        <section id="book-a-call" className="py-20 bg-white scroll-mt-20 border-b border-gray-100">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <div className="text-sm text-text-secondary uppercase tracking-wider mb-3">
+                {locale === 'nl-BE' ? 'Agenda' : 'Schedule'}
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-3">
+                {locale === 'nl-BE' ? 'Plan een gesprek' : 'Book a call'}
+              </h2>
+              <p className="text-body text-text-secondary max-w-2xl mx-auto">
+                {locale === 'nl-BE'
+                  ? 'Kies een moment dat past. We bespreken je project zonder verplichtingen.'
+                  : 'Pick a time that works. We\'ll discuss your project — no strings attached.'}
+              </p>
+            </div>
+            <CalInlineEmbed />
+          </div>
+        </section>
+      ) : null}
+
       <section id="contact-form" className="py-20 bg-white scroll-mt-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-8 md:p-12 shadow-xl">
+          <div className="bg-white border border-gray-200 rounded-xl p-8 md:p-12 shadow-xl relative z-10">
             <form onSubmit={handleSubmit} noValidate>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -494,6 +538,32 @@ export default function Contact() {
                         className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-cta focus:ring-cta/20 transition-all bg-gray-50"
                       />
                     </div>
+                  )}
+                </div>
+
+                <div data-field="privacyConsent">
+                  <label
+                    className={`flex items-start gap-3 p-4 border-2 rounded-lg cursor-pointer ${
+                      fieldErrors.privacyConsent ? 'border-red-500 bg-red-50' : 'border-gray-200'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.privacyConsent}
+                      onChange={(e) => handleInputChange('privacyConsent', e.target.checked)}
+                      className="mt-1 w-4 h-4 text-cta focus:ring-cta"
+                      required
+                    />
+                    <span className="text-body-sm text-text-primary">
+                      {c.form.privacyConsent}{' '}
+                      <LocalizedLink to="/privacy" className="underline font-semibold hover:no-underline">
+                        {c.form.privacyLink}
+                      </LocalizedLink>
+                      .
+                    </span>
+                  </label>
+                  {fieldErrors.privacyConsent && (
+                    <p className="mt-2 text-sm text-red-600">{c.form.errors.privacyConsent}</p>
                   )}
                 </div>
 

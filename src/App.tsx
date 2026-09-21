@@ -22,6 +22,7 @@ import HackersAndRavers from './pages/HackersAndRavers'
 import Workshops from './pages/Workshops'
 import WorkshopsIncompany from './pages/WorkshopsIncompany'
 import WorkshopsOneOnOne from './pages/WorkshopsOneOnOne'
+import Reviews from './pages/Reviews'
 
 function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -43,6 +44,7 @@ const publicRoutes = [
   { path: '/blog/:slug', element: <BlogDetail /> },
   { path: '/current-projects', element: <CurrentProjects /> },
   { path: '/how-it-works', element: <HowItWorks /> },
+  { path: '/reviews', element: <Reviews /> },
   { path: '/about', element: <About /> },
   { path: '/contact', element: <Contact /> },
   { path: '/workshops', element: <Workshops /> },

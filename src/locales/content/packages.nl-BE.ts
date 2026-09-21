@@ -2,19 +2,21 @@ export const packagesNl = {
   hero: {
     label: 'ONZE PAKKETTEN',
     title: 'Kies je formule',
-    subtitle: 'Alles om online te groeien. Transparante prijzen, geen verborgen kosten.',
+    subtitle: 'Alles om online te groeien. Transparante prijzen, geen verborgen kosten. Prijzen excl. BTW.',
   },
   idealFor: 'Ideaal voor:',
   mostPopular: 'Meest gekozen',
   perMonth: '/maand',
   startupFee: 'opstartkost',
   noStartupFee: 'Geen opstartkost',
+  exclVat: 'Alle prijzen excl. BTW',
+  priceToBeDetermined: 'Prijs nader te bepalen',
   getStarted: 'Start nu',
   contactUs: 'Contacteer ons',
   overview: {
     label: 'PRIJZEN',
     title: 'Eenvoudige, transparante prijzen',
-    subtitle: 'Kies het pakket dat bij je past. Alle formules omvatten doorlopende support en updates.',
+    subtitle: 'Kies het pakket dat bij je past. Alle formules omvatten doorlopende support en updates. Prijzen excl. BTW.',
   },
   whatsIncluded: 'Inbegrepen:',
   perfectFor: 'Ideaal voor:',
@@ -65,6 +67,7 @@ export const packagesNl = {
         'Eenvoudig CMS (zonder code)',
         'Complexere animaties',
         'Volledige SEO (keywords, meta, snelheid)',
+        'AEO — Answer Engine Optimization (vindbaar voor AI-assistenten zoals ChatGPT & Perplexity)',
         'Analytics en maandrapporten',
         'Prioritaire e-mail- en chatsupport',
       ],
@@ -78,11 +81,12 @@ export const packagesNl = {
     },
     {
       name: 'Pro Max',
-      price: '€80/maand',
-      startupFee: '+ €500 opstart',
+      price: 'Prijs nader te bepalen',
+      startupFee: '',
       description: 'Volledige automatisering en AI. Focus op groei terwijl de tech voor je werkt.',
       features: [
         'Alles uit Growth',
+        'AEO — Answer Engine Optimization (vindbaar voor AI-assistenten zoals ChatGPT & Perplexity)',
         'Volledig CMS',
         'E-commerce (Shopify, WooCommerce of maatwerk)',
         'AI-conversies en A/B-testing',
@@ -93,7 +97,7 @@ export const packagesNl = {
         '24/5 prioritaire support',
       ],
       idealFor: ['Webshops', 'SaaS', 'AI-platformen', 'Geavanceerde automatisering'],
-      comingSoon: true,
+      priceTbd: true,
     },
   ],
   faqs: [
@@ -107,11 +111,12 @@ export const packagesNl = {
     },
     {
       question: 'Zijn er verborgen kosten?',
-      answer: 'Nee. Opstartkosten zijn eenmalig voor Growth en Pro Max.',
+      answer:
+        'Nee. Prijzen zijn excl. BTW. Starter heeft een eenmalige opstartkost van €150; Growth €250. De Pro Max-prijs (inclusief eventuele opstartkost) is nog nader te bepalen — vraag ons een offerte.',
     },
     {
       question: 'Hoe lang duurt de bouw?',
-      answer: 'Starter: 1-2 weken, Growth: 2-4 weken, Pro Max: 4-6 weken afhankelijk van complexiteit.',
+      answer: 'We passen ons altijd aan jouw wensen aan. Richtlijnen — Starter: 1–2 weken, Growth: 2–4 weken, Pro Max: 4–6 weken — maar heb je hem in een week nodig? Dan regelen we dat. Kwaliteit blijft gegarandeerd.',
     },
   ],
 }
