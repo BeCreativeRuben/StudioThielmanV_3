@@ -6,6 +6,8 @@ import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 import { BUSINESS } from '../seo/site'
 import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
+import CalInlineEmbed from '../components/CalInlineEmbed'
+import { getCalLink } from '../config/cal'
 
 const PACKAGE_OPTIONS = [
   { value: 'Starter', labelKey: 'starter' as const },
@@ -17,7 +19,7 @@ const PACKAGE_OPTIONS = [
 const VALID_PACKAGES = new Set(PACKAGE_OPTIONS.map((p) => p.value))
 
 export default function Contact() {
-  const { messages } = useLocale()
+  const { locale, messages } = useLocale()
   const c = messages.contact
   const [searchParams] = useSearchParams()
   const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({})
@@ -316,6 +318,27 @@ export default function Contact() {
           </motion.div>
         </div>
       </section>
+
+      {getCalLink() ? (
+        <section id="book-a-call" className="py-20 bg-white scroll-mt-20 border-b border-gray-100">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <div className="text-sm text-text-secondary uppercase tracking-wider mb-3">
+                {locale === 'nl-BE' ? 'Agenda' : 'Schedule'}
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-3">
+                {locale === 'nl-BE' ? 'Plan een gesprek' : 'Book a call'}
+              </h2>
+              <p className="text-body text-text-secondary max-w-2xl mx-auto">
+                {locale === 'nl-BE'
+                  ? 'Kies een moment dat past. We bespreken je project zonder verplichtingen.'
+                  : 'Pick a time that works. We\'ll discuss your project — no strings attached.'}
+              </p>
+            </div>
+            <CalInlineEmbed />
+          </div>
+        </section>
+      ) : null}
 
       <section id="contact-form" className="py-20 bg-white scroll-mt-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

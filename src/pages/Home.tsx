@@ -189,7 +189,7 @@ function BlogCountdown() {
 
 export default function Home() {
   const location = useLocation()
-  const { locale, messages, localizedPath, t } = useLocale()
+  const { locale, messages } = useLocale()
   const h = messages.home
   const c = messages.common
   const [expandedService, setExpandedService] = useState(0)

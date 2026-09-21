@@ -1,47 +1,30 @@
-import type { ReactNode, AnchorHTMLAttributes } from 'react'
-import LocalizedLink from '../i18n/LocalizedLink'
-
-const BOOKING_URL = (import.meta.env.VITE_BOOKING_URL || '').trim()
+import type { ReactNode } from 'react'
+import CalBookButton from './CalBookButton'
 
 type BookCallLinkProps = {
   children: ReactNode
   className?: string
-  onClick?: AnchorHTMLAttributes<HTMLAnchorElement>['onClick']
-  /** Fallback contact path when VITE_BOOKING_URL is unset */
+  onClick?: () => void
   fallbackTo?: string
 }
 
-/**
- * "Book a Call" CTA: uses VITE_BOOKING_URL when set (external booking page),
- * otherwise links to the contact form.
- */
+/** "Book a Call" CTA — Cal.com modal when configured, else contact form. */
 export default function BookCallLink({
   children,
   className,
   onClick,
   fallbackTo = '/contact#contact-form',
 }: BookCallLinkProps) {
-  if (BOOKING_URL) {
-    return (
-      <a
-        href={BOOKING_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-        onClick={onClick}
-      >
-        {children}
-      </a>
-    )
-  }
-
   return (
-    <LocalizedLink to={fallbackTo} className={className} onClick={onClick as any}>
+    <CalBookButton className={className} onClick={onClick} fallbackTo={fallbackTo}>
       {children}
-    </LocalizedLink>
+    </CalBookButton>
   )
 }
 
 export function getBookingUrlOrNull(): string | null {
-  return BOOKING_URL || null
+  const explicit = (import.meta.env.VITE_BOOKING_URL || '').trim()
+  if (explicit) return explicit
+  const link = (import.meta.env.VITE_CAL_LINK || '').trim().replace(/^\/+/, '')
+  return link ? `https://cal.com/${link}` : null
 }
