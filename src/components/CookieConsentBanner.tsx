@@ -6,6 +6,7 @@ type ConsentChoice = 'accept' | 'reject'
 
 const STORAGE_KEY = 'st_cookie_consent_v1'
 const OPEN_EVENT_NAME = 'st:open-cookie-preferences'
+export const COOKIE_BANNER_STATE_EVENT = 'st:cookie-banner-state'
 
 function setStoredChoice(choice: ConsentChoice) {
   try {
@@ -50,6 +51,11 @@ function updateGtagConsent(choice: ConsentChoice) {
   dataLayer.push(['consent', 'update', update])
 }
 
+function publishBannerState(open: boolean) {
+  document.documentElement.dataset.cookieBanner = open ? 'open' : 'closed'
+  window.dispatchEvent(new CustomEvent(COOKIE_BANNER_STATE_EVENT, { detail: { open } }))
+}
+
 export default function CookieConsentBanner() {
   const { t } = useLocale()
   const savedChoice = useMemo(() => getStoredChoice(), [])
@@ -68,6 +74,13 @@ export default function CookieConsentBanner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    publishBannerState(isOpen)
+    return () => {
+      publishBannerState(false)
+    }
+  }, [isOpen])
+
   const acceptAll = () => {
     setStoredChoice('accept')
     updateGtagConsent('accept')
@@ -82,10 +95,16 @@ export default function CookieConsentBanner() {
 
   if (!isOpen) return null
 
+  // z-30: below header (z-50) and primary page CTAs; left-aligned so chat (right) stays free.
+  // Bottom padding on html[data-cookie-banner=open] keeps footer Cookie Preferences clickable.
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[60] px-4 pb-4">
-      <div className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-white shadow-2xl">
-        <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+    <div
+      className="fixed bottom-0 left-0 z-30 w-full max-w-xl px-4 pb-4 pointer-events-none sm:pb-6"
+      role="dialog"
+      aria-label={t('common.cookie.title')}
+    >
+      <div className="pointer-events-auto rounded-xl border border-gray-200 bg-white shadow-2xl">
+        <div className="flex flex-col gap-4 p-4 sm:p-5">
           <div className="text-sm text-gray-700">
             <div className="font-semibold text-gray-900">{t('common.cookie.title')}</div>
             <p className="mt-1 text-gray-600">

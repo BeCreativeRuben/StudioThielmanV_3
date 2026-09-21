@@ -17,11 +17,24 @@ export function stripLocalePrefix(pathname: string): string {
   return path
 }
 
+/** Localize a path, preserving ?query and #hash. */
 export function localizedPath(path: string, locale: AppLocale): string {
-  const normalized = path.startsWith('/') ? path : `/${path}`
-  if (locale === DEFAULT_LOCALE) return normalized
-  if (normalized === '/') return NL_ROUTE_PREFIX
-  return `${NL_ROUTE_PREFIX}${normalized}`
+  const raw = path.startsWith('/') ? path : `/${path}`
+  const match = raw.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/)
+  const pathname = match?.[1] || '/'
+  const search = match?.[2] || ''
+  const hash = match?.[3] || ''
+
+  let localized: string
+  if (locale === DEFAULT_LOCALE) {
+    localized = pathname || '/'
+  } else if (!pathname || pathname === '/') {
+    localized = NL_ROUTE_PREFIX
+  } else {
+    localized = `${NL_ROUTE_PREFIX}${pathname}`
+  }
+
+  return `${localized}${search}${hash}`
 }
 
 export function alternateLocalePath(pathname: string, targetLocale: AppLocale): string {

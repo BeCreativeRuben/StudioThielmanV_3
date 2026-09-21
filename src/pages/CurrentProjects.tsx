@@ -89,6 +89,7 @@ export default function CurrentProjects() {
                 </div>
 
                 <div className="p-6">
+                  {project.technologies.length > 0 && (
                   <div className="mb-4">
                     <div className="text-xs text-text-secondary uppercase tracking-wider mb-2">{cp.technologies}</div>
                     <div className="flex flex-wrap gap-2">
@@ -99,6 +100,7 @@ export default function CurrentProjects() {
                       ))}
                     </div>
                   </div>
+                  )}
 
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div>

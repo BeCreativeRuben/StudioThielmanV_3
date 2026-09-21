@@ -2,19 +2,21 @@ export const packagesEn = {
   hero: {
     label: 'OUR PACKAGES',
     title: 'Choose Your Plan',
-    subtitle: 'Everything you need to grow online. Transparent pricing, no hidden fees.',
+    subtitle: 'Everything you need to grow online. Transparent pricing, no hidden fees. Prices excl. VAT.',
   },
   idealFor: 'Ideal for:',
   mostPopular: 'Most Popular',
   perMonth: '/month',
   startupFee: 'startup fee',
   noStartupFee: 'No startup fee',
+  exclVat: 'All prices excl. VAT',
+  priceToBeDetermined: 'Price to be determined',
   getStarted: 'Get Started',
   contactUs: 'Contact Us',
   overview: {
     label: 'PRICING',
     title: 'Simple, Transparent Pricing',
-    subtitle: 'Choose the package that fits your needs. All packages include ongoing support and updates.',
+    subtitle: 'Choose the package that fits your needs. All packages include ongoing support and updates. Prices excl. VAT.',
   },
   whatsIncluded: "What's Included:",
   perfectFor: 'Perfect For:',
@@ -65,6 +67,7 @@ export const packagesEn = {
         'Simple CMS system (content management without coding)',
         'Complex animations',
         'Full SEO optimization (keywords, meta, structure, speed)',
+        'AEO — Answer Engine Optimization (findable by AI assistants like ChatGPT & Perplexity)',
         'Basic analytics & monthly reports',
         'Priority email & chat support',
       ],
@@ -78,11 +81,12 @@ export const packagesEn = {
     },
     {
       name: 'Pro Max',
-      price: '€80/month',
-      startupFee: '+ €500 startup',
+      price: 'Price to be determined',
+      startupFee: '',
       description: 'Go all-in. Automate your business. Let AI work for you while you focus on growth.',
       features: [
         'All Growth Features',
+        'AEO — Answer Engine Optimization (findable by AI assistants like ChatGPT & Perplexity)',
         'Full CMS System (complete content, media, site management)',
         'E-commerce Integration (Shopify, WooCommerce, or custom)',
         'AI Conversions (real-time customer data, continuous A/B testing)',
@@ -98,7 +102,7 @@ export const packagesEn = {
         'AI-powered service platforms',
         'Businesses requiring advanced automation',
       ],
-      comingSoon: true,
+      priceTbd: true,
     },
   ],
   faqs: [
@@ -112,7 +116,8 @@ export const packagesEn = {
     },
     {
       question: 'Are there any hidden fees?',
-      answer: 'No hidden fees. Startup fees are one-time only for Growth and Pro Max.',
+      answer:
+        'No hidden fees. Prices are excl. VAT. Starter includes a one-time €150 startup fee; Growth includes a one-time €250 startup fee. Pro Max pricing (including any startup fee) is still to be determined — ask us for a quote.',
     },
     {
       question: 'How long does it take to build my website?',

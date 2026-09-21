@@ -17,8 +17,15 @@ export default function StructuredData() {
     logo: `${SITE_URL}/favicon.png`,
     email: BUSINESS.email,
     telephone: BUSINESS.phone,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: BUSINESS.address.street,
+      postalCode: BUSINESS.address.postalCode,
+      addressLocality: BUSINESS.address.locality,
+      addressCountry: 'BE',
+    },
     areaServed,
-    sameAs: [BUSINESS.instagram, BUSINESS.linkedIn],
+    sameAs: [BUSINESS.instagram, BUSINESS.facebook, BUSINESS.linkedIn],
   }
 
   const website = {
@@ -40,6 +47,13 @@ export default function StructuredData() {
     url: SITE_URL,
     email: BUSINESS.email,
     telephone: BUSINESS.phone,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: BUSINESS.address.street,
+      postalCode: BUSINESS.address.postalCode,
+      addressLocality: BUSINESS.address.locality,
+      addressCountry: 'BE',
+    },
     areaServed: {
       '@type': 'Country',
       name: locale === 'nl-BE' ? 'Belgium' : 'Worldwide',

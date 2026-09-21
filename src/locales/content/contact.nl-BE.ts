@@ -24,6 +24,8 @@ export const contactNl = {
     optional: '(optioneel)',
     yes: 'Ja',
     no: 'Nee',
+    privacyConsent: 'Ik ga akkoord met de verwerking van mijn gegevens zoals beschreven in de',
+    privacyLink: 'Privacyverklaring',
     submit: 'Formulier versturen',
     submitting: 'Bezig met versturen...',
     packages: {
@@ -37,6 +39,7 @@ export const contactNl = {
       email: 'Voer een geldig e-mailadres in',
       package: 'Selecteer een pakket',
       packageOther: 'Geef aan welk pakket je interesseert',
+      privacyConsent: 'Aanvaard de privacyverklaring om verder te gaan',
     },
     submitError: 'Er lijkt een technisch probleem te zijn. Neem liever rechtstreeks contact met ons op!',
   },

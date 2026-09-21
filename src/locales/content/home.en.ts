@@ -23,8 +23,8 @@ export const homeEn = {
     title: 'We build websites that work.',
     p1: 'No fluff. No overpromising. Just clean, effective websites that help your business grow.',
     p2: 'We focus on what matters: your goals, your audience, and results that make a difference.',
-    projects: 'Projects Delivered',
-    satisfaction: 'Client Satisfaction',
+    projects: 'Portfolio projects',
+    satisfaction: 'Clients who recommend us',
     officeAlt: 'Office workspace',
   },
   portfolio: {
@@ -158,7 +158,7 @@ export const homeEn = {
   blog: {
     label: 'BLOG',
     title: 'Our expert insights.',
-    subtitle: 'Our blog is still a work in progress. The first blog post will be released soon!',
+    subtitle: 'Practical articles on web design, SEO, and AI for Belgian businesses.',
     days: 'Days',
     hours: 'Hours',
     minutes: 'Minutes',
@@ -168,8 +168,8 @@ export const homeEn = {
   },
   wip: {
     label: 'WORK IN PROGRESS',
-    title: "What I'm Building Now",
-    subtitle: "See my current projects, what I'm learning, and what's coming next. Transparency in progress.",
+    title: "What We're Building Now",
+    subtitle: "See our current projects, what we're learning, and what's coming next. Transparency in progress.",
     lastUpdated: 'Last updated:',
     viewDetails: 'View Details →',
     viewAll: 'View All Current Projects',

@@ -1,7 +1,7 @@
 export const currentProjectsEn = {
   hero: {
     label: 'CURRENT PROJECTS',
-    title: 'Work in Progress',
+    title: 'Current Projects',
     subtitle: 'Transparency in what we are building, learning, and shipping next.',
     lastUpdated: 'Last updated:',
   },

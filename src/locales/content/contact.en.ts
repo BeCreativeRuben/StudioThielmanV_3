@@ -24,6 +24,8 @@ export const contactEn = {
     optional: '(optional)',
     yes: 'Yes',
     no: 'No',
+    privacyConsent: 'I agree to the processing of my data as described in the',
+    privacyLink: 'Privacy Policy',
     submit: 'Submit Form',
     submitting: 'Submitting...',
     packages: {
@@ -37,6 +39,7 @@ export const contactEn = {
       email: 'Please enter a valid email address',
       package: 'Please select a package',
       packageOther: 'Please specify your package interest',
+      privacyConsent: 'Please accept the privacy policy to continue',
     },
     submitError: 'Our system seems to be experiencing some issues at the moment. Contact us directly instead!',
   },

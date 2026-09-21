@@ -19,7 +19,7 @@
 ## Assets
 
 - [Logo (PNG)](https://studiothielman.com/logo.png)
-- [Open Graph image](https://studiothielman.com/og-image.svg)
+- [Open Graph image](https://studiothielman.com/og-image.png)
 - [Favicon](https://studiothielman.com/favicon.png)
 
 ## Optional

@@ -5,6 +5,7 @@ import logoImage from '../images/fulllogo copy.png'
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import LanguageSwitcher from './LanguageSwitcher'
+import BookCallLink from './BookCallLink'
 export default function Header() {
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -121,11 +122,11 @@ export default function Header() {
           {/* Language + CTA - Desktop */}
           <div className="hidden md:flex items-center gap-3 shrink-0">
             <LanguageSwitcher className={isScrolled ? 'text-text-primary' : 'text-white/90'} />
-            <LocalizedLink to="/contact#contact-form">
+            <BookCallLink>
               {isScrolled ? (
                 <motion.button
                   type="button"
-                  className="font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-black/20 bg-black text-white hover:bg-gray-900 border-2 border-black shadow-lg hover:shadow-xl font-bold px-4 py-2 text-sm"
+                  className="font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-black/20 bg-black text-white hover:bg-gray-900 border-2 border-black shadow-lg hover:shadow-xl font-bold px-4 py-2 text-sm relative z-10"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   style={{ color: '#FFFFFF', WebkitTextFillColor: '#FFFFFF', backgroundColor: '#000000' }}
@@ -135,7 +136,7 @@ export default function Header() {
               ) : (
                 <motion.button
                   type="button"
-                  className="font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-white/50 bg-white text-primary hover:bg-white/90 border-2 border-white shadow-lg hover:shadow-xl font-bold px-4 py-2 text-sm"
+                  className="font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-white/50 bg-white text-primary hover:bg-white/90 border-2 border-white shadow-lg hover:shadow-xl font-bold px-4 py-2 text-sm relative z-10"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   style={{ color: '#1F2937', WebkitTextFillColor: '#1F2937' }}
@@ -143,7 +144,7 @@ export default function Header() {
                   <span style={{ color: '#1F2937' }}>{t('common.cta.bookCall')}</span>
                 </motion.button>
               )}
-            </LocalizedLink>
+            </BookCallLink>
           </div>
           
           {/* Language + menu - Mobile */}
@@ -204,11 +205,11 @@ export default function Header() {
                   </LocalizedLink>
                 ))}
                 <div className="px-4 pt-2">
-                  <LocalizedLink to="/contact" onClick={() => setMobileMenuOpen(false)}>
+                  <BookCallLink onClick={() => setMobileMenuOpen(false)}>
                     {isScrolled ? (
                       <motion.button
                         type="button"
-                        className="w-full font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-black/20 bg-black text-white hover:bg-gray-900 border-2 border-black shadow-lg hover:shadow-xl font-bold px-4 py-2 text-sm"
+                        className="w-full font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-black/20 bg-black text-white hover:bg-gray-900 border-2 border-black shadow-lg hover:shadow-xl font-bold px-4 py-2 text-sm relative z-10"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         style={{ color: '#FFFFFF', WebkitTextFillColor: '#FFFFFF', backgroundColor: '#000000' }}
@@ -218,7 +219,7 @@ export default function Header() {
                     ) : (
                       <motion.button
                         type="button"
-                        className="w-full font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-white/50 bg-white text-primary hover:bg-white/90 border-2 border-white shadow-lg hover:shadow-xl font-bold px-4 py-2 text-sm"
+                        className="w-full font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-white/50 bg-white text-primary hover:bg-white/90 border-2 border-white shadow-lg hover:shadow-xl font-bold px-4 py-2 text-sm relative z-10"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         style={{ color: '#1F2937', WebkitTextFillColor: '#1F2937' }}
@@ -226,7 +227,7 @@ export default function Header() {
                         <span style={{ color: '#1F2937' }}>{t('common.cta.bookCall')}</span>
                       </motion.button>
                     )}
-                  </LocalizedLink>
+                  </BookCallLink>
                 </div>
               </div>
             </motion.div>

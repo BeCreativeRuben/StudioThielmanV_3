@@ -23,8 +23,8 @@ export const homeNl = {
     title: 'Wij bouwen websites die werken.',
     p1: 'Geen loze beloftes. Geen ruis. Wel heldere, effectieve websites die je bedrijf laten groeien.',
     p2: 'We focussen op wat telt: jouw doelen, je doelgroep en resultaten die het verschil maken.',
-    projects: 'Projecten opgeleverd',
-    satisfaction: 'Klanttevredenheid',
+    projects: 'Portfolio-projecten',
+    satisfaction: 'Klanten die ons aanraden',
     officeAlt: 'Kantoor Studio Thielman',
   },
   portfolio: {
@@ -168,8 +168,8 @@ export const homeNl = {
   },
   wip: {
     label: 'IN ONTWIKKELING',
-    title: 'Waar ik nu aan werk',
-    subtitle: 'Huidige projecten, wat ik leer en wat er binnenkort komt — transparant en open.',
+    title: 'Waar we nu aan werken',
+    subtitle: 'Huidige projecten, wat we leren en wat er binnenkort komt — transparant en open.',
     lastUpdated: 'Laatst bijgewerkt:',
     viewDetails: 'Bekijk details →',
     viewAll: 'Alle lopende projecten',

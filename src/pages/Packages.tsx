@@ -5,15 +5,19 @@ import Card from '../components/Card'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 
+function packageQuery(name: string) {
+  return `/contact?package=${encodeURIComponent(name)}#contact-form`
+}
+
 export default function Packages() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
-  const { messages, t } = useLocale()
+  const { messages } = useLocale()
   const p = messages.packages
 
   const packages = p.tiers.map((tier) => ({
     ...tier,
-    highlighted: 'highlighted' in tier ? tier.highlighted : false,
-    comingSoon: 'comingSoon' in tier ? tier.comingSoon : false,
+    highlighted: 'highlighted' in tier ? Boolean(tier.highlighted) : false,
+    priceTbd: 'priceTbd' in tier ? Boolean(tier.priceTbd) : false,
   }))
 
   return (
@@ -57,28 +61,26 @@ export default function Packages() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
                 <Card
-                  hover={!pkg.comingSoon}
-                  className={`h-full flex flex-col ${pkg.highlighted ? 'border-2 border-cta shadow-xl' : ''} ${pkg.comingSoon ? 'opacity-75' : ''}`}
+                  hover
+                  className={`h-full flex flex-col relative z-10 ${pkg.highlighted ? 'border-2 border-cta shadow-xl' : ''}`}
                 >
                   {pkg.highlighted && (
                     <motion.div className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-body-sm font-bold px-4 py-2 rounded-full inline-block mb-4 shadow-lg uppercase tracking-wider">
                       {p.mostPopular}
                     </motion.div>
                   )}
-                  {pkg.comingSoon && (
-                    <motion.div className="bg-gray-500 text-white text-body-sm font-bold px-4 py-2 rounded-full inline-block mb-4 shadow-lg uppercase tracking-wider">
-                      {t('common.comingSoon')}
-                    </motion.div>
-                  )}
 
                   <motion.div className="flex-grow">
                     <h3 className="text-3xl font-bold text-primary mb-2">{pkg.name}</h3>
-                    {!pkg.comingSoon && (
-                      <motion.div className="mb-4">
-                        <motion.div className="text-4xl font-bold text-primary">{pkg.price}</motion.div>
-                        <motion.div className="text-body-sm text-text-secondary mt-1">{pkg.startupFee}</motion.div>
+                    <motion.div className="mb-4">
+                      <motion.div className={`font-bold text-primary ${pkg.priceTbd ? 'text-2xl' : 'text-4xl'}`}>
+                        {pkg.price}
                       </motion.div>
-                    )}
+                      {pkg.startupFee ? (
+                        <motion.div className="text-body-sm text-text-secondary mt-1">{pkg.startupFee}</motion.div>
+                      ) : null}
+                      <motion.div className="text-body-sm text-text-secondary mt-1">{p.exclVat}</motion.div>
+                    </motion.div>
                     <p className="text-body text-text-primary mb-6">{pkg.description}</p>
 
                     <motion.div className="mb-6">
@@ -107,17 +109,11 @@ export default function Packages() {
                   </motion.div>
 
                   <motion.div className="mt-auto pt-6">
-                    {pkg.comingSoon ? (
-                      <Button variant="outline" size="md" className="w-full" disabled>
-                        {t('common.comingSoon')}
+                    <LocalizedLink to={packageQuery(pkg.name)}>
+                      <Button variant={pkg.highlighted ? 'cta' : 'outline'} size="md" className="w-full">
+                        {p.choosePackage.replace('{{name}}', pkg.name)}
                       </Button>
-                    ) : (
-                      <LocalizedLink to="/contact#contact-form">
-                        <Button variant={pkg.highlighted ? 'cta' : 'outline'} size="md" className="w-full">
-                          {p.choosePackage.replace('{{name}}', pkg.name)}
-                        </Button>
-                      </LocalizedLink>
-                    )}
+                    </LocalizedLink>
                   </motion.div>
                 </Card>
               </motion.div>

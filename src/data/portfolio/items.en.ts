@@ -135,7 +135,7 @@ export const portfolioItemsEn: PortfolioItem[] = [
       'Mobile-friendly access'
     ],
     screenshots: [
-      'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=500&fit=crop&q=80'
+      '/images/portfolio/binnenhof-higgsfield.jpg'
     ],
     packageFitExplanation: 'Binnenhof goes beyond a static school website: it needed thoughtful UX for real communication challenges. The Growth package provided the interactive, user-centred foundation to prototype a platform that addresses language barriers and accessibility in education.',
     results: 'Clearer school-parent communication designed for inclusivity and everyday use'
