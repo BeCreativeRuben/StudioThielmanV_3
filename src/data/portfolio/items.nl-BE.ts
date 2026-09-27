@@ -3,6 +3,111 @@ import type { PortfolioItem } from './types'
 // Nieuwste eerst (op lanceringsdatum)
 export const portfolioItemsNl: PortfolioItem[] = [
   {
+    slug: 'beauty-by-tischa',
+    title: 'Beauty by Tischa - Mobiele beautystudio',
+    package: 'Starter',
+    description: 'Een mobiele schoonheidsspecialiste in Lichtervelde had een warme, persoonlijke website nodig die bezoekers omzet in boekingen voor nagels, pedicure en ontharing aan huis.',
+    longDescription: 'Beauty by Tischa brengt salonwaardige nagelverzorging, pedicure en ontharing bij klanten thuis in en rond Lichtervelde. De website stelt Tischa persoonlijk voor, zet elke dienst en prijs helder op een rij en legt de verplaatsingszone en demo-avonden uit. Elke sectie leidt naar één eenvoudige actie: boeken via WhatsApp of even bellen, in de eerste plaats ontworpen voor mobiele bezoekers.',
+    clientType: 'Beauty & wellness',
+    date: 'SEP 2026',
+    liveUrl: 'https://beautybytischa.be',
+    keyFeatures: [
+      'Overzicht van diensten en prijzen',
+      'Boeken via WhatsApp of telefoon',
+      'Persoonlijk merkverhaal',
+      'Portfolio met recent werk',
+      'Lokale SEO voor Lichtervelde',
+      'Mobile-first design'
+    ],
+    screenshots: ['/images/portfolio/beauty-by-tischa/hero-home.webp'],
+    packageFitExplanation: 'Een lokale eenmanszaak in beauty heeft meer nood aan helderheid en vertrouwen dan aan complexe functies. Starter leverde een verzorgde, mobile-first site met diensten, prijzen en rechtstreeks boeken via WhatsApp - professioneel genoeg om op te vallen, eenvoudig genoeg om de kosten laag te houden.',
+    results: 'Een persoonlijke online aanwezigheid die klanten rechtstreeks naar WhatsApp stuurt om een afspraak aan huis te boeken'
+  },
+  {
+    slug: 'isabella-billiet',
+    title: 'Isabella Billiet - Portfolio beeldende kunst',
+    package: 'Starter',
+    description: 'Een rustig, tweetalig portfolio voor een Gentse kunstenares, met schilderijen, werken op papier en textiel en veel ruimte om het werk te laten ademen.',
+    longDescription: 'Isabella Billiet maakt schilderijen, werken op papier en textiel in dialoog met de natuur. Haar website moest aanvoelen als een stille galerie: zachte tinten, veel witruimte en grote beelden. Bezoekers bladeren door werken per medium, openen elk stuk voor details, volgen komende tentoonstellingen en nemen rechtstreeks contact op, in het Nederlands of Engels.',
+    clientType: 'Beeldende kunst',
+    date: 'SEP 2026',
+    liveUrl: 'https://isabellabilliet.com',
+    keyFeatures: [
+      'Filterbare galerij met werken',
+      'Detailpagina per kunstwerk',
+      'Overzicht van tentoonstellingen',
+      'Biografie van de kunstenares',
+      'Nederlandse en Engelse versie',
+      'Responsief op alle apparaten'
+    ],
+    screenshots: ['/images/portfolio/isabella-billiet/hero-home.webp'],
+    packageFitExplanation: 'Een kunstenaarsportfolio is precies waarvoor Starter bedoeld is: een handvol verzorgde pagina\'s, sterke beelden en eenvoudig contact. Isabella kreeg een verfijnde galerie-ervaring in twee talen, zonder de overhead van een zwaarder platform.',
+    results: 'Een serene online galerie waar verzamelaars en curatoren het werk in twee talen ontdekken'
+  },
+  {
+    slug: 'arthur-gallery',
+    title: 'Arthur Gallery - Galerie voor hedendaagse kunst',
+    package: 'Growth',
+    description: 'Een tweetalige website voor een nieuwe galerie voor hedendaagse kunst in Antwerpen, gebouwd om kunstenaars en tentoonstellingen te tonen en de opening te ondersteunen.',
+    longDescription: 'Arthur Gallery opent haar deuren in het hart van Antwerpen en brengt kunstenaars, verzamelaars en een internationale gemeenschap samen onder één dak. De website toont de vertegenwoordigde kunstenaars, de lopende tentoonstelling, internationale projecten en nieuws in een elegante, beeldgedreven layout. Via een inschrijving voor uitnodigingen blijven bezoekers op de hoogte van vernissages en besloten bezichtigingen, in het Nederlands en Engels.',
+    clientType: 'Kunstgalerie',
+    date: 'SEP 2026',
+    liveUrl: 'https://www.arthurgallery.be',
+    keyFeatures: [
+      'Kunstenaarsprofielen',
+      'Tentoonstellingspagina\'s',
+      'Internationale projecten',
+      'Nieuwssectie',
+      'Inschrijving voor uitnodigingen',
+      'Nederlandse en Engelse versie'
+    ],
+    screenshots: ['/images/portfolio/arthur-gallery/hero-home.webp'],
+    packageFitExplanation: 'Een galerie heeft meer nodig dan een statische brochure: tentoonstellingen, kunstenaars en nieuws wisselen doorheen het seizoen. Growth bood de gestructureerde secties, tweetalige content en SEO-basis om de galerie te lanceren en de site actueel te houden naarmate het programma evolueert.',
+    results: 'Een verfijnde online thuis voor de galerie, live op tijd voor de openingstentoonstelling'
+  },
+  {
+    slug: 'the-antwerp-pianist',
+    title: 'The Antwerp Pianist - Culturele residentie & evenementen',
+    package: 'Pro Max',
+    description: 'Een culturele residentie in historisch Antwerpen waar muziek, kunst, literatuur en gastronomie samenkomen. De site brengt evenementen, lessen en het huis samen op één plek.',
+    longDescription: 'The Antwerp Pianist is een cultureel huis op de Lijnwaadmarkt in Antwerpen, met concerten, tentoonstellingen, pop-ups en lessen. We haalden de site weg van het oude platform naar een maatwerkoplossing met een live agenda, online ticketverkoop, info over lessen, zaalverhuur en nieuwsbriefinschrijving. De site deelt een centraal platform met Iedereen Speelt Piano, zodat evenementen en bestellingen op één plek beheerd worden.',
+    clientType: 'Cultuur & evenementen',
+    date: 'SEP 2026',
+    liveUrl: 'https://theantwerppianist.be',
+    keyFeatures: [
+      'Live evenementenagenda',
+      'Online ticketverkoop',
+      'Lessen en programma\'s',
+      'Pagina\'s voor zaalverhuur',
+      'Nieuwsbriefinschrijving',
+      'Nederlandse en Engelse versie'
+    ],
+    screenshots: ['/images/portfolio/the-antwerp-pianist/hero-home.webp'],
+    packageFitExplanation: 'The Antwerp Pianist had veel meer nodig dan een etalage: een live agenda, ticketverkoop, betalingen en een backoffice die gedeeld wordt met een zusterorganisatie. Pro Max dekte het maatwerkplatform, de e-commerce-integratie en de doorlopende ondersteuning om een druk cultureel programma online te runnen.',
+    results: 'Eén elegante website waar bezoekers het programma ontdekken en rechtstreeks tickets boeken'
+  },
+  {
+    slug: 'iedereen-speelt-piano',
+    title: 'Iedereen Speelt Piano - Pianoschool & concerten',
+    package: 'Pro Max',
+    description: 'Een pianobelevingscentrum in Antwerpen dat pianospelen toegankelijk maakt voor iedereen. De site combineert concerten, lessen en online inschrijven in één platform.',
+    longDescription: 'Iedereen Speelt Piano maakt pianospelen toegankelijk voor kinderen, jongeren, volwassenen, teams en organisaties. We bouwden een tweetalige website met een concertagenda en ticketverkoop, een volledig overzicht van individuele en groepslessen, zang en muziekkampen, en een online inschrijvingsflow met betaling. Daarachter zit een maatwerk-adminplatform om evenementen, bestellingen en inschrijvingen te beheren.',
+    clientType: 'Muziekonderwijs',
+    date: 'SEP 2026',
+    liveUrl: 'https://www.iedereenspeeltpiano.com',
+    keyFeatures: [
+      'Concertagenda en ticketverkoop',
+      'Lessen- en kampprogramma\'s',
+      'Online inschrijven met betaling',
+      'Maatwerk-adminplatform',
+      'Nederlandse en Engelse versie',
+      'Mobielvriendelijk design'
+    ],
+    screenshots: ['/images/portfolio/iedereen-speelt-piano/hero-home.webp'],
+    packageFitExplanation: 'Met ticketverkoop, inschrijvingen, betalingen en een admin-backoffice is Iedereen Speelt Piano eerder een platform dan een brochuresite. Pro Max leverde de maatwerkbackend, e-commerce-integratie en persoonlijke ondersteuning om concerten en lessen vlot te laten verlopen.',
+    results: 'Concerten en lessen die bezoekers in enkele klikken online ontdekken, boeken en betalen'
+  },
+  {
     slug: 'la-vie-nomade',
     title: 'ERPA — La Vie Nomade',
     package: 'Pro Max',

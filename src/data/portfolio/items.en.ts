@@ -3,6 +3,111 @@ import type { PortfolioItem } from './types'
 // Newest first (by launch date)
 export const portfolioItemsEn: PortfolioItem[] = [
   {
+    slug: 'beauty-by-tischa',
+    title: 'Beauty by Tischa - Mobile Beauty Studio',
+    package: 'Starter',
+    description: 'A mobile beauty specialist in Lichtervelde needed a warm, personal website that turns visitors into bookings for nails, pedicure, and hair removal at home.',
+    longDescription: 'Beauty by Tischa brings salon-quality nails, pedicure, and hair removal to clients\' homes around Lichtervelde. The website introduces Tischa personally, lays out every service and price clearly, and explains the travel area and demo evenings. Every section leads to one simple action: booking via WhatsApp or a quick call, designed first for mobile visitors.',
+    clientType: 'Beauty & Wellness',
+    date: 'SEP 2026',
+    liveUrl: 'https://beautybytischa.be',
+    keyFeatures: [
+      'Services & price overview',
+      'WhatsApp & call booking',
+      'Personal brand story',
+      'Portfolio of recent work',
+      'Local SEO for Lichtervelde',
+      'Mobile-first design'
+    ],
+    screenshots: ['/images/portfolio/beauty-by-tischa/hero-home.webp'],
+    packageFitExplanation: 'A local, one-person beauty business needs clarity and trust more than complex features. Starter delivered a polished, mobile-first site with services, prices, and direct booking via WhatsApp - professional enough to stand out, simple enough to keep costs low.',
+    results: 'A personal online presence that sends clients straight to WhatsApp to book an appointment at home'
+  },
+  {
+    slug: 'isabella-billiet',
+    title: 'Isabella Billiet - Fine Art Portfolio',
+    package: 'Starter',
+    description: 'A calm, bilingual portfolio for a Ghent-based artist, presenting paintings, works on paper, and textile with plenty of room for the work to breathe.',
+    longDescription: 'Isabella Billiet creates paintings, works on paper, and textile in dialogue with nature. Her website had to feel like a quiet gallery: soft tones, generous whitespace, and large imagery. Visitors can browse works by medium, open each piece for details, follow upcoming exhibitions, and get in touch directly, in English or Dutch.',
+    clientType: 'Fine Art',
+    date: 'SEP 2026',
+    liveUrl: 'https://isabellabilliet.com',
+    keyFeatures: [
+      'Filterable works gallery',
+      'Artwork detail pages',
+      'Exhibitions overview',
+      'Artist biography',
+      'English & Dutch versions',
+      'Responsive across devices'
+    ],
+    screenshots: ['/images/portfolio/isabella-billiet/hero-home.webp'],
+    packageFitExplanation: 'An artist portfolio is exactly what Starter is built for: a handful of well-crafted pages, strong imagery, and simple contact. Isabella got a refined gallery experience in two languages without the overhead of a heavier platform.',
+    results: 'A serene online gallery where collectors and curators discover the work in two languages'
+  },
+  {
+    slug: 'arthur-gallery',
+    title: 'Arthur Gallery - Contemporary Art Gallery',
+    package: 'Growth',
+    description: 'A bilingual website for a new contemporary art gallery in Antwerp, built to present its artists and exhibitions and support the gallery launch.',
+    longDescription: 'Arthur Gallery opens its doors in the heart of Antwerp, bringing artists, collectors, and an international community together under one roof. The website presents the represented artists, the current exhibition, international projects, and news in an elegant, image-led layout. An invitation sign-up keeps visitors informed about openings and private viewings, in Dutch and English.',
+    clientType: 'Art Gallery',
+    date: 'SEP 2026',
+    liveUrl: 'https://www.arthurgallery.be',
+    keyFeatures: [
+      'Artist profiles',
+      'Exhibition pages',
+      'International projects',
+      'News section',
+      'Invitation sign-up',
+      'Dutch & English versions'
+    ],
+    screenshots: ['/images/portfolio/arthur-gallery/hero-home.webp'],
+    packageFitExplanation: 'A gallery needs more than a static brochure: exhibitions, artists, and news change throughout the season. Growth provided the multi-section structure, bilingual content, and SEO foundation to launch the gallery and keep the site current as the programme evolves.',
+    results: 'A refined online home for the gallery, live in time for its opening exhibition'
+  },
+  {
+    slug: 'the-antwerp-pianist',
+    title: 'The Antwerp Pianist - Cultural Residence & Events',
+    package: 'Pro Max',
+    description: 'A cultural residence in historic Antwerp where music, art, literature, and gastronomy meet. The site brings its events, lessons, and venue together in one place.',
+    longDescription: 'The Antwerp Pianist is a cultural house on the Lijnwaadmarkt in Antwerp, hosting concerts, exhibitions, pop-ups, and lessons. We moved the site off its old platform to a custom build with a live event agenda, online ticketing, lesson information, venue hire, and newsletter sign-up. It shares a central platform with Iedereen Speelt Piano, so events and orders are managed in one place.',
+    clientType: 'Culture & Events',
+    date: 'SEP 2026',
+    liveUrl: 'https://theantwerppianist.be',
+    keyFeatures: [
+      'Live event agenda',
+      'Online ticketing',
+      'Lessons & programmes',
+      'Venue hire pages',
+      'Newsletter sign-up',
+      'Dutch & English versions'
+    ],
+    screenshots: ['/images/portfolio/the-antwerp-pianist/hero-home.webp'],
+    packageFitExplanation: 'The Antwerp Pianist needed far more than a showcase: a live agenda, ticket sales, payments, and a back office shared with a sister organisation. Pro Max covered the custom platform, e-commerce integration, and ongoing support needed to run a busy cultural programme online.',
+    results: 'One elegant website where visitors discover the programme and book tickets directly'
+  },
+  {
+    slug: 'iedereen-speelt-piano',
+    title: 'Iedereen Speelt Piano - Piano School & Concerts',
+    package: 'Pro Max',
+    description: 'A piano experience centre in Antwerp that makes playing accessible to everyone. The site combines concerts, lessons, and online enrolment in one platform.',
+    longDescription: 'Iedereen Speelt Piano makes piano playing accessible to children, teens, adults, teams, and organisations. We built a bilingual website with a concert agenda and ticketing, a full overview of individual and group lessons, singing, and music camps, and an online enrolment flow with payment. Behind it sits a custom admin platform to manage events, orders, and registrations.',
+    clientType: 'Music Education',
+    date: 'SEP 2026',
+    liveUrl: 'https://www.iedereenspeeltpiano.com',
+    keyFeatures: [
+      'Concert agenda & ticketing',
+      'Lesson & camp programmes',
+      'Online enrolment with payment',
+      'Custom admin platform',
+      'Dutch & English versions',
+      'Mobile-friendly design'
+    ],
+    screenshots: ['/images/portfolio/iedereen-speelt-piano/hero-home.webp'],
+    packageFitExplanation: 'With ticket sales, enrolments, payments, and an admin back office, Iedereen Speelt Piano is a platform rather than a brochure site. Pro Max provided the custom backend, e-commerce integration, and white-glove support to run concerts and lessons smoothly.',
+    results: 'Concerts and lessons that visitors can discover, book, and pay for online in a few clicks'
+  },
+  {
     slug: 'la-vie-nomade',
     title: 'ERPA — La Vie Nomade',
     package: 'Pro Max',
