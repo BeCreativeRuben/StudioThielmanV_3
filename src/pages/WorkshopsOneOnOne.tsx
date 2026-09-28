@@ -1,11 +1,15 @@
 import { motion } from 'framer-motion'
 import Button from '../components/Button'
-import LocalizedLink from '../i18n/LocalizedLink'
+import BookCallLink from '../components/BookCallLink'
 import { useLocale } from '../i18n/LocaleProvider'
+import { getPublishedOneOnOneShowcase } from '../data/workshopShowcase'
 
 export default function WorkshopsOneOnOne() {
-  const { messages } = useLocale()
+  const { locale, messages } = useLocale()
   const w = messages.workshops.oneOnOne
+  const showcaseLocale = locale === 'nl-BE' ? 'nl-BE' : 'en'
+  // Hidden until an item is marked `published: true` (see src/data/workshopShowcase.ts)
+  const showcase = getPublishedOneOnOneShowcase()
 
   return (
     <div>
@@ -96,6 +100,58 @@ export default function WorkshopsOneOnOne() {
         </div>
       </section>
 
+      {/* Built after a 1:1 (hidden until published) */}
+      {showcase.length > 0 && (
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              className="mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{w.showcase.label}</div>
+              <h2 className="text-4xl md:text-5xl font-bold text-primary">{w.showcase.title}</h2>
+            </motion.div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {showcase.map((item, index) => (
+                <motion.a
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  {item.image && (
+                    <div className="bg-accent h-64 overflow-hidden">
+                      <img
+                        src={item.image}
+                        alt={item.projectName[showcaseLocale]}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">{item.name}</div>
+                    <h3 className="text-h3 text-primary mb-2 group-hover:text-cta transition-colors">
+                      {item.projectName[showcaseLocale]}
+                    </h3>
+                    <p className="text-body text-text-primary mb-4">{item.description[showcaseLocale]}</p>
+                    <span className="text-sm font-semibold text-cta">{w.showcase.visit} →</span>
+                  </div>
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* CTA */}
       <section className="py-20 bg-gray-900">
         <motion.div
@@ -108,11 +164,11 @@ export default function WorkshopsOneOnOne() {
           <div className="text-sm text-white/60 uppercase tracking-wider mb-4">{w.cta.label}</div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{w.cta.title}</h2>
           <p className="text-lg text-white/80 mb-8">{w.cta.subtitle}</p>
-          <LocalizedLink to="/contact#contact-form">
+          <BookCallLink notes={w.cta.bookingNote} metadata={{ source: 'workshops-1-1' }}>
             <Button variant="cta" size="lg">
               {w.cta.button}
             </Button>
-          </LocalizedLink>
+          </BookCallLink>
         </motion.div>
       </section>
     </div>

@@ -1,7 +1,7 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { motion } from 'framer-motion'
 import Button from '../components/Button'
 import Card from '../components/Card'
+import FaqAccordion from '../components/FaqAccordion'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 
@@ -10,7 +10,6 @@ function packageQuery(name: string) {
 }
 
 export default function Packages() {
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
   const { messages } = useLocale()
   const p = messages.packages
 
@@ -135,49 +134,7 @@ export default function Packages() {
             <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">{p.faqTitle}</h2>
             <p className="text-body-lg text-text-primary max-w-2xl mx-auto">{p.faqSection.subtitle}</p>
           </motion.div>
-          <motion.div className="space-y-4">
-            {p.faqs.map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300"
-              >
-                <button
-                  type="button"
-                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                  className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
-                >
-                  <h3 className="text-lg font-semibold text-primary pr-4">{faq.question}</h3>
-                  <svg
-                    className={`w-5 h-5 text-cta flex-shrink-0 transition-transform duration-300 ${expandedFaq === index ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <AnimatePresence>
-                  {expandedFaq === index && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <motion.div className="px-6 pb-5 pt-0">
-                        <p className="text-body-sm text-text-primary leading-relaxed">{faq.answer}</p>
-                      </motion.div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </motion.div>
+          <FaqAccordion items={p.faqs} />
         </motion.div>
       </section>
 

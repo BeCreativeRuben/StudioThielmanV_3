@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
 import Button from '../components/Button'
+import BookCallLink from '../components/BookCallLink'
+import LinkedInPostCard from '../components/LinkedInPostCard'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 
@@ -115,37 +117,14 @@ export default function WorkshopsIncompany() {
           </motion.div>
 
           {/* LinkedIn post card */}
-          <motion.a
+          <LinkedInPostCard
             href={w.socialProof.postUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block bg-gray-50 border border-gray-200 rounded-xl p-6 md:p-8 mb-10 hover:shadow-lg transition-all duration-300 group"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-[#0A66C2] rounded-full flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                </svg>
-              </div>
-              <div>
-                <span className="font-semibold text-primary block">{w.socialProof.postAuthor}</span>
-                <span className="text-sm text-text-secondary">{w.socialProof.postDate}</span>
-              </div>
-            </div>
-            <blockquote className="text-body text-text-primary leading-relaxed mb-4 italic">
-              "{w.socialProof.postExcerpt}"
-            </blockquote>
-            <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#0A66C2] group-hover:underline">
-              {w.socialProof.postLinkLabel}
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </span>
-          </motion.a>
+            author={w.socialProof.postAuthor}
+            date={w.socialProof.postDate}
+            quote={w.socialProof.postExcerpt}
+            linkLabel={w.socialProof.postLinkLabel}
+            className="mb-10"
+          />
 
           {/* Testimonials */}
           <div className="grid md:grid-cols-3 gap-6">
@@ -166,6 +145,21 @@ export default function WorkshopsIncompany() {
               </motion.div>
             ))}
           </div>
+
+          {/* Prominent LinkedIn link under the testimonials */}
+          <motion.div
+            className="mt-10 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <a href={w.socialProof.postUrl} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="md">
+                {w.socialProof.linkedInCta} →
+              </Button>
+            </a>
+          </motion.div>
         </div>
       </section>
 
@@ -183,14 +177,50 @@ export default function WorkshopsIncompany() {
             <div className="space-y-4 text-lg text-text-primary leading-relaxed max-w-3xl">
               <p>{w.audience.p1}</p>
               <p className="text-text-secondary italic">{w.audience.p2}</p>
+              <p>
+                <BookCallLink
+                  notes="Workshop developers & AI-agents"
+                  metadata={{ source: 'workshops-developers' }}
+                  className="text-cta font-semibold underline underline-offset-4 hover:no-underline"
+                >
+                  {w.audience.devCta} →
+                </BookCallLink>
+              </p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Practical + pricing */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{w.practical.label}</div>
+            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-8">{w.practical.title}</h2>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 gap-4 mb-16">
+            {w.practical.items.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flex items-start gap-4 p-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md transition-all duration-300"
+              >
+                <span className="text-cta font-bold text-lg flex-shrink-0 mt-0.5">✓</span>
+                <p className="text-body text-text-primary leading-relaxed">{item}</p>
+              </motion.div>
+            ))}
+          </div>
+
           <motion.div
             className="text-center"
             initial={{ opacity: 0, y: 20 }}
@@ -200,7 +230,8 @@ export default function WorkshopsIncompany() {
           >
             <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{w.price.label}</div>
             <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">{w.price.title}</h2>
-            <p className="text-lg text-text-secondary max-w-2xl mx-auto">{w.price.subtitle}</p>
+            <p className="text-lg text-text-primary max-w-2xl mx-auto mb-2">{w.price.subtitle}</p>
+            <p className="text-lg text-text-secondary max-w-2xl mx-auto">{w.price.note}</p>
           </motion.div>
         </div>
       </section>
@@ -217,11 +248,16 @@ export default function WorkshopsIncompany() {
           <div className="text-sm text-white/60 uppercase tracking-wider mb-4">{w.cta.label}</div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{w.cta.title}</h2>
           <p className="text-lg text-white/80 mb-8">{w.cta.subtitle}</p>
-          <LocalizedLink to="/contact#contact-form">
+          <BookCallLink notes={w.cta.bookingNote} metadata={{ source: 'workshops-incompany' }}>
             <Button variant="cta" size="lg">
               {w.cta.button}
             </Button>
-          </LocalizedLink>
+          </BookCallLink>
+          <div className="mt-6">
+            <LocalizedLink to="/workshops#waitlist" className="text-sm text-white/70 hover:text-white underline underline-offset-4">
+              {w.cta.waitlistLink} →
+            </LocalizedLink>
+          </div>
         </motion.div>
       </section>
     </div>

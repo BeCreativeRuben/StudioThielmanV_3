@@ -901,9 +901,15 @@ export default function Home() {
                               {index === 6 ? c.cta.learnMore : c.viewPackagesArrow}
                             </Button>
                           </LocalizedLink>
-                          <LocalizedLink to="/contact#contact-form">
-                            <Button variant="primary" size="sm">{c.cta.getStarted}</Button>
-                          </LocalizedLink>
+                          {index === 6 ? (
+                            <BookCallLink notes={h.workshopsTeaser.bookingNote} metadata={{ source: 'home-services-workshops' }}>
+                              <Button variant="primary" size="sm">{c.cta.bookCall}</Button>
+                            </BookCallLink>
+                          ) : (
+                            <LocalizedLink to="/contact#contact-form">
+                              <Button variant="primary" size="sm">{c.cta.getStarted}</Button>
+                            </LocalizedLink>
+                          )}
                         </div>
                           </div>
                         </motion.div>
@@ -914,6 +920,84 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Workshops Teaser */}
+      <section id="workshops" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.workshopsTeaser.label}</div>
+            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+              {h.workshopsTeaser.title}
+            </h2>
+            <p className="text-body-lg text-text-primary max-w-2xl mx-auto">
+              {h.workshopsTeaser.subtitle}
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {h.workshopsTeaser.tracks.map((track, index) => (
+              <motion.div
+                key={track.key}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300 flex flex-col"
+              >
+                <div className="flex items-start justify-between mb-4 gap-3">
+                  <h3 className="text-xl font-bold text-primary flex-1">{track.title}</h3>
+                  {track.badge && (
+                    <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-700">
+                      {track.badge}
+                    </span>
+                  )}
+                </div>
+                <p className="text-body-sm text-text-primary mb-4 flex-grow">{track.description}</p>
+                <div className="text-sm font-semibold text-primary mb-4">{track.meta}</div>
+                <LocalizedLink to={track.to}>
+                  <Button variant="outline" size="sm" className="w-full">
+                    {track.cta}
+                  </Button>
+                </LocalizedLink>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            className="text-center mt-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <p className="text-body text-text-secondary italic max-w-2xl mx-auto mb-2">
+              {h.workshopsTeaser.proof}
+            </p>
+            <a
+              href="https://www.linkedin.com/feed/update/urn:li:activity:7492876931240087554/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-sm font-semibold text-[#0A66C2] hover:underline mb-8"
+            >
+              {h.workshopsTeaser.proofLink} →
+            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <LocalizedLink to="/workshops">
+                <Button variant="primary" size="lg">{h.workshopsTeaser.viewAll}</Button>
+              </LocalizedLink>
+              <BookCallLink notes={h.workshopsTeaser.bookingNote} metadata={{ source: 'home-workshops' }}>
+                <Button variant="outline" size="lg">{c.cta.bookCall}</Button>
+              </BookCallLink>
+            </div>
+          </motion.div>
         </div>
       </section>
 

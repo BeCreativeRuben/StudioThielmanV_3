@@ -9,6 +9,10 @@ type Props = {
   className?: string
   onClick?: () => void
   fallbackTo?: string
+  /** Prefills the "Additional notes" field in the Cal.com booking form (e.g. "Workshop incompany"). */
+  notes?: string
+  /** Extra booking metadata passed to Cal.com as metadata[key]=value. */
+  metadata?: Record<string, string>
 }
 
 /**
@@ -20,6 +24,8 @@ export default function CalBookButton({
   className,
   onClick,
   fallbackTo = '/contact#contact-form',
+  notes,
+  metadata,
 }: Props) {
   const { locale } = useLocale()
   const calLink = getCalLink()
@@ -47,11 +53,18 @@ export default function CalBookButton({
     )
   }
 
-  const config = JSON.stringify({
+  const configObject: Record<string, string> = {
     layout: 'month_view',
     theme: 'light',
     locale: locale === 'nl-BE' ? 'nl' : 'en',
-  })
+  }
+  if (notes) configObject.notes = notes
+  if (metadata) {
+    for (const [key, value] of Object.entries(metadata)) {
+      configObject[`metadata[${key}]`] = value
+    }
+  }
+  const config = JSON.stringify(configObject)
 
   return (
     <button
