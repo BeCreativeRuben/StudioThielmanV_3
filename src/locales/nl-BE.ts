@@ -142,15 +142,15 @@ export const nlBEMessages = {
       },
       '/workshops': {
         title: 'AI-workshops — teams & 1:1',
-        description: 'AI-workshops voor teams (incompany) of 1:1 (twee dagen, €1.000). Hands-on bouwen, geen demo-theater.',
+        description: 'AI-workshops voor teams (incompany, halve dag) of 1:1 (twee dagen, €1.000 excl. btw). Groepsles binnenkort. Hands-on, geen demo-theater.',
       },
       '/workshops/incompany': {
         title: 'Incompany AI-workshop voor teams',
-        description: 'Hands-on AI-workshop voor je team. DCCFC-model, drie labs, grenzen en een 7-dagenplan. Prijs op aanvraag.',
+        description: 'Hands-on AI-workshop voor je team. Halve dag op locatie, max. 15 personen, Nederlands of Engels. Richtprijs €500 tot 8 personen, excl. btw.',
       },
       '/workshops/1-1': {
-        title: '1:1 AI-workshop — twee dagen, €1.000',
-        description: 'Tweedaagse 1:1 AI-workshop: bouw je eerste app of workflow vanaf nul, en ga dieper op merk en betaald werk. €1.000 all-in.',
+        title: '1:1 AI-workshop — twee dagen, €1.000 excl. btw',
+        description: 'Tweedaagse 1:1 AI-workshop: bouw je eerste app of workflow vanaf nul, en ga dieper op merk en betaald werk. €1.000 excl. btw, huiswerk inbegrepen.',
       },
     },
     structured: {

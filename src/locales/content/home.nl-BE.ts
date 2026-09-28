@@ -137,6 +137,42 @@ export const homeNl = {
       },
     ],
   },
+  workshopsTeaser: {
+    label: 'WORKSHOPS',
+    title: 'AI-workshops — voor teams, of 1:1.',
+    subtitle: 'Hands-on sessies op jullie eigen werk. Geen demo-theater.',
+    tracks: [
+      {
+        key: 'incompany',
+        title: 'Incompany',
+        description: 'Halve dag op locatie bij jullie (max. 15 personen), in het Nederlands of Engels.',
+        meta: 'Richtprijs: €500 tot 8 personen, excl. btw',
+        cta: 'Meer info',
+        to: '/workshops/incompany',
+      },
+      {
+        key: 'oneOnOne',
+        title: '1:1',
+        description: 'Twee dagen waarin je je eerste app of workflow vanaf nul bouwt.',
+        meta: '€1.000 voor de twee dagen, excl. btw',
+        cta: 'Meer info',
+        to: '/workshops/1-1',
+      },
+      {
+        key: 'group',
+        title: 'Groepsles',
+        badge: 'Binnenkort',
+        description: 'Een open sessie met anderen — gepland zodra er genoeg interesse is.',
+        meta: 'Schrijf je in op de wachtlijst',
+        cta: 'Zet me op de wachtlijst',
+        to: '/workshops#waitlist',
+      },
+    ],
+    proof: '"Thank you Ruben for integrating AI even more in our daily workflow." — Aeriez',
+    proofLink: 'Bekijk de post op LinkedIn',
+    viewAll: 'Alle workshops',
+    bookingNote: 'Workshops',
+  },
   values: {
     title: 'Waar we voor staan',
     items: [

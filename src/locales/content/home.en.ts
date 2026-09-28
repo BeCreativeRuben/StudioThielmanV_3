@@ -137,6 +137,42 @@ export const homeEn = {
       },
     ],
   },
+  workshopsTeaser: {
+    label: 'WORKSHOPS',
+    title: 'AI workshops — for teams, or 1:1.',
+    subtitle: 'Hands-on sessions on your own work. No demo theatre.',
+    tracks: [
+      {
+        key: 'incompany',
+        title: 'In-company',
+        description: 'Half day on location for your team (max. 15 people), in English or Dutch.',
+        meta: 'Indicative price: €500 for up to 8 people, excl. VAT',
+        cta: 'Learn More',
+        to: '/workshops/incompany',
+      },
+      {
+        key: 'oneOnOne',
+        title: '1:1',
+        description: 'Two days where you build your first app or workflow from scratch.',
+        meta: '€1,000 for the two days, excl. VAT',
+        cta: 'Learn More',
+        to: '/workshops/1-1',
+      },
+      {
+        key: 'group',
+        title: 'Group class',
+        badge: 'Coming soon',
+        description: 'An open session with others — planned once there is enough interest.',
+        meta: 'Join the waitlist',
+        cta: 'Join the Waitlist',
+        to: '/workshops#waitlist',
+      },
+    ],
+    proof: '"Thank you Ruben for integrating AI even more in our daily workflow." — Aeriez',
+    proofLink: 'View the post on LinkedIn',
+    viewAll: 'View All Workshops',
+    bookingNote: 'Workshops',
+  },
   values: {
     title: 'What We Stand For',
     items: [

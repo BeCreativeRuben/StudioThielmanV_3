@@ -142,15 +142,15 @@ export const enMessages = {
       },
       '/workshops': {
         title: 'AI Workshops — Teams & 1:1',
-        description: 'AI workshops for teams (in-company) or 1:1 (two days, €1,000). Hands-on building, no demo theatre.',
+        description: 'AI workshops for teams (in-company, half day) or 1:1 (two days, €1,000 excl. VAT). Group class coming soon. Hands-on, no demo theatre.',
       },
       '/workshops/incompany': {
         title: 'In-Company AI Workshop for Teams',
-        description: 'Hands-on AI workshop for your team. DCCFC model, three labs, boundaries, and a 7-day plan. Price on request.',
+        description: 'Hands-on AI workshop for your team. Half day on location, max. 15 people, English or Dutch. Indicative price €500 for up to 8 people, excl. VAT.',
       },
       '/workshops/1-1': {
-        title: '1:1 AI Workshop — Two Days, €1,000',
-        description: 'Two-day 1:1 AI workshop: build your first app or workflow from scratch, then go deeper on brand and paid work. €1,000 all-in.',
+        title: '1:1 AI Workshop — Two Days, €1,000 excl. VAT',
+        description: 'Two-day 1:1 AI workshop: build your first app or workflow from scratch, then go deeper on brand and paid work. €1,000 excl. VAT, homework included.',
       },
     },
     structured: {

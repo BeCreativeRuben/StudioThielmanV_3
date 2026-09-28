@@ -6,6 +6,9 @@ type BookCallLinkProps = {
   className?: string
   onClick?: () => void
   fallbackTo?: string
+  /** Prefill for the Cal.com "Additional notes" field. */
+  notes?: string
+  metadata?: Record<string, string>
 }
 
 /** "Book a Call" CTA — Cal.com modal when configured, else contact form. */
@@ -14,9 +17,17 @@ export default function BookCallLink({
   className,
   onClick,
   fallbackTo = '/contact#contact-form',
+  notes,
+  metadata,
 }: BookCallLinkProps) {
   return (
-    <CalBookButton className={className} onClick={onClick} fallbackTo={fallbackTo}>
+    <CalBookButton
+      className={className}
+      onClick={onClick}
+      fallbackTo={fallbackTo}
+      notes={notes}
+      metadata={metadata}
+    >
       {children}
     </CalBookButton>
   )
