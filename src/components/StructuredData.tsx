@@ -17,6 +17,8 @@ export default function StructuredData() {
     logo: `${SITE_URL}/favicon.png`,
     email: BUSINESS.email,
     telephone: BUSINESS.phone,
+    taxID: BUSINESS.enterpriseNumber,
+    vatID: BUSINESS.vatNumber,
     address: {
       '@type': 'PostalAddress',
       streetAddress: BUSINESS.address.street,
@@ -47,6 +49,8 @@ export default function StructuredData() {
     url: SITE_URL,
     email: BUSINESS.email,
     telephone: BUSINESS.phone,
+    taxID: BUSINESS.enterpriseNumber,
+    vatID: BUSINESS.vatNumber,
     address: {
       '@type': 'PostalAddress',
       streetAddress: BUSINESS.address.street,

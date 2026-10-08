@@ -11,9 +11,13 @@ export const BUSINESS = {
   address: {
     street: 'Pereboomsteenweg 49',
     postalCode: '9180',
-    locality: 'Moerbeke',
+    locality: 'Lokeren',
     country: 'Belgium',
   },
+  /** KBO / ondernemingsnummer */
+  enterpriseNumber: '1034.790.654',
+  /** VAT / BTW */
+  vatNumber: 'BE 1034.790.654',
   areaServed: 'Belgium',
   /** Studio brand Instagram */
   instagram: 'https://www.instagram.com/studio_thielman/',

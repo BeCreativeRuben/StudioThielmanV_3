@@ -54,6 +54,7 @@ export const enMessages = {
       ecommerce: 'E-commerce',
       workshops: 'Workshops',
       copyright: '© {{year}} Studio Thielman. All rights reserved.',
+      companyNumber: 'Company no.',
       privacy: 'Privacy Policy',
       terms: 'Terms of Service',
       cookies: 'Cookie Preferences',
