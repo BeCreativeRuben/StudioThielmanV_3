@@ -32,6 +32,9 @@ export default function Footer() {
             <p>
               {BUSINESS.address.street}, {BUSINESS.address.postalCode} {BUSINESS.address.locality}
             </p>
+            <p>
+              {t('common.footer.companyNumber')} {BUSINESS.enterpriseNumber}
+            </p>
           </div>
         </div>
 

@@ -20,7 +20,8 @@ export const privacySectionsEn: LegalSection[] = [
         kind: 'box',
         rows: [
           { label: 'Company Name:', value: 'Studio Thielman' },
-          { label: 'Address:', value: 'Pereboomsteenweg 49, 9180 Moerbeke, Belgium' },
+          { label: 'Address:', value: 'Pereboomsteenweg 49, 9180 Lokeren, Belgium' },
+          { label: 'Company no.:', value: '1034.790.654' },
           { label: 'Email:', value: 'info@studiothielman.com' },
           { label: 'Phone:', value: '+32 493 50 56 41' },
         ],
@@ -182,7 +183,7 @@ export const privacySectionsEn: LegalSection[] = [
         rows: [
           { label: 'Email:', value: 'info@studiothielman.com' },
           { label: 'Phone:', value: '+32 493 50 56 41' },
-          { label: 'Address:', value: 'Pereboomsteenweg 49, 9180 Moerbeke, Belgium' },
+          { label: 'Address:', value: 'Pereboomsteenweg 49, 9180 Lokeren, Belgium' },
         ],
       },
     ],

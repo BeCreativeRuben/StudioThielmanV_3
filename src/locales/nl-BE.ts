@@ -54,6 +54,7 @@ export const nlBEMessages = {
       ecommerce: 'E-commerce',
       workshops: 'Workshops',
       copyright: '© {{year}} Studio Thielman. Alle rechten voorbehouden.',
+      companyNumber: 'KBO',
       privacy: 'Privacybeleid',
       terms: 'Algemene voorwaarden',
       cookies: 'Cookievoorkeuren',
