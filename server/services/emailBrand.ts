@@ -112,8 +112,15 @@ export function wrapEmailLayout(options: {
   subheading?: string
   bodyHtml: string
   showLogo?: boolean
+  /** Optional overrides (defaults keep the generic emails unchanged). */
+  lang?: string
+  tagline?: string
+  footerCta?: { label: string; href: string }
 }): string {
-  const { colors, font, siteName, logoUrl, siteUrl, tagline } = EMAIL_BRAND
+  const { colors, font, siteName, logoUrl } = EMAIL_BRAND
+  const tagline = options.tagline ?? EMAIL_BRAND.tagline
+  const footerCta = options.footerCta ?? { label: 'Visit website', href: EMAIL_BRAND.siteUrl }
+  const siteUrl = EMAIL_BRAND.siteUrl
   const preheader = options.preheader || options.heading
   const badgeHtml = options.badge
     ? `<p style="margin:0 0 16px 0;"><span style="display:inline-block;background-color:${colors.white};color:${colors.primary};font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px;">${escapeHtml(options.badge)}</span></p>`
@@ -127,7 +134,7 @@ export function wrapEmailLayout(options: {
       : `<p style="margin:0 0 8px 0;font-family:${font};font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.65);">${escapeHtml(siteName)}</p>`
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${options.lang ?? 'en'}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -157,7 +164,7 @@ export function wrapEmailLayout(options: {
             <td style="background-color:${colors.heroDark};padding:28px 32px;border-radius:0 0 12px 12px;text-align:center;border-top:1px solid ${colors.footerBorder};">
               <p style="margin:0 0 8px 0;font-family:${font};font-size:15px;font-weight:600;color:${colors.white};">${escapeHtml(siteName)}</p>
               <p style="margin:0 0 16px 0;font-family:${font};font-size:13px;line-height:1.5;color:rgba(255,255,255,0.65);">${escapeHtml(tagline)}</p>
-              <a href="${siteUrl}" style="display:inline-block;background-color:${colors.white};color:${colors.primary};font-family:${font};font-size:14px;font-weight:700;text-decoration:none;padding:12px 24px;border-radius:8px;">Visit website</a>
+              <a href="${footerCta.href}" style="display:inline-block;background-color:${colors.white};color:${colors.primary};font-family:${font};font-size:14px;font-weight:700;text-decoration:none;padding:12px 24px;border-radius:8px;">${escapeHtml(footerCta.label)}</a>
             </td>
           </tr>
         </table>

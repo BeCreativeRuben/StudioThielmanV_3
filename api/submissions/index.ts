@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { initializeDatabase, dbRun, dbAll } from '../../server/database/postgres.js'
-import { sendSubmissionNotification } from '../../server/services/emailService.js'
+import { sendAiTalksInquiryEmails, sendSubmissionNotification } from '../../server/services/emailService.js'
+import { parseAiTalkInquiry } from '../../server/services/aiTalksEmailTemplates.js'
 import { requireAuth } from '../_utils/auth.js'
 
 // Initialize database (PostgreSQL - idempotent, safe to call multiple times)
@@ -58,6 +59,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           packageOther,
           hasExistingWebsite,
           existingWebsiteUrl,
+          source,
+          aiTalk,
         } = req.body
 
         // Validation
@@ -108,7 +111,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Await email so Vercel does not terminate the function before Resend finishes
         let emailDelivery: Awaited<ReturnType<typeof sendSubmissionNotification>> | undefined
         try {
-          emailDelivery = await sendSubmissionNotification({
+          const aiTalkInquiry = source === 'ai-talks' ? parseAiTalkInquiry(aiTalk, { name, email, phone }) : null
+          emailDelivery = aiTalkInquiry ? await sendAiTalksInquiryEmails(aiTalkInquiry) : await sendSubmissionNotification({
             businessName,
             name,
             email,

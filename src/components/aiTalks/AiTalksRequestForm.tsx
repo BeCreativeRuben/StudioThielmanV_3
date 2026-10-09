@@ -2,6 +2,7 @@ import { useState } from 'react'
 import LocalizedLink from '../../i18n/LocalizedLink'
 import { useLocale } from '../../i18n/LocaleProvider'
 import { BUSINESS } from '../../seo/site'
+import MultiDatePicker, { formatDates } from './MultiDatePicker'
 
 type FieldKey = 'name' | 'email' | 'privacyConsent'
 
@@ -31,6 +32,7 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
     theme: r.fields.themeAny,
     groupSize: '',
     date: '',
+    dates: [] as string[],
     message: '',
     coaching: false,
     privacyConsent: false,
@@ -38,7 +40,7 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
   const [errors, setErrors] = useState<Partial<Record<FieldKey, boolean>>>({})
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
 
-  const update = (field: keyof typeof form, value: string | boolean) => {
+  const update = (field: keyof typeof form, value: string | boolean | string[]) => {
     setForm((prev) => ({ ...prev, [field]: value }))
     if (field in errors) setErrors((prev) => ({ ...prev, [field]: false }))
     if (status === 'error') setStatus('idle')
@@ -49,7 +51,8 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
     `Format: ${form.format}`,
     `Theme: ${form.theme}`,
     form.groupSize.trim() && `Group size: ${form.groupSize.trim()}`,
-    form.date.trim() && `Date/period: ${form.date.trim()}`,
+    form.dates.length > 0 && `${r.fields.datePicker.summaryLabel}: ${formatDates(form.dates, locale).join(', ')}`,
+    form.date.trim() && `${r.fields.datePicker.periodLabel}: ${form.date.trim()}`,
     form.coaching && 'Interested in follow-up coaching',
     `Language page: ${locale === 'nl-BE' ? 'NL' : 'EN'}`,
     form.message.trim() && `Message: ${form.message.trim()}`,
@@ -96,6 +99,22 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
           packageOther: `AI talk / workshop. ${summaryLines().join(' · ')}`,
           hasExistingWebsite: 'no',
           existingWebsiteUrl: '',
+          source: 'ai-talks',
+          aiTalk: {
+            name: form.name.trim(),
+            organisation: form.organisation.trim(),
+            phone: form.phone.trim(),
+            audience: form.audience,
+            format: form.format,
+            theme: form.theme,
+            groupSize: form.groupSize.trim(),
+            dates: form.dates,
+            period: form.date.trim(),
+            message: form.message.trim(),
+            coaching: form.coaching,
+            language: locale === 'nl-BE' ? 'nl-BE' : 'en',
+            pageUrl: window.location.href.split('#')[0],
+          },
         }),
       })
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
@@ -168,10 +187,23 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
           {label(r.fields.groupSize, true)}
           <input className={inputClass()} value={form.groupSize} inputMode="numeric" onChange={(e) => update('groupSize', e.target.value)} />
         </label>
-        <label className="block">
-          {label(r.fields.date, true)}
-          <input className={inputClass()} value={form.date} onChange={(e) => update('date', e.target.value)} />
-        </label>
+        <fieldset className="block sm:col-span-2">
+          <legend className="p-0">{label(r.fields.date, true)}</legend>
+          <p id="ai-talks-dates-intro" className="mb-3 text-sm text-white/70">{r.fields.datePicker.intro}</p>
+          <div className="grid gap-5 md:grid-cols-[minmax(0,24rem)_1fr] md:items-start">
+            <MultiDatePicker
+              value={form.dates}
+              onChange={(dates) => update('dates', dates)}
+              locale={locale}
+              labels={r.fields.datePicker}
+              describedBy="ai-talks-dates-intro"
+            />
+            <label className="block">
+              <span className="block font-mono text-xs uppercase tracking-[0.15em] text-white/60 mb-2">{r.fields.datePicker.periodLabel}</span>
+              <input className={inputClass()} value={form.date} placeholder={r.fields.datePicker.periodPlaceholder} onChange={(e) => update('date', e.target.value)} />
+            </label>
+          </div>
+        </fieldset>
         <label className="block sm:col-span-2">
           {label(r.fields.message, true)}
           <textarea className={`${inputClass()} min-h-[120px]`} value={form.message} placeholder={r.fields.messagePlaceholder} maxLength={1500} onChange={(e) => update('message', e.target.value)} />
