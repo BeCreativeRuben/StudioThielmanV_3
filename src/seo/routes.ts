@@ -5,6 +5,7 @@ import { DEFAULT_LOCALE } from '../i18n/config'
 import { localizedPath, stripLocalePrefix } from '../i18n/paths'
 import { getMessages } from '../i18n/messages'
 import { SITE_URL } from './site'
+import { ogImageForPath } from './ogImages'
 
 export interface PageSeoMeta {
   title: string
@@ -44,7 +45,7 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
         alternateNlPath,
         title: pageTitle(siteName, project.title),
         description: project.description,
-        ogImage: project.screenshots[0]?.startsWith('http') ? project.screenshots[0] : undefined,
+        ogImage: project.screenshots[0]?.startsWith('http') ? project.screenshots[0] : ogImageForPath(path, locale),
       }
     }
   }
@@ -61,7 +62,7 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
         alternateNlPath,
         title: pageTitle(siteName, post.title),
         description: post.excerpt,
-        ogImage: post.featuredImage,
+        ogImage: post.featuredImage || ogImageForPath(path, locale),
       }
     }
   }
@@ -74,7 +75,7 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
       alternateNlPath,
       title: pageTitle(siteName, routeMeta.title),
       description: routeMeta.description,
-      ogImage: 'ogImage' in routeMeta ? routeMeta.ogImage : undefined,
+      ogImage: ogImageForPath(path, locale),
     }
   }
 

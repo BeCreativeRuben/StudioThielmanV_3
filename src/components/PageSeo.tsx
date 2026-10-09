@@ -3,6 +3,7 @@ import type { PageSeoMeta } from '../seo/routes'
 import { canonicalUrl } from '../seo/routes'
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from '../seo/site'
 import { LOCALE_HTML_LANG, LOCALE_HREFLANG } from '../i18n/config'
+import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '../seo/ogImages'
 
 interface PageSeoProps {
   meta: PageSeoMeta
@@ -15,6 +16,8 @@ export default function PageSeo({ meta }: PageSeoProps) {
     : meta.ogImage
       ? `${SITE_URL}${meta.ogImage}`
       : DEFAULT_OG_IMAGE
+
+  const isBrandedOg = !meta.ogImage || meta.ogImage.startsWith('/og/')
 
   const enUrl = canonicalUrl(meta.alternateEnPath)
   const nlUrl = canonicalUrl(meta.alternateNlPath)
@@ -42,6 +45,9 @@ export default function PageSeo({ meta }: PageSeoProps) {
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:image" content={ogImage} />
+      {isBrandedOg && <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />}
+      {isBrandedOg && <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />}
+      <meta property="og:image:alt" content={meta.title} />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={canonical} />

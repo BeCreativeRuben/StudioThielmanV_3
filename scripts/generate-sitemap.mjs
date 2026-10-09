@@ -81,10 +81,25 @@ function parseVisibleBlogSlugsFromFile(filePath) {
 
 const lastmod = new Date().toISOString().slice(0, 10)
 
+const abs = (path) => (path === '/' ? SITE_URL : `${SITE_URL}${path}`)
+const enPathOf = (path) => (path === NL_PREFIX ? '/' : path.startsWith(`${NL_PREFIX}/`) ? path.slice(NL_PREFIX.length) : path)
+
+/** hreflang alternates for pages that exist in both languages with the same slug. */
+function alternates(path) {
+  const en = enPathOf(path)
+  const isStaticOrPortfolio = staticPaths.includes(en) || en.startsWith('/portfolio/')
+  if (!isStaticOrPortfolio) return ''
+  const nl = en === '/' ? NL_PREFIX : `${NL_PREFIX}${en}`
+  return `
+    <xhtml:link rel="alternate" hreflang="en" href="${abs(en)}"/>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="${abs(nl)}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${abs(en)}"/>`
+}
+
 function urlEntry(path, changefreq, priority) {
-  const loc = path === '/' ? SITE_URL : `${SITE_URL}${path}`
+  const loc = abs(path)
   return `  <url>
-    <loc>${loc}</loc>
+    <loc>${loc}</loc>${alternates(path)}
     <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
@@ -110,11 +125,11 @@ const allPaths = [
 ]
 
 const urls = allPaths.map((path) =>
-  urlEntry(path, path === '/' || path === NL_PREFIX ? 'weekly' : 'monthly', path === '/' || path === NL_PREFIX ? '1.0' : path.includes('/blog/') ? '0.6' : '0.8')
+  urlEntry(path, path === '/' || path === NL_PREFIX ? 'weekly' : 'monthly', path === '/' || path === NL_PREFIX ? '1.0' : path.endsWith('/ai-talks') ? '0.9' : path.includes('/blog/') ? '0.6' : '0.8')
 )
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.join('\n')}
 </urlset>
 `

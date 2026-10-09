@@ -156,10 +156,9 @@ export const nlBEMessages = {
         description: 'Tweedaagse 1:1 AI-workshop: bouw je eerste app of workflow vanaf nul, en ga dieper op merk en betaald werk. €1.000 excl. btw, huiswerk inbegrepen.',
       },
       '/ai-talks': {
-        title: 'AI-lezingen & workshops voor teams en scholen',
+        title: 'AI-workshop voor bedrijven & AI-lezingen',
         description:
-          'Lezingen, keynotes en hands-on workshops over AI-agents, bouwen met AI en automatisering voor bedrijven, scholen en enthousiastelingen. Door Ruben Thielman. Vanaf €450 excl. btw.',
-        ogImage: '/images/ai-talks/og-ai-talks.png',
+          "Hands-on AI-workshops, lezingen en gastlessen voor bedrijven, kmo's en scholen in Vlaanderen. AI-agents, ChatGPT, automatisering. Door Ruben Thielman, vanaf €450.",
       },
     },
     structured: {

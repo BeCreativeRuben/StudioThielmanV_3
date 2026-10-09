@@ -8,8 +8,9 @@
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "typecheck": "tsc",
     "bundle": "vite build",
-    "build": "npm run generate:sitemap && npm run bundle",
-    "preview": "vite preview"
+    "build": "npm run generate:sitemap && npm run bundle && npm run prerender",
+    "preview": "vite preview",
+    "prerender": "vite build --ssr src/entry-prerender.tsx --outDir dist-ssr --emptyOutDir && node scripts/prerender.mjs"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

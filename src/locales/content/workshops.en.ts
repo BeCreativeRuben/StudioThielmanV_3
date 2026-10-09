@@ -39,6 +39,10 @@ export const workshopsEn = {
         cta: 'Join the Waitlist',
       },
     },
+    talks: {
+      text: 'Organising an event, staff day or class?',
+      cta: 'See AI talks, keynotes and school sessions',
+    },
     developers: {
       text: 'Developers & AI agents: separate session — ask about it.',
       cta: 'Book a call about it',

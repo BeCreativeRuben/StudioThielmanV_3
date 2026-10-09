@@ -1,6 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { motion } from 'framer-motion'
 import AiTalksHeader from '../components/aiTalks/AiTalksHeader'
 import AiTalksFooter from '../components/aiTalks/AiTalksFooter'
 import AiTalksRequestForm from '../components/aiTalks/AiTalksRequestForm'
@@ -11,12 +10,23 @@ import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 import { BUSINESS, SITE_NAME, SITE_URL } from '../seo/site'
 
+const IMG_BASE = '/images/ai-talks'
+export const HERO_IMG = {
+  src: `${IMG_BASE}/ruben-thielman-ai-spreker-podium-960.webp`,
+  srcSet: [640, 960, 1600].map((w) => `${IMG_BASE}/ruben-thielman-ai-spreker-podium-${w}.webp ${w}w`).join(', '),
+  sizes: '(min-width: 1024px) 45vw, 100vw',
+}
+const WORKSHOP_IMG = {
+  src: `${IMG_BASE}/ruben-thielman-ai-workshop-groep-960.webp`,
+  srcSet: [640, 960, 1600].map((w) => `${IMG_BASE}/ruben-thielman-ai-workshop-groep-${w}.webp ${w}w`).join(', '),
+}
+
 const PACKAGE_FORMAT_INDEX: Record<string, number> = { keynote: 0, workshop: 1, fullday: 2, school: 3 }
 const PRICE_NUMBERS: Record<string, number> = { keynote: 450, workshop: 500, fullday: 900, school: 250 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="font-mono text-xs uppercase tracking-[0.25em] text-white/50 mb-4 flex items-center gap-3">
+    <div className="font-mono text-xs uppercase tracking-[0.25em] text-white/60 mb-4 flex items-center gap-3">
       <span className="inline-block h-px w-8 bg-white/30" />
       {children}
     </div>
@@ -27,6 +37,9 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function AiTalks() {
   const { locale, messages, localizedPath } = useLocale()
   const a = messages.aiTalks
+  // Cookie banner is client-only so the prerendered HTML never ships a banner that then disappears.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
   const [formatChoice, setFormatChoice] = useState<{ value?: string; nonce: number }>({ nonce: 0 })
 
   const choosePackage = (key: string) => {
@@ -38,96 +51,161 @@ export default function AiTalks() {
   const pageUrl = `${SITE_URL}${localizedPath('/ai-talks')}`
   const inLanguage = locale === 'nl-BE' ? 'nl-BE' : 'en'
 
-  const serviceLd = {
+  const orgId = `${SITE_URL}/#organization`
+  const personId = `${SITE_URL}/#ruben-thielman`
+  const serviceId = `${pageUrl}#service`
+  const heroImageUrl = `${SITE_URL}/images/ai-talks/ruben-thielman-ai-spreker-podium-1600.webp`
+  const workshopImageUrl = `${SITE_URL}/images/ai-talks/ruben-thielman-ai-workshop-groep-1600.webp`
+
+  const graphLd = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    '@id': `${pageUrl}#service`,
-    name: a.seo.serviceName,
-    serviceType: 'AI training, lectures and workshops',
-    description: a.seo.serviceDescription,
-    url: pageUrl,
-    inLanguage,
-    availableLanguage: ['nl', 'en'],
-    areaServed: [
-      { '@type': 'Country', name: 'Belgium' },
-      { '@type': 'Country', name: 'Netherlands' },
-    ],
-    audience: a.audiences.items.map((i) => ({ '@type': 'Audience', audienceType: i.title })),
-    provider: {
-      '@type': 'Organization',
-      name: SITE_NAME,
-      url: SITE_URL,
-      email: BUSINESS.email,
-      telephone: BUSINESS.phone,
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: BUSINESS.address.street,
-        postalCode: BUSINESS.address.postalCode,
-        addressLocality: BUSINESS.address.locality,
-        addressCountry: 'BE',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: a.seo.pageTitle,
+        description: a.seo.serviceDescription,
+        inLanguage,
+        isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, url: SITE_URL, name: SITE_NAME },
+        about: { '@id': serviceId },
+        primaryImageOfPage: { '@type': 'ImageObject', url: heroImageUrl, width: 1600, height: 1063, caption: a.hero.imageAlt },
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        mainEntity: { '@id': serviceId },
       },
-      founder: { '@type': 'Person', name: 'Ruben Thielman', sameAs: [BUSINESS.linkedIn] },
-    },
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: a.packages.title,
-      itemListElement: a.packages.items.map((p) => ({
-        '@type': 'Offer',
-        name: p.name,
-        description: `${p.duration}. ${p.description}`,
-        priceSpecification: {
-          '@type': 'PriceSpecification',
-          minPrice: PRICE_NUMBERS[p.key],
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: a.seo.breadcrumbHome, item: `${SITE_URL}${localizedPath('/')}` },
+          { '@type': 'ListItem', position: 2, name: a.seo.breadcrumbPage, item: pageUrl },
+        ],
+      },
+      {
+        '@type': 'Person',
+        '@id': personId,
+        name: 'Ruben Thielman',
+        jobTitle: a.seo.personJobTitle,
+        description: a.seo.personDescription,
+        image: [heroImageUrl, workshopImageUrl],
+        url: pageUrl,
+        worksFor: { '@id': orgId },
+        knowsLanguage: ['nl', 'en'],
+        knowsAbout: a.seo.knowsAbout,
+        address: { '@type': 'PostalAddress', addressLocality: BUSINESS.address.locality, addressCountry: 'BE' },
+        sameAs: [BUSINESS.linkedIn],
+      },
+      {
+        '@type': ['Organization', 'ProfessionalService'],
+        '@id': orgId,
+        name: SITE_NAME,
+        url: SITE_URL,
+        logo: `${SITE_URL}/logo.png`,
+        image: `${SITE_URL}/og-image.png`,
+        email: BUSINESS.email,
+        telephone: BUSINESS.phone,
+        taxID: BUSINESS.enterpriseNumber,
+        vatID: BUSINESS.vatNumber,
+        founder: { '@id': personId },
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: BUSINESS.address.street,
+          postalCode: BUSINESS.address.postalCode,
+          addressLocality: BUSINESS.address.locality,
+          addressRegion: 'Oost-Vlaanderen',
+          addressCountry: 'BE',
+        },
+        areaServed: [
+          { '@type': 'AdministrativeArea', name: 'Vlaanderen' },
+          { '@type': 'Country', name: 'België' },
+          { '@type': 'Country', name: 'Nederland' },
+        ],
+        priceRange: '€€',
+        sameAs: [BUSINESS.instagram, BUSINESS.facebook, BUSINESS.linkedIn],
+      },
+      {
+        '@type': 'Service',
+        '@id': serviceId,
+        name: a.seo.serviceName,
+        serviceType: a.seo.serviceType,
+        description: a.seo.serviceDescription,
+        url: pageUrl,
+        image: heroImageUrl,
+        provider: { '@id': orgId },
+        brand: { '@id': orgId },
+        availableLanguage: ['nl', 'en'],
+        areaServed: [
+          { '@type': 'AdministrativeArea', name: 'Vlaanderen' },
+          { '@type': 'Country', name: 'België' },
+          { '@type': 'Country', name: 'Nederland' },
+        ],
+        audience: a.audiences.items.map((i) => ({ '@type': 'Audience', audienceType: i.title })),
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: a.packages.title,
+          itemListElement: a.packages.items.map((p) => ({
+            '@type': 'Offer',
+            name: p.name,
+            description: `${p.duration}. ${p.description}`,
+            url: `${pageUrl}#formats`,
+            availability: 'https://schema.org/InStock',
+            seller: { '@id': orgId },
+            priceCurrency: 'EUR',
+            price: PRICE_NUMBERS[p.key],
+            priceSpecification: {
+              '@type': 'PriceSpecification',
+              minPrice: PRICE_NUMBERS[p.key],
+              priceCurrency: 'EUR',
+              valueAddedTaxIncluded: false,
+            },
+            itemOffered: { '@type': 'Service', name: p.name, provider: { '@id': orgId } },
+          })),
+        },
+      },
+      ...a.themes.items.map((th) => ({
+        '@type': 'Course',
+        '@id': `${pageUrl}#theme-${th.number}`,
+        name: th.title,
+        description: `${th.hook} ${th.takeaways.join('. ')}.`,
+        url: `${pageUrl}#themes`,
+        inLanguage: ['nl', 'en'],
+        audience: { '@type': 'Audience', audienceType: th.audience },
+        teaches: th.takeaways,
+        provider: { '@id': orgId },
+        instructor: { '@id': personId },
+        offers: {
+          '@type': 'Offer',
+          category: 'Paid',
           priceCurrency: 'EUR',
-          valueAddedTaxIncluded: false,
+          price: 450,
+          priceSpecification: { '@type': 'PriceSpecification', minPrice: 250, priceCurrency: 'EUR', valueAddedTaxIncluded: false },
+          url: `${pageUrl}#request`,
+        },
+        hasCourseInstance: {
+          '@type': 'CourseInstance',
+          courseMode: 'Onsite',
+          courseWorkload: 'PT3H30M',
+          instructor: { '@id': personId },
+          location: { '@type': 'Place', name: a.seo.courseLocation, address: { '@type': 'PostalAddress', addressRegion: 'Vlaanderen', addressCountry: 'BE' } },
         },
       })),
-    },
-  }
-
-  const courseListLd = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: a.themes.title,
-    itemListElement: a.themes.items.map((th, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'Course',
-        name: th.title,
-        description: th.hook,
-        inLanguage: ['nl', 'en'],
-        provider: { '@type': 'Organization', name: SITE_NAME, sameAs: SITE_URL },
+      {
+        '@type': 'FAQPage',
+        '@id': `${pageUrl}#faq`,
+        mainEntity: a.faq.items.map((f) => ({
+          '@type': 'Question',
+          name: f.question,
+          acceptedAnswer: { '@type': 'Answer', text: f.answer },
+        })),
       },
-    })),
-  }
-
-  const faqLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: a.faq.items.map((f) => ({
-      '@type': 'Question',
-      name: f.question,
-      acceptedAnswer: { '@type': 'Answer', text: f.answer },
-    })),
-  }
-
-  const breadcrumbLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: a.seo.breadcrumbHome, item: `${SITE_URL}${localizedPath('/')}` },
-      { '@type': 'ListItem', position: 2, name: a.seo.breadcrumbPage, item: pageUrl },
     ],
   }
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify(serviceLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(courseListLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
+        <link rel="preload" as="image" type="image/webp" href={HERO_IMG.src} imageSrcSet={HERO_IMG.srcSet} imageSizes={HERO_IMG.sizes} {...({ fetchpriority: 'high' } as Record<string, string>)} />
+        <script type="application/ld+json">{JSON.stringify(graphLd)}</script>
       </Helmet>
 
       <AiTalksHeader />
@@ -146,17 +224,12 @@ export default function AiTalks() {
               WebkitMaskImage: 'radial-gradient(ellipse at 30% 30%, black 20%, transparent 75%)',
             }}
           />
-          <div aria-hidden className="absolute -top-40 -right-40 h-[520px] w-[520px] rounded-full bg-white/10 blur-3xl" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-12 lg:grid-cols-12 items-center">
-            <motion.div
-              className="lg:col-span-7"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div className="lg:col-span-6">
               <div className="font-mono text-xs uppercase tracking-[0.25em] text-white/60 mb-6">{a.hero.label}</div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight mb-6">{a.hero.title}</h1>
-              <p className="text-lg md:text-xl text-white/75 max-w-2xl mb-10">{a.hero.subtitle}</p>
+              <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold leading-[1.05] tracking-tight mb-5">{a.hero.title}</h1>
+              <p className="text-xl md:text-2xl font-semibold text-white/90 mb-5">{a.hero.lead}</p>
+              <p className="text-base md:text-lg text-white/70 max-w-2xl mb-10">{a.hero.subtitle}</p>
               <div className="flex flex-col sm:flex-row gap-3 mb-10">
                 <button
                   type="button"
@@ -173,7 +246,7 @@ export default function AiTalks() {
                   {a.hero.secondaryCta}
                 </button>
               </div>
-              <ul className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-white/55">
+              <ul className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-white/60">
                 {a.hero.meta.map((m) => (
                   <li key={m} className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
@@ -181,35 +254,37 @@ export default function AiTalks() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
 
-            <motion.div
-              className="lg:col-span-5"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-            >
-              <div className="rounded-xl border border-white/15 bg-white/[0.04] shadow-2xl overflow-hidden">
-                <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
-                  <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
-                  <span className="ml-3 font-mono text-xs text-white/45">{a.hero.terminal.title}</span>
+            <div className="lg:col-span-6 relative">
+              <img
+                src={HERO_IMG.src}
+                srcSet={HERO_IMG.srcSet}
+                sizes={HERO_IMG.sizes}
+                width={1600}
+                height={1063}
+                alt={a.hero.imageAlt}
+                {...({ fetchpriority: 'high' } as Record<string, string>)}
+                decoding="async"
+                className="w-full rounded-xl border border-white/10 object-cover aspect-[3/2]"
+              />
+              <div className="hidden md:block absolute -bottom-8 -left-6 w-[78%] rounded-xl border border-white/15 bg-black/85 backdrop-blur shadow-2xl overflow-hidden">
+                <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
+                  <span className="h-2 w-2 rounded-full bg-white/25" />
+                  <span className="h-2 w-2 rounded-full bg-white/25" />
+                  <span className="h-2 w-2 rounded-full bg-white/25" />
+                  <span className="ml-2 font-mono text-[11px] text-white/60">{a.hero.terminal.title}</span>
                 </div>
-                <div className="p-5 font-mono text-[12.5px] sm:text-sm leading-7 overflow-x-auto">
+                <div className="px-4 py-3 font-mono text-[12px] leading-6">
                   {a.hero.terminal.lines.map((l, i) => (
                     <div key={i} className="whitespace-pre text-white/80">
-                      <span className="text-white/40 mr-2">{l.prompt}</span>
+                      <span className="text-white/60 mr-2">{l.prompt}</span>
                       {l.text}
                     </div>
                   ))}
-                  <div className="text-white/80">
-                    <span className="text-white/40 mr-2">$</span>
-                    <span className="inline-block h-4 w-2 translate-y-0.5 bg-white/80 animate-pulse" />
-                  </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -222,11 +297,11 @@ export default function AiTalks() {
             <div className="grid gap-6 md:grid-cols-3">
               {a.audiences.items.map((item, i) => (
                 <div key={item.key} className="rounded-xl border border-white/15 bg-white/[0.03] p-7 flex flex-col">
-                  <div className="font-mono text-xs text-white/40 mb-6">0{i + 1}</div>
+                  <div className="font-mono text-xs text-white/60 mb-6">0{i + 1}</div>
                   <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
                   <p className="text-white/70 leading-relaxed mb-6 flex-grow">{item.description}</p>
                   <div className="font-mono text-xs text-white/80 mb-1">{item.recommended}</div>
-                  <div className="font-mono text-xs text-white/45">{item.formats}</div>
+                  <div className="font-mono text-xs text-white/60">{item.formats}</div>
                   {item.key === 'enthusiasts' && (
                     <LocalizedLink to="/workshops#waitlist" className="mt-5 text-sm font-semibold underline underline-offset-4 hover:text-white/80">
                       {a.audiences.enthusiastsNote} →
@@ -235,14 +310,14 @@ export default function AiTalks() {
                 </div>
               ))}
             </div>
-            <p className="mt-8 font-mono text-xs text-white/50">{a.audiences.developersNote}</p>
+            <p className="mt-8 font-mono text-xs text-white/60">{a.audiences.developersNote}</p>
           </div>
         </section>
 
         {/* Themes */}
         <section id="themes" className="scroll-mt-20 bg-white text-black py-20 md:py-28">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="font-mono text-xs uppercase tracking-[0.25em] text-black/50 mb-4 flex items-center gap-3">
+            <div className="font-mono text-xs uppercase tracking-[0.25em] text-black/60 mb-4 flex items-center gap-3">
               <span className="inline-block h-px w-8 bg-black/30" />
               {a.themes.label}
             </div>
@@ -252,15 +327,15 @@ export default function AiTalks() {
               {a.themes.items.map((th) => (
                 <article key={th.number} className="group rounded-xl border border-black/10 bg-gray-50 p-7 md:p-8 flex flex-col hover:border-black/40 transition-colors">
                   <div className="flex items-baseline gap-4 mb-4">
-                    <span className="font-mono text-sm text-black/40">{th.number}</span>
+                    <span className="font-mono text-sm text-black/60">{th.number}</span>
                     <h3 className="text-xl md:text-2xl font-bold leading-snug">{th.title}</h3>
                   </div>
                   <p className="text-black/75 leading-relaxed mb-6">{th.hook}</p>
                   <div className="text-sm mb-5">
-                    <span className="font-mono text-xs uppercase tracking-[0.15em] text-black/45 mr-2">{a.themes.audienceLabel}</span>
+                    <span className="font-mono text-xs uppercase tracking-[0.15em] text-black/60 mr-2">{a.themes.audienceLabel}</span>
                     <span className="text-black/75">{th.audience}</span>
                   </div>
-                  <div className="font-mono text-xs uppercase tracking-[0.15em] text-black/45 mb-3">{a.themes.takeawaysLabel}</div>
+                  <div className="font-mono text-xs uppercase tracking-[0.15em] text-black/60 mb-3">{a.themes.takeawaysLabel}</div>
                   <ul className="space-y-2 mb-6 flex-grow">
                     {th.takeaways.map((t) => (
                       <li key={t} className="flex gap-3 text-[15px] text-black/80">
@@ -270,14 +345,14 @@ export default function AiTalks() {
                     ))}
                   </ul>
                   <div className="border-t border-black/10 pt-4 font-mono text-xs text-black/60">
-                    <span className="uppercase tracking-[0.15em] text-black/40 mr-2">{a.themes.formatLabel}</span>
+                    <span className="uppercase tracking-[0.15em] text-black/60 mr-2">{a.themes.formatLabel}</span>
                     {th.format}
                   </div>
                 </article>
               ))}
               <div className="rounded-xl bg-black text-white p-7 md:p-8 flex flex-col justify-between">
                 <div>
-                  <span className="font-mono text-sm text-white/40">+</span>
+                  <span className="font-mono text-sm text-white/60">+</span>
                   <h3 className="text-xl md:text-2xl font-bold leading-snug mt-3 mb-3">{a.themes.custom.title}</h3>
                   <p className="text-white/70 leading-relaxed">{a.themes.custom.text}</p>
                 </div>
@@ -308,12 +383,12 @@ export default function AiTalks() {
                   }`}
                 >
                   <h3 className="text-xl font-bold mb-1">{p.name}</h3>
-                  <div className={`font-mono text-xs mb-6 ${p.highlight ? 'text-black/55' : 'text-white/50'}`}>{p.duration}</div>
+                  <div className={`font-mono text-xs mb-6 ${p.highlight ? 'text-black/60' : 'text-white/60'}`}>{p.duration}</div>
                   <div className="mb-1 flex items-baseline gap-2">
                     <span className={`text-sm ${p.highlight ? 'text-black/60' : 'text-white/60'}`}>{a.packages.fromLabel}</span>
                     <span className="text-4xl font-bold tracking-tight">{p.price}</span>
                   </div>
-                  <div className={`text-xs mb-6 ${p.highlight ? 'text-black/55' : 'text-white/50'}`}>
+                  <div className={`text-xs mb-6 ${p.highlight ? 'text-black/60' : 'text-white/60'}`}>
                     {a.packages.vatLabel}
                     {p.priceSuffix ? ` · ${p.priceSuffix}` : ''}
                   </div>
@@ -357,7 +432,7 @@ export default function AiTalks() {
                 </div>
               ))}
             </div>
-            <p className="mt-6 text-xs text-white/45">{a.packages.note}</p>
+            <p className="mt-6 text-xs text-white/60">{a.packages.note}</p>
           </div>
         </section>
 
@@ -369,7 +444,7 @@ export default function AiTalks() {
             <ol className="grid gap-px overflow-hidden rounded-xl border border-white/15 bg-white/15 sm:grid-cols-2 lg:grid-cols-5">
               {a.process.steps.map((step, i) => (
                 <li key={step.title} className="bg-black p-6">
-                  <div className="font-mono text-xs text-white/40 mb-4">{locale === 'nl-BE' ? 'STAP' : 'STEP'} {String(i + 1).padStart(2, '0')}</div>
+                  <div className="font-mono text-xs text-white/60 mb-4">{locale === 'nl-BE' ? 'STAP' : 'STEP'} {String(i + 1).padStart(2, '0')}</div>
                   <h3 className="text-lg font-bold mb-2">{step.title}</h3>
                   <p className="text-sm text-white/65 leading-relaxed">{step.text}</p>
                 </li>
@@ -381,30 +456,13 @@ export default function AiTalks() {
         {/* About */}
         <section id="about" className="scroll-mt-20 bg-white text-black py-20 md:py-28">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-12 lg:grid-cols-12 items-start">
-            <div className="order-2 lg:order-1 lg:col-span-5">
-              <img
-                src="/images/ai-talks/ruben-desk.webp"
-                alt={a.about.photoAlt}
-                width={1764}
-                height={1176}
-                decoding="async"
-                className="w-full rounded-xl object-cover aspect-[4/3] grayscale-[20%]"
-              />
-              <ul className="mt-6 space-y-2">
-                {a.about.facts.map((f) => (
-                  <li key={f} className="flex gap-3 font-mono text-xs text-black/70">
-                    <span className="text-black/35">—</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
             <div className="order-1 lg:order-2 lg:col-span-7">
-              <div className="font-mono text-xs uppercase tracking-[0.25em] text-black/50 mb-4 flex items-center gap-3">
+              <div className="font-mono text-xs uppercase tracking-[0.25em] text-black/60 mb-4 flex items-center gap-3">
                 <span className="inline-block h-px w-8 bg-black/30" />
                 {a.about.label}
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-8">{a.about.title}</h2>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">{a.about.title}</h2>
+              <p className="text-xl md:text-2xl font-semibold text-black/85 mb-8">{a.about.lead}</p>
               <div className="space-y-5 text-lg text-black/75 leading-relaxed mb-10">
                 {a.about.paragraphs.map((p) => (
                   <p key={p}>{p}</p>
@@ -419,9 +477,33 @@ export default function AiTalks() {
                   </a>
                 </figcaption>
               </figure>
-              <a href={BUSINESS.linkedIn} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block text-sm font-semibold underline underline-offset-4">
+              <a href={BUSINESS.linkedIn} target="_blank" rel="noopener noreferrer me" className="mt-6 inline-block text-sm font-semibold underline underline-offset-4">
                 {a.about.linkedInLabel} ↗
               </a>
+            </div>
+            <div className="order-2 lg:order-1 lg:col-span-5">
+              <figure>
+                <img
+                  src={WORKSHOP_IMG.src}
+                  srcSet={WORKSHOP_IMG.srcSet}
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  width={1600}
+                  height={1200}
+                  alt={a.about.photoAlt}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full rounded-xl object-cover aspect-[4/3]"
+                />
+                <figcaption className="mt-3 text-sm text-black/60">{a.about.photoCaption}</figcaption>
+              </figure>
+              <ul className="mt-6 space-y-2">
+                {a.about.facts.map((f) => (
+                  <li key={f} className="flex gap-3 font-mono text-xs text-black/70">
+                    <span className="text-black/35">—</span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </section>
@@ -436,7 +518,7 @@ export default function AiTalks() {
                 <details key={f.question} className="group py-5">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-lg font-semibold">
                     {f.question}
-                    <span className="font-mono text-white/50 transition-transform group-open:rotate-45">+</span>
+                    <span className="font-mono text-white/60 transition-transform group-open:rotate-45">+</span>
                   </summary>
                   <p className="mt-3 text-white/70 leading-relaxed">{f.answer}</p>
                 </details>
@@ -466,7 +548,7 @@ export default function AiTalks() {
                   {a.request.side.book} →
                 </BookCallLink>
                 <div className="mt-6 border-t border-white/10 pt-5 text-sm">
-                  <div className="font-mono text-xs uppercase tracking-[0.15em] text-white/45 mb-1">{a.request.side.emailLabel}</div>
+                  <div className="font-mono text-xs uppercase tracking-[0.15em] text-white/60 mb-1">{a.request.side.emailLabel}</div>
                   <a href={`mailto:${BUSINESS.email}?subject=${encodeURIComponent(a.request.mailSubject)}`} className="text-white underline underline-offset-4">
                     {BUSINESS.email}
                   </a>
@@ -478,7 +560,7 @@ export default function AiTalks() {
       </main>
 
       <AiTalksFooter />
-      <CookieConsentBanner />
+      {mounted && <CookieConsentBanner />}
     </div>
   )
 }

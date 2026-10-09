@@ -1,4 +1,4 @@
-import logoImage from '../../images/ai-talks-mark-light.png'
+const logoImage = '/images/ai-talks/st-mark-light.png'
 import LocalizedLink from '../../i18n/LocalizedLink'
 import { useLocale } from '../../i18n/LocaleProvider'
 import { BUSINESS } from '../../seo/site'
@@ -26,7 +26,7 @@ export default function AiTalksFooter() {
           <p><a href={`mailto:${BUSINESS.email}`} className="hover:text-white">{BUSINESS.email}</a></p>
           <p>{BUSINESS.address.street}, {BUSINESS.address.postalCode} {BUSINESS.address.locality}</p>
           <p>{f.companyNumber} {BUSINESS.enterpriseNumber}</p>
-          <p className="pt-2 text-white/40">© {year} Studio Thielman</p>
+          <p className="pt-2 text-white/60">© {year} Studio Thielman</p>
         </div>
       </div>
     </footer>

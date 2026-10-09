@@ -989,6 +989,11 @@ export default function Home() {
             >
               {h.workshopsTeaser.proofLink} →
             </a>
+            <p className="mb-8">
+              <LocalizedLink to="/ai-talks" className="text-body font-semibold text-primary underline underline-offset-4 hover:no-underline">
+                {h.workshopsTeaser.talksLink} →
+              </LocalizedLink>
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <LocalizedLink to="/workshops">
                 <Button variant="primary" size="lg">{h.workshopsTeaser.viewAll}</Button>

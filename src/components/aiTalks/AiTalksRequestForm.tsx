@@ -117,7 +117,7 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
 
   const label = (text: string, optional?: boolean) => (
     <span className="block font-mono text-xs uppercase tracking-[0.15em] text-white/60 mb-2">
-      {text} {optional && <span className="normal-case tracking-normal text-white/40">{r.fields.optional}</span>}
+      {text} {optional && <span className="normal-case tracking-normal text-white/60">{r.fields.optional}</span>}
     </span>
   )
 

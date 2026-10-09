@@ -81,6 +81,14 @@ export default function Workshops() {
             ))}
           </div>
 
+          {/* AI talks & lectures */}
+          <p className="mt-10 text-center text-body text-text-primary">
+            {h.talks.text}{' '}
+            <LocalizedLink to="/ai-talks" className="text-cta font-semibold underline underline-offset-4 hover:no-underline">
+              {h.talks.cta} →
+            </LocalizedLink>
+          </p>
+
           {/* Developers & AI agents */}
           <motion.p
             className="mt-10 text-center text-body text-text-primary"
