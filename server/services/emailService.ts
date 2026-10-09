@@ -4,6 +4,11 @@ import {
   getChatNotificationTemplate,
   getSubmissionNotificationTemplate,
 } from './emailTemplates.js'
+import {
+  type AiTalkInquiry,
+  getAiTalksConfirmationTemplate,
+  getAiTalksNotificationTemplate,
+} from './aiTalksEmailTemplates.js'
 
 interface SubmissionData {
   businessName: string
@@ -244,5 +249,59 @@ export async function sendChatMessageNotification(data: ChatMessageData): Promis
     console.error('Failed to send chat auto-reply:', error)
   }
 
+  return result
+}
+
+/**
+ * AI Talks inquiries (source 'ai-talks'): dedicated notification to Studio Thielman + confirmation to the
+ * requester in their page language. Generic contact emails above stay unchanged.
+ */
+export async function sendAiTalksInquiryEmails(data: AiTalkInquiry): Promise<EmailDeliveryResult> {
+  const result: EmailDeliveryResult = {
+    configured: isResendConfigured(),
+    notification: 'skipped',
+    autoReply: 'skipped',
+  }
+  if (!result.configured) {
+    result.error = 'Missing RESEND_API_KEY, RESEND_FROM, or RESEND_NOTIFY_EMAIL'
+    console.log('AI talks emails skipped - Resend not configured')
+    return result
+  }
+
+  // Test submissions (name starts with "TEST") are tagged in subject/body so they are easy to spot and delete.
+  const isTest = /^\s*\[?TEST\b/i.test(data.name)
+  const notification = getAiTalksNotificationTemplate(data, formatSubmittedAt(), isTest)
+  try {
+    await sendEmail({
+      to: process.env.RESEND_NOTIFY_EMAIL!,
+      subject: notification.subject,
+      text: notification.text,
+      html: notification.html,
+      replyTo: data.email,
+    })
+    result.notification = 'sent'
+  } catch (error) {
+    result.notification = 'failed'
+    result.error = error instanceof Error ? error.message : 'Notification email failed'
+    console.error('Failed to send AI talks notification:', error)
+    return result
+  }
+
+  const confirmation = getAiTalksConfirmationTemplate(data, isTest)
+  try {
+    await sendEmail({
+      to: data.email,
+      subject: confirmation.subject,
+      text: confirmation.text,
+      html: confirmation.html,
+      replyTo: process.env.RESEND_NOTIFY_EMAIL!,
+    })
+    result.autoReply = 'sent'
+  } catch (error) {
+    result.autoReply = 'failed'
+    const msg = error instanceof Error ? error.message : 'Confirmation failed'
+    result.error = result.error ? `${result.error}; ${msg}` : msg
+    console.error('Failed to send AI talks confirmation:', error)
+  }
   return result
 }

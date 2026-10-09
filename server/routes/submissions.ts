@@ -1,7 +1,8 @@
 import express from 'express'
 import rateLimit from 'express-rate-limit'
 import { dbRun, dbGet, dbAll } from '../database/db.js'
-import { sendSubmissionNotification } from '../services/emailService.js'
+import { sendAiTalksInquiryEmails, sendSubmissionNotification } from '../services/emailService.js'
+import { parseAiTalkInquiry } from '../services/aiTalksEmailTemplates.js'
 import { authenticateToken } from '../middleware/auth.js'
 
 const router = express.Router()
@@ -25,7 +26,9 @@ router.post('/', submissionLimiter, async (req, res) => {
       package: packageName,
       packageOther,
       hasExistingWebsite,
-      existingWebsiteUrl
+      existingWebsiteUrl,
+      source,
+      aiTalk,
     } = req.body
 
     // Validation
@@ -56,7 +59,8 @@ router.post('/', submissionLimiter, async (req, res) => {
 
     let emailDelivery: Awaited<ReturnType<typeof sendSubmissionNotification>> | undefined
     try {
-      emailDelivery = await sendSubmissionNotification({
+      const aiTalkInquiry = source === 'ai-talks' ? parseAiTalkInquiry(aiTalk, { name, email, phone }) : null
+      emailDelivery = aiTalkInquiry ? await sendAiTalksInquiryEmails(aiTalkInquiry) : await sendSubmissionNotification({
         businessName,
         name,
         email,
