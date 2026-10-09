@@ -268,7 +268,7 @@ export default function AiTalks() {
                 decoding="async"
                 className="w-full rounded-xl border border-white/10 object-cover aspect-[3/2]"
               />
-              <div className="hidden md:block absolute -bottom-8 -left-6 w-[78%] rounded-xl border border-white/15 bg-black/85 backdrop-blur shadow-2xl overflow-hidden">
+              <div className="hidden md:block relative z-10 -mt-12 -ml-6 w-[78%] rounded-xl border border-white/15 bg-black/85 backdrop-blur shadow-2xl overflow-hidden">
                 <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
                   <span className="h-2 w-2 rounded-full bg-white/25" />
                   <span className="h-2 w-2 rounded-full bg-white/25" />
