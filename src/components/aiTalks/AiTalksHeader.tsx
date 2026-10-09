@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import logoImage from '../../images/ai-talks-mark-light.png'
+const logoImage = '/images/ai-talks/st-mark-light.png'
 import LanguageSwitcher from '../LanguageSwitcher'
 import LocalizedLink from '../../i18n/LocalizedLink'
 import { useLocale } from '../../i18n/LocaleProvider'

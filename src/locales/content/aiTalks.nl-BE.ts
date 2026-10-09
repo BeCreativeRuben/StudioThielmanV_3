@@ -17,12 +17,14 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   hero: {
     label: 'LEZINGEN & WORKSHOPS · FRONTIER AI',
-    title: 'Frontier AI, uitgelegd door iemand die er elke dag mee bouwt.',
+    title: 'AI-workshops en lezingen voor bedrijven en scholen',
+    lead: 'Frontier AI, uitgelegd door iemand die er elke dag mee bouwt.',
     subtitle:
-      'Lezingen en hands-on workshops over AI-agents, bouwen met AI en automatisering, voor bedrijven, scholen en iedereen die nieuwsgierig is. Geen hype, geen demo-theater: echte voorbeelden uit een studio die op AI draait.',
+      'Keynotes, hands-on AI-trainingen en gastlessen over AI-agents, ChatGPT en Copilot, bouwen met AI en automatisering. Voor bedrijven, kmo\'s, scholen en iedereen die nieuwsgierig is, op locatie in heel Vlaanderen en Nederland. Geen hype, geen demo-theater: echte voorbeelden uit een studio die op AI draait.',
     primaryCta: 'Vraag een lezing of workshop aan',
     secondaryCta: "Bekijk de thema's",
     meta: ['Nederlands of Engels', 'Op locatie in Vlaanderen & Nederland', 'Op maat van je publiek'],
+    imageAlt: 'AI-spreker Ruben Thielman op een podium met microfoon tijdens een lezing',
     terminal: {
       title: 'studio-thielman — agents',
       lines: [
@@ -37,7 +39,7 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   audiences: {
     label: 'KIES JE STARTPUNT',
-    title: 'Voor wie',
+    title: 'AI-opleiding voor bedrijven, scholen en makers',
     subtitle: 'Voor elk publiek even eerlijk. De diepgang, de voorbeelden en het format veranderen.',
     items: [
       {
@@ -70,7 +72,7 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   themes: {
     label: "THEMA'S",
-    title: "Zeven startthema's",
+    title: "Zeven thema's voor je AI-workshop of lezing",
     subtitle:
       'Elk thema komt uit werk dat ik elke week doe. Combineer ze, of laat er één afstemmen op jouw sector.',
     audienceLabel: 'Voor',
@@ -166,7 +168,7 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   packages: {
     label: 'FORMATS & PRIJZEN',
-    title: 'Kies een format',
+    title: 'Formats en prijzen: keynote, workshop, opleiding op maat',
     subtitle:
       'Richtprijzen vanaf, excl. btw. Na een kort gesprek krijg je een voorstel op maat van je publiek, met een vaste prijs.',
     fromLabel: 'vanaf',
@@ -235,7 +237,7 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   process: {
     label: 'WERKWIJZE',
-    title: 'Van eerste gesprek tot opvolging',
+    title: 'Zo verloopt een AI-workshop of lezing',
     steps: [
       { title: 'Kort gesprek', text: 'Een gesprek van 30 minuten over je publiek, je doel en wat ze al kennen.' },
       { title: 'Voorstel', text: 'Thema, format, programma en een vaste prijs, op papier.' },
@@ -246,7 +248,8 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   about: {
     label: 'OVER RUBEN',
-    title: 'Ik geef geen AI-les vanuit slides. Ik run mijn studio erop.',
+    title: 'Ruben Thielman, AI-spreker en bouwer uit Lokeren',
+    lead: 'Ik geef geen AI-les vanuit slides. Ik run mijn studio erop.',
     paragraphs: [
       'Ik ben Ruben Thielman, oprichter van Studio Thielman in Lokeren. Ik bouw en host websites voor lokale ondernemers, en ik bouw ze met AI-coding agents.',
       'Achter de studio zit een team van AI-agents dat ik zelf heb opgezet en aanstuur: ze helpen klantensites bouwen, doen QA vóór een site live gaat, schrijven outreach-drafts en houden Notion, mail en WhatsApp-opvolging in beweging. Daarnaast werk ik met AI-video en -stem, koppel ik tools via MCP, draai ik modellen lokaal op een Mac Studio en experimenteer ik met een AI-tradingdesk.',
@@ -259,7 +262,8 @@ export const aiTalksNl: typeof aiTalksEn = {
       'Gaf een hands-on AI-workshop bij Aeriez (aug 2026)',
       'Geeft les in het Nederlands of Engels',
     ],
-    photoAlt: 'Ruben Thielman aan zijn bureau, aan het werk met code en AI-tools',
+    photoAlt: 'Ruben Thielman presenteert de agenda van een AI-workshop aan een team rond een vergadertafel',
+    photoCaption: 'Hands-on AI-workshop met een team: agenda op het scherm, laptops open.',
     quote:
       'Thank you Ruben for integrating AI even more in our daily workflow. You were calm, eager to explain and listened to what we needed.',
     quoteAttribution: 'Aeriez, na de incompany workshop',
@@ -269,7 +273,7 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   faq: {
     label: 'FAQ',
-    title: 'Praktische vragen',
+    title: 'Veelgestelde vragen over AI-workshops en lezingen',
     items: [
       {
         question: 'In welke taal geef je lezingen en workshops?',
@@ -277,7 +281,7 @@ export const aiTalksNl: typeof aiTalksEn = {
       },
       {
         question: 'Waar vinden de sessies plaats?',
-        answer: 'Op locatie bij jullie bedrijf, school of event, in Vlaanderen en Nederland. Online kan in overleg.',
+        answer: 'Op locatie bij jullie bedrijf, school of event, in heel Vlaanderen (van Lokeren en het Waasland tot Gent, Antwerpen en Brussel) en in Nederland. Online kan in overleg.',
       },
       {
         question: 'Hebben deelnemers voorkennis nodig?',
@@ -292,6 +296,18 @@ export const aiTalksNl: typeof aiTalksEn = {
         answer: 'Keynote vanaf €450, halve dag workshop vanaf €500 (tot 8 personen, +€50 per extra persoon), volle dag vanaf €900, schoolsessie vanaf €250. Alles excl. btw. In het voorstel krijg je een vaste prijs.',
       },
       {
+        question: 'Wat is het verschil tussen een AI-lezing en een AI-workshop?',
+        answer: 'Een lezing of keynote (60–90 min) legt uit en demonstreert, voor een publiek van elke grootte. In een hands-on workshop (halve of volle dag, max. 15 personen) werkt iedereen op de eigen laptop en ga je naar huis met iets dat werkt: prompts, een workflow of een eerste agent.',
+      },
+      {
+        question: 'Geef je ook gastlessen over AI op school?',
+        answer: 'Ja. De schooleditie past in een lesblok tot een halve dag: wat AI echt is, hoe je ermee leert zonder te spieken, en optioneel een lab waarin leerlingen of studenten met AI hun eigen site bouwen. Vanaf €250 excl. btw per sessie.',
+      },
+      {
+        question: 'Kan de workshop rond ChatGPT, Copilot of een specifieke tool gaan?',
+        answer: 'Ja. De aanpak werkt in ChatGPT, Claude, Gemini en Microsoft Copilot. We gebruiken de tool die jullie team al heeft, en spreken dat af in het voorbereidend gesprek.',
+      },
+      {
         question: 'Hoe ver op voorhand moeten we boeken?',
         answer: 'Liefst drie à vier weken op voorhand, zodat er tijd is voor het voorbereidend gesprek en de afstemming. Kortere termijn? Vraag het gewoon.',
       },
@@ -299,7 +315,7 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   request: {
     label: 'AANVRAGEN',
-    title: 'Vraag een lezing of workshop aan',
+    title: 'Vraag een AI-workshop of lezing aan',
     subtitle: 'Vertel kort wie je publiek is. Je krijgt een persoonlijk antwoord met een voorstel of een paar vragen.',
     fields: {
       name: 'Je naam',
@@ -354,6 +370,12 @@ export const aiTalksNl: typeof aiTalksEn = {
     companyNumber: 'Ondernemingsnr.',
   },
   seo: {
+    pageTitle: 'AI-workshops en lezingen voor bedrijven en scholen',
+    serviceType: 'AI-opleiding, AI-workshops, AI-keynotes en gastlessen',
+    personJobTitle: 'Oprichter van Studio Thielman, AI-spreker en trainer',
+    personDescription: 'Ruben Thielman bouwt websites met AI-coding agents en runt zijn studio met een team van AI-agents. Hij geeft AI-lezingen en hands-on AI-workshops voor bedrijven en scholen.',
+    knowsAbout: ['Artificiële intelligentie', 'AI-agents', 'Taalmodellen (LLM)', 'AI-coding agents', 'Prompting', 'AI-automatisering', 'Model Context Protocol', 'Lokale AI-modellen', 'AI-video en -stem', 'Webontwikkeling'],
+    courseLocation: 'Op locatie bij de klant (Vlaanderen, Brussel, Nederland)',
     serviceName: 'AI-lezingen & workshops',
     serviceDescription:
       'Lezingen, keynotes en hands-on workshops over frontier AI, AI-agents, bouwen met AI en automatisering voor bedrijven, scholen en enthousiastelingen, door Ruben Thielman.',

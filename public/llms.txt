@@ -16,11 +16,14 @@
 - [Portfolio](https://studiothielman.com/portfolio): Project cards, filters.
 - [How we work](https://studiothielman.com/how-it-works): Process accordion, timelines.
 - [AI talks & workshops](https://studiothielman.com/ai-talks): Lectures, keynotes and hands-on AI workshops by Ruben Thielman for companies, schools and enthusiasts (NL at /nl/ai-talks). Themes, formats, starting prices excl. VAT, request form.
+  - Speaker: Ruben Thielman, founder of Studio Thielman (Lokeren, East Flanders, Belgium). Talks and workshops in Dutch or English, on-site across Flanders and Brussels or online.
+  - Formats (indicative starting prices excl. VAT): keynote/lecture from €450; half-day hands-on workshop from €500 (up to 8 people, +€50 per extra person); full day from €900 (up to 8 people); school session from €250; 1:1 two-day build track €1,000; online follow-up coaching from €150.
+  - Seven themes: build your own AI agent team; from idea to live website with AI coding agents; AI for SMEs (practical automation); AI video & voice for marketing; frontier AI explained; AI literacy & prompting for teams; local AI & your own data.
 
 ## Assets
 
 - [Logo (PNG)](https://studiothielman.com/logo.png)
-- [Open Graph image](https://studiothielman.com/og-image.png)
+- [Open Graph image](https://studiothielman.com/og-image.png) (per-section link-preview cards live at /og/<section>.<en|nl>.jpg)
 - [Favicon](https://studiothielman.com/favicon.png)
 
 ## Optional

@@ -171,6 +171,7 @@ export const homeEn = {
     proof: '"Thank you Ruben for integrating AI even more in our daily workflow." — Aeriez',
     proofLink: 'View the post on LinkedIn',
     viewAll: 'View All Workshops',
+    talksLink: 'Looking for an AI keynote, talk or school session? See AI talks & lectures',
     bookingNote: 'Workshops',
   },
   values: {

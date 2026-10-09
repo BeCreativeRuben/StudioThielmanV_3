@@ -15,12 +15,14 @@ export const aiTalksEn = {
   },
   hero: {
     label: 'LECTURES & WORKSHOPS · FRONTIER AI',
-    title: 'Frontier AI, explained by someone who builds with it every day.',
+    title: 'AI workshops & talks for companies and schools',
+    lead: 'Frontier AI, explained by someone who builds with it every day.',
     subtitle:
-      'Talks and hands-on workshops on AI agents, AI coding and automation, for companies, schools and anyone who is curious. No hype, no demo theatre: real examples from a studio that runs on AI.',
+      'Keynotes, hands-on AI training and guest lectures on AI agents, ChatGPT and Copilot, AI coding and automation. For companies, SMEs, schools and anyone who is curious, on location across Flanders and the Netherlands. No hype, no demo theatre: real examples from a studio that runs on AI.',
     primaryCta: 'Request a talk or workshop',
     secondaryCta: 'See the themes',
     meta: ['Dutch or English', 'On location in Flanders & the Netherlands', 'Tailored to your audience'],
+    imageAlt: 'AI speaker Ruben Thielman on stage with a microphone during a talk',
     terminal: {
       title: 'studio-thielman — agents',
       lines: [
@@ -35,7 +37,7 @@ export const aiTalksEn = {
   },
   audiences: {
     label: 'CHOOSE YOUR STARTING POINT',
-    title: 'Who it is for',
+    title: 'AI training for companies, schools and makers',
     subtitle: 'Same honesty for every audience. The depth, the examples and the format change.',
     items: [
       {
@@ -68,7 +70,7 @@ export const aiTalksEn = {
   },
   themes: {
     label: 'THEMES',
-    title: 'Seven starting themes',
+    title: 'Seven themes for your AI workshop or talk',
     subtitle:
       'Each theme comes from work I do every week. Combine them, or let me tailor one to your sector.',
     audienceLabel: 'For',
@@ -164,7 +166,7 @@ export const aiTalksEn = {
   },
   packages: {
     label: 'FORMATS & PRICES',
-    title: 'Pick a format',
+    title: 'Formats and prices: keynote, workshop, full-day training',
     subtitle:
       'Indicative starting prices, excl. VAT. After a short call you get a proposal for your audience, with a fixed price.',
     fromLabel: 'from',
@@ -233,7 +235,7 @@ export const aiTalksEn = {
   },
   process: {
     label: 'HOW IT WORKS',
-    title: 'From first call to follow-up',
+    title: 'How an AI workshop or talk works',
     steps: [
       { title: 'Short call', text: 'A 30-minute call about your audience, your goal and what they already know.' },
       { title: 'Proposal', text: 'Theme, format, programme and a fixed price, in writing.' },
@@ -244,7 +246,8 @@ export const aiTalksEn = {
   },
   about: {
     label: 'ABOUT RUBEN',
-    title: 'I don\u2019t teach AI from slides. I run my studio on it.',
+    title: 'Ruben Thielman, AI speaker and builder from Lokeren',
+    lead: 'I don\u2019t teach AI from slides. I run my studio on it.',
     paragraphs: [
       'I\u2019m Ruben Thielman, founder of Studio Thielman in Lokeren (Belgium). I build and host websites for local businesses, and I build them with AI coding agents.',
       'Behind the studio sits a team of AI agents that I set up and steer myself: they help build client sites, run QA before launch, draft outreach and keep Notion, mail and WhatsApp follow-ups moving. I also work with AI video and voice, connect tools through MCP, run models locally on a Mac Studio and experiment with an AI trading desk.',
@@ -257,7 +260,8 @@ export const aiTalksEn = {
       'Gave a hands-on AI workshop at Aeriez (Aug 2026)',
       'Teaches in Dutch or English',
     ],
-    photoAlt: 'Ruben Thielman at his desk, working with code and AI tools',
+    photoAlt: 'Ruben Thielman presenting a workshop agenda to a team around a conference table',
+    photoCaption: 'Hands-on AI workshop with a team: agenda on screen, laptops open.',
     quote:
       'Thank you Ruben for integrating AI even more in our daily workflow. You were calm, eager to explain and listened to what we needed.',
     quoteAttribution: 'Aeriez, after the in-company workshop',
@@ -267,7 +271,7 @@ export const aiTalksEn = {
   },
   faq: {
     label: 'FAQ',
-    title: 'Practical questions',
+    title: 'Frequently asked questions about AI workshops and talks',
     items: [
       {
         question: 'In which language do you give talks and workshops?',
@@ -275,7 +279,7 @@ export const aiTalksEn = {
       },
       {
         question: 'Where do the sessions take place?',
-        answer: 'On location at your company, school or event, in Flanders and the Netherlands. Online is possible in consultation.',
+        answer: 'On location at your company, school or event, anywhere in Flanders (from Lokeren and the Waasland to Ghent, Antwerp and Brussels) and in the Netherlands. Online is possible in consultation.',
       },
       {
         question: 'Do participants need prior knowledge?',
@@ -290,6 +294,18 @@ export const aiTalksEn = {
         answer: 'Keynote from €450, half-day workshop from €500 (up to 8 people, +€50 per extra person), full day from €900, school session from €250. All excl. VAT. You get a fixed price in the proposal.',
       },
       {
+        question: 'What is the difference between an AI talk and an AI workshop?',
+        answer: 'A talk or keynote (60–90 min) explains and demonstrates for an audience of any size. In a hands-on workshop (half or full day, max. 15 people) everyone works on their own laptop and leaves with something that works: prompts, a workflow or a first agent.',
+      },
+      {
+        question: 'Do you give guest lectures on AI at schools?',
+        answer: 'Yes. The school edition fits a lesson slot up to half a day: what AI really is, how to learn with it without cheating, and optionally a lab where students build their own site with AI. From €250 excl. VAT per session.',
+      },
+      {
+        question: 'Can the workshop focus on ChatGPT, Copilot or a specific tool?',
+        answer: 'Yes. The method works in ChatGPT, Claude, Gemini and Microsoft Copilot. We use the tool your team already has, and agree on that in the prep call.',
+      },
+      {
         question: 'How far in advance should we book?',
         answer: 'Ideally three to four weeks ahead, so there is time for the prep call and tailoring. Shorter notice: just ask.',
       },
@@ -297,7 +313,7 @@ export const aiTalksEn = {
   },
   request: {
     label: 'REQUEST',
-    title: 'Request a talk or workshop',
+    title: 'Request an AI workshop or talk',
     subtitle: 'Tell me a bit about your audience. You get a personal reply with a proposal or a few questions.',
     fields: {
       name: 'Your name',
@@ -352,6 +368,12 @@ export const aiTalksEn = {
     companyNumber: 'Company no.',
   },
   seo: {
+    pageTitle: 'AI workshops & talks for companies and schools',
+    serviceType: 'AI training, AI workshops, AI keynotes and guest lectures',
+    personJobTitle: 'Founder of Studio Thielman, AI speaker and trainer',
+    personDescription: 'Ruben Thielman builds websites with AI coding agents and runs his studio with a team of AI agents. He gives AI talks and hands-on AI workshops for companies and schools.',
+    knowsAbout: ['Artificial intelligence', 'AI agents', 'Large language models', 'AI coding agents', 'Prompt engineering', 'AI automation', 'Model Context Protocol', 'Local AI models', 'AI video and voice', 'Web development'],
+    courseLocation: 'On location at the client (Flanders, Brussels, the Netherlands)',
     serviceName: 'AI talks & workshops',
     serviceDescription:
       'Lectures, keynotes and hands-on workshops on frontier AI, AI agents, AI coding and automation for companies, schools and enthusiasts, by Ruben Thielman.',

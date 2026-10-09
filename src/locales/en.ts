@@ -156,10 +156,9 @@ export const enMessages = {
         description: 'Two-day 1:1 AI workshop: build your first app or workflow from scratch, then go deeper on brand and paid work. €1,000 excl. VAT, homework included.',
       },
       '/ai-talks': {
-        title: 'AI Talks & Workshops for Teams and Schools',
+        title: 'AI Workshops & Talks for Companies and Schools',
         description:
-          'Keynotes and hands-on workshops on AI agents, AI coding and automation for companies, schools and enthusiasts. By Ruben Thielman. Dutch or English, from €450 excl. VAT.',
-        ogImage: '/images/ai-talks/og-ai-talks.png',
+          'Hands-on AI workshops, keynotes and guest lectures for companies, SMEs and schools in Belgium. AI agents, ChatGPT, automation. By Ruben Thielman, from €450.',
       },
     },
     structured: {

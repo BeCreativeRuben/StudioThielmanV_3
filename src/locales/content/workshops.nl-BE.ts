@@ -39,6 +39,10 @@ export const workshopsNl = {
         cta: 'Zet me op de wachtlijst',
       },
     },
+    talks: {
+      text: 'Een event, personeelsdag of klas?',
+      cta: 'Bekijk de AI-lezingen, keynotes en gastlessen',
+    },
     developers: {
       text: 'Developers & AI-agents: aparte sessie, vraag ernaar.',
       cta: 'Plan er een gesprek over',
