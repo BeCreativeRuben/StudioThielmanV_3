@@ -9,6 +9,7 @@ import { currentProjectsEn } from './content/currentProjects.en'
 import { legalEn } from './content/legal.en'
 import { hackersAndRaversEn } from './content/hackersAndRavers.en'
 import { workshopsEn } from './content/workshops.en'
+import { aiTalksEn } from './content/aiTalks.en'
 import { reviewsEn } from './content/reviews.en'
 
 export const enMessages = {
@@ -53,6 +54,7 @@ export const enMessages = {
       seo: 'SEO',
       ecommerce: 'E-commerce',
       workshops: 'Workshops',
+      aiTalks: 'AI Talks & Lectures',
       copyright: '© {{year}} Studio Thielman. All rights reserved.',
       companyNumber: 'Company no.',
       privacy: 'Privacy Policy',
@@ -153,6 +155,12 @@ export const enMessages = {
         title: '1:1 AI Workshop — Two Days, €1,000 excl. VAT',
         description: 'Two-day 1:1 AI workshop: build your first app or workflow from scratch, then go deeper on brand and paid work. €1,000 excl. VAT, homework included.',
       },
+      '/ai-talks': {
+        title: 'AI Talks & Workshops for Teams and Schools',
+        description:
+          'Keynotes and hands-on workshops on AI agents, AI coding and automation for companies, schools and enthusiasts. By Ruben Thielman. Dutch or English, from €450 excl. VAT.',
+        ogImage: '/images/ai-talks/og-ai-talks.png',
+      },
     },
     structured: {
       areaServed: 'Worldwide',
@@ -171,5 +179,6 @@ export const enMessages = {
   legal: legalEn,
   hackersAndRavers: hackersAndRaversEn,
   workshops: workshopsEn,
+  aiTalks: aiTalksEn,
   reviews: reviewsEn,
 }

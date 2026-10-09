@@ -23,6 +23,7 @@ import Workshops from './pages/Workshops'
 import WorkshopsIncompany from './pages/WorkshopsIncompany'
 import WorkshopsOneOnOne from './pages/WorkshopsOneOnOne'
 import Reviews from './pages/Reviews'
+import AiTalks from './pages/AiTalks'
 
 function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -62,6 +63,9 @@ function App() {
         <SeoRouteSync />
         <Routes>
           <Route path="/admin" element={<Admin />} />
+          {/* AI talks & workshops: own shell (own header/footer), outside MainLayout */}
+          <Route path="/ai-talks" element={<AiTalks />} />
+          <Route path="/nl/ai-talks" element={<AiTalks />} />
           <Route
             path="/hackers-and-ravers"
             element={

@@ -74,6 +74,7 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
       alternateNlPath,
       title: pageTitle(siteName, routeMeta.title),
       description: routeMeta.description,
+      ogImage: 'ogImage' in routeMeta ? routeMeta.ogImage : undefined,
     }
   }
 

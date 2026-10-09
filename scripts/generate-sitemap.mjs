@@ -17,6 +17,7 @@ const staticPaths = [
   '/workshops',
   '/workshops/incompany',
   '/workshops/1-1',
+  '/ai-talks',
   '/privacy',
   '/terms',
 ]

@@ -15,6 +15,7 @@
 - [Packages](https://studiothielman.com/packages): Pricing cards, comparison, FAQ accordion.
 - [Portfolio](https://studiothielman.com/portfolio): Project cards, filters.
 - [How we work](https://studiothielman.com/how-it-works): Process accordion, timelines.
+- [AI talks & workshops](https://studiothielman.com/ai-talks): Lectures, keynotes and hands-on AI workshops by Ruben Thielman for companies, schools and enthusiasts (NL at /nl/ai-talks). Themes, formats, starting prices excl. VAT, request form.
 
 ## Assets
 
