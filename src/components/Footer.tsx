@@ -98,6 +98,11 @@ export default function Footer() {
                   {t('common.footer.workshops')}
                 </LocalizedLink>
               </li>
+              <li>
+                <LocalizedLink to="/ai-talks" className="text-body text-white/80 hover:text-white transition-colors">
+                  {t('common.footer.aiTalks')}
+                </LocalizedLink>
+              </li>
             </ul>
           </div>
 

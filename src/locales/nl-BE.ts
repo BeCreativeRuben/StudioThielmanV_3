@@ -9,6 +9,7 @@ import { currentProjectsNl } from './content/currentProjects.nl-BE'
 import { legalNl } from './content/legal.nl-BE'
 import { hackersAndRaversNl } from './content/hackersAndRavers.nl-BE'
 import { workshopsNl } from './content/workshops.nl-BE'
+import { aiTalksNl } from './content/aiTalks.nl-BE'
 import { reviewsNl } from './content/reviews.nl-BE'
 
 export const nlBEMessages = {
@@ -53,6 +54,7 @@ export const nlBEMessages = {
       seo: 'SEO',
       ecommerce: 'E-commerce',
       workshops: 'Workshops',
+      aiTalks: 'AI-lezingen',
       copyright: '© {{year}} Studio Thielman. Alle rechten voorbehouden.',
       companyNumber: 'KBO',
       privacy: 'Privacybeleid',
@@ -153,6 +155,12 @@ export const nlBEMessages = {
         title: '1:1 AI-workshop — twee dagen, €1.000 excl. btw',
         description: 'Tweedaagse 1:1 AI-workshop: bouw je eerste app of workflow vanaf nul, en ga dieper op merk en betaald werk. €1.000 excl. btw, huiswerk inbegrepen.',
       },
+      '/ai-talks': {
+        title: 'AI-lezingen & workshops voor teams en scholen',
+        description:
+          'Lezingen, keynotes en hands-on workshops over AI-agents, bouwen met AI en automatisering voor bedrijven, scholen en enthousiastelingen. Door Ruben Thielman. Vanaf €450 excl. btw.',
+        ogImage: '/images/ai-talks/og-ai-talks.png',
+      },
     },
     structured: {
       areaServed: 'België',
@@ -171,5 +179,6 @@ export const nlBEMessages = {
   legal: legalNl,
   hackersAndRavers: hackersAndRaversNl,
   workshops: workshopsNl,
+  aiTalks: aiTalksNl,
   reviews: reviewsNl,
 }
