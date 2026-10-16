@@ -12,7 +12,7 @@ import LocalizedLink from '../i18n/LocalizedLink'
 import BookCallLink from '../components/BookCallLink'
 import { getPublishedReviewCount } from '../data/reviews'
 import { BUSINESS } from '../seo/site'
-import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
+import { profilePhoto } from '../assets/profilePhoto'
 import heroVideo from '../images/z_Upload-Image---Internal-Only-Style-6bab5259.mp4'
 import officeImage from '../images/c2ea26ea-23d3-4ee1-8710-74211f2d80be.jpeg'
 
@@ -559,7 +559,7 @@ export default function Home() {
                     <div className="relative">
                       <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
                         <img 
-                          src={rubenImage} 
+                          src={profilePhoto} 
                           alt="Ruben Thielman"
                           className="w-full h-full object-cover"
                         />
@@ -1096,14 +1096,16 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {getCurrentProjects(locale).slice(0, 3).map((project, index) => (
+            {getCurrentProjects(locale).slice(0, 3).map((project, index) => {
+              const projectUrl = project.liveUrl || project.githubUrl
+              return (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300"
+                className="relative bg-white border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-xl font-bold text-primary flex-1">{project.title}</h3>
@@ -1156,13 +1158,27 @@ export default function Home() {
                   )}
                 </div>
 
-                <LocalizedLink to="/current-projects">
-                  <Button variant="outline" size="sm" className="w-full">
+                {projectUrl ? (
+                  <a
+                    href={projectUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${project.title} — ${h.wip.viewDetails}`}
+                    className="block w-full text-center font-semibold rounded-lg transition-all duration-150 bg-transparent border-2 border-primary text-primary hover:bg-accent px-4 py-2 text-sm focus-visible:outline-none after:content-[''] after:absolute after:inset-0 after:rounded-xl focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-primary"
+                  >
                     {h.wip.viewDetails}
-                  </Button>
-                </LocalizedLink>
+                  </a>
+                ) : (
+                  <LocalizedLink
+                    to="/current-projects"
+                    className="block w-full text-center font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-cta/50 bg-transparent border-2 border-primary text-primary hover:bg-accent px-4 py-2 text-sm"
+                  >
+                    {h.wip.viewDetails}
+                  </LocalizedLink>
+                )}
               </motion.div>
-            ))}
+              )
+            })}
           </div>
 
           <motion.div

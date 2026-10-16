@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import logoImage from '../images/fulllogo copy.png'
+import logoDark from '../images/st-mark.svg'
+import logoLight from '../images/st-mark-light.svg'
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -85,11 +86,11 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <LocalizedLink to="/" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
-            <img 
-              src={logoImage} 
-              alt={t('common.a11y.logoAlt')} 
-              className="h-12 w-auto"
+          <LocalizedLink to="/" className="flex items-center gap-3 shrink-0" onClick={() => setMobileMenuOpen(false)}>
+            <img
+              src={isScrolled ? logoDark : logoLight}
+              alt={t('common.a11y.logoAlt')}
+              className="h-12 w-12"
             />
             <span className={`font-bold text-xl tracking-tight hidden sm:block transition-colors duration-300 ${
               isScrolled ? 'text-primary' : 'text-white'

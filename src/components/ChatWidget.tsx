@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Button from './Button'
-import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
+import { profilePhoto } from '../assets/profilePhoto'
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
@@ -52,7 +52,7 @@ export default function ChatWidget() {
               <div className="relative">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/30">
                   <img 
-                    src={rubenImage} 
+                    src={profilePhoto} 
                     alt="Ruben Thielman"
                     className="w-full h-full object-cover"
                   />
@@ -79,7 +79,7 @@ export default function ChatWidget() {
                 <div className="flex items-start gap-2">
                   <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                     <img 
-                      src={rubenImage} 
+                      src={profilePhoto} 
                       alt="Ruben Thielman"
                       className="w-full h-full object-cover"
                     />
