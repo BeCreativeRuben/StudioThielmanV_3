@@ -127,6 +127,15 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://studiothielman.com/ai-masterclass</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/ai-masterclass"/>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/masterclass-ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/ai-masterclass"/>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://studiothielman.com/privacy</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/privacy"/>
     <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/privacy"/>
@@ -266,6 +275,15 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/group-workshop"/>
     <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/groepsworkshop"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/group-workshop"/>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://studiothielman.com/nl/masterclass-ai</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/ai-masterclass"/>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/masterclass-ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/ai-masterclass"/>
     <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

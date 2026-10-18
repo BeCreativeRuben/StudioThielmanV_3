@@ -1,6 +1,6 @@
-import type { groupWorkshopEn } from './groupWorkshop.en'
+import type { InterestListContent } from './interestList.types'
 
-export const groupWorkshopNl: typeof groupWorkshopEn = {
+export const groupWorkshopNl: InterestListContent = {
   shell: {
     brandTag: 'GROEPSWORKSHOP',
     navCta: 'Inschrijven',
@@ -58,5 +58,11 @@ export const groupWorkshopNl: typeof groupWorkshopEn = {
   talksLink: {
     text: 'Voor bedrijven of scholen:',
     cta: 'bekijk AI-lezingen & workshops op maat',
+  },
+  nextStepLink: {
+    before: 'Ben je echt al enthousiast over AI en al veel mee bezig? Schrijf u dan in voor de ',
+    cta: 'masterclass AI',
+    after: '.',
+    to: '/ai-masterclass',
   },
 }

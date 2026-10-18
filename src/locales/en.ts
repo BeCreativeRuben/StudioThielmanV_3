@@ -11,6 +11,7 @@ import { hackersAndRaversEn } from './content/hackersAndRavers.en'
 import { workshopsEn } from './content/workshops.en'
 import { aiTalksEn } from './content/aiTalks.en'
 import { groupWorkshopEn } from './content/groupWorkshop.en'
+import { masterclassEn } from './content/masterclass.en'
 import { reviewsEn } from './content/reviews.en'
 
 export const enMessages = {
@@ -166,6 +167,11 @@ export const enMessages = {
         description:
           'Hands-on group workshop on practical AI with Ruben Thielman: today’s AI tools, your own simple AI agent or automation, AI for your work. Leave your email for one mail when date and location are set.',
       },
+      '/ai-masterclass': {
+        title: 'AI Masterclass: Join the Interest List',
+        description:
+          'The next step after the group AI workshop: build AI agents and multi-agent teams, connect AI to your tools with MCP and APIs, code with AI agents, run AI on your own data. Leave your email for one mail when date and location are set.',
+      },
     },
     structured: {
       areaServed: 'Worldwide',
@@ -186,5 +192,6 @@ export const enMessages = {
   workshops: workshopsEn,
   aiTalks: aiTalksEn,
   groupWorkshop: groupWorkshopEn,
+  masterclass: masterclassEn,
   reviews: reviewsEn,
 }

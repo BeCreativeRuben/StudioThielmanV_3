@@ -25,6 +25,7 @@ import WorkshopsOneOnOne from './pages/WorkshopsOneOnOne'
 import Reviews from './pages/Reviews'
 import AiTalks from './pages/AiTalks'
 import GroupWorkshop from './pages/GroupWorkshop'
+import Masterclass from './pages/Masterclass'
 
 function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -69,6 +70,8 @@ function App() {
           <Route path="/nl/ai-talks" element={<AiTalks />} />
           <Route path="/group-workshop" element={<GroupWorkshop />} />
           <Route path="/nl/groepsworkshop" element={<GroupWorkshop />} />
+          <Route path="/ai-masterclass" element={<Masterclass />} />
+          <Route path="/nl/masterclass-ai" element={<Masterclass />} />
           <Route
             path="/hackers-and-ravers"
             element={

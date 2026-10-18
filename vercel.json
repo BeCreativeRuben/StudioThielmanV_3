@@ -14,7 +14,11 @@
       "source": "/groepsworkshop",
       "destination": "/nl/groepsworkshop",
       "permanent": true
-    }
+    },
+    { "source": "/masterclass", "destination": "/nl/masterclass-ai", "permanent": true },
+    { "source": "/masterclass-ai", "destination": "/nl/masterclass-ai", "permanent": true },
+    { "source": "/nl/masterclass", "destination": "/nl/masterclass-ai", "permanent": true },
+    { "source": "/nl/ai-masterclass", "destination": "/nl/masterclass-ai", "permanent": true }
   ],
   "rewrites": [
     {

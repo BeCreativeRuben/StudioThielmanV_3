@@ -1,4 +1,6 @@
-export const groupWorkshopEn = {
+import type { InterestListContent } from './interestList.types'
+
+export const groupWorkshopEn: InterestListContent = {
   shell: {
     brandTag: 'GROUP WORKSHOP',
     navCta: 'Join the list',
@@ -56,5 +58,11 @@ export const groupWorkshopEn = {
   talksLink: {
     text: 'For companies or schools:',
     cta: 'see tailored AI talks & workshops',
+  },
+  nextStepLink: {
+    before: 'Already really into AI and using it a lot? Sign up for the ',
+    cta: 'AI masterclass',
+    after: '.',
+    to: '/ai-masterclass',
   },
 }

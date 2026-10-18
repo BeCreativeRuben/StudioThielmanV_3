@@ -21,6 +21,7 @@ const mark = b64('public/images/ai-talks/st-mark-light.png', 'image/png')
 const PHOTOS = {
   'ai-talks': { src: b64('public/images/ai-talks/ruben-thielman-ai-spreker-podium-960.webp', 'image/webp'), pos: '35% 30%' },
   'group-workshop': { src: b64('public/images/ai-talks/ruben-thielman-ai-workshop-groep-960.webp', 'image/webp'), pos: '50% 40%' },
+  'ai-masterclass': { src: b64('public/images/ai-talks/ruben-thielman-ai-spreker-podium-960.webp', 'image/webp'), pos: '55% 30%' },
 }
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
 
