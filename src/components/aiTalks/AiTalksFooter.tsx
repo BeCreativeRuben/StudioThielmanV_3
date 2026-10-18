@@ -4,7 +4,7 @@ import { useLocale } from '../../i18n/LocaleProvider'
 import { BUSINESS } from '../../seo/site'
 
 /** Compact footer for the AI talks shell, linking back into the main Studio Thielman site. */
-export default function AiTalksFooter() {
+export default function AiTalksFooter({ hideWorkshops = false }: { hideWorkshops?: boolean } = {}) {
   const { messages, t } = useLocale()
   const f = messages.aiTalks.footer
   const year = new Date().getFullYear()
@@ -18,7 +18,7 @@ export default function AiTalksFooter() {
         </div>
         <ul className="flex flex-wrap gap-x-6 gap-y-3 text-sm md:justify-center">
           <li><LocalizedLink to="/" className="text-white/80 hover:text-white">{f.links.studio}</LocalizedLink></li>
-          <li><LocalizedLink to="/workshops" className="text-white/80 hover:text-white">{f.links.workshops}</LocalizedLink></li>
+          {!hideWorkshops && <li><LocalizedLink to="/workshops" className="text-white/80 hover:text-white">{f.links.workshops}</LocalizedLink></li>}
           <li><LocalizedLink to="/contact" className="text-white/80 hover:text-white">{f.links.contact}</LocalizedLink></li>
           <li><LocalizedLink to="/privacy" className="text-white/80 hover:text-white">{f.links.privacy}</LocalizedLink></li>
         </ul>

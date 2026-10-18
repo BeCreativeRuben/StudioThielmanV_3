@@ -18,6 +18,7 @@ export const OG_IMAGE_SECTIONS: Record<string, string> = {
   '/workshops/incompany': 'workshops-incompany',
   '/workshops/1-1': 'workshops-1-1',
   '/ai-talks': 'ai-talks',
+  '/group-workshop': 'group-workshop',
   '/privacy': 'privacy',
   '/terms': 'terms',
 }

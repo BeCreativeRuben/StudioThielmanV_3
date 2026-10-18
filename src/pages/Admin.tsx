@@ -61,6 +61,7 @@ export default function Admin() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null)
   const [filterStatus, setFilterStatus] = useState<string>('all')
+  const [filterType, setFilterType] = useState<'all' | 'leads' | 'ai-talks' | 'group-workshop-waitlist'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [activeView, setActiveView] = useState<'dashboard' | 'submissions'>('dashboard')
   const [loading, setLoading] = useState(false)
@@ -320,11 +321,18 @@ export default function Admin() {
 
   const filteredSubmissions = submissions.filter(sub => {
     const matchesStatus = filterStatus === 'all' || sub.status === filterStatus
+    const subType =
+      sub.package === 'group-workshop-waitlist'
+        ? 'group-workshop-waitlist'
+        : sub.package === 'Other' && (sub.packageOther || '').startsWith('AI talk')
+          ? 'ai-talks'
+          : 'leads'
+    const matchesType = filterType === 'all' || subType === filterType
     const matchesSearch = 
       sub.businessName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       sub.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       sub.email.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesStatus && matchesSearch
+    return matchesStatus && matchesType && matchesSearch
   })
 
   // Use API stats if available, otherwise calculate from submissions
@@ -606,6 +614,19 @@ export default function Admin() {
                 </div>
                 <div>
                   <select
+                    value={filterType}
+                    onChange={(e) => setFilterType(e.target.value as typeof filterType)}
+                    aria-label="Filter by type"
+                    className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cta focus:border-transparent"
+                  >
+                    <option value="all">All types</option>
+                    <option value="leads">Website leads</option>
+                    <option value="ai-talks">AI talks requests</option>
+                    <option value="group-workshop-waitlist">Groepsworkshop interesselijst</option>
+                  </select>
+                </div>
+                <div>
+                  <select
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
                     className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cta focus:border-transparent"
@@ -670,8 +691,8 @@ export default function Admin() {
                             <div className="text-sm text-text-secondary">{submission.email}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="px-3 py-1 bg-cta/10 text-cta rounded-full text-xs font-medium">
-                              {submission.package}
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${submission.package === 'group-workshop-waitlist' ? 'bg-purple-100 text-purple-800' : 'bg-cta/10 text-cta'}`}>
+                              {submission.package === 'group-workshop-waitlist' ? 'Interesselijst groepsworkshop' : submission.package}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">

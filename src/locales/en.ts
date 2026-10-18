@@ -10,6 +10,7 @@ import { legalEn } from './content/legal.en'
 import { hackersAndRaversEn } from './content/hackersAndRavers.en'
 import { workshopsEn } from './content/workshops.en'
 import { aiTalksEn } from './content/aiTalks.en'
+import { groupWorkshopEn } from './content/groupWorkshop.en'
 import { reviewsEn } from './content/reviews.en'
 
 export const enMessages = {
@@ -160,6 +161,11 @@ export const enMessages = {
         description:
           'Hands-on AI workshops, keynotes and guest lectures for companies, SMEs and schools in Belgium. AI agents, ChatGPT, automation. By Ruben Thielman, from €450.',
       },
+      '/group-workshop': {
+        title: 'Group AI Workshop: Join the Interest List',
+        description:
+          'Hands-on group workshop on practical AI with Ruben Thielman: today’s AI tools, your own simple AI agent or automation, AI for your work. Leave your email for one mail when date and location are set.',
+      },
     },
     structured: {
       areaServed: 'Worldwide',
@@ -179,5 +185,6 @@ export const enMessages = {
   hackersAndRavers: hackersAndRaversEn,
   workshops: workshopsEn,
   aiTalks: aiTalksEn,
+  groupWorkshop: groupWorkshopEn,
   reviews: reviewsEn,
 }
