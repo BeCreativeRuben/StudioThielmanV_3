@@ -61,7 +61,7 @@ export default function Admin() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null)
   const [filterStatus, setFilterStatus] = useState<string>('all')
-  const [filterType, setFilterType] = useState<'all' | 'leads' | 'ai-talks' | 'group-workshop-waitlist'>('all')
+  const [filterType, setFilterType] = useState<'all' | 'leads' | 'ai-talks' | 'group-workshop-waitlist' | 'masterclass-waitlist'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [activeView, setActiveView] = useState<'dashboard' | 'submissions'>('dashboard')
   const [loading, setLoading] = useState(false)
@@ -322,8 +322,8 @@ export default function Admin() {
   const filteredSubmissions = submissions.filter(sub => {
     const matchesStatus = filterStatus === 'all' || sub.status === filterStatus
     const subType =
-      sub.package === 'group-workshop-waitlist'
-        ? 'group-workshop-waitlist'
+      sub.package === 'group-workshop-waitlist' || sub.package === 'masterclass-waitlist'
+        ? sub.package
         : sub.package === 'Other' && (sub.packageOther || '').startsWith('AI talk')
           ? 'ai-talks'
           : 'leads'
@@ -623,6 +623,7 @@ export default function Admin() {
                     <option value="leads">Website leads</option>
                     <option value="ai-talks">AI talks requests</option>
                     <option value="group-workshop-waitlist">Groepsworkshop interesselijst</option>
+                    <option value="masterclass-waitlist">Masterclass AI interesselijst</option>
                   </select>
                 </div>
                 <div>
@@ -691,8 +692,8 @@ export default function Admin() {
                             <div className="text-sm text-text-secondary">{submission.email}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${submission.package === 'group-workshop-waitlist' ? 'bg-purple-100 text-purple-800' : 'bg-cta/10 text-cta'}`}>
-                              {submission.package === 'group-workshop-waitlist' ? 'Interesselijst groepsworkshop' : submission.package}
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${submission.package === 'group-workshop-waitlist' ? 'bg-purple-100 text-purple-800' : submission.package === 'masterclass-waitlist' ? 'bg-amber-100 text-amber-900' : 'bg-cta/10 text-cta'}`}>
+                              {submission.package === 'group-workshop-waitlist' ? 'Interesselijst groepsworkshop' : submission.package === 'masterclass-waitlist' ? 'Interesselijst masterclass AI' : submission.package}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">

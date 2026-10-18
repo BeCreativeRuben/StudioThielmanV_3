@@ -312,7 +312,7 @@ export async function sendAiTalksInquiryEmails(data: AiTalkInquiry): Promise<Ema
 }
 
 /**
- * Group workshop interest list (source 'group-workshop-waitlist'): short notification to Studio Thielman and one
+ * Interest lists (group workshop / AI masterclass): short notification to Studio Thielman and one
  * confirmation to the signer. Deliberately NOT added to any Resend audience/segment or newsletter.
  */
 export async function sendGroupWorkshopSignupEmails(data: GroupWorkshopSignup): Promise<EmailDeliveryResult> {
@@ -329,7 +329,7 @@ export async function sendGroupWorkshopSignupEmails(data: GroupWorkshopSignup): 
   } catch (error) {
     result.notification = 'failed'
     result.error = error instanceof Error ? error.message : 'Notification email failed'
-    console.error('Failed to send group workshop notification:', error)
+    console.error('Failed to send interest-list notification:', error)
   }
   const confirmation = getGroupWorkshopConfirmationTemplate(data, isTest)
   try {
@@ -339,7 +339,7 @@ export async function sendGroupWorkshopSignupEmails(data: GroupWorkshopSignup): 
     result.autoReply = 'failed'
     const msg = error instanceof Error ? error.message : 'Confirmation failed'
     result.error = result.error ? `${result.error}; ${msg}` : msg
-    console.error('Failed to send group workshop confirmation:', error)
+    console.error('Failed to send interest-list confirmation:', error)
   }
   return result
 }

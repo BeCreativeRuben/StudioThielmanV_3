@@ -4,7 +4,7 @@ import { join } from 'node:path'
 const SITE_URL = 'https://studiothielman.com'
 const NL_PREFIX = '/nl'
 /** Keep in sync with NL_SLUGS in src/i18n/paths.ts */
-const NL_SLUGS = { '/group-workshop': '/groepsworkshop' }
+const NL_SLUGS = { '/group-workshop': '/groepsworkshop', '/ai-masterclass': '/masterclass-ai' }
 const nlPath = (p) => (p === '/' ? NL_PREFIX : `${NL_PREFIX}${NL_SLUGS[p] ?? p}`)
 const EN_FROM_NL = Object.fromEntries(Object.entries(NL_SLUGS).map(([en, nl]) => [nl, en]))
 
@@ -23,6 +23,7 @@ const staticPaths = [
   '/workshops/1-1',
   '/ai-talks',
   '/group-workshop',
+  '/ai-masterclass',
   '/privacy',
   '/terms',
 ]
@@ -135,7 +136,7 @@ const allPaths = [
 ]
 
 const urls = allPaths.map((path) =>
-  urlEntry(path, path === '/' || path === NL_PREFIX ? 'weekly' : 'monthly', path === '/' || path === NL_PREFIX ? '1.0' : path.endsWith('/ai-talks') ? '0.9' : path.endsWith('/group-workshop') || path.endsWith('/groepsworkshop') ? '0.7' : path.includes('/blog/') ? '0.6' : '0.8')
+  urlEntry(path, path === '/' || path === NL_PREFIX ? 'weekly' : 'monthly', path === '/' || path === NL_PREFIX ? '1.0' : path.endsWith('/ai-talks') ? '0.9' : /\/(group-workshop|groepsworkshop|ai-masterclass|masterclass-ai)$/.test(path) ? '0.7' : path.includes('/blog/') ? '0.6' : '0.8')
 )
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>

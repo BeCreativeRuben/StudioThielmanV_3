@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { initializeDatabase, dbRun, dbAll } from '../../server/database/postgres.js'
 import { sendAiTalksInquiryEmails, sendGroupWorkshopSignupEmails, sendSubmissionNotification } from '../../server/services/emailService.js'
-import { parseGroupWorkshopSignup } from '../../server/services/groupWorkshopEmailTemplates.js'
+import { INTEREST_LIST_SOURCES, parseGroupWorkshopSignup } from '../../server/services/groupWorkshopEmailTemplates.js'
 import { parseAiTalkInquiry } from '../../server/services/aiTalksEmailTemplates.js'
 import { requireAuth } from '../_utils/auth.js'
 
@@ -65,7 +65,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           waitlist,
           website: honeypot,
         } = req.body
-        const isWaitlist = source === 'group-workshop-waitlist'
+        const waitlistKind = typeof source === 'string' ? INTEREST_LIST_SOURCES[source] : undefined
+        const isWaitlist = Boolean(waitlistKind)
 
         // Validation
         if (!businessName || !name || !email || !phone || !businessDescription || !packageName) {
@@ -90,7 +91,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
           // Already on the list: don't store or mail twice.
           const existing = await dbAll(`SELECT id FROM submissions WHERE package = ? AND lower(email) = lower(?) LIMIT 1`, [
-            'group-workshop-waitlist',
+            source,
             String(email).trim(),
           ])
           if (existing.length) {
@@ -132,7 +133,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         try {
           const aiTalkInquiry = source === 'ai-talks' ? parseAiTalkInquiry(aiTalk, { name, email, phone }) : null
           emailDelivery = isWaitlist
-            ? await sendGroupWorkshopSignupEmails(parseGroupWorkshopSignup(waitlist, String(email).trim()))
+            ? await sendGroupWorkshopSignupEmails(parseGroupWorkshopSignup(waitlist, String(email).trim(), waitlistKind))
             : aiTalkInquiry ? await sendAiTalksInquiryEmails(aiTalkInquiry) : await sendSubmissionNotification({
             businessName,
             name,

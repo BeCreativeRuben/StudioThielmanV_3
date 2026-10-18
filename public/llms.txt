@@ -20,6 +20,7 @@
   - Formats (indicative starting prices excl. VAT): keynote/lecture from €450; half-day hands-on workshop from €500 (up to 8 people, +€50 per extra person); full day from €900 (up to 8 people); school session from €250; 1:1 two-day build track €1,000; online follow-up coaching from €150.
   - Seven themes: build your own AI agent team; from idea to live website with AI coding agents; AI for SMEs (practical automation); AI video & voice for marketing; frontier AI explained; AI literacy & prompting for teams; local AI & your own data.
 - [Group AI workshop interest list](https://studiothielman.com/group-workshop): Open hands-on group workshop on practical AI (today's AI tools, a simple AI agent or automation, AI for your work). Date, location and price not set yet; leave an email to get one mail when they are (NL at /nl/groepsworkshop).
+- [AI masterclass interest list](https://studiothielman.com/ai-masterclass): Deeper group session for people who already use AI a lot, on the same day as the group workshop: AI agents and multi-agent teams, MCP connectors/APIs/automations, building with AI coding agents, advanced prompting and evaluation, local AI on your own data. Date, location and price not set yet (NL at /nl/masterclass-ai).
 
 ## Assets
 

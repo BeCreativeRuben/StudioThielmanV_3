@@ -3,6 +3,7 @@ import { AppLocale, DEFAULT_LOCALE, NL_ROUTE_PREFIX } from './config'
 /** Routes whose Dutch slug differs from the English one (internal/EN path → NL slug, without /nl prefix). */
 export const NL_SLUGS: Record<string, string> = {
   '/group-workshop': '/groepsworkshop',
+  '/ai-masterclass': '/masterclass-ai',
 }
 const EN_FROM_NL_SLUG: Record<string, string> = Object.fromEntries(Object.entries(NL_SLUGS).map(([en, nl]) => [nl, en]))
 

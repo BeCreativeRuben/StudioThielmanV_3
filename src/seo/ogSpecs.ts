@@ -18,6 +18,7 @@ const LABELS: Record<string, { en: string; nl: string }> = {
   'workshops-1-1': { en: 'AI workshops · 1:1', nl: 'AI-workshops · 1:1' },
   'ai-talks': { en: 'AI talks & workshops', nl: 'AI-lezingen & workshops' },
   'group-workshop': { en: 'Group workshop · interest list', nl: 'Groepsworkshop · interesselijst' },
+  'ai-masterclass': { en: 'AI masterclass · interest list', nl: 'Masterclass AI · interesselijst' },
   privacy: { en: 'Privacy policy', nl: 'Privacy' },
   terms: { en: 'Terms of service', nl: 'Voorwaarden' },
 }
@@ -30,7 +31,7 @@ export function getOgSpecs() {
       const lang = locale === 'nl-BE' ? 'nl' : 'en'
       const m = getMessages(locale)
       const route = m.seo.routes[path as keyof typeof m.seo.routes] as { title: string } | undefined
-      const title = slug === 'ai-talks' ? m.aiTalks.hero.title : slug === 'group-workshop' ? m.groupWorkshop.hero.title : route?.title ?? m.seo.tagline
+      const title = slug === 'ai-talks' ? m.aiTalks.hero.title : slug === 'group-workshop' ? m.groupWorkshop.hero.title : slug === 'ai-masterclass' ? m.masterclass.hero.title : route?.title ?? m.seo.tagline
       specs.push({ slug, lang, label: LABELS[slug]?.[lang] ?? slug, title, path: localizedPath(path, locale) })
     }
   }
