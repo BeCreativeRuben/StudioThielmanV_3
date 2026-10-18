@@ -5,7 +5,7 @@ import Button from '../components/Button'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 import { BUSINESS } from '../seo/site'
-import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
+import { profilePhoto } from '../assets/profilePhoto'
 import CalInlineEmbed from '../components/CalInlineEmbed'
 import { getCalLink } from '../config/cal'
 
@@ -263,7 +263,7 @@ export default function Contact() {
           >
             <div className="flex justify-center md:justify-start">
               <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-cta shadow-lg">
-                <img src={rubenImage} alt="Ruben Thielman" className="w-full h-full object-cover" />
+                <img src={profilePhoto} alt="Ruben Thielman" className="w-full h-full object-cover" />
               </div>
             </div>
 

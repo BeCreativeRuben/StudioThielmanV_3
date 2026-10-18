@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import Button from '../components/Button'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
-import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
+import { profilePhoto } from '../assets/profilePhoto'
 
 const valueIcons = [
   (
@@ -59,7 +59,7 @@ export default function About() {
           >
             <div className="w-40 h-40 rounded-full mx-auto mb-8 overflow-hidden border-4 border-cta shadow-lg">
               <img
-                src={rubenImage}
+                src={profilePhoto}
                 alt={a.founder.name}
                 className="w-full h-full object-cover"
               />
@@ -101,7 +101,7 @@ export default function About() {
                 <div className="bg-white border border-gray-200 rounded-xl p-8 text-center h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                   <div className="w-48 h-48 rounded-full mx-auto mb-6 overflow-hidden border-4 border-cta shadow-lg group-hover:scale-105 transition-transform duration-300">
                     <img
-                      src={rubenImage}
+                      src={profilePhoto}
                       alt={member.name}
                       className="w-full h-full object-cover"
                     />

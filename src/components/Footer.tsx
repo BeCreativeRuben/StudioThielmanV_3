@@ -1,6 +1,7 @@
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { BUSINESS } from '../seo/site'
+import logoLight from '../images/st-mark-light.svg'
 
 export default function Footer() {
   const { t } = useLocale()
@@ -16,6 +17,9 @@ export default function Footer() {
     <footer className="bg-gray-900 border-t border-gray-800 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="mb-12">
+          <LocalizedLink to="/" className="inline-block mb-6">
+            <img src={logoLight} alt={t('common.a11y.logoAlt')} className="h-12 w-12" />
+          </LocalizedLink>
           <div className="text-sm text-white/60 uppercase tracking-wider mb-4">{t('common.footer.contactLabel')}</div>
           <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 max-w-2xl">{t('common.footer.tagline')}</h3>
           <LocalizedLink to="/contact#contact-form">
