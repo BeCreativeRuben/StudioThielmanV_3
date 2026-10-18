@@ -1,6 +1,7 @@
 import { getMessages } from '../i18n/messages'
 import type { AppLocale } from '../i18n/config'
 import { OG_IMAGE_SECTIONS } from './ogImages'
+import { localizedPath } from '../i18n/paths'
 
 const LABELS: Record<string, { en: string; nl: string }> = {
   home: { en: 'Web studio · Belgium', nl: 'Webstudio · België' },
@@ -16,6 +17,7 @@ const LABELS: Record<string, { en: string; nl: string }> = {
   'workshops-incompany': { en: 'AI workshops · in-company', nl: 'AI-workshops · incompany' },
   'workshops-1-1': { en: 'AI workshops · 1:1', nl: 'AI-workshops · 1:1' },
   'ai-talks': { en: 'AI talks & workshops', nl: 'AI-lezingen & workshops' },
+  'group-workshop': { en: 'Group workshop · interest list', nl: 'Groepsworkshop · interesselijst' },
   privacy: { en: 'Privacy policy', nl: 'Privacy' },
   terms: { en: 'Terms of service', nl: 'Voorwaarden' },
 }
@@ -28,8 +30,8 @@ export function getOgSpecs() {
       const lang = locale === 'nl-BE' ? 'nl' : 'en'
       const m = getMessages(locale)
       const route = m.seo.routes[path as keyof typeof m.seo.routes] as { title: string } | undefined
-      const title = slug === 'ai-talks' ? m.aiTalks.hero.title : route?.title ?? m.seo.tagline
-      specs.push({ slug, lang, label: LABELS[slug]?.[lang] ?? slug, title, path: lang === 'nl' ? (path === '/' ? '/nl' : `/nl${path}`) : path })
+      const title = slug === 'ai-talks' ? m.aiTalks.hero.title : slug === 'group-workshop' ? m.groupWorkshop.hero.title : route?.title ?? m.seo.tagline
+      specs.push({ slug, lang, label: LABELS[slug]?.[lang] ?? slug, title, path: localizedPath(path, locale) })
     }
   }
   return specs

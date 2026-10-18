@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { initializeDatabase, dbRun, dbAll } from '../../server/database/postgres.js'
-import { sendAiTalksInquiryEmails, sendSubmissionNotification } from '../../server/services/emailService.js'
+import { sendAiTalksInquiryEmails, sendGroupWorkshopSignupEmails, sendSubmissionNotification } from '../../server/services/emailService.js'
+import { parseGroupWorkshopSignup } from '../../server/services/groupWorkshopEmailTemplates.js'
 import { parseAiTalkInquiry } from '../../server/services/aiTalksEmailTemplates.js'
 import { requireAuth } from '../_utils/auth.js'
 
@@ -61,7 +62,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           existingWebsiteUrl,
           source,
           aiTalk,
+          waitlist,
+          website: honeypot,
         } = req.body
+        const isWaitlist = source === 'group-workshop-waitlist'
 
         // Validation
         if (!businessName || !name || !email || !phone || !businessDescription || !packageName) {
@@ -77,6 +81,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Business description length validation
         if (businessDescription.length > 100) {
           return res.status(400).json({ error: 'Business description must be 100 characters or less' })
+        }
+
+        if (isWaitlist) {
+          // Bots fill the hidden field: pretend success, store nothing, send nothing.
+          if (typeof honeypot === 'string' && honeypot.trim()) {
+            return res.status(201).json({ success: true })
+          }
+          // Already on the list: don't store or mail twice.
+          const existing = await dbAll(`SELECT id FROM submissions WHERE package = ? AND lower(email) = lower(?) LIMIT 1`, [
+            'group-workshop-waitlist',
+            String(email).trim(),
+          ])
+          if (existing.length) {
+            return res.status(200).json({ success: true, id: existing[0].id, duplicate: true })
+          }
         }
 
         // Insert submission first (database is more reliable)
@@ -112,7 +131,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         let emailDelivery: Awaited<ReturnType<typeof sendSubmissionNotification>> | undefined
         try {
           const aiTalkInquiry = source === 'ai-talks' ? parseAiTalkInquiry(aiTalk, { name, email, phone }) : null
-          emailDelivery = aiTalkInquiry ? await sendAiTalksInquiryEmails(aiTalkInquiry) : await sendSubmissionNotification({
+          emailDelivery = isWaitlist
+            ? await sendGroupWorkshopSignupEmails(parseGroupWorkshopSignup(waitlist, String(email).trim()))
+            : aiTalkInquiry ? await sendAiTalksInquiryEmails(aiTalkInquiry) : await sendSubmissionNotification({
             businessName,
             name,
             email,

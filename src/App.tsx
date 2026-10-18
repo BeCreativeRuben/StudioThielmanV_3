@@ -24,6 +24,7 @@ import WorkshopsIncompany from './pages/WorkshopsIncompany'
 import WorkshopsOneOnOne from './pages/WorkshopsOneOnOne'
 import Reviews from './pages/Reviews'
 import AiTalks from './pages/AiTalks'
+import GroupWorkshop from './pages/GroupWorkshop'
 
 function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -66,6 +67,8 @@ function App() {
           {/* AI talks & workshops: own shell (own header/footer), outside MainLayout */}
           <Route path="/ai-talks" element={<AiTalks />} />
           <Route path="/nl/ai-talks" element={<AiTalks />} />
+          <Route path="/group-workshop" element={<GroupWorkshop />} />
+          <Route path="/nl/groepsworkshop" element={<GroupWorkshop />} />
           <Route
             path="/hackers-and-ravers"
             element={

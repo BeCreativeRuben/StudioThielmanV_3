@@ -10,6 +10,7 @@ import { legalNl } from './content/legal.nl-BE'
 import { hackersAndRaversNl } from './content/hackersAndRavers.nl-BE'
 import { workshopsNl } from './content/workshops.nl-BE'
 import { aiTalksNl } from './content/aiTalks.nl-BE'
+import { groupWorkshopNl } from './content/groupWorkshop.nl-BE'
 import { reviewsNl } from './content/reviews.nl-BE'
 
 export const nlBEMessages = {
@@ -160,6 +161,11 @@ export const nlBEMessages = {
         description:
           "Hands-on AI-workshops, lezingen en gastlessen voor bedrijven, kmo's en scholen in Vlaanderen. AI-agents, ChatGPT, automatisering. Door Ruben Thielman, vanaf €450.",
       },
+      '/group-workshop': {
+        title: 'AI-groepsworkshop: schrijf je in op de interesselijst',
+        description:
+          'Hands-on AI-workshop in groep met Ruben Thielman: de AI-tools van vandaag, je eigen eenvoudige AI-agent of automatisering, AI voor je werk of zaak. Eén mail zodra datum en locatie vastliggen.',
+      },
     },
     structured: {
       areaServed: 'België',
@@ -179,5 +185,6 @@ export const nlBEMessages = {
   hackersAndRavers: hackersAndRaversNl,
   workshops: workshopsNl,
   aiTalks: aiTalksNl,
+  groupWorkshop: groupWorkshopNl,
   reviews: reviewsNl,
 }

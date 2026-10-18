@@ -433,6 +433,12 @@ export default function AiTalks() {
               ))}
             </div>
             <p className="mt-6 text-xs text-white/60">{a.packages.note}</p>
+            <p className="mt-4 text-sm text-white/80">
+              {a.packages.groupWorkshopLink.text}{' '}
+              <LocalizedLink to="/group-workshop" className="font-semibold text-white underline underline-offset-4 hover:no-underline">
+                {a.packages.groupWorkshopLink.cta} →
+              </LocalizedLink>
+            </p>
           </div>
         </section>
 

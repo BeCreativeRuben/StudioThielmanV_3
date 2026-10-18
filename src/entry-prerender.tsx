@@ -11,10 +11,12 @@ import { HelmetProvider, type HelmetServerState } from 'react-helmet-async'
 import { LocaleProvider } from './i18n/LocaleProvider'
 import SeoRouteSync from './components/SeoRouteSync'
 import AiTalks from './pages/AiTalks'
+import GroupWorkshop from './pages/GroupWorkshop'
 import { stripLocalePrefix } from './i18n/paths'
 
 const FULL_BODY_ROUTES: Record<string, () => JSX.Element> = {
   '/ai-talks': () => <AiTalks />,
+  '/group-workshop': () => <GroupWorkshop />,
 }
 
 export function renderRoute(url: string) {

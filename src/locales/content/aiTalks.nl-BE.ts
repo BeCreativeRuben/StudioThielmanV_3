@@ -233,6 +233,7 @@ export const aiTalksNl: typeof aiTalksEn = {
         to: '#request',
       },
     ],
+    groupWorkshopLink: { text: 'Alleen, niet via een bedrijf of school?', cta: 'Schrijf je in op de interesselijst voor de open groepsworkshop' },
     note: 'Prijzen zijn richtprijzen vanaf. Verplaatsing buiten Vlaanderen en heel grote groepen krijgen een aparte offerte.',
   },
   process: {

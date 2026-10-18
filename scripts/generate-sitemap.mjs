@@ -3,6 +3,10 @@ import { join } from 'node:path'
 
 const SITE_URL = 'https://studiothielman.com'
 const NL_PREFIX = '/nl'
+/** Keep in sync with NL_SLUGS in src/i18n/paths.ts */
+const NL_SLUGS = { '/group-workshop': '/groepsworkshop' }
+const nlPath = (p) => (p === '/' ? NL_PREFIX : `${NL_PREFIX}${NL_SLUGS[p] ?? p}`)
+const EN_FROM_NL = Object.fromEntries(Object.entries(NL_SLUGS).map(([en, nl]) => [nl, en]))
 
 const staticPaths = [
   '/',
@@ -18,6 +22,7 @@ const staticPaths = [
   '/workshops/incompany',
   '/workshops/1-1',
   '/ai-talks',
+  '/group-workshop',
   '/privacy',
   '/terms',
 ]
@@ -82,14 +87,19 @@ function parseVisibleBlogSlugsFromFile(filePath) {
 const lastmod = new Date().toISOString().slice(0, 10)
 
 const abs = (path) => (path === '/' ? SITE_URL : `${SITE_URL}${path}`)
-const enPathOf = (path) => (path === NL_PREFIX ? '/' : path.startsWith(`${NL_PREFIX}/`) ? path.slice(NL_PREFIX.length) : path)
+const enPathOf = (path) => {
+  if (path === NL_PREFIX) return '/'
+  if (!path.startsWith(`${NL_PREFIX}/`)) return path
+  const rest = path.slice(NL_PREFIX.length)
+  return EN_FROM_NL[rest] ?? rest
+}
 
 /** hreflang alternates for pages that exist in both languages with the same slug. */
 function alternates(path) {
   const en = enPathOf(path)
   const isStaticOrPortfolio = staticPaths.includes(en) || en.startsWith('/portfolio/')
   if (!isStaticOrPortfolio) return ''
-  const nl = en === '/' ? NL_PREFIX : `${NL_PREFIX}${en}`
+  const nl = nlPath(en)
   return `
     <xhtml:link rel="alternate" hreflang="en" href="${abs(en)}"/>
     <xhtml:link rel="alternate" hreflang="nl-BE" href="${abs(nl)}"/>
@@ -117,7 +127,7 @@ const blogSlugsEn = parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.ts')
 
 const allPaths = [
   ...staticPaths,
-  ...staticPaths.map((p) => (p === '/' ? NL_PREFIX : `${NL_PREFIX}${p}`)),
+  ...staticPaths.map(nlPath),
   ...portfolioSlugs.map((slug) => `/portfolio/${slug}`),
   ...portfolioSlugs.map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
   ...blogSlugsEn.map((slug) => `/blog/${slug}`),
@@ -125,7 +135,7 @@ const allPaths = [
 ]
 
 const urls = allPaths.map((path) =>
-  urlEntry(path, path === '/' || path === NL_PREFIX ? 'weekly' : 'monthly', path === '/' || path === NL_PREFIX ? '1.0' : path.endsWith('/ai-talks') ? '0.9' : path.includes('/blog/') ? '0.6' : '0.8')
+  urlEntry(path, path === '/' || path === NL_PREFIX ? 'weekly' : 'monthly', path === '/' || path === NL_PREFIX ? '1.0' : path.endsWith('/ai-talks') ? '0.9' : path.endsWith('/group-workshop') || path.endsWith('/groepsworkshop') ? '0.7' : path.includes('/blog/') ? '0.6' : '0.8')
 )
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>

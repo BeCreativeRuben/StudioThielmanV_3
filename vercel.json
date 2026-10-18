@@ -4,6 +4,18 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "redirects": [
+    {
+      "source": "/nl/group-workshop",
+      "destination": "/nl/groepsworkshop",
+      "permanent": true
+    },
+    {
+      "source": "/groepsworkshop",
+      "destination": "/nl/groepsworkshop",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",

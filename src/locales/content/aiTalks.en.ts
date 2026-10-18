@@ -231,6 +231,7 @@ export const aiTalksEn = {
         to: '#request',
       },
     ],
+    groupWorkshopLink: { text: 'On your own, not with a company or school?', cta: 'Join the interest list for the open group workshop' },
     note: 'Prices are indicative starting prices. Travel outside Flanders and very large groups are quoted separately.',
   },
   process: {

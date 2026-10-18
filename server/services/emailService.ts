@@ -9,6 +9,11 @@ import {
   getAiTalksConfirmationTemplate,
   getAiTalksNotificationTemplate,
 } from './aiTalksEmailTemplates.js'
+import {
+  type GroupWorkshopSignup,
+  getGroupWorkshopConfirmationTemplate,
+  getGroupWorkshopNotificationTemplate,
+} from './groupWorkshopEmailTemplates.js'
 
 interface SubmissionData {
   businessName: string
@@ -302,6 +307,39 @@ export async function sendAiTalksInquiryEmails(data: AiTalkInquiry): Promise<Ema
     const msg = error instanceof Error ? error.message : 'Confirmation failed'
     result.error = result.error ? `${result.error}; ${msg}` : msg
     console.error('Failed to send AI talks confirmation:', error)
+  }
+  return result
+}
+
+/**
+ * Group workshop interest list (source 'group-workshop-waitlist'): short notification to Studio Thielman and one
+ * confirmation to the signer. Deliberately NOT added to any Resend audience/segment or newsletter.
+ */
+export async function sendGroupWorkshopSignupEmails(data: GroupWorkshopSignup): Promise<EmailDeliveryResult> {
+  const result: EmailDeliveryResult = { configured: isResendConfigured(), notification: 'skipped', autoReply: 'skipped' }
+  if (!result.configured) {
+    result.error = 'Missing RESEND_API_KEY, RESEND_FROM, or RESEND_NOTIFY_EMAIL'
+    return result
+  }
+  const isTest = /^\s*\[?TEST\b/i.test(data.firstName)
+  const notification = getGroupWorkshopNotificationTemplate(data, formatSubmittedAt(), isTest)
+  try {
+    await sendEmail({ to: process.env.RESEND_NOTIFY_EMAIL!, subject: notification.subject, text: notification.text, html: notification.html, replyTo: data.email })
+    result.notification = 'sent'
+  } catch (error) {
+    result.notification = 'failed'
+    result.error = error instanceof Error ? error.message : 'Notification email failed'
+    console.error('Failed to send group workshop notification:', error)
+  }
+  const confirmation = getGroupWorkshopConfirmationTemplate(data, isTest)
+  try {
+    await sendEmail({ to: data.email, subject: confirmation.subject, text: confirmation.text, html: confirmation.html, replyTo: process.env.RESEND_NOTIFY_EMAIL! })
+    result.autoReply = 'sent'
+  } catch (error) {
+    result.autoReply = 'failed'
+    const msg = error instanceof Error ? error.message : 'Confirmation failed'
+    result.error = result.error ? `${result.error}; ${msg}` : msg
+    console.error('Failed to send group workshop confirmation:', error)
   }
   return result
 }

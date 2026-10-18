@@ -1,5 +1,11 @@
 import { AppLocale, DEFAULT_LOCALE, NL_ROUTE_PREFIX } from './config'
 
+/** Routes whose Dutch slug differs from the English one (internal/EN path → NL slug, without /nl prefix). */
+export const NL_SLUGS: Record<string, string> = {
+  '/group-workshop': '/groepsworkshop',
+}
+const EN_FROM_NL_SLUG: Record<string, string> = Object.fromEntries(Object.entries(NL_SLUGS).map(([en, nl]) => [nl, en]))
+
 export function getLocaleFromPathname(pathname: string): AppLocale {
   const path = pathname.replace(/\/+$/, '') || '/'
   if (path === NL_ROUTE_PREFIX || path.startsWith(`${NL_ROUTE_PREFIX}/`)) {
@@ -12,7 +18,8 @@ export function stripLocalePrefix(pathname: string): string {
   const path = pathname.replace(/\/+$/, '') || '/'
   if (path === NL_ROUTE_PREFIX) return '/'
   if (path.startsWith(`${NL_ROUTE_PREFIX}/`)) {
-    return path.slice(NL_ROUTE_PREFIX.length) || '/'
+    const rest = path.slice(NL_ROUTE_PREFIX.length) || '/'
+    return EN_FROM_NL_SLUG[rest] ?? rest
   }
   return path
 }
@@ -31,7 +38,7 @@ export function localizedPath(path: string, locale: AppLocale): string {
   } else if (!pathname || pathname === '/') {
     localized = NL_ROUTE_PREFIX
   } else {
-    localized = `${NL_ROUTE_PREFIX}${pathname}`
+    localized = `${NL_ROUTE_PREFIX}${NL_SLUGS[pathname] ?? pathname}`
   }
 
   return `${localized}${search}${hash}`
