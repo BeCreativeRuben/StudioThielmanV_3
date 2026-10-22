@@ -61,14 +61,6 @@ function extractSlugsFromBlock(block, { skipComingSoon = false, respectVisibleFr
   return slugs
 }
 
-function parsePortfolioSlugs(portfolioSource) {
-  const source = normalize(portfolioSource)
-  const start = source.indexOf('export const portfolioItems')
-  const end = source.indexOf('export const getPortfolioItemBySlug', start)
-  const block = source.slice(start, end)
-  return extractSlugsFromBlock(block, { skipComingSoon: true })
-}
-
 function parseVisibleBlogSlugsFromFile(filePath) {
   const source = normalize(readFileSync(join(process.cwd(), filePath), 'utf8'))
   const markers = ['export const postsNl', 'export const postsEn', 'export const newBlogPosts', 'export const blogPosts']
@@ -95,11 +87,19 @@ const enPathOf = (path) => {
   return EN_FROM_NL[rest] ?? rest
 }
 
-/** hreflang alternates for pages that exist in both languages with the same slug. */
+/** hreflang only when both language versions are indexable pages included in this sitemap. */
+function hasBothLanguages(en) {
+  if (staticPaths.includes(en)) return true
+  const blogSlug = en.match(/^\/blog\/([^/]+)$/)?.[1]
+  if (blogSlug) return enBlog.has(blogSlug) && nlBlog.has(blogSlug)
+  const portfolioSlug = en.match(/^\/portfolio\/([^/]+)$/)?.[1]
+  if (portfolioSlug) return enPortfolio.has(portfolioSlug) && nlPortfolio.has(portfolioSlug)
+  return false
+}
+
 function alternates(path) {
   const en = enPathOf(path)
-  const isStaticOrPortfolio = staticPaths.includes(en) || en.startsWith('/portfolio/')
-  if (!isStaticOrPortfolio) return ''
+  if (!hasBothLanguages(en)) return ''
   const nl = nlPath(en)
   return `
     <xhtml:link rel="alternate" hreflang="en" href="${abs(en)}"/>
@@ -117,20 +117,70 @@ function urlEntry(path, changefreq, priority) {
   </url>`
 }
 
-const portfolioSource = readFileSync(join(process.cwd(), 'src/data/portfolio.ts'), 'utf8')
+function parsePortfolioSlugsFromFile(filePath) {
+  const source = normalize(readFileSync(join(process.cwd(), filePath), 'utf8'))
+  const start = source.search(/export const portfolioItems/)
+  const block = start === -1 ? '' : source.slice(start)
+  return extractSlugsFromBlock(block, { skipComingSoon: true })
+}
 
-const portfolioSlugs = parsePortfolioSlugs(portfolioSource)
+const portfolioSlugsEn = parsePortfolioSlugsFromFile('src/data/portfolio/items.en.ts')
+const portfolioSlugsNl = parsePortfolioSlugsFromFile('src/data/portfolio/items.nl-BE.ts')
 const blogSlugsNl = [
   ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.nl-BE.ts'),
   ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.nl-BE.additional.ts'),
 ]
-const blogSlugsEn = parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.ts')
+const blogSlugsEn = [
+  ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.ts'),
+  ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.additional.ts'),
+]
+
+const enBlog = new Set(blogSlugsEn)
+const nlBlog = new Set(blogSlugsNl)
+const enPortfolio = new Set(portfolioSlugsEn)
+const nlPortfolio = new Set(portfolioSlugsNl)
+
+/**
+ * Permanent redirects for a URL whose only indexable version is the other language.
+ * Keep in sync with vercel.json redirects (checked below).
+ */
+function requiredOneLanguageRedirects() {
+  const required = []
+  for (const slug of nlBlog) {
+    if (!enBlog.has(slug)) required.push({ source: `/blog/${slug}`, destination: `${NL_PREFIX}/blog/${slug}` })
+  }
+  for (const slug of enBlog) {
+    if (!nlBlog.has(slug)) required.push({ source: `${NL_PREFIX}/blog/${slug}`, destination: `/blog/${slug}` })
+  }
+  for (const slug of nlPortfolio) {
+    if (!enPortfolio.has(slug)) required.push({ source: `/portfolio/${slug}`, destination: `${NL_PREFIX}/portfolio/${slug}` })
+  }
+  for (const slug of enPortfolio) {
+    if (!nlPortfolio.has(slug)) required.push({ source: `${NL_PREFIX}/portfolio/${slug}`, destination: `/portfolio/${slug}` })
+  }
+  return required
+}
+
+const vercel = JSON.parse(readFileSync(join(process.cwd(), 'vercel.json'), 'utf8'))
+const permanentRedirects = new Set(
+  (vercel.redirects ?? [])
+    .filter((rule) => rule.permanent)
+    .map((rule) => `${rule.source} -> ${rule.destination}`)
+)
+const missingRedirects = requiredOneLanguageRedirects().filter(
+  (rule) => !permanentRedirects.has(`${rule.source} -> ${rule.destination}`)
+)
+if (missingRedirects.length) {
+  console.error('Indexable pages that exist in only one language need a permanent redirect in vercel.json:')
+  for (const rule of missingRedirects) console.error(`  ${rule.source} -> ${rule.destination}`)
+  process.exit(1)
+}
 
 const allPaths = [
   ...staticPaths,
   ...staticPaths.map(nlPath),
-  ...portfolioSlugs.map((slug) => `/portfolio/${slug}`),
-  ...portfolioSlugs.map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
+  ...portfolioSlugsEn.map((slug) => `/portfolio/${slug}`),
+  ...portfolioSlugsNl.map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
   ...blogSlugsEn.map((slug) => `/blog/${slug}`),
   ...blogSlugsNl.map((slug) => `${NL_PREFIX}/blog/${slug}`),
 ]

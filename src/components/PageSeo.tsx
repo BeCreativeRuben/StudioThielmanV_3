@@ -19,9 +19,11 @@ export default function PageSeo({ meta }: PageSeoProps) {
 
   const isBrandedOg = !meta.ogImage || meta.ogImage.startsWith('/og/')
 
-  const enUrl = canonicalUrl(meta.alternateEnPath)
-  const nlUrl = canonicalUrl(meta.alternateNlPath)
+  const enUrl = meta.alternateEnPath ? canonicalUrl(meta.alternateEnPath) : undefined
+  const nlUrl = meta.alternateNlPath ? canonicalUrl(meta.alternateNlPath) : undefined
   const htmlLang = LOCALE_HTML_LANG[meta.locale]
+  // Both targets must exist. x-default follows the English URL, which is only emitted in that pair.
+  const emitHreflang = !meta.noindex && Boolean(enUrl && nlUrl)
 
   return (
     <Helmet>
@@ -29,9 +31,15 @@ export default function PageSeo({ meta }: PageSeoProps) {
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
       <link rel="canonical" href={canonical} />
-      <link rel="alternate" hrefLang={LOCALE_HREFLANG.en} href={enUrl} />
-      <link rel="alternate" hrefLang={LOCALE_HREFLANG['nl-BE']} href={nlUrl} />
-      <link rel="alternate" hrefLang="x-default" href={enUrl} />
+      {emitHreflang && enUrl && nlUrl ? (
+        <link rel="alternate" hrefLang={LOCALE_HREFLANG.en} href={enUrl} />
+      ) : null}
+      {emitHreflang && enUrl && nlUrl ? (
+        <link rel="alternate" hrefLang={LOCALE_HREFLANG['nl-BE']} href={nlUrl} />
+      ) : null}
+      {emitHreflang && enUrl && nlUrl ? (
+        <link rel="alternate" hrefLang="x-default" href={enUrl} />
+      ) : null}
       {meta.noindex ? (
         <meta name="robots" content="noindex, nofollow" />
       ) : (
