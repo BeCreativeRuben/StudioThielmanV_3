@@ -8,7 +8,6 @@ import { portfolioNl } from './content/portfolio.nl-BE'
 import { currentProjectsNl } from './content/currentProjects.nl-BE'
 import { legalNl } from './content/legal.nl-BE'
 import { hackersAndRaversNl } from './content/hackersAndRavers.nl-BE'
-import { workshopsNl } from './content/workshops.nl-BE'
 import { aiTalksNl } from './content/aiTalks.nl-BE'
 import { groupWorkshopNl } from './content/groupWorkshop.nl-BE'
 import { masterclassNl } from './content/masterclass.nl-BE'
@@ -154,22 +153,10 @@ export const nlBEMessages = {
         title: 'Algemene voorwaarden',
         description: 'Voorwaarden voor het gebruik van de website en diensten van Studio Thielman.',
       },
-      '/workshops': {
-        title: 'AI-workshops — teams & 1:1',
-        description: 'AI-workshops voor teams (incompany, halve dag) of 1:1 (twee dagen, €1.000 excl. btw). Groepsles binnenkort. Hands-on, geen demo-theater.',
-      },
-      '/workshops/incompany': {
-        title: 'Incompany AI-training voor bedrijven',
-        description: 'Incompany AI-training en AI-opleiding voor bedrijven. Halve dag op locatie, max. 15 personen. Richtprijs €500 tot 8 personen, excl. btw.',
-      },
-      '/workshops/1-1': {
-        title: '1:1 AI-workshop, twee dagen',
-        description: 'Tweedaagse 1:1 AI-workshop: bouw je eerste app of workflow en ga dieper. €1.000 excl. btw, huiswerk inbegrepen.',
-      },
       '/ai-talks': {
         title: 'AI-lezing voor bedrijven',
         description:
-          'AI-lezing voor bedrijven, scholen en teams. Keynotes en hands-on AI-workshops door Ruben Thielman, vanaf €450 excl. btw.',
+          'AI-workshops en lezingen: hands-on vanaf €500, 1:1 €1.000 excl. btw met huiswerk vóór dag 2, keynotes vanaf €450. Open groepsles via interesselijst.',
       },
       '/group-workshop': {
         title: 'AI-groepsworkshop: schrijf je in op de interesselijst',
@@ -198,7 +185,6 @@ export const nlBEMessages = {
   currentProjects: currentProjectsNl,
   legal: legalNl,
   hackersAndRavers: hackersAndRaversNl,
-  workshops: workshopsNl,
   aiTalks: aiTalksNl,
   groupWorkshop: groupWorkshopNl,
   masterclass: masterclassNl,

@@ -37,9 +37,6 @@ const publicRoutes = [
   { path: '/reviews', Page: pages.reviews },
   { path: '/about', Page: pages.about },
   { path: '/contact', Page: pages.contact },
-  { path: '/workshops', Page: pages.workshops },
-  { path: '/workshops/incompany', Page: pages.workshopsIncompany },
-  { path: '/workshops/1-1', Page: pages.workshopsOneOnOne },
   { path: '/privacy', Page: pages.privacy },
   { path: '/terms', Page: pages.terms },
 ] as const

@@ -6,7 +6,6 @@ import AiTalksRequestForm from '../components/aiTalks/AiTalksRequestForm'
 import { scrollToSection } from '../components/aiTalks/scroll'
 import BookCallLink from '../components/BookCallLink'
 import CookieConsentBanner from '../components/CookieConsentBanner'
-import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 import { BUSINESS, SITE_NAME, SITE_URL } from '../seo/site'
 
@@ -21,7 +20,7 @@ const WORKSHOP_IMG = {
   srcSet: [640, 960, 1600].map((w) => `${IMG_BASE}/ruben-thielman-ai-workshop-groep-${w}.webp ${w}w`).join(', '),
 }
 
-const PACKAGE_FORMAT_INDEX: Record<string, number> = { keynote: 0, workshop: 1, fullday: 2, school: 3 }
+const PACKAGE_FORMAT_INDEX: Record<string, number> = { keynote: 0, workshop: 1, fullday: 2, school: 3, oneOnOne: 4 }
 const PRICE_NUMBERS: Record<string, number> = { keynote: 450, workshop: 500, fullday: 900, school: 250 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
@@ -48,6 +47,7 @@ export default function AiTalks() {
     setTimeout(() => scrollToSection('request'), 0)
   }
 
+  const groupListHref = '/nl/groepsworkshop'
   const pageUrl = `${SITE_URL}${localizedPath('/ai-talks')}`
   const inLanguage = locale === 'nl-BE' ? 'nl-BE' : 'en'
 
@@ -143,11 +143,12 @@ export default function AiTalks() {
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
           name: a.packages.title,
-          itemListElement: a.packages.items.map((p) => ({
+          itemListElement: [
+            ...a.packages.items.map((p) => ({
             '@type': 'Offer',
             name: p.name,
             description: `${p.duration}. ${p.description}`,
-            url: `${pageUrl}#formats`,
+            url: p.key === 'workshop' ? `${pageUrl}#hands-on` : `${pageUrl}#formats`,
             availability: 'https://schema.org/InStock',
             seller: { '@id': orgId },
             priceCurrency: 'EUR',
@@ -160,6 +161,24 @@ export default function AiTalks() {
             },
             itemOffered: { '@type': 'Service', name: p.name, provider: { '@id': orgId } },
           })),
+          {
+            '@type': 'Offer',
+            name: a.packages.oneOnOne.name,
+            description: `${a.packages.oneOnOne.day1} ${a.packages.oneOnOne.price}`,
+            url: `${pageUrl}#one-on-one`,
+            availability: 'https://schema.org/InStock',
+            seller: { '@id': orgId },
+            priceCurrency: 'EUR',
+            price: 1000,
+            priceSpecification: {
+              '@type': 'PriceSpecification',
+              price: 1000,
+              priceCurrency: 'EUR',
+              valueAddedTaxIncluded: false,
+            },
+            itemOffered: { '@type': 'Service', name: a.packages.oneOnOne.name, provider: { '@id': orgId } },
+          },
+        ],
         },
       },
       ...a.themes.items.map((th) => ({
@@ -303,9 +322,9 @@ export default function AiTalks() {
                   <div className="font-mono text-xs text-white/80 mb-1">{item.recommended}</div>
                   <div className="font-mono text-xs text-white/60">{item.formats}</div>
                   {item.key === 'enthusiasts' && (
-                    <LocalizedLink to="/workshops#waitlist" className="mt-5 text-sm font-semibold underline underline-offset-4 hover:text-white/80">
+                    <a href={groupListHref} className="mt-5 text-sm font-semibold underline underline-offset-4 hover:text-white/80">
                       {a.audiences.enthusiastsNote} →
-                    </LocalizedLink>
+                    </a>
                   )}
                 </div>
               ))}
@@ -378,7 +397,8 @@ export default function AiTalks() {
               {a.packages.items.map((p) => (
                 <div
                   key={p.key}
-                  className={`rounded-xl p-7 flex flex-col border ${
+                  id={p.key === 'workshop' ? 'hands-on' : undefined}
+                  className={`scroll-mt-24 rounded-xl p-7 flex flex-col border ${
                     p.highlight ? 'bg-white text-black border-white' : 'bg-white/[0.03] border-white/15'
                   }`}
                 >
@@ -413,6 +433,40 @@ export default function AiTalks() {
                 </div>
               ))}
             </div>
+            <article id="one-on-one" className="scroll-mt-24 mt-6 rounded-xl border border-white/20 p-6 md:p-8">
+              <h3 className="text-2xl font-bold mb-2">{a.packages.oneOnOne.name}</h3>
+              <p className="text-lg text-white/80 mb-6">{a.packages.oneOnOne.title}</p>
+              <div className="grid gap-6 md:grid-cols-2 mb-6">
+                <div>
+                  <h4 className="font-semibold mb-2">{a.packages.oneOnOne.day1Title}</h4>
+                  <p className="text-sm text-white/70 leading-relaxed">{a.packages.oneOnOne.day1}</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">{a.packages.oneOnOne.day2Title}</h4>
+                  <p className="text-sm text-white/70 leading-relaxed">{a.packages.oneOnOne.day2}</p>
+                </div>
+              </div>
+              <p className="text-sm font-semibold mb-5">{a.packages.oneOnOne.price}</p>
+              <button
+                type="button"
+                onClick={() => choosePackage('oneOnOne')}
+                className="inline-flex items-center rounded-lg border border-white/30 px-5 py-3 text-sm font-semibold hover:border-white"
+              >
+                {a.packages.oneOnOne.cta} →
+              </button>
+            </article>
+            <article id="group-class" className="scroll-mt-24 mt-6 rounded-xl border border-dashed border-white/25 p-6 md:p-8">
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <h3 className="text-2xl font-bold">{a.packages.groupClass.title}</h3>
+                <span className="rounded-full border border-white/30 px-2 py-1 font-mono text-xs uppercase tracking-wider text-white/70">
+                  {a.packages.groupClass.badge}
+                </span>
+              </div>
+              <p className="text-sm text-white/70 leading-relaxed mb-5 max-w-3xl">{a.packages.groupClass.text}</p>
+              <a href={groupListHref} className="text-sm font-semibold underline underline-offset-4 hover:text-white/80">
+                {a.packages.groupClass.cta} →
+              </a>
+            </article>
             <div className="mt-6 grid gap-6 md:grid-cols-2">
               {a.packages.extras.map((x) => (
                 <div key={x.name} className="rounded-xl border border-dashed border-white/20 p-6 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
@@ -420,24 +474,18 @@ export default function AiTalks() {
                     <h3 className="font-bold mb-1">{x.name}</h3>
                     <p className="text-sm text-white/65">{x.text}</p>
                   </div>
-                  {x.to.startsWith('#') ? (
-                    <button type="button" onClick={() => scrollToSection(x.to.slice(1))} className="text-sm font-semibold underline underline-offset-4 whitespace-nowrap">
-                      {x.linkLabel} →
-                    </button>
-                  ) : (
-                    <LocalizedLink to={x.to} className="text-sm font-semibold underline underline-offset-4 whitespace-nowrap">
-                      {x.linkLabel} →
-                    </LocalizedLink>
-                  )}
+                  <button type="button" onClick={() => scrollToSection(x.to.slice(1))} className="text-sm font-semibold underline underline-offset-4 whitespace-nowrap">
+                    {x.linkLabel} →
+                  </button>
                 </div>
               ))}
             </div>
             <p className="mt-6 text-xs text-white/60">{a.packages.note}</p>
             <p className="mt-4 text-sm text-white/80">
               {a.packages.groupWorkshopLink.text}{' '}
-              <LocalizedLink to="/group-workshop" className="font-semibold text-white underline underline-offset-4 hover:no-underline">
+              <a href={groupListHref} className="font-semibold text-white underline underline-offset-4 hover:no-underline">
                 {a.packages.groupWorkshopLink.cta} →
-              </LocalizedLink>
+              </a>
             </p>
           </div>
         </section>

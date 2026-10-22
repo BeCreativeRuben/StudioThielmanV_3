@@ -55,7 +55,7 @@ function formatNow(): string {
 
 function confirmationTemplate(lang: Lang, name: string) {
   const firstName = splitName(name).firstName
-  const workshopsUrl = `${EMAIL_BRAND.siteUrl}${lang === 'nl' ? '/nl' : ''}/workshops`
+  const workshopsUrl = `${EMAIL_BRAND.siteUrl}${lang === 'nl' ? '/nl' : ''}/ai-talks`
 
   if (lang === 'nl') {
     const subject = 'Je staat op de wachtlijst — Groepsles AI-workshop'
@@ -154,7 +154,7 @@ function notificationTemplate(data: {
     { label: 'Email', value: data.email },
     { label: 'Company / role', value: data.company || '—' },
     { label: 'Preferred language', value: data.language ? data.language.toUpperCase() : '—' },
-    { label: 'Signed up via', value: data.pageLocale === 'nl' ? '/nl/workshops' : '/workshops' },
+    { label: 'Signed up via', value: data.pageLocale === 'nl' ? '/nl/ai-talks' : '/ai-talks' },
     {
       label: 'Resend segment',
       value:

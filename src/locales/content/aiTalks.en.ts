@@ -189,7 +189,7 @@ export const aiTalksEn = {
         duration: 'Half day · max. 15 people',
         price: '€500',
         priceSuffix: 'up to 8 people, +€50 per extra person',
-        description: 'Everyone builds. One model, a few labs, and a routine your team still uses next week.',
+        description: 'Everyone builds. One model, a few labs, and a routine your team still uses next week. Indicative price: €500 for up to 8 people, +€50 per extra person. Max. 15 people.',
         includes: ['On location, at your place', 'Laptop + ChatGPT, Claude, Gemini or Copilot', 'Prompt pack and 7-day plan'],
         cta: 'Request a workshop',
         highlight: true,
@@ -217,13 +217,23 @@ export const aiTalksEn = {
         highlight: false,
       },
     ],
+    oneOnOne: {
+      name: '1:1 track',
+      title: 'Two days. Your app, or your workflow. From zero.',
+      day1Title: 'Day 1 — Build',
+      day1: 'Day 1 is building: your first app or your first workflow, from scratch. You get homework before day 2. Without it, day 2 does not work — you have to have iterated on your own.',
+      day2Title: 'Day 2 — Go deeper',
+      day2: 'Day 2 goes deeper: what drives you, and how you turn that into a brand that gets you paid. Plus how you repeat the process when I am not in the room.',
+      price: '€1,000 for the two days, excl. VAT. Homework included.',
+      cta: 'Request the 1:1 track',
+    },
+    groupClass: {
+      badge: 'Coming soon',
+      title: 'Open group class',
+      text: 'An open session for people who want to join without organising an in-company workshop. There is no date yet — we only plan one once enough people have signed up. The interest list is no commitment. We email you when a date is set.',
+      cta: 'Join the interest list',
+    },
     extras: [
-      {
-        name: '1:1 track',
-        text: 'Two days, just you: build your own app or workflow from zero. €1,000 excl. VAT.',
-        linkLabel: 'More about 1:1',
-        to: '/workshops/1-1',
-      },
       {
         name: 'Follow-up coaching',
         text: 'Online follow-up of 60–90 min a few weeks later: questions, adjusting, next steps. From €150 excl. VAT.',
@@ -292,7 +302,15 @@ export const aiTalksEn = {
       },
       {
         question: 'What does a talk or workshop cost?',
-        answer: 'Keynote from €450, half-day workshop from €500 (up to 8 people, +€50 per extra person), full day from €900, school session from €250. All excl. VAT. You get a fixed price in the proposal.',
+        answer: 'Keynote from €450, half-day workshop from €500 (up to 8 people, +€50 per extra person), full day from €900, school session from €250, and the 1:1 track €1,000 for the two days. All excl. VAT. You get a fixed price in the proposal.',
+      },
+      {
+        question: 'What does the 1:1 track cost, and is there homework?',
+        answer: '€1,000 for the two days, excl. VAT. Homework included. You do that homework before day 2. Without it, day 2 does not work — you have to have iterated on your own.',
+      },
+      {
+        question: 'When is the open group class?',
+        answer: 'There is no date yet. It is an open session, not an in-company workshop, and we only plan a date once enough people join the interest list. Signing up is no commitment. We email you when a date is set.',
       },
       {
         question: 'What is the difference between an AI talk and an AI workshop?',
@@ -326,7 +344,7 @@ export const aiTalksEn = {
       audience: 'Audience',
       audienceOptions: ['Company / team', 'School / students', 'Association / event', 'Private / enthusiasts'],
       format: 'Format',
-      formatOptions: ['Lecture / keynote', 'Hands-on workshop (half day)', 'Full day / in-company', 'School / student session', 'Not sure yet'],
+      formatOptions: ['Lecture / keynote', 'Hands-on workshop (half day)', 'Full day / in-company', 'School / student session', '1:1 track (two days)', 'Not sure yet'],
       theme: 'Theme',
       themeAny: 'Not sure yet / combination',
       groupSize: 'Group size',
@@ -391,7 +409,7 @@ export const aiTalksEn = {
     courseLocation: 'On location at the client (Flanders, Brussels, the Netherlands)',
     serviceName: 'AI talks & workshops',
     serviceDescription:
-      'Lectures, keynotes and hands-on workshops on frontier AI, AI agents, AI coding and automation for companies, schools and enthusiasts, by Ruben Thielman.',
+      'Lectures, keynotes and hands-on workshops on frontier AI, plus a two-day 1:1 track (€1,000 excl. VAT, homework before day 2) and an open group class once enough people sign up. By Ruben Thielman.',
     breadcrumbHome: 'Home',
     breadcrumbPage: 'AI talks & workshops',
   },

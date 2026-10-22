@@ -82,33 +82,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://studiothielman.com/workshops</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/workshops"/>
-    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/workshops"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/workshops"/>
-    <lastmod>2026-10-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://studiothielman.com/workshops/incompany</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/workshops/incompany"/>
-    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/workshops/incompany"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/workshops/incompany"/>
-    <lastmod>2026-10-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://studiothielman.com/workshops/1-1</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/workshops/1-1"/>
-    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/workshops/1-1"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/workshops/1-1"/>
-    <lastmod>2026-10-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://studiothielman.com/ai-talks</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/ai-talks"/>
     <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/ai-talks"/>
@@ -230,33 +203,6 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/contact"/>
     <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/contact"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/contact"/>
-    <lastmod>2026-10-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://studiothielman.com/nl/workshops</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/workshops"/>
-    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/workshops"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/workshops"/>
-    <lastmod>2026-10-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://studiothielman.com/nl/workshops/incompany</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/workshops/incompany"/>
-    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/workshops/incompany"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/workshops/incompany"/>
-    <lastmod>2026-10-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://studiothielman.com/nl/workshops/1-1</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://studiothielman.com/workshops/1-1"/>
-    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://studiothielman.com/nl/workshops/1-1"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://studiothielman.com/workshops/1-1"/>
     <lastmod>2026-10-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

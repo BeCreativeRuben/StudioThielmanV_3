@@ -18,7 +18,16 @@
     { "source": "/masterclass", "destination": "/nl/masterclass-ai", "permanent": true },
     { "source": "/masterclass-ai", "destination": "/nl/masterclass-ai", "permanent": true },
     { "source": "/nl/masterclass", "destination": "/nl/masterclass-ai", "permanent": true },
-    { "source": "/nl/ai-masterclass", "destination": "/nl/masterclass-ai", "permanent": true }
+    { "source": "/nl/ai-masterclass", "destination": "/nl/masterclass-ai", "permanent": true },
+    { "source": "/workshops", "destination": "/ai-talks", "statusCode": 301 },
+    { "source": "/workshops/", "destination": "/ai-talks", "statusCode": 301 },
+    { "source": "/workshops/:path*", "destination": "/ai-talks", "statusCode": 301 },
+    { "source": "/nl/workshops", "destination": "/nl/ai-talks", "statusCode": 301 },
+    { "source": "/nl/workshops/", "destination": "/nl/ai-talks", "statusCode": 301 },
+    { "source": "/nl/workshops/:path*", "destination": "/nl/ai-talks", "statusCode": 301 },
+    { "source": "/en/workshops", "destination": "/ai-talks", "statusCode": 301 },
+    { "source": "/en/workshops/", "destination": "/ai-talks", "statusCode": 301 },
+    { "source": "/en/workshops/:path*", "destination": "/ai-talks", "statusCode": 301 }
   ],
   "headers": [
     {

@@ -8,7 +8,6 @@ import { portfolioEn } from './content/portfolio.en'
 import { currentProjectsEn } from './content/currentProjects.en'
 import { legalEn } from './content/legal.en'
 import { hackersAndRaversEn } from './content/hackersAndRavers.en'
-import { workshopsEn } from './content/workshops.en'
 import { aiTalksEn } from './content/aiTalks.en'
 import { groupWorkshopEn } from './content/groupWorkshop.en'
 import { masterclassEn } from './content/masterclass.en'
@@ -154,22 +153,10 @@ export const enMessages = {
         title: 'Terms of Service',
         description: 'Terms and conditions for Studio Thielman website and service offerings.',
       },
-      '/workshops': {
-        title: 'AI Workshops — Teams & 1:1',
-        description: 'AI workshops for teams (in-company, half day) or 1:1 (two days, €1,000 excl. VAT). Group class coming soon. Hands-on, no demo theatre.',
-      },
-      '/workshops/incompany': {
-        title: 'Incompany AI training',
-        description: 'Incompany AI training for companies. Half day on site, max. 15 people, English or Dutch. From €500 for up to 8 people, excl. VAT.',
-      },
-      '/workshops/1-1': {
-        title: '1:1 AI workshop, two days',
-        description: 'Two-day 1:1 AI workshop: build your first app or workflow, then go deeper. €1,000 excl. VAT, homework included.',
-      },
       '/ai-talks': {
         title: 'AI workshops and talks',
         description:
-          'AI workshops, keynotes and guest lectures for companies and schools in Belgium. By Ruben Thielman, from €450 excl. VAT.',
+          'Hands-on workshops from €500, 1:1 two days at €1,000 excl. VAT with homework before day 2, talks from €450. Open group class by interest.',
       },
       '/group-workshop': {
         title: 'Group AI Workshop: Join the Interest List',
@@ -198,7 +185,6 @@ export const enMessages = {
   currentProjects: currentProjectsEn,
   legal: legalEn,
   hackersAndRavers: hackersAndRaversEn,
-  workshops: workshopsEn,
   aiTalks: aiTalksEn,
   groupWorkshop: groupWorkshopEn,
   masterclass: masterclassEn,

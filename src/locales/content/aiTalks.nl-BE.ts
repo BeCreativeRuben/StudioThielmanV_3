@@ -191,7 +191,7 @@ export const aiTalksNl: typeof aiTalksEn = {
         duration: 'Halve dag · max. 15 personen',
         price: '€500',
         priceSuffix: 'tot 8 personen, +€50 per extra persoon',
-        description: 'Iedereen bouwt mee. Eén model, een paar labs, en een routine die je team de week erna nog gebruikt.',
+        description: 'Iedereen bouwt mee. Eén model, een paar labs, en een routine die je team de week erna nog gebruikt. Richtprijs: €500 tot 8 personen, +€50 per extra persoon. Max. 15 personen.',
         includes: ['Op locatie, bij jullie', 'Laptop + ChatGPT, Claude, Gemini of Copilot', 'Prompt-pack en 7-dagenplan'],
         cta: 'Vraag een workshop aan',
         highlight: true,
@@ -219,13 +219,23 @@ export const aiTalksNl: typeof aiTalksEn = {
         highlight: false,
       },
     ],
+    oneOnOne: {
+      name: '1:1-traject',
+      title: 'Twee dagen. Jouw app, of jouw workflow. Vanaf nul.',
+      day1Title: 'Dag 1 — Bouwen',
+      day1: 'Dag 1 is bouwen: je eerste app of je eerste workflow, vanaf nul. Je krijgt huiswerk vóór dag 2. Zonder dat huiswerk heeft dag 2 geen zin — je moet zelf al geïtereerd hebben.',
+      day2Title: 'Dag 2 — Dieper',
+      day2: 'Dag 2 gaat dieper: wat jou drijft, en hoe je dat omzet in een merk waar je mee verdient. Plus hoe je het proces herhaalt als ik niet in de kamer ben.',
+      price: '€1.000 voor de twee dagen, excl. btw. Huiswerk inbegrepen.',
+      cta: 'Vraag het 1:1-traject aan',
+    },
+    groupClass: {
+      badge: 'Binnenkort',
+      title: 'Open groepsles',
+      text: 'Een open sessie voor wie wil meedoen zonder een incompany workshop te organiseren. Er is nog geen datum — we plannen er pas een zodra genoeg mensen zich inschrijven. De interesselijst is vrijblijvend. Je krijgt een mail zodra een datum vastligt.',
+      cta: 'Schrijf je in op de interesselijst',
+    },
     extras: [
-      {
-        name: '1:1-traject',
-        text: 'Twee dagen, alleen jij: bouw je eigen app of workflow vanaf nul. €1.000 excl. btw.',
-        linkLabel: 'Meer over 1:1',
-        to: '/workshops/1-1',
-      },
       {
         name: 'Opvolgcoaching',
         text: 'Online opvolgsessie van 60–90 min, een paar weken later: vragen, bijsturen, volgende stappen. Vanaf €150 excl. btw.',
@@ -294,7 +304,15 @@ export const aiTalksNl: typeof aiTalksEn = {
       },
       {
         question: 'Wat kost een lezing of workshop?',
-        answer: 'Keynote vanaf €450, halve dag workshop vanaf €500 (tot 8 personen, +€50 per extra persoon), volle dag vanaf €900, schoolsessie vanaf €250. Alles excl. btw. In het voorstel krijg je een vaste prijs.',
+        answer: 'Keynote vanaf €450, halve dag workshop vanaf €500 (tot 8 personen, +€50 per extra persoon), volle dag vanaf €900, schoolsessie vanaf €250, en het 1:1-traject €1.000 voor de twee dagen. Alles excl. btw. In het voorstel krijg je een vaste prijs.',
+      },
+      {
+        question: 'Wat kost het 1:1-traject, en is er huiswerk?',
+        answer: '€1.000 voor de twee dagen, excl. btw. Huiswerk inbegrepen. Dat huiswerk maak je vóór dag 2. Zonder dat huiswerk heeft dag 2 geen zin — je moet zelf al geïtereerd hebben.',
+      },
+      {
+        question: 'Wanneer is de open groepsles?',
+        answer: 'Er is nog geen datum. Het is een open sessie, geen incompany workshop, en we plannen pas een datum zodra genoeg mensen op de interesselijst staan. Inschrijven is vrijblijvend. Je krijgt een mail zodra een datum vastligt.',
       },
       {
         question: 'Wat is het verschil tussen een AI-lezing en een AI-workshop?',
@@ -328,7 +346,7 @@ export const aiTalksNl: typeof aiTalksEn = {
       audience: 'Publiek',
       audienceOptions: ['Bedrijf / team', 'School / studenten', 'Vereniging / event', 'Particulier / enthousiastelingen'],
       format: 'Format',
-      formatOptions: ['Lezing / keynote', 'Hands-on workshop (halve dag)', 'Volle dag / incompany', 'School- / studentensessie', 'Weet ik nog niet'],
+      formatOptions: ['Lezing / keynote', 'Hands-on workshop (halve dag)', 'Volle dag / incompany', 'School- / studentensessie', '1:1-traject (twee dagen)', 'Weet ik nog niet'],
       theme: 'Thema',
       themeAny: 'Weet ik nog niet / combinatie',
       groupSize: 'Aantal deelnemers',
@@ -393,7 +411,7 @@ export const aiTalksNl: typeof aiTalksEn = {
     courseLocation: 'Op locatie bij de klant (Vlaanderen, Brussel, Nederland)',
     serviceName: 'AI-lezingen & workshops',
     serviceDescription:
-      'Lezingen, keynotes en hands-on workshops over frontier AI, AI-agents, bouwen met AI en automatisering voor bedrijven, scholen en enthousiastelingen, door Ruben Thielman.',
+      'Lezingen, keynotes en hands-on workshops over frontier AI, plus een tweedaags 1:1-traject (€1.000 excl. btw, huiswerk vóór dag 2) en een open groepsles zodra genoeg mensen zich inschrijven. Door Ruben Thielman.',
     breadcrumbHome: 'Home',
     breadcrumbPage: 'AI-lezingen & workshops',
   },

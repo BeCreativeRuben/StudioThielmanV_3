@@ -41,9 +41,6 @@ export const pages = {
   reviews: createRoute('reviews', () => import('./pages/Reviews')),
   about: createRoute('about', () => import('./pages/About')),
   contact: createRoute('contact', () => import('./pages/Contact')),
-  workshops: createRoute('workshops', () => import('./pages/Workshops')),
-  workshopsIncompany: createRoute('workshopsIncompany', () => import('./pages/WorkshopsIncompany')),
-  workshopsOneOnOne: createRoute('workshopsOneOnOne', () => import('./pages/WorkshopsOneOnOne')),
   privacy: createRoute('privacy', () => import('./pages/Privacy')),
   terms: createRoute('terms', () => import('./pages/Terms')),
   admin: createRoute('admin', () => import('./pages/Admin')),
@@ -69,9 +66,6 @@ export function pageIdForPath(pathname: string): PageId {
   if (path === '/reviews') return 'reviews'
   if (path === '/about') return 'about'
   if (path === '/contact') return 'contact'
-  if (path === '/workshops') return 'workshops'
-  if (path === '/workshops/incompany') return 'workshopsIncompany'
-  if (path === '/workshops/1-1') return 'workshopsOneOnOne'
   if (path === '/privacy') return 'privacy'
   if (path === '/terms') return 'terms'
   if (path === '/admin') return 'admin'
