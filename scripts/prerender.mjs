@@ -36,20 +36,25 @@ const paths = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => {
   return p === '' ? '/' : p
 })
 
-let count = 0
-for (const path of [...new Set(paths)]) {
-  const { head, htmlAttributes, body } = renderRoute(path)
+function writeHtml(outPath, rendered) {
+  const { head, htmlAttributes, body } = rendered
   let html = template
   for (const re of STRIP) html = html.replace(re, '')
   html = html.replace('<meta name="viewport" content="width=device-width, initial-scale=1.0" />', (m) => `${m}\n    ${head}`)
   if (htmlAttributes) html = html.replace(/<html[^>]*>/, `<html ${htmlAttributes}>`)
   if (body) html = html.replace('<div id="root"></div>', `<div id="root">${body}</div>`)
+  mkdirSync(dirname(outPath), { recursive: true })
+  writeFileSync(outPath, html)
+}
 
+let count = 0
+for (const path of [...new Set(paths)]) {
   const out = path === '/' ? join(dist, 'index.html') : join(dist, path.slice(1), 'index.html')
-  mkdirSync(dirname(out), { recursive: true })
-  writeFileSync(out, html)
+  writeHtml(out, renderRoute(path))
   count++
 }
 
+writeHtml(join(dist, '404.html'), renderRoute('/this-page-does-not-exist'))
+
 rmSync(join(root, 'dist-ssr'), { recursive: true, force: true })
-console.log(`Prerendered ${count} routes (head tags${''} + full body for selected routes).`)
+console.log(`Prerendered ${count} routes plus dist/404.html.`)

@@ -43,27 +43,27 @@ export default function Footer() {
             <h4 className="text-h4 text-white font-semibold mb-4">{t('common.footer.quickLinks')}</h4>
             <ul className="space-y-3">
               <li>
-                <LocalizedLink to="/about" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/about" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.aboutUs')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/reviews" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/reviews" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.nav.reviews')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/packages" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/packages" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.services')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/portfolio" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/portfolio" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.projects')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/blog" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/blog" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.nav.blog')}
                 </LocalizedLink>
               </li>
@@ -74,32 +74,32 @@ export default function Footer() {
             <h4 className="text-h4 text-white font-semibold mb-4">{t('common.footer.services')}</h4>
             <ul className="space-y-3">
               <li>
-                <LocalizedLink to="/#service-custom-web" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/#service-custom-web" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.customWeb')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/#service-branding" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/#service-branding" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.branding')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/#service-seo" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/#service-seo" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.seo')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/#service-ecommerce" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/#service-ecommerce" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.ecommerce')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/workshops" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/workshops" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.workshops')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/ai-talks" className="text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/ai-talks" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.aiTalks')}
                 </LocalizedLink>
               </li>
@@ -110,22 +110,22 @@ export default function Footer() {
             <h4 className="text-h4 text-white font-semibold mb-4">{t('common.footer.socialMedia')}</h4>
             <ul className="space-y-3">
               <li>
-                <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
+                <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   Instagram
                 </a>
               </li>
               <li>
-                <a href={BUSINESS.facebook} target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
+                <a href={BUSINESS.facebook} target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   Facebook
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/32493505641" target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
+                <a href="https://wa.me/32493505641" target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   WhatsApp
                 </a>
               </li>
               <li>
-                <a href={BUSINESS.linkedIn} target="_blank" rel="noopener noreferrer" className="text-body text-white/80 hover:text-white transition-colors">
+                <a href={BUSINESS.linkedIn} target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   LinkedIn
                 </a>
               </li>
@@ -136,16 +136,16 @@ export default function Footer() {
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 pr-20 md:pr-24">
           <div className="text-body-sm text-white/60">{copyright}</div>
           <div className="flex gap-6 flex-wrap justify-center relative z-10">
-            <LocalizedLink to="/privacy" className="text-body-sm text-white/60 hover:text-white transition-colors">
+            <LocalizedLink to="/privacy" className="inline-flex items-center min-h-6 py-1 text-body-sm text-white/60 hover:text-white transition-colors">
               {t('common.footer.privacy')}
             </LocalizedLink>
-            <LocalizedLink to="/terms" className="text-body-sm text-white/60 hover:text-white transition-colors">
+            <LocalizedLink to="/terms" className="inline-flex items-center min-h-6 py-1 text-body-sm text-white/60 hover:text-white transition-colors">
               {t('common.footer.terms')}
             </LocalizedLink>
             <button
               type="button"
               onClick={openCookiePreferences}
-              className="text-body-sm text-white/60 hover:text-white transition-colors relative z-10"
+              className="inline-flex items-center min-h-6 py-1 text-body-sm text-white/60 hover:text-white transition-colors relative z-10"
             >
               {t('common.footer.cookies')}
             </button>

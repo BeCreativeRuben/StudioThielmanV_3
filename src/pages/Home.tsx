@@ -12,19 +12,18 @@ import LocalizedLink from '../i18n/LocalizedLink'
 import BookCallLink from '../components/BookCallLink'
 import { getPublishedReviewCount } from '../data/reviews'
 import { BUSINESS } from '../seo/site'
-import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
-import heroVideo from '../images/z_Upload-Image---Internal-Only-Style-6bab5259.mp4'
-import officeImage from '../images/c2ea26ea-23d3-4ee1-8710-74211f2d80be.jpeg'
+import { Helmet } from 'react-helmet-async'
+import { heroMedia, officeImage, rubenPortrait } from '../images/media'
 
 // Service Images - Using Unsplash placeholders that match each service theme
 const serviceImages = {
-  webDesign: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop&q=80',
-  branding: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop&q=80',
-  seo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&q=80',
-  ecommerce: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop&q=80',
-  ai: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80',
-  cms: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=400&fit=crop&q=80',
-  workshops: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=400&fit=crop&q=80',
+  webDesign: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=640&h=320&fit=crop&q=70',
+  branding: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=640&h=320&fit=crop&q=70',
+  seo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&h=320&fit=crop&q=70',
+  ecommerce: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=640&h=320&fit=crop&q=70',
+  ai: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=640&h=320&fit=crop&q=70',
+  cms: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=640&h=320&fit=crop&q=70',
+  workshops: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=640&h=320&fit=crop&q=70',
 }
 
 const serviceImageKeys = ['webDesign', 'branding', 'seo', 'ecommerce', 'ai', 'cms', 'workshops'] as const
@@ -117,7 +116,7 @@ function BlogCountdown() {
               <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">{latestPost.title}</h3>
               <p className="text-body text-text-primary mb-6 line-clamp-3">{latestPost.excerpt}</p>
               <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                <LocalizedLink to={`/blog/${latestPost.slug}`}>
+                <LocalizedLink to={`/blog/${latestPost.slug}`} aria-label={`${c.cta.readMore}: ${latestPost.title}`}>
                   <Button variant="primary">
                     {c.cta.readMore}
                   </Button>
@@ -200,6 +199,8 @@ export default function Home() {
   const [userEmail, setUserEmail] = useState('')
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [isSendingMessage, setIsSendingMessage] = useState(false)
+  const [playHeroVideo, setPlayHeroVideo] = useState(false)
+  const [chatWebsite, setChatWebsite] = useState('')
 
   // Initialize sessionId from localStorage or create new one
   useEffect(() => {
@@ -212,6 +213,17 @@ export default function Home() {
       localStorage.setItem('chatSessionId', newSessionId)
       setSessionId(newSessionId)
     }
+  }, [])
+
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
+    const slow = connection?.saveData || connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g'
+    if (reduce || slow) return
+    const start = () => setPlayHeroVideo(true)
+    if (document.readyState === 'complete') start()
+    else window.addEventListener('load', start, { once: true })
+    return () => window.removeEventListener('load', start)
   }, [])
 
   // Show "Can I help?" message after 5 seconds
@@ -323,6 +335,8 @@ export default function Home() {
           userName: userName || null,
           userEmail: userEmail || null,
           message: messageToSend,
+          locale: locale === 'nl-BE' ? 'nl' : 'en',
+          website: chatWebsite,
         }),
       })
 
@@ -459,19 +473,39 @@ export default function Home() {
         </motion.button>
       </div>
 
+      <Helmet>
+        <link rel="preload" as="image" href={heroMedia.poster} {...{ fetchpriority: 'high' }} />
+      </Helmet>
       {/* Hero Section with Video Background */}
       <section className="relative min-h-screen flex items-center overflow-hidden -mt-20 pt-20">
-        {/* Background Video - extends behind header and covers full section */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute left-0 right-0 w-full object-cover z-0"
-          style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
+        <picture>
+          <source srcSet={heroMedia.posterAvif} type="image/avif" />
+          <img
+            src={heroMedia.poster}
+            alt=""
+            width={heroMedia.posterWidth}
+            height={heroMedia.posterHeight}
+            {...{ fetchpriority: 'high' }}
+            decoding="async"
+            className="absolute left-0 right-0 w-full object-cover z-0"
+            style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}
+          />
+        </picture>
+        {playHeroVideo && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            poster={heroMedia.poster}
+            className="absolute left-0 right-0 w-full object-cover z-0"
+            style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}
+          >
+            <source src={heroMedia.webm} type="video/webm" />
+            <source src={heroMedia.mp4} type="video/mp4" />
+          </video>
+        )}
         {/* Background Overlay */}
         <div className="absolute left-0 right-0 w-full bg-black/50 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}></div>
         <div className="absolute left-0 right-0 w-full bg-gradient-to-r from-black/60 to-black/40 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}></div>
@@ -558,10 +592,14 @@ export default function Home() {
                   <div className="flex items-center gap-2 mb-3 pb-3 border-b border-gray-200">
                     <div className="relative">
                       <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-                        <img 
-                          src={rubenImage} 
+                        <img
+                          src={rubenPortrait.webp}
                           alt="Ruben Thielman"
+                          width={rubenPortrait.width}
+                          height={rubenPortrait.height}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                       <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
@@ -597,23 +635,43 @@ export default function Home() {
                   <div className="mt-4 pt-4 border-t border-gray-200/50">
                     {/* Optional: User info fields */}
                     <div className="mb-3 space-y-2">
+                      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                        <label>
+                          Website
+                          <input
+                            type="text"
+                            name="website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            value={chatWebsite}
+                            onChange={(e) => setChatWebsite(e.target.value)}
+                          />
+                        </label>
+                      </div>
                       <input
                         type="text"
+                        name="name"
+                        autoComplete="name"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                         placeholder={h.chat.namePlaceholder}
+                        aria-label={h.chat.namePlaceholder}
                         className="w-full px-3 py-2 text-sm text-text-primary bg-gray-50 border border-gray-200/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-cta/30 focus:border-cta/50 transition-all duration-200 placeholder:text-text-secondary/60"
                       />
                       <input
                         type="email"
+                        name="email"
+                        autoComplete="email"
                         value={userEmail}
                         onChange={(e) => setUserEmail(e.target.value)}
                         placeholder={h.chat.emailPlaceholder}
+                        aria-label={h.chat.emailPlaceholder}
                         className="w-full px-3 py-2 text-sm text-text-primary bg-gray-50 border border-gray-200/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-cta/30 focus:border-cta/50 transition-all duration-200 placeholder:text-text-secondary/60"
                       />
                     </div>
                     <div className="relative">
                       <textarea
+                        name="message"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         onKeyDown={(e) => {
@@ -625,6 +683,7 @@ export default function Home() {
                           }
                         }}
                         placeholder={h.chat.messagePlaceholder}
+                        aria-label={h.chat.messagePlaceholder}
                         className="w-full min-h-[90px] max-h-[140px] px-4 py-3 pr-12 text-sm text-text-primary bg-gray-50 border border-gray-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-cta/30 focus:border-cta/50 transition-all duration-200 resize-none placeholder:text-text-secondary/60"
                         rows={3}
                       />
@@ -674,7 +733,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="mt-8">
-                <LocalizedLink to="/about">
+                <LocalizedLink to="/about" aria-label={h.about.learnMoreLabel}>
                   <Button variant="outline">{c.cta.learnMore}</Button>
                 </LocalizedLink>
               </div>
@@ -688,10 +747,14 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <div className="rounded-lg h-96 mb-8 overflow-hidden">
-                <img 
-                  src={officeImage} 
+                <img
+                  src={officeImage.src}
                   alt={h.about.officeAlt}
+                  width={officeImage.width}
+                  height={officeImage.height}
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="grid grid-cols-2 gap-8 mb-8">
@@ -866,11 +929,14 @@ export default function Home() {
                         >
                           <div className="px-6 pb-6">
                         <div className="bg-accent rounded-lg h-48 mb-4 overflow-hidden">
-                          <img 
-                            src={service.image} 
+                          <img
+                            src={service.image}
                             alt={service.title}
+                            width={640}
+                            height={320}
                             className="w-full h-full object-cover"
                             loading="lazy"
+                            decoding="async"
                           />
                         </div>
                         <p className="text-body text-text-primary mb-4 leading-relaxed">{service.description}</p>
@@ -962,7 +1028,7 @@ export default function Home() {
                 </div>
                 <p className="text-body-sm text-text-primary mb-4 flex-grow">{track.description}</p>
                 <div className="text-sm font-semibold text-primary mb-4">{track.meta}</div>
-                <LocalizedLink to={track.to}>
+                <LocalizedLink to={track.to} aria-label={'ctaLabel' in track ? track.ctaLabel : track.cta}>
                   <Button variant="outline" size="sm" className="w-full">
                     {track.cta}
                   </Button>
@@ -1184,7 +1250,7 @@ export default function Home() {
       {/* Mid-Footer CTA */}
       <section className="py-6 bg-accent overflow-hidden relative">
         <div className="relative w-full overflow-hidden" data-marquee-container>
-          <div className="flex text-5xl md:text-7xl font-bold text-text-secondary/30 uppercase tracking-wider marquee-container">
+          <div className="flex text-5xl md:text-7xl font-bold text-text-secondary/30 uppercase tracking-wider marquee-container" aria-hidden="true">
             <div className="flex whitespace-nowrap items-center marquee-content">
               <span className="px-20">{h.marquee}</span>
               <span className="px-20">{h.marquee}</span>

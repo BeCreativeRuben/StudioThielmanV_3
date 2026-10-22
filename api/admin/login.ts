@@ -1,145 +1,76 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { initializeDatabase, dbGet, dbRun } from '../../../server/database/postgres.js'
+import { createHash, timingSafeEqual } from 'crypto'
+import { jwtSecret } from '../_utils/auth.js'
+import { applyCors, clientIp, rateLimit } from '../_utils/http.js'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret'
-
-function generateToken(userId: number, username: string): string {
-  return jwt.sign(
-    { userId, username },
-    JWT_SECRET,
-    { expiresIn: '7d' }
-  )
-}
-
-let dbInitPromise: Promise<void> | null = null
-
-async function ensureDb() {
-  if (dbInitPromise) {
-    return dbInitPromise
-  }
-  
-  dbInitPromise = (async () => {
-    await initializeDatabase()
-    
-    // Initialize admin user if needed
-    const admin = await dbGet('SELECT * FROM admin_users WHERE username = ?', ['admin'])
-    if (!admin) {
-      const defaultHash = await bcrypt.hash('admin123', 10)
-      await dbRun(
-        'INSERT INTO admin_users (username, passwordHash, email) VALUES (?, ?, ?)',
-        ['admin', defaultHash, 'admin@studiothielman.com']
-      )
-    }
-  })().catch((error: any) => {
-    console.error('Database initialization failed:', error)
-    dbInitPromise = null
-    throw error
-  })
-  
-  return dbInitPromise
+function safeEqual(a: string, b: string): boolean {
+  const ah = createHash('sha256').update(a).digest()
+  const bh = createHash('sha256').update(b).digest()
+  return timingSafeEqual(ah, bh)
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  applyCors(req, res)
 
-  // Handle preflight
   if (req.method === 'OPTIONS') {
-    return res.status(200).end()
+    return res.status(204).end()
   }
 
-  // Wrap everything in try-catch to ensure JSON responses
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  const secret = jwtSecret()
+  if (!secret) {
+    console.error('JWT_SECRET is missing or still the insecure fallback')
+    return res.status(500).json({ error: 'Authentication is not configured' })
+  }
+
+  const username = process.env.ADMIN_USERNAME
+  const password = process.env.ADMIN_PASSWORD
+  const passwordHash = process.env.ADMIN_PASSWORD_HASH
+  if (!username || (!password && !passwordHash)) {
+    console.error('Admin login refused: set ADMIN_USERNAME and ADMIN_PASSWORD or ADMIN_PASSWORD_HASH')
+    return res.status(503).json({ error: 'Admin login is not configured' })
+  }
+
+  const ip = clientIp(req)
+  if (!rateLimit(`admin-login:${ip}`, 8, 15 * 60 * 1000)) {
+    return res.status(429).json({ error: 'Too many attempts. Try again later.' })
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 300))
+
+  const bodyUser = typeof req.body?.username === 'string' ? req.body.username : ''
+  const bodyPass = typeof req.body?.password === 'string' ? req.body.password : ''
+  if (!bodyUser || !bodyPass) {
+    return res.status(400).json({ error: 'Username and password are required' })
+  }
+
+  const userOk = safeEqual(bodyUser, username)
+  let passOk = false
   try {
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Method not allowed' })
+    if (passwordHash) {
+      passOk = await bcrypt.compare(bodyPass, passwordHash)
+    } else if (password) {
+      passOk = safeEqual(bodyPass, password)
     }
+  } catch (error) {
+    console.error('Password verification error:', error)
+    return res.status(500).json({ error: 'Password verification failed' })
+  }
 
-    try {
-      await ensureDb()
-    } catch (dbError: any) {
-      console.error('Database initialization error:', dbError)
-      console.error('Error stack:', dbError.stack)
-      return res.status(500).json({ 
-        error: 'Database initialization failed',
-        message: dbError.message || 'Unknown database error'
-      })
-    }
+  if (!userOk || !passOk) {
+    return res.status(401).json({ error: 'Invalid credentials' })
+  }
 
-    try {
-      const { username, password } = req.body
-
-      if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password are required' })
-      }
-
-      // Get admin user with error handling
-      let admin: { id: number; username: string; passwordHash: string } | undefined
-      try {
-        admin = await dbGet<{ id: number; username: string; passwordHash: string }>(
-          'SELECT id, username, passwordHash FROM admin_users WHERE username = ?',
-          [username]
-        )
-      } catch (dbQueryError: any) {
-        console.error('Database query error:', dbQueryError)
-        console.error('Error stack:', dbQueryError.stack)
-        return res.status(500).json({ 
-          error: 'Database query failed',
-          message: dbQueryError.message || 'Unknown database query error',
-          details: process.env.NODE_ENV === 'development' ? dbQueryError.stack : undefined
-        })
-      }
-
-      if (!admin) {
-        return res.status(401).json({ error: 'Invalid credentials' })
-      }
-
-      // Verify password
-      let isValid = false
-      try {
-        isValid = await bcrypt.compare(password, admin.passwordHash)
-      } catch (bcryptError: any) {
-        console.error('Password comparison error:', bcryptError)
-        return res.status(500).json({ error: 'Password verification failed' })
-      }
-
-      if (!isValid) {
-        return res.status(401).json({ error: 'Invalid credentials' })
-      }
-
-      // Generate token
-      let token: string
-      try {
-        token = generateToken(admin.id, admin.username)
-      } catch (tokenError: any) {
-        console.error('Token generation error:', tokenError)
-        return res.status(500).json({ error: 'Token generation failed' })
-      }
-
-      return res.json({
-        success: true,
-        token,
-        username: admin.username
-      })
-    } catch (error: any) {
-      console.error('Login processing error:', error)
-      console.error('Error stack:', error.stack)
-      return res.status(500).json({ 
-        error: 'Failed to process login',
-        message: error.message || 'Unknown error'
-      })
-    }
-  } catch (error: any) {
-    // Catch any unexpected errors and return JSON
-    console.error('Unexpected error in login handler:', error)
-    console.error('Error stack:', error.stack)
-    return res.status(500).json({ 
-      error: 'An unexpected error occurred',
-      message: error.message || 'Unknown error',
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
-    })
+  try {
+    const token = jwt.sign({ userId: 1, username }, secret, { expiresIn: '7d' })
+    return res.json({ success: true, token, username })
+  } catch (error) {
+    console.error('Token generation error:', error)
+    return res.status(500).json({ error: 'Token generation failed' })
   }
 }

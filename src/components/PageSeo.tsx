@@ -9,6 +9,13 @@ interface PageSeoProps {
   meta: PageSeoMeta
 }
 
+function imageSize(url: string): { width: number; height: number } {
+  const width = url.match(/[?&]w=(\d+)/)?.[1]
+  const height = url.match(/[?&]h=(\d+)/)?.[1]
+  if (width && height) return { width: Number(width), height: Number(height) }
+  return { width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT }
+}
+
 export default function PageSeo({ meta }: PageSeoProps) {
   const canonical = canonicalUrl(meta.path)
   const ogImage = meta.ogImage?.startsWith('http')
@@ -17,36 +24,36 @@ export default function PageSeo({ meta }: PageSeoProps) {
       ? `${SITE_URL}${meta.ogImage}`
       : DEFAULT_OG_IMAGE
 
-  const isBrandedOg = !meta.ogImage || meta.ogImage.startsWith('/og/')
-
-  const enUrl = canonicalUrl(meta.alternateEnPath)
-  const nlUrl = canonicalUrl(meta.alternateNlPath)
+  const size = imageSize(ogImage)
   const htmlLang = LOCALE_HTML_LANG[meta.locale]
+  const enUrl = meta.alternateEnPath ? canonicalUrl(meta.alternateEnPath) : null
+  const nlUrl = meta.alternateNlPath ? canonicalUrl(meta.alternateNlPath) : null
+  const xDefault = enUrl || nlUrl
 
   return (
     <Helmet>
       <html lang={htmlLang} />
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
-      <link rel="canonical" href={canonical} />
-      <link rel="alternate" hrefLang={LOCALE_HREFLANG.en} href={enUrl} />
-      <link rel="alternate" hrefLang={LOCALE_HREFLANG['nl-BE']} href={nlUrl} />
-      <link rel="alternate" hrefLang="x-default" href={enUrl} />
+      {!meta.noindex && <link rel="canonical" href={canonical} />}
+      {enUrl && <link rel="alternate" hrefLang={LOCALE_HREFLANG.en} href={enUrl} />}
+      {nlUrl && <link rel="alternate" hrefLang={LOCALE_HREFLANG['nl-BE']} href={nlUrl} />}
+      {xDefault && !meta.noindex && <link rel="alternate" hrefLang="x-default" href={xDefault} />}
       {meta.noindex ? (
         <meta name="robots" content="noindex, nofollow" />
       ) : (
         <meta name="robots" content="index, follow" />
       )}
 
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={meta.ogType || 'website'} />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content={meta.locale === 'nl-BE' ? 'nl_BE' : 'en_US'} />
       <meta property="og:url" content={canonical} />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:image" content={ogImage} />
-      {isBrandedOg && <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />}
-      {isBrandedOg && <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />}
+      <meta property="og:image:width" content={String(size.width)} />
+      <meta property="og:image:height" content={String(size.height)} />
       <meta property="og:image:alt" content={meta.title} />
 
       <meta name="twitter:card" content="summary_large_image" />

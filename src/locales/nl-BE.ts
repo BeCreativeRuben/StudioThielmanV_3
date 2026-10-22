@@ -71,6 +71,13 @@ export const nlBEMessages = {
       reject: 'Alles weigeren',
       privacyLink: 'Privacybeleid',
     },
+    notFound: {
+      title: 'Pagina niet gevonden',
+      body: 'Die pagina bestaat niet. Ga naar home, pakketten of contact.',
+      home: 'Home',
+      packages: 'Pakketten',
+      contact: 'Contact',
+    },
     a11y: {
       toggleMenu: 'Menu openen',
       logoAlt: 'Studio Thielman logo',
@@ -150,27 +157,27 @@ export const nlBEMessages = {
         description: 'AI-workshops voor teams (incompany, halve dag) of 1:1 (twee dagen, €1.000 excl. btw). Groepsles binnenkort. Hands-on, geen demo-theater.',
       },
       '/workshops/incompany': {
-        title: 'Incompany AI-workshop voor teams',
-        description: 'Hands-on AI-workshop voor je team. Halve dag op locatie, max. 15 personen, Nederlands of Engels. Richtprijs €500 tot 8 personen, excl. btw.',
+        title: 'Incompany AI-training voor bedrijven',
+        description: 'Incompany AI-training en AI-opleiding voor bedrijven. Halve dag op locatie, max. 15 personen. Richtprijs €500 tot 8 personen, excl. btw.',
       },
       '/workshops/1-1': {
-        title: '1:1 AI-workshop — twee dagen, €1.000 excl. btw',
-        description: 'Tweedaagse 1:1 AI-workshop: bouw je eerste app of workflow vanaf nul, en ga dieper op merk en betaald werk. €1.000 excl. btw, huiswerk inbegrepen.',
+        title: '1:1 AI-workshop, twee dagen',
+        description: 'Tweedaagse 1:1 AI-workshop: bouw je eerste app of workflow en ga dieper. €1.000 excl. btw, huiswerk inbegrepen.',
       },
       '/ai-talks': {
-        title: 'AI-workshop voor bedrijven & AI-lezingen',
+        title: 'AI-lezing voor bedrijven',
         description:
-          "Hands-on AI-workshops, lezingen en gastlessen voor bedrijven, kmo's en scholen in Vlaanderen. AI-agents, ChatGPT, automatisering. Door Ruben Thielman, vanaf €450.",
+          'AI-lezing voor bedrijven, scholen en teams. Keynotes en hands-on AI-workshops door Ruben Thielman, vanaf €450 excl. btw.',
       },
       '/group-workshop': {
         title: 'AI-groepsworkshop: schrijf je in op de interesselijst',
         description:
-          'Hands-on AI-workshop in groep met Ruben Thielman: de AI-tools van vandaag, je eigen eenvoudige AI-agent of automatisering, AI voor je werk of zaak. Eén mail zodra datum en locatie vastliggen.',
+          'AI-groepsworkshop met Ruben Thielman. Eén mail zodra datum en locatie vastliggen.',
       },
       '/ai-masterclass': {
         title: 'Masterclass AI: schrijf je in op de interesselijst',
         description:
-          'De volgende stap na de AI-groepsworkshop: eigen AI-agents en multi-agent teams, AI koppelen aan je tools met MCP en API’s, bouwen met AI-coding-agents, AI op je eigen data. Laat je e-mail achter voor één mail zodra datum en locatie vastliggen.',
+          'Masterclass AI: agents, MCP, API’s en bouwen met AI. Eén mail zodra datum en locatie vastliggen.',
       },
     },
     structured: {

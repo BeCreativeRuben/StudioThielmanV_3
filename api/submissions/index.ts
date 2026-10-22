@@ -4,6 +4,7 @@ import { sendAiTalksInquiryEmails, sendGroupWorkshopSignupEmails, sendSubmission
 import { INTEREST_LIST_SOURCES, parseGroupWorkshopSignup } from '../../server/services/groupWorkshopEmailTemplates.js'
 import { parseAiTalkInquiry } from '../../server/services/aiTalksEmailTemplates.js'
 import { requireAuth } from '../_utils/auth.js'
+import { applyCors, clientIp, isHoneypotFilled, rateLimit } from '../_utils/http.js'
 
 // Initialize database (PostgreSQL - idempotent, safe to call multiple times)
 let dbInitPromise: Promise<void> | null = null
@@ -23,10 +24,7 @@ async function ensureDb() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  applyCors(req, res)
 
   // Handle preflight
   if (req.method === 'OPTIONS') {
@@ -41,15 +39,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.error('Database initialization error:', dbError)
       console.error('Error message:', dbError.message)
       console.error('Error stack:', dbError.stack)
-      return res.status(500).json({
-        error: 'Database initialization failed',
-        message: dbError.message || 'Unknown database error',
-        details: process.env.NODE_ENV === 'development' ? dbError.stack : undefined,
-      })
+      return res.status(500).json({ error: 'Database initialization failed' })
     }
 
     if (req.method === 'POST') {
       try {
+        const ip = clientIp(req)
+        if (!rateLimit(`submissions:${ip}`, 10, 10 * 60 * 1000)) {
+          return res.status(429).json({ error: 'Too many requests. Try again later.' })
+        }
+
         const {
           businessName,
           name,
@@ -64,9 +63,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           aiTalk,
           waitlist,
           website: honeypot,
+          locale,
         } = req.body
         const waitlistKind = typeof source === 'string' ? INTEREST_LIST_SOURCES[source] : undefined
         const isWaitlist = Boolean(waitlistKind)
+        const pageLocale = locale === 'nl' ? 'nl' : 'en'
+
+        if (isHoneypotFilled(honeypot)) {
+          return res.status(201).json({ success: true })
+        }
+
+        const tooLong =
+          (typeof businessName === 'string' && businessName.length > 200) ||
+          (typeof name === 'string' && name.length > 200) ||
+          (typeof email === 'string' && email.length > 254) ||
+          (typeof phone === 'string' && phone.length > 40) ||
+          (typeof packageOther === 'string' && packageOther.length > 2000) ||
+          (typeof existingWebsiteUrl === 'string' && existingWebsiteUrl.length > 500)
+        if (tooLong) {
+          return res.status(400).json({ error: 'A field is too long' })
+        }
 
         // Validation
         if (!businessName || !name || !email || !phone || !businessDescription || !packageName) {
@@ -85,10 +101,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         if (isWaitlist) {
-          // Bots fill the hidden field: pretend success, store nothing, send nothing.
-          if (typeof honeypot === 'string' && honeypot.trim()) {
-            return res.status(201).json({ success: true })
-          }
           // Already on the list: don't store or mail twice.
           const existing = await dbAll(`SELECT id FROM submissions WHERE package = ? AND lower(email) = lower(?) LIMIT 1`, [
             source,
@@ -121,11 +133,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           submissionId = result.lastID
         } catch (dbError: any) {
           console.error('Database insert error:', dbError)
-          return res.status(500).json({
-            error: 'Failed to save submission',
-            message: 'Database error occurred. Please try again later.',
-            details: process.env.NODE_ENV === 'development' ? dbError.message : undefined,
-          })
+          return res.status(500).json({ error: 'Failed to save submission' })
         }
 
         // Await email so Vercel does not terminate the function before Resend finishes
@@ -144,6 +152,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             packageOther,
             hasExistingWebsite,
             existingWebsiteUrl,
+            locale: pageLocale,
           })
         } catch (err) {
           console.error('Email notification error:', err)
@@ -155,20 +164,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
         }
 
+        const publicEmail = emailDelivery
+          ? { configured: emailDelivery.configured, notification: emailDelivery.notification, autoReply: emailDelivery.autoReply }
+          : undefined
         return res.status(201).json({
           success: true,
           id: submissionId,
           message: 'Submission received successfully',
-          email: emailDelivery,
+          ...(publicEmail && { email: publicEmail }),
         })
       } catch (error: any) {
         console.error('Submission error:', error)
         console.error('Error stack:', error.stack)
-        return res.status(500).json({
-          error: 'Failed to process submission',
-          message: error.message || 'An unexpected error occurred',
-          details: process.env.NODE_ENV === 'development' ? error.stack : undefined,
-        })
+        return res.status(500).json({ error: 'Failed to process submission' })
       }
     }
 
@@ -204,9 +212,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   } catch (error: any) {
     // Catch any unexpected errors and return JSON
     console.error('Unexpected error in submissions handler:', error)
-    return res.status(500).json({
-      error: 'An unexpected error occurred',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
-    })
+    return res.status(500).json({ error: 'An unexpected error occurred' })
   }
 }

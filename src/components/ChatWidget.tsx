@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Button from './Button'
-import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
+import { rubenPortrait } from '../images/media'
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
@@ -51,10 +51,13 @@ export default function ChatWidget() {
             <div className="bg-gradient-to-r from-cta to-cta/90 p-4 flex items-center gap-3">
               <div className="relative">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/30">
-                  <img 
-                    src={rubenImage} 
+                  <img
+                    src={rubenPortrait.webp}
                     alt="Ruben Thielman"
+                    width={rubenPortrait.width}
+                    height={rubenPortrait.height}
                     className="w-full h-full object-cover"
+                    decoding="async"
                   />
                 </div>
                 <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
@@ -78,10 +81,13 @@ export default function ChatWidget() {
               <div className="space-y-3">
                 <div className="flex items-start gap-2">
                   <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                    <img 
-                      src={rubenImage} 
+                    <img
+                      src={rubenPortrait.webp}
                       alt="Ruben Thielman"
+                      width={rubenPortrait.width}
+                      height={rubenPortrait.height}
                       className="w-full h-full object-cover"
+                      decoding="async"
                     />
                   </div>
                   <div className="bg-white rounded-lg rounded-tl-none p-3 shadow-sm">

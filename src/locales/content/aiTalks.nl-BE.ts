@@ -17,7 +17,7 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   hero: {
     label: 'LEZINGEN & WORKSHOPS · FRONTIER AI',
-    title: 'AI-workshops en lezingen voor bedrijven en scholen',
+    title: 'AI-lezing voor bedrijven en scholen',
     lead: 'Frontier AI, uitgelegd door iemand die er elke dag mee bouwt.',
     subtitle:
       'Keynotes, hands-on AI-trainingen en gastlessen over AI-agents, ChatGPT en Copilot, bouwen met AI en automatisering. Voor bedrijven, kmo\'s, scholen en iedereen die nieuwsgierig is, op locatie in heel Vlaanderen en Nederland. Geen hype, geen demo-theater: echte voorbeelden uit een studio die op AI draait.',
@@ -274,11 +274,11 @@ export const aiTalksNl: typeof aiTalksEn = {
   },
   faq: {
     label: 'FAQ',
-    title: 'Veelgestelde vragen over AI-workshops en lezingen',
+    title: 'Veelgestelde vragen over een AI-lezing voor bedrijven',
     items: [
       {
-        question: 'In welke taal geef je lezingen en workshops?',
-        answer: 'In het Nederlands of het Engels, jullie kiezen.',
+        question: 'In welke taal geef je een AI-lezing voor bedrijven?',
+        answer: 'Een AI-lezing voor bedrijven of een workshop geef ik in het Nederlands of het Engels — jullie kiezen.',
       },
       {
         question: 'Waar vinden de sessies plaats?',

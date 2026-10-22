@@ -100,30 +100,21 @@ router.get('/stats', authenticateToken, async (req, res) => {
 // Initialize admin user if it doesn't exist
 async function initializeAdminUser(): Promise<void> {
   try {
-    const adminUsername = process.env.ADMIN_USERNAME || 'admin'
+    const adminUsername = process.env.ADMIN_USERNAME
     const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH
-
-    // Check if admin exists
-    const existing = await dbGet('SELECT id FROM admin_users WHERE username = ?', [adminUsername])
-
-    if (!existing && adminPasswordHash) {
-      // Create default admin user
-      await dbRun(
-        'INSERT INTO admin_users (username, passwordHash, email) VALUES (?, ?, ?)',
-        [adminUsername, adminPasswordHash, process.env.RESEND_NOTIFY_EMAIL || '']
-      )
-      console.log('Default admin user created')
-    } else if (!existing) {
-      // Create admin with default password if no hash provided
-      const defaultPassword = 'admin123'
-      const hash = await bcrypt.hash(defaultPassword, 10)
-      await dbRun(
-        'INSERT INTO admin_users (username, passwordHash, email) VALUES (?, ?, ?)',
-        [adminUsername, hash, process.env.RESEND_NOTIFY_EMAIL || '']
-      )
-      console.log(`Default admin user created with username: ${adminUsername}, password: ${defaultPassword}`)
-      console.log('⚠️  Please change the default password after first login!')
+    if (!adminUsername || !adminPasswordHash) {
+      console.warn('Admin user not seeded. Set ADMIN_USERNAME and ADMIN_PASSWORD_HASH. No default password is created.')
+      return
     }
+
+    const existing = await dbGet('SELECT id FROM admin_users WHERE username = ?', [adminUsername])
+    if (existing) return
+
+    await dbRun(
+      'INSERT INTO admin_users (username, passwordHash, email) VALUES (?, ?, ?)',
+      [adminUsername, adminPasswordHash, process.env.RESEND_NOTIFY_EMAIL || '']
+    )
+    console.log('Admin user created from ADMIN_USERNAME / ADMIN_PASSWORD_HASH')
   } catch (error) {
     console.error('Failed to initialize admin user:', error)
   }

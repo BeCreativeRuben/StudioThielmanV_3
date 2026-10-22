@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import Button from '../components/Button'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 import { BUSINESS } from '../seo/site'
-import rubenImage from '../images/WhatsApp Image 2026-01-11 at 13.25.54.jpeg'
+import { rubenPortrait } from '../images/media'
 import CalInlineEmbed from '../components/CalInlineEmbed'
 import { getCalLink } from '../config/cal'
 
@@ -34,6 +35,7 @@ export default function Contact() {
     hasExistingWebsite: '',
     existingWebsiteUrl: '',
     privacyConsent: false,
+    website: '',
   })
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -150,6 +152,7 @@ export default function Contact() {
       const payload = {
         ...formData,
         existingWebsiteUrl: (formData.existingWebsiteUrl || '').trim(),
+        locale: locale === 'nl-BE' ? 'nl' : 'en',
       }
 
       const response = await fetch('/api/submissions', {
@@ -237,6 +240,9 @@ export default function Contact() {
 
   return (
     <div>
+      <Helmet>
+        <link rel="preload" as="image" href={rubenPortrait.webp} {...{ fetchpriority: 'high' }} />
+      </Helmet>
       <section className="relative py-20 md:py-32 overflow-hidden -mt-20 pt-20">
         <div className="absolute left-0 right-0 w-full bg-gray-900" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }} />
         <div className="absolute left-0 right-0 w-full bg-gradient-to-r from-black/80 to-black/40 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }} />
@@ -263,7 +269,18 @@ export default function Contact() {
           >
             <div className="flex justify-center md:justify-start">
               <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-cta shadow-lg">
-                <img src={rubenImage} alt="Ruben Thielman" className="w-full h-full object-cover" />
+                <picture>
+                  <source srcSet={rubenPortrait.avif} type="image/avif" />
+                  <img
+                    src={rubenPortrait.webp}
+                    alt="Ruben Thielman"
+                    width={rubenPortrait.width}
+                    height={rubenPortrait.height}
+                    {...{ fetchpriority: 'high' }}
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
+                </picture>
               </div>
             </div>
 
@@ -344,6 +361,18 @@ export default function Contact() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white border border-gray-200 rounded-xl p-8 md:p-12 shadow-xl relative z-10">
             <form onSubmit={handleSubmit} noValidate>
+              <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                <label htmlFor="contact-website">Website</label>
+                <input
+                  id="contact-website"
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formData.website}
+                  onChange={(e) => handleInputChange('website', e.target.value)}
+                />
+              </div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -351,12 +380,17 @@ export default function Contact() {
                 className="space-y-6"
               >
                 <div data-field="businessName">
-                  <label className={`block text-sm font-semibold mb-2 ${fieldErrors.businessName ? 'text-red-600' : 'text-text-primary'}`}>
+                  <label htmlFor="contact-business" className={`block text-sm font-semibold mb-2 ${fieldErrors.businessName ? 'text-red-600' : 'text-text-primary'}`}>
                     {c.form.businessName}
                   </label>
                   <input
+                    id="contact-business"
+                    name="organization"
                     type="text"
+                    autoComplete="organization"
                     required
+                    aria-invalid={fieldErrors.businessName || undefined}
+                    aria-describedby={fieldErrors.businessName ? 'contact-business-error' : undefined}
                     value={formData.businessName}
                     onChange={(e) => handleInputChange('businessName', e.target.value)}
                     className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 ${
@@ -366,17 +400,22 @@ export default function Contact() {
                     }`}
                   />
                   {fieldErrors.businessName && (
-                    <p className="mt-1 text-sm text-red-600">{c.form.errors.required}</p>
+                    <p id="contact-business-error" className="mt-1 text-sm text-red-600">{c.form.errors.required}</p>
                   )}
                 </div>
 
                 <div data-field="name">
-                  <label className={`block text-sm font-semibold mb-2 ${fieldErrors.name ? 'text-red-600' : 'text-text-primary'}`}>
+                  <label htmlFor="contact-name" className={`block text-sm font-semibold mb-2 ${fieldErrors.name ? 'text-red-600' : 'text-text-primary'}`}>
                     {c.form.yourName}
                   </label>
                   <input
+                    id="contact-name"
+                    name="name"
                     type="text"
+                    autoComplete="name"
                     required
+                    aria-invalid={fieldErrors.name || undefined}
+                    aria-describedby={fieldErrors.name ? 'contact-name-error' : undefined}
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 ${
@@ -385,16 +424,21 @@ export default function Contact() {
                         : 'border-gray-300 focus:border-cta focus:ring-cta/20'
                     }`}
                   />
-                  {fieldErrors.name && <p className="mt-1 text-sm text-red-600">{c.form.errors.required}</p>}
+                  {fieldErrors.name && <p id="contact-name-error" className="mt-1 text-sm text-red-600">{c.form.errors.required}</p>}
                 </div>
 
                 <div data-field="email">
-                  <label className={`block text-sm font-semibold mb-2 ${fieldErrors.email ? 'text-red-600' : 'text-text-primary'}`}>
+                  <label htmlFor="contact-email" className={`block text-sm font-semibold mb-2 ${fieldErrors.email ? 'text-red-600' : 'text-text-primary'}`}>
                     {c.form.email}
                   </label>
                   <input
+                    id="contact-email"
+                    name="email"
                     type="email"
+                    autoComplete="email"
                     required
+                    aria-invalid={fieldErrors.email || undefined}
+                    aria-describedby={fieldErrors.email ? 'contact-email-error' : undefined}
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 ${
@@ -403,16 +447,21 @@ export default function Contact() {
                         : 'border-gray-300 focus:border-cta focus:ring-cta/20'
                     }`}
                   />
-                  {fieldErrors.email && <p className="mt-1 text-sm text-red-600">{c.form.errors.email}</p>}
+                  {fieldErrors.email && <p id="contact-email-error" className="mt-1 text-sm text-red-600">{c.form.errors.email}</p>}
                 </div>
 
                 <div data-field="phone">
-                  <label className={`block text-sm font-semibold mb-2 ${fieldErrors.phone ? 'text-red-600' : 'text-text-primary'}`}>
+                  <label htmlFor="contact-phone" className={`block text-sm font-semibold mb-2 ${fieldErrors.phone ? 'text-red-600' : 'text-text-primary'}`}>
                     {c.form.phone}
                   </label>
                   <input
+                    id="contact-phone"
+                    name="tel"
                     type="tel"
+                    autoComplete="tel"
                     required
+                    aria-invalid={fieldErrors.phone || undefined}
+                    aria-describedby={fieldErrors.phone ? 'contact-phone-error' : undefined}
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all bg-gray-50 ${
@@ -421,16 +470,20 @@ export default function Contact() {
                         : 'border-gray-300 focus:border-cta focus:ring-cta/20'
                     }`}
                   />
-                  {fieldErrors.phone && <p className="mt-1 text-sm text-red-600">{c.form.errors.required}</p>}
+                  {fieldErrors.phone && <p id="contact-phone-error" className="mt-1 text-sm text-red-600">{c.form.errors.required}</p>}
                 </div>
 
                 <div data-field="businessDescription">
-                  <label className={`block text-sm font-semibold mb-2 ${fieldErrors.businessDescription ? 'text-red-600' : 'text-text-primary'}`}>
+                  <label htmlFor="contact-description" className={`block text-sm font-semibold mb-2 ${fieldErrors.businessDescription ? 'text-red-600' : 'text-text-primary'}`}>
                     {c.form.businessDescription}{' '}
                     <span className="text-text-secondary font-normal">{c.form.businessDescriptionHint}</span>
                   </label>
                   <textarea
+                    id="contact-description"
+                    name="description"
                     required
+                    aria-invalid={fieldErrors.businessDescription || undefined}
+                    aria-describedby={fieldErrors.businessDescription ? 'contact-description-error' : 'contact-description-count'}
                     value={formData.businessDescription}
                     onChange={(e) => handleInputChange('businessDescription', e.target.value)}
                     maxLength={100}
@@ -443,9 +496,9 @@ export default function Contact() {
                   />
                   <div className="flex justify-between items-center mt-1">
                     {fieldErrors.businessDescription && (
-                      <p className="text-sm text-red-600">{c.form.errors.required}</p>
+                      <p id="contact-description-error" className="text-sm text-red-600">{c.form.errors.required}</p>
                     )}
-                    <p className={`text-sm ml-auto ${formData.businessDescription.length > 100 ? 'text-red-600' : 'text-text-secondary'}`}>
+                    <p id="contact-description-count" className={`text-sm ml-auto ${formData.businessDescription.length > 100 ? 'text-red-600' : 'text-text-secondary'}`}>
                       {formData.businessDescription.length}/100
                     </p>
                   </div>
@@ -479,7 +532,10 @@ export default function Contact() {
                   {formData.package === 'Other' && (
                     <div data-field="packageOther" className="mt-4">
                       <input
+                        id="contact-package-other"
+                        name="packageOther"
                         type="text"
+                        autoComplete="off"
                         value={formData.packageOther}
                         onChange={(e) => handleInputChange('packageOther', e.target.value)}
                         placeholder={c.form.packageOtherPlaceholder}
@@ -527,11 +583,14 @@ export default function Contact() {
                   </div>
                   {formData.hasExistingWebsite === 'yes' && (
                     <div className="mt-4">
-                      <label className="block text-sm font-semibold text-text-primary mb-2">
+                      <label htmlFor="contact-website-url" className="block text-sm font-semibold text-text-primary mb-2">
                         {c.form.websiteUrl} <span className="text-text-secondary font-normal">{c.form.optional}</span>
                       </label>
                       <input
+                        id="contact-website-url"
+                        name="url"
                         type="url"
+                        autoComplete="url"
                         value={formData.existingWebsiteUrl}
                         onChange={(e) => handleInputChange('existingWebsiteUrl', e.target.value)}
                         placeholder="https://example.com"
@@ -548,6 +607,8 @@ export default function Contact() {
                     }`}
                   >
                     <input
+                      id="contact-privacy"
+                      name="privacyConsent"
                       type="checkbox"
                       checked={formData.privacyConsent}
                       onChange={(e) => handleInputChange('privacyConsent', e.target.checked)}

@@ -96,15 +96,15 @@ export const workshopsNl = {
       subtitle: 'De praktische details, per track.',
       items: [
         {
-          question: 'Hoe lang duurt een workshop?',
-          answer: 'De incompany workshop duurt een halve dag. Het 1:1-traject duurt twee dagen.',
+          question: 'Hoe lang duurt een incompany AI-training?',
+          answer: 'Een incompany AI-training (AI-opleiding voor bedrijven) duurt een halve dag. Het 1:1-traject duurt twee dagen.',
         },
         {
-          question: 'Met hoeveel personen kunnen we deelnemen aan een incompany sessie?',
+          question: 'Met hoeveel personen kunnen we deelnemen aan een incompany AI-training?',
           answer: 'Maximaal 15 personen per sessie.',
         },
         {
-          question: 'Waar vindt de incompany workshop plaats?',
+          question: 'Waar vindt de incompany AI-training plaats?',
           answer: 'Op locatie, bij jullie.',
         },
         {
@@ -112,7 +112,7 @@ export const workshopsNl = {
           answer: 'In het Nederlands of het Engels — jullie kiezen.',
         },
         {
-          question: 'Wat kost de incompany workshop?',
+          question: 'Wat kost een incompany AI-training voor bedrijven?',
           answer:
             'Richtprijs: €500 tot 8 personen, plus €50 per extra persoon vanaf de 9de persoon, excl. btw. We stemmen elke sessie af op jullie team en sturen een voorstel.',
         },
@@ -152,14 +152,14 @@ export const workshopsNl = {
   incompany: {
     hero: {
       label: 'INCOMPANY',
-      title: 'AI die in je werkdag past. Niet ernaast.',
+      title: 'Incompany AI-training die in je werkdag past.',
       subtitle:
-        'AI vliegt iedereen om de oren. In deze workshop leer je het omgekeerde: één model, drie oefeningen, en een routine die je de week erna nog gebruikt.',
+        'Een AI-opleiding voor bedrijven die in de werkdag past: één model, drie oefeningen, en een routine die je team de week erna nog gebruikt.',
       subtitle2: 'Geen demo-theater. Geen tool-hopping. Eerst jouw werk, dan de tool.',
     },
     takeaways: {
       label: 'WAT JE MEENEEMT',
-      title: 'Wat je meeneemt',
+      title: 'Wat je meeneemt uit de AI-opleiding',
       items: [
         'Het DCCFC-model: doel, context, constraints, format, check — bruikbaar in ChatGPT, Claude, Gemini of Copilot',
         'Eén leerpad dat je morgen nog 15 minuten oefent',

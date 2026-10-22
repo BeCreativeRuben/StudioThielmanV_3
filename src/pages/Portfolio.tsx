@@ -116,7 +116,7 @@ export default function Portfolio() {
                           <div className="text-xs text-text-secondary uppercase tracking-wider">{t('common.caseStudy')}</div>
                           <span className="text-xs text-text-secondary bg-gray-100 px-2 py-1 rounded">{item.clientType}</span>
                         </div>
-                        <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-cta transition-colors">{item.title}</h3>
+                        <h2 className="text-xl font-bold text-primary mb-3 group-hover:text-cta transition-colors">{item.title}</h2>
                         <p className="text-body-sm text-text-primary mb-4 flex-grow leading-relaxed">{item.description}</p>
 
                         {item.keyFeatures && (

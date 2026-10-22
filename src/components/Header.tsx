@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import logoImage from '../images/fulllogo copy.png'
+import { logoImage } from '../images/media'
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -86,9 +86,11 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <LocalizedLink to="/" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
-            <img 
-              src={logoImage} 
-              alt={t('common.a11y.logoAlt')} 
+            <img
+              src={logoImage.src}
+              alt={t('common.a11y.logoAlt')}
+              width={logoImage.width}
+              height={logoImage.height}
               className="h-12 w-auto"
             />
             <span className={`font-bold text-xl tracking-tight hidden sm:block transition-colors duration-300 ${
@@ -99,12 +101,12 @@ export default function Header() {
           </LocalizedLink>
           
           {/* Navigation Links - Desktop */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
             {navLinks.map((link) => (
               <LocalizedLink
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
+                className={`inline-flex items-center min-h-6 text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
                   isActive(link.path)
                     ? isScrolled 
                       ? 'text-primary font-semibold' 
@@ -120,7 +122,7 @@ export default function Header() {
           </div>
           
           {/* Language + CTA - Desktop */}
-          <div className="hidden md:flex items-center gap-3 shrink-0">
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             <LanguageSwitcher className={isScrolled ? 'text-text-primary' : 'text-white/90'} />
             <BookCallLink>
               {isScrolled ? (
@@ -148,11 +150,11 @@ export default function Header() {
           </div>
           
           {/* Language + menu - Mobile */}
-          <div className="md:hidden flex items-center gap-3">
+          <div className="lg:hidden flex items-center gap-3">
             <LanguageSwitcher className={isScrolled ? 'text-text-primary' : 'text-white/90'} />
             <button
             type="button"
-            className={`transition-colors duration-300 ${
+            className={`inline-flex items-center justify-center min-h-11 min-w-11 transition-colors duration-300 ${
               isScrolled ? 'text-primary' : 'text-white'
             }`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -179,7 +181,7 @@ export default function Header() {
               animate={{ opacity: 1, maxHeight: 400 }}
               exit={{ opacity: 0, maxHeight: 0 }}
               transition={{ duration: 0.2, ease: 'easeInOut' }}
-              className={`md:hidden overflow-hidden border-t transition-colors duration-300 ${
+              className={`lg:hidden overflow-hidden border-t transition-colors duration-300 ${
                 isScrolled 
                   ? 'border-border bg-white/95 backdrop-blur-sm' 
                   : 'border-white/10 bg-black/95 backdrop-blur-sm'
@@ -191,7 +193,7 @@ export default function Header() {
                     key={link.path}
                     to={link.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block px-4 text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
+                    className={`flex items-center min-h-11 px-4 text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
                       isActive(link.path)
                         ? isScrolled
                           ? 'text-primary font-semibold'

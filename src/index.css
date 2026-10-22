@@ -35,3 +35,13 @@ body {
     transform: translateX(-50%);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-container {
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

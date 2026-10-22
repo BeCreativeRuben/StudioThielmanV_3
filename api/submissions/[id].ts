@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { initializeDatabase, dbGet, dbRun } from '../../../server/database/postgres.js'
-import { requireAuth } from '../../_utils/auth.js'
+import { initializeDatabase, dbGet, dbRun } from '../../server/database/postgres.js'
+import { requireAuth } from '../_utils/auth.js'
+import { applyCors } from '../_utils/http.js'
 
 let dbInitPromise: Promise<void> | null = null
 
@@ -19,7 +20,15 @@ async function ensureDb() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  await ensureDb()
+  applyCors(req, res)
+  if (req.method === 'OPTIONS') return res.status(204).end()
+
+  try {
+    await ensureDb()
+  } catch (error) {
+    console.error('Database initialization error:', error)
+    return res.status(500).json({ error: 'Database initialization failed' })
+  }
 
   const { id } = req.query
 

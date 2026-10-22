@@ -3,6 +3,7 @@ import { initializeDatabase, dbRun, dbAll } from '../../../server/database/postg
 import { requireAuth } from '../../_utils/auth.js'
 import { sendChatMessageNotification } from '../../../server/services/emailService.js'
 import { randomUUID } from 'crypto'
+import { applyCors, clientIp, isHoneypotFilled, rateLimit } from '../../_utils/http.js'
 
 let dbInitPromise: Promise<void> | null = null
 
@@ -21,10 +22,7 @@ async function ensureDb() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  applyCors(req, res)
 
   // Handle preflight
   if (req.method === 'OPTIONS') {
@@ -40,10 +38,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'POST') {
     try {
-      const { sessionId, userName, userEmail, message } = req.body
+      if (!rateLimit(`chat:${clientIp(req)}`, 10, 10 * 60 * 1000)) {
+        return res.status(429).json({ error: 'Too many requests. Try again later.' })
+      }
 
-      if (!message || !message.trim()) {
+      const { sessionId, userName, userEmail, message, locale, website } = req.body
+
+      if (isHoneypotFilled(website)) {
+        return res.status(201).json({ success: true, sessionId: sessionId || randomUUID() })
+      }
+
+      if (typeof message !== 'string' || !message.trim()) {
         return res.status(400).json({ error: 'Message is required' })
+      }
+      if (message.length > 4000 || (typeof userName === 'string' && userName.length > 200) || (typeof userEmail === 'string' && userEmail.length > 254)) {
+        return res.status(400).json({ error: 'A field is too long' })
       }
 
       // Generate sessionId if not provided
@@ -57,30 +66,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       )
 
       let emailDelivery: Awaited<ReturnType<typeof sendChatMessageNotification>> | undefined
-      if (userEmail) {
-        try {
-          emailDelivery = await sendChatMessageNotification({
-            userName: userName || undefined,
-            userEmail,
-            message: message.trim(),
-          })
-        } catch (err) {
-          console.error('Email notification error:', err)
-          emailDelivery = {
-            configured: false,
-            notification: 'failed',
-            autoReply: 'failed',
-            error: err instanceof Error ? err.message : 'Email send failed',
-          }
+      const trimmedEmail = typeof userEmail === 'string' ? userEmail.trim() : ''
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)
+      try {
+        emailDelivery = await sendChatMessageNotification({
+          userName: typeof userName === 'string' ? userName : undefined,
+          userEmail: emailOk ? trimmedEmail : undefined,
+          message: message.trim(),
+          locale: locale === 'nl' ? 'nl' : 'en',
+        })
+      } catch (err) {
+        console.error('Email notification error:', err)
+        emailDelivery = {
+          configured: false,
+          notification: 'failed',
+          autoReply: 'failed',
         }
       }
 
+      const publicEmail = emailDelivery
+        ? { configured: emailDelivery.configured, notification: emailDelivery.notification, autoReply: emailDelivery.autoReply }
+        : undefined
       return res.status(201).json({
         success: true,
         id: result.lastID,
         sessionId: finalSessionId,
         message: 'Message saved successfully',
-        ...(emailDelivery && { email: emailDelivery }),
+        ...(publicEmail && { email: publicEmail }),
       })
     } catch (error: any) {
       console.error('Chat message error:', error)

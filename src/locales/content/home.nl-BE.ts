@@ -26,6 +26,7 @@ export const homeNl = {
     projects: 'Gerealiseerde projecten',
     reviews: 'reviews',
     officeAlt: 'Kantoor Studio Thielman',
+    learnMoreLabel: 'Meer over Studio Thielman',
   },
   portfolio: {
     label: 'ONS WERK',
@@ -148,6 +149,7 @@ export const homeNl = {
         description: 'Halve dag op locatie bij jullie (max. 15 personen), in het Nederlands of Engels.',
         meta: 'Richtprijs: €500 tot 8 personen, excl. btw',
         cta: 'Meer info',
+        ctaLabel: 'Meer over incompany AI-training',
         to: '/workshops/incompany',
       },
       {
@@ -156,6 +158,7 @@ export const homeNl = {
         description: 'Twee dagen waarin je je eerste app of workflow vanaf nul bouwt.',
         meta: '€1.000 voor de twee dagen, excl. btw',
         cta: 'Meer info',
+        ctaLabel: 'Meer over de 1:1 AI-workshop',
         to: '/workshops/1-1',
       },
       {

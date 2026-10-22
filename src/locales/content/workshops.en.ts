@@ -96,15 +96,15 @@ export const workshopsEn = {
       subtitle: 'The practical details, per track.',
       items: [
         {
-          question: 'How long does a workshop take?',
-          answer: 'The in-company workshop takes half a day. The 1:1 track is two days.',
+          question: 'How long does an incompany AI training take?',
+          answer: 'The incompany AI training takes half a day. The 1:1 track is two days.',
         },
         {
-          question: 'How many people can join an in-company session?',
+          question: 'How many people can join an incompany AI training?',
           answer: 'Up to 15 people per session.',
         },
         {
-          question: 'Where does the in-company workshop take place?',
+          question: 'Where does the incompany AI training take place?',
           answer: 'On location, at your office.',
         },
         {
@@ -112,7 +112,7 @@ export const workshopsEn = {
           answer: 'In English or Dutch — you choose.',
         },
         {
-          question: 'What does the in-company workshop cost?',
+          question: 'What does incompany AI training cost?',
           answer:
             'Indicative price: €500 for up to 8 people, plus €50 per extra person from the 9th person, excl. VAT. We tailor each session to your team and send a proposal.',
         },
@@ -152,14 +152,14 @@ export const workshopsEn = {
   incompany: {
     hero: {
       label: 'FOR TEAMS',
-      title: 'AI that fits your workday. Not beside it.',
+      title: 'Incompany AI training that fits the workday.',
       subtitle:
-        'Everyone is talking about AI. This workshop does the opposite: one model, three labs, and a routine you still use the week after.',
+        'Incompany AI training for companies: one model, three labs, and a routine your team still uses the week after.',
       subtitle2: 'No demo theatre. No tool-hopping. Your work first, then the tool.',
     },
     takeaways: {
       label: 'WHAT YOU LEAVE WITH',
-      title: 'What you leave with',
+      title: 'What an incompany AI training leaves you with',
       items: [
         'The DCCFC prompt model (goal, context, constraints, format, check) — works in ChatGPT, Claude, Gemini, or Copilot',
         "A learning path you'll practise for 15 minutes the next day",

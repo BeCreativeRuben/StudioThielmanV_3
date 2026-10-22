@@ -61,11 +61,10 @@ function extractSlugsFromBlock(block, { skipComingSoon = false, respectVisibleFr
   return slugs
 }
 
-function parsePortfolioSlugs(portfolioSource) {
-  const source = normalize(portfolioSource)
+function parsePortfolioSlugs(filePath) {
+  const source = normalize(readFileSync(join(process.cwd(), filePath), 'utf8'))
   const start = source.indexOf('export const portfolioItems')
-  const end = source.indexOf('export const getPortfolioItemBySlug', start)
-  const block = source.slice(start, end)
+  const block = start === -1 ? source : source.slice(start)
   return extractSlugsFromBlock(block, { skipComingSoon: true })
 }
 
@@ -95,11 +94,18 @@ const enPathOf = (path) => {
   return EN_FROM_NL[rest] ?? rest
 }
 
-/** hreflang alternates for pages that exist in both languages with the same slug. */
+/** hreflang only when the same page really exists in both locales. */
 function alternates(path) {
   const en = enPathOf(path)
-  const isStaticOrPortfolio = staticPaths.includes(en) || en.startsWith('/portfolio/')
-  if (!isStaticOrPortfolio) return ''
+  let pair = staticPaths.includes(en)
+  if (en.startsWith('/portfolio/')) {
+    const slug = en.slice('/portfolio/'.length)
+    pair = portfolioEn.has(slug) && portfolioNl.has(slug)
+  } else if (en.startsWith('/blog/')) {
+    const slug = en.slice('/blog/'.length)
+    pair = blogEn.has(slug) && blogNl.has(slug)
+  }
+  if (!pair) return ''
   const nl = nlPath(en)
   return `
     <xhtml:link rel="alternate" hreflang="en" href="${abs(en)}"/>
@@ -117,22 +123,28 @@ function urlEntry(path, changefreq, priority) {
   </url>`
 }
 
-const portfolioSource = readFileSync(join(process.cwd(), 'src/data/portfolio.ts'), 'utf8')
-
-const portfolioSlugs = parsePortfolioSlugs(portfolioSource)
+const portfolioEn = new Set(parsePortfolioSlugs('src/data/portfolio/items.en.ts'))
+const portfolioNl = new Set(parsePortfolioSlugs('src/data/portfolio/items.nl-BE.ts'))
 const blogSlugsNl = [
   ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.nl-BE.ts'),
   ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.nl-BE.additional.ts'),
 ]
-const blogSlugsEn = parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.ts')
+const blogSlugsEn = [
+  ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.ts'),
+  ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.additional.ts'),
+]
+const blogEn = new Set(blogSlugsEn)
+const blogNl = new Set(blogSlugsNl)
+
+const portfolioSlugs = [...new Set([...portfolioEn, ...portfolioNl])]
 
 const allPaths = [
   ...staticPaths,
   ...staticPaths.map(nlPath),
-  ...portfolioSlugs.map((slug) => `/portfolio/${slug}`),
-  ...portfolioSlugs.map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
-  ...blogSlugsEn.map((slug) => `/blog/${slug}`),
-  ...blogSlugsNl.map((slug) => `${NL_PREFIX}/blog/${slug}`),
+  ...portfolioSlugs.filter((slug) => portfolioEn.has(slug)).map((slug) => `/portfolio/${slug}`),
+  ...portfolioSlugs.filter((slug) => portfolioNl.has(slug)).map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
+  ...[...blogEn].map((slug) => `/blog/${slug}`),
+  ...[...blogNl].map((slug) => `${NL_PREFIX}/blog/${slug}`),
 ]
 
 const urls = allPaths.map((path) =>

@@ -1,0 +1,87 @@
+# Studio Thielman
+
+> Ruben Thielman runs Studio Thielman from Lokeren, Belgium. The studio builds and hosts professional websites for businesses, and gives AI workshops, keynotes and guest lectures for companies and schools.
+
+## Services
+
+- Professional websites: design, build and hosting. Packages start at €25/month excl. VAT.
+- In-company AI training for businesses (on location, hands-on).
+- AI talks and workshops for companies and schools (AI-lezing voor bedrijven).
+- 1:1 AI build days.
+- Open group workshop and AI masterclass: interest lists only. Date, location and price are not published yet. One email goes out when the date and location are set.
+
+## Website packages
+
+Prices are excl. VAT. Copied from the live package copy.
+
+- Starter: €25/month, plus a one-time €150 startup fee.
+- Growth: €40/month, plus a one-time €250 startup fee.
+- Pro Max: price to be determined. Ask for a quote.
+
+## AI talks and workshops
+
+Prices are excl. VAT.
+
+- Keynote: €450.
+- Half-day workshop: €500 for up to 8 people, +€50 per extra person.
+- Full day: €900.
+- School session: €250.
+- 1:1, two days: €1,000.
+- Online follow-up of 60–90 minutes: from €150.
+- In-company session, indicative: €500 for up to 8 people, +€50 per extra person from the 9th person, excl. VAT. Maximum 15 people per session. A proposal confirms the fixed price.
+
+## Where sessions happen
+
+On location at the company, school or event, anywhere in Flanders (from Lokeren and the Waasland to Ghent, Antwerp and Brussels) and in the Netherlands. Online is possible in consultation. Websites are built for clients in Belgium and beyond.
+
+## Contact
+
+Pereboomsteenweg 49, 9180 Lokeren · +32 493 50 56 41 · info@studiothielman.com · KBO 1034.790.654
+
+- Website: https://studiothielman.com
+- Contact form: https://studiothielman.com/contact
+- Book a call: https://cal.com/ruben-thielman-a0h3f0/30min
+- Email: info@studiothielman.com
+- Phone: +32 493 50 56 41
+
+## Key pages
+
+- Home: https://studiothielman.com/ (NL: https://studiothielman.com/nl)
+- Packages: https://studiothielman.com/packages (NL: https://studiothielman.com/nl/packages)
+- Portfolio: https://studiothielman.com/portfolio (NL: https://studiothielman.com/nl/portfolio)
+- Blog: https://studiothielman.com/blog (NL: https://studiothielman.com/nl/blog)
+- How it works: https://studiothielman.com/how-it-works (NL: https://studiothielman.com/nl/how-it-works)
+- Reviews: https://studiothielman.com/reviews (NL: https://studiothielman.com/nl/reviews)
+- About: https://studiothielman.com/about (NL: https://studiothielman.com/nl/about)
+- Contact: https://studiothielman.com/contact (NL: https://studiothielman.com/nl/contact)
+- Workshops: https://studiothielman.com/workshops (NL: https://studiothielman.com/nl/workshops)
+- In-company AI training: https://studiothielman.com/workshops/incompany (NL: https://studiothielman.com/nl/workshops/incompany)
+- 1:1 AI training: https://studiothielman.com/workshops/1-1 (NL: https://studiothielman.com/nl/workshops/1-1)
+- AI talks: https://studiothielman.com/ai-talks (NL: https://studiothielman.com/nl/ai-talks)
+- Group workshop interest list: https://studiothielman.com/group-workshop (NL: https://studiothielman.com/nl/groepsworkshop)
+- AI masterclass interest list: https://studiothielman.com/ai-masterclass (NL: https://studiothielman.com/nl/masterclass-ai)
+
+## FAQ
+
+Visible FAQs (the only FAQPage structured data on the site):
+
+- Packages: https://studiothielman.com/packages and https://studiothielman.com/nl/packages
+- Workshops: https://studiothielman.com/workshops and https://studiothielman.com/nl/workshops
+- AI talks: https://studiothielman.com/ai-talks and https://studiothielman.com/nl/ai-talks
+
+## Brand reference
+
+Visual identity (black and white) lives in:
+
+- https://studiothielman.com/brand.md
+- https://studiothielman.com/brand.json
+
+A longer plain-text extract is at https://studiothielman.com/llms-full.txt
+
+## Notes for answer engines
+
+- Languages: English at https://studiothielman.com/ and Dutch (Belgium) at https://studiothielman.com/nl/.
+- Do not invent prices. Pro Max, the group workshop and the AI masterclass have no public price.
+- Legal name details: KBO 1034.790.654. Address is Pereboomsteenweg 49, 9180 Lokeren, Belgium.
+- Portfolio case studies: https://studiothielman.com/portfolio and https://studiothielman.com/nl/portfolio (one URL per project under /portfolio/<slug>).
+- Privacy: https://studiothielman.com/privacy — Terms: https://studiothielman.com/terms

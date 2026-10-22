@@ -123,6 +123,7 @@ function WaitlistForm({ kind }: { kind: InterestListKind }) {
         <span className="block font-mono text-xs uppercase tracking-[0.15em] text-white/70 mb-2">{f.email}</span>
         <input
           id="gw-email"
+          name="email"
           type="email"
           inputMode="email"
           autoComplete="email"
@@ -145,13 +146,13 @@ function WaitlistForm({ kind }: { kind: InterestListKind }) {
           <span className="block font-mono text-xs uppercase tracking-[0.15em] text-white/70 mb-2">
             {f.firstName} <span className="normal-case tracking-normal">{f.optional}</span>
           </span>
-          <input type="text" autoComplete="given-name" className={inputClass()} value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength={80} />
+          <input id="gw-first-name" name="given-name" type="text" autoComplete="given-name" className={inputClass()} value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength={80} />
         </label>
         <label className="block">
           <span className="block font-mono text-xs uppercase tracking-[0.15em] text-white/70 mb-2">
             {f.role} <span className="normal-case tracking-normal">{f.optional}</span>
           </span>
-          <select className={inputClass()} value={role} onChange={(e) => setRole(e.target.value)}>
+          <select id="gw-role" name="role" className={inputClass()} value={role} onChange={(e) => setRole(e.target.value)}>
             {f.roleOptions.map((o) => (
               <option key={o.value || 'none'} value={o.value} className="text-black">{o.label}</option>
             ))}
@@ -162,7 +163,7 @@ function WaitlistForm({ kind }: { kind: InterestListKind }) {
       <div aria-hidden="true" className="absolute -left-[9999px] w-px h-px overflow-hidden">
         <label>
           Website
-          <input type="text" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
         </label>
       </div>
       {status === 'error' && (

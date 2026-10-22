@@ -1,5 +1,13 @@
 /** Studio Thielman email design tokens — keep in sync with public/brand.json */
 
+export const EMAIL_NAP =
+  'Pereboomsteenweg 49, 9180 Lokeren · +32 493 50 56 41 · info@studiothielman.com · KBO 1034.790.654'
+
+export function withEmailFooterText(text: string): string {
+  if (text.includes('Pereboomsteenweg')) return text
+  return `${text.trim()}\n\nStudio Thielman\n${EMAIL_NAP}\nhttps://studiothielman.com\n`
+}
+
 export const EMAIL_BRAND = {
   siteUrl: 'https://studiothielman.com',
   siteName: 'Studio Thielman',
@@ -163,7 +171,8 @@ export function wrapEmailLayout(options: {
           <tr>
             <td style="background-color:${colors.heroDark};padding:28px 32px;border-radius:0 0 12px 12px;text-align:center;border-top:1px solid ${colors.footerBorder};">
               <p style="margin:0 0 8px 0;font-family:${font};font-size:15px;font-weight:600;color:${colors.white};">${escapeHtml(siteName)}</p>
-              <p style="margin:0 0 16px 0;font-family:${font};font-size:13px;line-height:1.5;color:rgba(255,255,255,0.65);">${escapeHtml(tagline)}</p>
+              <p style="margin:0 0 8px 0;font-family:${font};font-size:13px;line-height:1.5;color:rgba(255,255,255,0.65);">${escapeHtml(tagline)}</p>
+              <p style="margin:0 0 16px 0;font-family:${font};font-size:12px;line-height:1.5;color:rgba(255,255,255,0.65);">${escapeHtml(EMAIL_NAP)}</p>
               <a href="${footerCta.href}" style="display:inline-block;background-color:${colors.white};color:${colors.primary};font-family:${font};font-size:14px;font-weight:700;text-decoration:none;padding:12px 24px;border-radius:8px;">${escapeHtml(footerCta.label)}</a>
             </td>
           </tr>

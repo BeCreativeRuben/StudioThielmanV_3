@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "vite",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
+    "generate:llms": "node scripts/generate-llms.mjs",
     "typecheck": "tsc",
     "bundle": "vite build",
-    "build": "npm run generate:sitemap && npm run bundle && npm run prerender",
+    "build": "npm run generate:sitemap && npm run generate:llms && npm run bundle && npm run prerender",
     "preview": "vite preview",
     "prerender": "vite build --ssr src/entry-prerender.tsx --outDir dist-ssr --emptyOutDir && node scripts/prerender.mjs"
   },

@@ -1,30 +1,24 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Button from '../components/Button'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 import { localizedPath } from '../i18n/paths'
-import { getBlogPostBySlug, BlogPost } from '../data/blog'
+import { getBlogPostBySlug } from '../data/blog'
 
 export default function BlogDetail() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const { locale, messages, localizedPath: lp, t } = useLocale()
   const d = messages.blog.detail
-  const [post, setPost] = useState<BlogPost | null>(null)
   const htmlSectionRefs = useRef<{ [key: number]: HTMLDivElement | null }>({})
 
   const blogLocale = locale === 'nl-BE' ? 'nl-BE' : 'en'
+  const post = slug ? getBlogPostBySlug(slug, blogLocale) ?? null : null
 
   useEffect(() => {
-    if (!slug) return
-
-    const foundPost = getBlogPostBySlug(slug, blogLocale)
-    if (foundPost) {
-      setPost(foundPost)
-      return
-    }
+    if (!slug || post) return
 
     const nlPost = getBlogPostBySlug(slug, 'nl-BE')
     if (locale === 'en' && nlPost) {
@@ -33,7 +27,7 @@ export default function BlogDetail() {
     }
 
     navigate(lp('/blog'))
-  }, [slug, blogLocale, locale, navigate, lp])
+  }, [slug, post, locale, navigate, lp])
 
   useEffect(() => {
     if (!post) return

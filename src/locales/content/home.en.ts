@@ -26,6 +26,7 @@ export const homeEn = {
     projects: 'Projects realised',
     reviews: 'reviews',
     officeAlt: 'Office workspace',
+    learnMoreLabel: 'Learn more about Studio Thielman',
   },
   portfolio: {
     label: 'OUR WORK',
@@ -148,6 +149,7 @@ export const homeEn = {
         description: 'Half day on location for your team (max. 15 people), in English or Dutch.',
         meta: 'Indicative price: €500 for up to 8 people, excl. VAT',
         cta: 'Learn More',
+        ctaLabel: 'Learn more about incompany AI training',
         to: '/workshops/incompany',
       },
       {
@@ -156,6 +158,7 @@ export const homeEn = {
         description: 'Two days where you build your first app or workflow from scratch.',
         meta: '€1,000 for the two days, excl. VAT',
         cta: 'Learn More',
+        ctaLabel: 'Learn more about the 1:1 AI workshop',
         to: '/workshops/1-1',
       },
       {
