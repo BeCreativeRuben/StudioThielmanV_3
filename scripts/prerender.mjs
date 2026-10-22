@@ -36,6 +36,83 @@ const paths = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => {
   return p === '' ? '/' : p
 })
 
+function abs(path) {
+  return 'https://studiothielman.com' + (path === '/' ? '' : path)
+}
+
+function hasAlternate(head, hrefLang, href) {
+  return [...head.matchAll(/<link\b[^>]*>/g)].some((match) => {
+    const tag = match[0]
+    const lang = tag.includes(`hrefLang="${hrefLang}"`) || tag.includes(`hreflang="${hrefLang}"`)
+    return tag.includes('rel="alternate"') && lang && tag.includes(`href="${href}"`)
+  })
+}
+
+function assertSeo(path, { robots, canonical, hreflangEn, hreflangNl }) {
+  const { head } = renderRoute(path)
+  const actualRobots = head.match(/name="robots" content="([^"]+)"/)?.[1]
+  const problems = []
+  if (actualRobots !== robots) problems.push(`robots ${actualRobots ?? '(missing)'} !== ${robots}`)
+  if (canonical && !head.includes(`href="${canonical}"`)) problems.push(`missing canonical ${canonical}`)
+  if (hreflangEn && hreflangNl) {
+    if (!hasAlternate(head, 'en', abs(hreflangEn))) problems.push(`missing en hreflang ${abs(hreflangEn)}`)
+    if (!hasAlternate(head, 'nl-BE', abs(hreflangNl))) problems.push(`missing nl hreflang ${abs(hreflangNl)}`)
+    if (!hasAlternate(head, 'x-default', abs(hreflangEn))) problems.push(`missing x-default ${abs(hreflangEn)}`)
+  } else if (/rel="alternate"/.test(head)) {
+    problems.push('unexpected hreflang on a page without an indexable counterpart')
+  }
+  if (problems.length) {
+    console.error(`SEO check failed for ${path}:\n  ${problems.join('\n  ')}\n${head}`)
+    process.exit(1)
+  }
+}
+
+const IMPACT = 'hoe-wij-impact-maken-ons-proces-voor-succesvolle-digitale-projecten'
+const VISIBILITY = 'waarom-website-online-zichtbaarheid-niet-meer-mogen-ontbreken'
+for (const slug of [IMPACT, VISIBILITY]) {
+  if (!paths.includes(`/blog/${slug}`) || !paths.includes(`/nl/blog/${slug}`)) {
+    console.error(`Sitemap is missing an indexable blog URL for ${slug}`)
+    process.exit(1)
+  }
+  assertSeo(`/blog/${slug}`, {
+    robots: 'index, follow',
+    canonical: `https://studiothielman.com/blog/${slug}`,
+    hreflangEn: `/blog/${slug}`,
+    hreflangNl: `/nl/blog/${slug}`,
+  })
+  assertSeo(`/nl/blog/${slug}`, {
+    robots: 'index, follow',
+    canonical: `https://studiothielman.com/nl/blog/${slug}`,
+    hreflangEn: `/blog/${slug}`,
+    hreflangNl: `/nl/blog/${slug}`,
+  })
+}
+assertSeo('/', {
+  robots: 'index, follow',
+  canonical: 'https://studiothielman.com',
+  hreflangEn: '/',
+  hreflangNl: '/nl',
+})
+if (!paths.includes('/portfolio/beauty-by-tischa') || !paths.includes('/nl/portfolio/beauty-by-tischa')) {
+  console.error('Sitemap is missing indexable portfolio URLs')
+  process.exit(1)
+}
+assertSeo('/portfolio/beauty-by-tischa', {
+  robots: 'index, follow',
+  canonical: 'https://studiothielman.com/portfolio/beauty-by-tischa',
+  hreflangEn: '/portfolio/beauty-by-tischa',
+  hreflangNl: '/nl/portfolio/beauty-by-tischa',
+})
+assertSeo('/admin', { robots: 'noindex, nofollow' })
+assertSeo('/hackers-and-ravers', { robots: 'noindex, nofollow' })
+assertSeo('/nl/hackers-and-ravers', { robots: 'noindex, nofollow' })
+assertSeo('/blog/this-post-does-not-exist', { robots: 'noindex, nofollow' })
+assertSeo('/not-a-real-page', { robots: 'noindex, nofollow' })
+if (paths.some((path) => path === '/admin' || path.includes('hackers-and-ravers'))) {
+  console.error('Sitemap lists a noindex URL')
+  process.exit(1)
+}
+
 function writeHtml(outPath, rendered) {
   const { head, htmlAttributes, body } = rendered
   let html = template

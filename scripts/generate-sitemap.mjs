@@ -64,6 +64,7 @@ function extractSlugsFromBlock(block, { skipComingSoon = false, respectVisibleFr
 function parsePortfolioSlugs(filePath) {
   const source = normalize(readFileSync(join(process.cwd(), filePath), 'utf8'))
   const start = source.indexOf('export const portfolioItems')
+  // Fall back to the whole file so a renamed export cannot drop case studies.
   const block = start === -1 ? source : source.slice(start)
   return extractSlugsFromBlock(block, { skipComingSoon: true })
 }
@@ -94,18 +95,19 @@ const enPathOf = (path) => {
   return EN_FROM_NL[rest] ?? rest
 }
 
-/** hreflang only when the same page really exists in both locales. */
+/** hreflang only when both language versions are indexable pages included in this sitemap. */
+function hasBothLanguages(en) {
+  if (staticPaths.includes(en)) return true
+  const blogSlug = en.match(/^\/blog\/([^/]+)$/)?.[1]
+  if (blogSlug) return blogEn.has(blogSlug) && blogNl.has(blogSlug)
+  const portfolioSlug = en.match(/^\/portfolio\/([^/]+)$/)?.[1]
+  if (portfolioSlug) return portfolioEn.has(portfolioSlug) && portfolioNl.has(portfolioSlug)
+  return false
+}
+
 function alternates(path) {
   const en = enPathOf(path)
-  let pair = staticPaths.includes(en)
-  if (en.startsWith('/portfolio/')) {
-    const slug = en.slice('/portfolio/'.length)
-    pair = portfolioEn.has(slug) && portfolioNl.has(slug)
-  } else if (en.startsWith('/blog/')) {
-    const slug = en.slice('/blog/'.length)
-    pair = blogEn.has(slug) && blogNl.has(slug)
-  }
-  if (!pair) return ''
+  if (!hasBothLanguages(en)) return ''
   const nl = nlPath(en)
   return `
     <xhtml:link rel="alternate" hreflang="en" href="${abs(en)}"/>
@@ -136,15 +138,49 @@ const blogSlugsEn = [
 const blogEn = new Set(blogSlugsEn)
 const blogNl = new Set(blogSlugsNl)
 
-const portfolioSlugs = [...new Set([...portfolioEn, ...portfolioNl])]
+/**
+ * Permanent redirects for a URL whose only indexable version is the other language.
+ * Keep in sync with vercel.json redirects (checked below).
+ */
+function requiredOneLanguageRedirects() {
+  const required = []
+  for (const slug of blogNl) {
+    if (!blogEn.has(slug)) required.push({ source: `/blog/${slug}`, destination: `${NL_PREFIX}/blog/${slug}` })
+  }
+  for (const slug of blogEn) {
+    if (!blogNl.has(slug)) required.push({ source: `${NL_PREFIX}/blog/${slug}`, destination: `/blog/${slug}` })
+  }
+  for (const slug of portfolioNl) {
+    if (!portfolioEn.has(slug)) required.push({ source: `/portfolio/${slug}`, destination: `${NL_PREFIX}/portfolio/${slug}` })
+  }
+  for (const slug of portfolioEn) {
+    if (!portfolioNl.has(slug)) required.push({ source: `${NL_PREFIX}/portfolio/${slug}`, destination: `/portfolio/${slug}` })
+  }
+  return required
+}
+
+const vercel = JSON.parse(readFileSync(join(process.cwd(), 'vercel.json'), 'utf8'))
+const permanentRedirects = new Set(
+  (vercel.redirects ?? [])
+    .filter((rule) => rule.permanent)
+    .map((rule) => `${rule.source} -> ${rule.destination}`)
+)
+const missingRedirects = requiredOneLanguageRedirects().filter(
+  (rule) => !permanentRedirects.has(`${rule.source} -> ${rule.destination}`)
+)
+if (missingRedirects.length) {
+  console.error('Indexable pages that exist in only one language need a permanent redirect in vercel.json:')
+  for (const rule of missingRedirects) console.error(`  ${rule.source} -> ${rule.destination}`)
+  process.exit(1)
+}
 
 const allPaths = [
   ...staticPaths,
   ...staticPaths.map(nlPath),
-  ...portfolioSlugs.filter((slug) => portfolioEn.has(slug)).map((slug) => `/portfolio/${slug}`),
-  ...portfolioSlugs.filter((slug) => portfolioNl.has(slug)).map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
-  ...[...blogEn].map((slug) => `/blog/${slug}`),
-  ...[...blogNl].map((slug) => `${NL_PREFIX}/blog/${slug}`),
+  ...[...portfolioEn].map((slug) => `/portfolio/${slug}`),
+  ...[...portfolioNl].map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
+  ...blogSlugsEn.map((slug) => `/blog/${slug}`),
+  ...blogSlugsNl.map((slug) => `${NL_PREFIX}/blog/${slug}`),
 ]
 
 const urls = allPaths.map((path) =>
