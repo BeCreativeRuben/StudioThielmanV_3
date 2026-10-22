@@ -28,4 +28,6 @@ export const BUSINESS = {
   facebook: 'https://www.facebook.com/profile.php?id=61586029966601',
   /** Personal LinkedIn — intentionally kept */
   linkedIn: 'https://www.linkedin.com/in/ruben-thielman-6a8963256/',
+  /** Client portal login (external) */
+  clientPortalLogin: 'https://portaal.studiothielman.com/login',
 }

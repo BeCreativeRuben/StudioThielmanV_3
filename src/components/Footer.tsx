@@ -1,6 +1,7 @@
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { BUSINESS } from '../seo/site'
+import NewTabLocalizedLink from './NewTabLocalizedLink'
 
 export default function Footer() {
   const { t } = useLocale()
@@ -67,6 +68,17 @@ export default function Footer() {
                   {t('common.nav.blog')}
                 </LocalizedLink>
               </li>
+              <li>
+                <a
+                  href={BUSINESS.clientPortalLogin}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={t('common.cta.clientPortal')}
+                  className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors"
+                >
+                  {t('common.cta.clientPortal')}
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -94,9 +106,9 @@ export default function Footer() {
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/workshops" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
+                <NewTabLocalizedLink to="/ai-talks" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.workshops')}
-                </LocalizedLink>
+                </NewTabLocalizedLink>
               </li>
               <li>
                 <LocalizedLink to="/ai-talks" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">

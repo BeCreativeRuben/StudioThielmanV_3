@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import AiTalksFooter from '../components/aiTalks/AiTalksFooter'
 import CookieConsentBanner from '../components/CookieConsentBanner'
 import LanguageSwitcher from '../components/LanguageSwitcher'
+import NewTabLocalizedLink from '../components/NewTabLocalizedLink'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
 import { BUSINESS, SITE_NAME, SITE_URL } from '../seo/site'
@@ -331,9 +332,9 @@ export default function InterestListPage({ kind }: { kind: InterestListKind }) {
               <div>
                 <p className="border-t border-white/10 pt-6 text-white/75">
                   {g.talksLink.text}{' '}
-                  <LocalizedLink to="/ai-talks" className="font-semibold text-white underline underline-offset-4 hover:no-underline">
+                  <NewTabLocalizedLink to="/ai-talks" className="font-semibold text-white underline underline-offset-4 hover:no-underline">
                     {g.talksLink.cta} →
-                  </LocalizedLink>
+                  </NewTabLocalizedLink>
                 </p>
                 {g.nextStepLink && (
                   <p className="mt-3 text-white/75">

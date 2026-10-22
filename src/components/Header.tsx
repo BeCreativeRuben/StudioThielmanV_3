@@ -4,8 +4,43 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { logoImage } from '../images/media'
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
+import { BUSINESS } from '../seo/site'
 import LanguageSwitcher from './LanguageSwitcher'
 import BookCallLink from './BookCallLink'
+import NewTabLocalizedLink from './NewTabLocalizedLink'
+
+function ClientPortalLink({
+  isScrolled,
+  fullWidth = false,
+  onClick,
+}: {
+  isScrolled: boolean
+  fullWidth?: boolean
+  onClick?: () => void
+}) {
+  const { t } = useLocale()
+  const label = t('common.cta.clientPortal')
+
+  return (
+    <a
+      href={BUSINESS.clientPortalLogin}
+      target="_blank"
+      rel="noopener"
+      aria-label={label}
+      onClick={onClick}
+      className={`inline-flex items-center justify-center whitespace-nowrap rounded-lg border-2 px-4 py-2 text-sm font-semibold transition-colors duration-300 focus:outline-none focus:ring-2 ${
+        fullWidth ? 'w-full' : ''
+      } ${
+        isScrolled
+          ? 'border-black text-black hover:bg-black hover:text-white focus:ring-black/20'
+          : 'border-white text-white hover:bg-white hover:text-black focus:ring-white/50'
+      }`}
+    >
+      {label}
+    </a>
+  )
+}
+
 export default function Header() {
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -58,13 +93,13 @@ export default function Header() {
   
   const { t, pathWithoutLocale } = useLocale()
 
-  const navLinks = [
+  const navLinks: { path: string; label: string; newTab?: boolean }[] = [
     { path: '/', label: t('common.nav.home') },
     { path: '/packages', label: t('common.nav.packages') },
     { path: '/portfolio', label: t('common.nav.portfolio') },
     { path: '/how-it-works', label: t('common.nav.howItWorks') },
     { path: '/about', label: t('common.nav.about') },
-    { path: '/workshops', label: t('common.nav.workshops') },
+    { path: '/ai-talks', label: t('common.nav.workshops'), newTab: true },
   ]
 
   const isActive = (path: string) => pathWithoutLocale === path
@@ -102,28 +137,32 @@ export default function Header() {
           
           {/* Navigation Links - Desktop */}
           <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
-            {navLinks.map((link) => (
-              <LocalizedLink
-                key={link.path}
-                to={link.path}
-                className={`inline-flex items-center min-h-6 text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
-                  isActive(link.path)
-                    ? isScrolled 
-                      ? 'text-primary font-semibold' 
-                      : 'text-white font-semibold'
-                    : isScrolled
-                      ? 'text-text-primary hover:text-primary'
-                      : 'text-white/80 hover:text-white'
-                }`}
-              >
-                {link.label}
-              </LocalizedLink>
-            ))}
+            {navLinks.map((link) => {
+              const className = `inline-flex items-center min-h-6 text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
+                isActive(link.path)
+                  ? isScrolled
+                    ? 'text-primary font-semibold'
+                    : 'text-white font-semibold'
+                  : isScrolled
+                    ? 'text-text-primary hover:text-primary'
+                    : 'text-white/80 hover:text-white'
+              }`
+              return link.newTab ? (
+                <NewTabLocalizedLink key={link.path} to={link.path} className={className}>
+                  {link.label}
+                </NewTabLocalizedLink>
+              ) : (
+                <LocalizedLink key={link.path} to={link.path} className={className}>
+                  {link.label}
+                </LocalizedLink>
+              )
+            })}
           </div>
           
           {/* Language + CTA - Desktop */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
             <LanguageSwitcher className={isScrolled ? 'text-text-primary' : 'text-white/90'} />
+            <ClientPortalLink isScrolled={isScrolled} />
             <BookCallLink>
               {isScrolled ? (
                 <motion.button
@@ -178,7 +217,7 @@ export default function Header() {
           {mobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, maxHeight: 0 }}
-              animate={{ opacity: 1, maxHeight: 400 }}
+              animate={{ opacity: 1, maxHeight: 640 }}
               exit={{ opacity: 0, maxHeight: 0 }}
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               className={`lg:hidden overflow-hidden border-t transition-colors duration-300 ${
@@ -188,25 +227,38 @@ export default function Header() {
               }`}
             >
               <div className="py-4 space-y-4">
-                {navLinks.map((link) => (
-                  <LocalizedLink
-                    key={link.path}
-                    to={link.path}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center min-h-11 px-4 text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
-                      isActive(link.path)
-                        ? isScrolled
-                          ? 'text-primary font-semibold'
-                          : 'text-white font-semibold'
-                        : isScrolled
-                          ? 'text-text-primary hover:text-primary'
-                          : 'text-white/80 hover:text-white'
-                    }`}
-                  >
-                    {link.label}
-                  </LocalizedLink>
-                ))}
-                <div className="px-4 pt-2">
+                {navLinks.map((link) => {
+                  const className = `flex items-center min-h-11 px-4 text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
+                    isActive(link.path)
+                      ? isScrolled
+                        ? 'text-primary font-semibold'
+                        : 'text-white font-semibold'
+                      : isScrolled
+                        ? 'text-text-primary hover:text-primary'
+                        : 'text-white/80 hover:text-white'
+                  }`
+                  return link.newTab ? (
+                    <NewTabLocalizedLink
+                      key={link.path}
+                      to={link.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={className}
+                    >
+                      {link.label}
+                    </NewTabLocalizedLink>
+                  ) : (
+                    <LocalizedLink
+                      key={link.path}
+                      to={link.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={className}
+                    >
+                      {link.label}
+                    </LocalizedLink>
+                  )
+                })}
+                <div className="px-4 pt-2 space-y-3">
+                  <ClientPortalLink isScrolled={isScrolled} fullWidth onClick={() => setMobileMenuOpen(false)} />
                   <BookCallLink onClick={() => setMobileMenuOpen(false)}>
                     {isScrolled ? (
                       <motion.button

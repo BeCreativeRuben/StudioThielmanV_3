@@ -29,6 +29,7 @@ export const enMessages = {
     },
     cta: {
       bookCall: 'Book a Call',
+      clientPortal: 'Client portal',
       viewPackages: 'View Packages',
       getQuote: 'Get a Quote',
       learnMore: 'Learn More',
@@ -81,6 +82,7 @@ export const enMessages = {
     a11y: {
       toggleMenu: 'Toggle menu',
       logoAlt: 'Studio Thielman Logo',
+      opensInNewTab: '(opens in new tab)',
     },
     brand: 'STUDIO THIELMAN',
     comingSoon: 'Coming Soon',
