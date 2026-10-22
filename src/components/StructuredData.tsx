@@ -97,9 +97,6 @@ export default function StructuredData() {
   if (path === '/packages') {
     graphs.push(faqGraph(messages.packages.faqs))
   }
-  if (path === '/workshops') {
-    graphs.push(faqGraph(messages.workshops.hub.faq.items))
-  }
 
   const portfolioMatch = path.match(/^\/portfolio\/([^/]+)$/)
   if (portfolioMatch) {

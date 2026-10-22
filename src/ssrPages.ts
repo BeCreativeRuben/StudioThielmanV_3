@@ -14,9 +14,6 @@ import HowItWorks from './pages/HowItWorks'
 import Reviews from './pages/Reviews'
 import About from './pages/About'
 import Contact from './pages/Contact'
-import Workshops from './pages/Workshops'
-import WorkshopsIncompany from './pages/WorkshopsIncompany'
-import WorkshopsOneOnOne from './pages/WorkshopsOneOnOne'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import Admin from './pages/Admin'
@@ -37,9 +34,6 @@ registerPage('howItWorks', HowItWorks)
 registerPage('reviews', Reviews)
 registerPage('about', About)
 registerPage('contact', Contact)
-registerPage('workshops', Workshops)
-registerPage('workshopsIncompany', WorkshopsIncompany)
-registerPage('workshopsOneOnOne', WorkshopsOneOnOne)
 registerPage('privacy', Privacy)
 registerPage('terms', Terms)
 registerPage('admin', Admin)

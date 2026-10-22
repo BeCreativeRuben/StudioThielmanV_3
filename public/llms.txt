@@ -54,10 +54,9 @@ Pereboomsteenweg 49, 9180 Lokeren · +32 493 50 56 41 · info@studiothielman.com
 - Reviews: https://studiothielman.com/reviews (NL: https://studiothielman.com/nl/reviews)
 - About: https://studiothielman.com/about (NL: https://studiothielman.com/nl/about)
 - Contact: https://studiothielman.com/contact (NL: https://studiothielman.com/nl/contact)
-- Workshops: https://studiothielman.com/workshops (NL: https://studiothielman.com/nl/workshops)
-- In-company AI training: https://studiothielman.com/workshops/incompany (NL: https://studiothielman.com/nl/workshops/incompany)
-- 1:1 AI training: https://studiothielman.com/workshops/1-1 (NL: https://studiothielman.com/nl/workshops/1-1)
-- AI talks: https://studiothielman.com/ai-talks (NL: https://studiothielman.com/nl/ai-talks)
+- AI workshops and talks: https://studiothielman.com/ai-talks (NL: https://studiothielman.com/nl/ai-talks)
+- Hands-on workshop: https://studiothielman.com/ai-talks#hands-on (NL: https://studiothielman.com/nl/ai-talks#hands-on)
+- 1:1 AI track: https://studiothielman.com/ai-talks#one-on-one (NL: https://studiothielman.com/nl/ai-talks#one-on-one)
 - Group workshop interest list: https://studiothielman.com/group-workshop (NL: https://studiothielman.com/nl/groepsworkshop)
 - AI masterclass interest list: https://studiothielman.com/ai-masterclass (NL: https://studiothielman.com/nl/masterclass-ai)
 
@@ -66,8 +65,7 @@ Pereboomsteenweg 49, 9180 Lokeren · +32 493 50 56 41 · info@studiothielman.com
 Visible FAQs (the only FAQPage structured data on the site):
 
 - Packages: https://studiothielman.com/packages and https://studiothielman.com/nl/packages
-- Workshops: https://studiothielman.com/workshops and https://studiothielman.com/nl/workshops
-- AI talks: https://studiothielman.com/ai-talks and https://studiothielman.com/nl/ai-talks
+- AI workshops and talks: https://studiothielman.com/ai-talks and https://studiothielman.com/nl/ai-talks
 
 ## Brand reference
 

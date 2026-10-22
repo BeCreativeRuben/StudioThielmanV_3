@@ -12,7 +12,7 @@ function mustInclude(source, needle, file) {
 
 const packages = read('src/locales/content/packages.en.ts')
 const talks = read('src/locales/content/aiTalks.en.ts')
-const workshops = read('src/locales/content/workshops.en.ts')
+const home = read('src/locales/content/home.en.ts')
 const group = read('src/locales/en.ts')
 
 for (const needle of ['€25/month', '+ €150 startup', '€40/month', '+ €250 startup', 'Price to be determined']) {
@@ -25,14 +25,19 @@ for (const needle of [
   "price: '€900'",
   "price: '€250'",
   '€1,000 excl. VAT',
+  '€1,000 for the two days',
+  'homework before day 2',
+  '€500 for up to 8 people',
+  '+€50 per extra person',
+  'Max. 15 people',
   'From €150 excl. VAT',
   'anywhere in Flanders (from Lokeren and the Waasland to Ghent, Antwerp and Brussels) and in the Netherlands. Online is possible in consultation.',
 ]) {
   mustInclude(talks, needle, 'aiTalks.en.ts')
 }
-for (const needle of ['€500 for up to 8 people', '+€50 per extra person', '€1,000 for the two days', 'Max. 15 people']) {
-  mustInclude(workshops, needle, 'workshops.en.ts')
-}
+mustInclude(home, '/ai-talks#hands-on', 'home.en.ts')
+mustInclude(home, '/ai-talks#one-on-one', 'home.en.ts')
+mustInclude(home, "to: '/group-workshop'", 'home.en.ts')
 mustInclude(group, 'One email when the date and location are set.', 'en.ts')
 
 const nap = 'Pereboomsteenweg 49, 9180 Lokeren · +32 493 50 56 41 · info@studiothielman.com · KBO 1034.790.654'
@@ -46,10 +51,9 @@ const pages = [
   ['Reviews', 'https://studiothielman.com/reviews', 'https://studiothielman.com/nl/reviews'],
   ['About', 'https://studiothielman.com/about', 'https://studiothielman.com/nl/about'],
   ['Contact', 'https://studiothielman.com/contact', 'https://studiothielman.com/nl/contact'],
-  ['Workshops', 'https://studiothielman.com/workshops', 'https://studiothielman.com/nl/workshops'],
-  ['In-company AI training', 'https://studiothielman.com/workshops/incompany', 'https://studiothielman.com/nl/workshops/incompany'],
-  ['1:1 AI training', 'https://studiothielman.com/workshops/1-1', 'https://studiothielman.com/nl/workshops/1-1'],
-  ['AI talks', 'https://studiothielman.com/ai-talks', 'https://studiothielman.com/nl/ai-talks'],
+  ['AI workshops and talks', 'https://studiothielman.com/ai-talks', 'https://studiothielman.com/nl/ai-talks'],
+  ['Hands-on workshop', 'https://studiothielman.com/ai-talks#hands-on', 'https://studiothielman.com/nl/ai-talks#hands-on'],
+  ['1:1 AI track', 'https://studiothielman.com/ai-talks#one-on-one', 'https://studiothielman.com/nl/ai-talks#one-on-one'],
   ['Group workshop interest list', 'https://studiothielman.com/group-workshop', 'https://studiothielman.com/nl/groepsworkshop'],
   ['AI masterclass interest list', 'https://studiothielman.com/ai-masterclass', 'https://studiothielman.com/nl/masterclass-ai'],
 ]
@@ -111,8 +115,7 @@ ${pageLines}
 Visible FAQs (the only FAQPage structured data on the site):
 
 - Packages: https://studiothielman.com/packages and https://studiothielman.com/nl/packages
-- Workshops: https://studiothielman.com/workshops and https://studiothielman.com/nl/workshops
-- AI talks: https://studiothielman.com/ai-talks and https://studiothielman.com/nl/ai-talks
+- AI workshops and talks: https://studiothielman.com/ai-talks and https://studiothielman.com/nl/ai-talks
 
 ## Brand reference
 

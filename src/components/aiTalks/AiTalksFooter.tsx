@@ -18,7 +18,7 @@ export default function AiTalksFooter({ hideWorkshops = false }: { hideWorkshops
         </div>
         <ul className="flex flex-wrap gap-x-6 gap-y-3 text-sm md:justify-center">
           <li><LocalizedLink to="/" className="text-white/80 hover:text-white">{f.links.studio}</LocalizedLink></li>
-          {!hideWorkshops && <li><LocalizedLink to="/workshops" className="text-white/80 hover:text-white">{f.links.workshops}</LocalizedLink></li>}
+          {!hideWorkshops && <li><a href="#formats" className="text-white/80 hover:text-white">{f.links.workshops}</a></li>}
           <li><LocalizedLink to="/contact" className="text-white/80 hover:text-white">{f.links.contact}</LocalizedLink></li>
           <li><LocalizedLink to="/privacy" className="text-white/80 hover:text-white">{f.links.privacy}</LocalizedLink></li>
         </ul>

@@ -9,6 +9,7 @@ import { getLatestBlogPost } from '../data/blog'
 import { getApiUrl } from '../utils/api'
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
+import NewTabLocalizedLink from '../components/NewTabLocalizedLink'
 import BookCallLink from '../components/BookCallLink'
 import { getPublishedReviewCount } from '../data/reviews'
 import { BUSINESS } from '../seo/site'
@@ -972,11 +973,19 @@ export default function Home() {
                           </div>
                         )}
                         <div className="flex gap-3">
-                          <LocalizedLink to={index === 6 ? '/workshops' : '/packages'}>
-                            <Button variant="outline" size="sm">
-                              {index === 6 ? c.cta.learnMore : c.viewPackagesArrow}
-                            </Button>
-                          </LocalizedLink>
+                          {index === 6 ? (
+                            <NewTabLocalizedLink to="/ai-talks">
+                              <Button variant="outline" size="sm">
+                                {c.cta.learnMore}
+                              </Button>
+                            </NewTabLocalizedLink>
+                          ) : (
+                            <LocalizedLink to="/packages">
+                              <Button variant="outline" size="sm">
+                                {c.viewPackagesArrow}
+                              </Button>
+                            </LocalizedLink>
+                          )}
                           {index === 6 ? (
                             <BookCallLink notes={h.workshopsTeaser.bookingNote} metadata={{ source: 'home-services-workshops' }}>
                               <Button variant="primary" size="sm">{c.cta.bookCall}</Button>
@@ -1038,12 +1047,20 @@ export default function Home() {
                 </div>
                 <p className="text-body-sm text-text-primary mb-4 flex-grow">{track.description}</p>
                 <div className="text-sm font-semibold text-primary mb-4">{track.meta}</div>
-                <LocalizedLink to={track.to} aria-label={'ctaLabel' in track ? track.ctaLabel : track.cta}>
-                  <Button variant="outline" size="sm" className="w-full">
-                    <span aria-hidden="true">{track.cta}</span>
-                    <span className="sr-only">{'ctaLabel' in track ? track.ctaLabel : track.cta}</span>
-                  </Button>
-                </LocalizedLink>
+                {track.to.startsWith('/ai-talks') ? (
+                  <NewTabLocalizedLink to={track.to} className="block">
+                    <Button variant="outline" size="sm" className="w-full">
+                      <span aria-hidden="true">{track.cta}</span>
+                      <span className="sr-only">{track.ctaLabel}</span>
+                    </Button>
+                  </NewTabLocalizedLink>
+                ) : (
+                  <LocalizedLink to={track.to} aria-label={track.ctaLabel}>
+                    <Button variant="outline" size="sm" className="w-full">
+                      <span aria-hidden="true">{track.cta}</span>
+                    </Button>
+                  </LocalizedLink>
+                )}
               </motion.div>
             ))}
           </div>
@@ -1066,15 +1083,10 @@ export default function Home() {
             >
               {h.workshopsTeaser.proofLink} →
             </a>
-            <p className="mb-8">
-              <LocalizedLink to="/ai-talks" className="text-body font-semibold text-primary underline underline-offset-4 hover:no-underline">
-                {h.workshopsTeaser.talksLink} →
-              </LocalizedLink>
-            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <LocalizedLink to="/workshops">
+              <NewTabLocalizedLink to="/ai-talks">
                 <Button variant="primary" size="lg">{h.workshopsTeaser.viewAll}</Button>
-              </LocalizedLink>
+              </NewTabLocalizedLink>
               <BookCallLink notes={h.workshopsTeaser.bookingNote} metadata={{ source: 'home-workshops' }}>
                 <Button variant="outline" size="lg">{c.cta.bookCall}</Button>
               </BookCallLink>
