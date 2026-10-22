@@ -70,7 +70,7 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
     return `mailto:${BUSINESS.email}?subject=${encodeURIComponent(r.mailSubject)}&body=${encodeURIComponent(body)}`
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const next: Partial<Record<FieldKey, boolean>> = {}
     if (!form.name.trim()) next.name = true
@@ -84,6 +84,7 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
     }
 
     setStatus('submitting')
+    const website = new FormData(e.currentTarget).get('website')
     const shortDescription = `AI talk request: ${form.format} · ${form.audience}`.slice(0, 100)
     try {
       const response = await fetch('/api/submissions', {
@@ -100,6 +101,7 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
           hasExistingWebsite: 'no',
           existingWebsiteUrl: '',
           source: 'ai-talks',
+          website: typeof website === 'string' ? website : '',
           aiTalk: {
             name: form.name.trim(),
             organisation: form.organisation.trim(),
@@ -142,40 +144,46 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-5">
+      <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </label>
+      </div>
       <div className="grid gap-5 sm:grid-cols-2">
-        <label className="block" data-field="name">
+        <label className="block" data-field="name" htmlFor="aitalk-name">
           {label(r.fields.name)}
-          <input className={inputClass(errors.name)} value={form.name} onChange={(e) => update('name', e.target.value)} autoComplete="name" required />
-          {errors.name && <span className="mt-1 block text-sm text-red-300">{r.errors.required}</span>}
+          <input id="aitalk-name" name="name" className={inputClass(errors.name)} value={form.name} onChange={(e) => update('name', e.target.value)} autoComplete="name" required aria-invalid={errors.name || undefined} aria-describedby={errors.name ? 'aitalk-name-error' : undefined} />
+          {errors.name && <span id="aitalk-name-error" className="mt-1 block text-sm text-red-300">{r.errors.required}</span>}
         </label>
-        <label className="block">
+        <label className="block" htmlFor="aitalk-org">
           {label(r.fields.organisation, true)}
-          <input className={inputClass()} value={form.organisation} placeholder={r.fields.organisationPlaceholder} onChange={(e) => update('organisation', e.target.value)} autoComplete="organization" />
+          <input id="aitalk-org" name="organization" className={inputClass()} value={form.organisation} placeholder={r.fields.organisationPlaceholder} onChange={(e) => update('organisation', e.target.value)} autoComplete="organization" />
         </label>
-        <label className="block" data-field="email">
+        <label className="block" data-field="email" htmlFor="aitalk-email">
           {label(r.fields.email)}
-          <input type="email" className={inputClass(errors.email)} value={form.email} onChange={(e) => update('email', e.target.value)} autoComplete="email" required />
-          {errors.email && <span className="mt-1 block text-sm text-red-300">{r.errors.email}</span>}
+          <input id="aitalk-email" name="email" type="email" className={inputClass(errors.email)} value={form.email} onChange={(e) => update('email', e.target.value)} autoComplete="email" required aria-invalid={errors.email || undefined} aria-describedby={errors.email ? 'aitalk-email-error' : undefined} />
+          {errors.email && <span id="aitalk-email-error" className="mt-1 block text-sm text-red-300">{r.errors.email}</span>}
         </label>
-        <label className="block">
+        <label className="block" htmlFor="aitalk-phone">
           {label(r.fields.phone, true)}
-          <input type="tel" className={inputClass()} value={form.phone} onChange={(e) => update('phone', e.target.value)} autoComplete="tel" />
+          <input id="aitalk-phone" name="tel" type="tel" className={inputClass()} value={form.phone} onChange={(e) => update('phone', e.target.value)} autoComplete="tel" />
         </label>
         <label className="block">
           {label(r.fields.audience)}
-          <select className={inputClass()} value={form.audience} onChange={(e) => update('audience', e.target.value)}>
+          <select id="aitalk-audience" name="audience" className={inputClass()} value={form.audience} onChange={(e) => update('audience', e.target.value)}>
             {r.fields.audienceOptions.map((o) => <option key={o} value={o} className="text-black">{o}</option>)}
           </select>
         </label>
         <label className="block">
           {label(r.fields.format)}
-          <select className={inputClass()} value={form.format} onChange={(e) => update('format', e.target.value)}>
+          <select id="aitalk-format" name="format" className={inputClass()} value={form.format} onChange={(e) => update('format', e.target.value)}>
             {r.fields.formatOptions.map((o) => <option key={o} value={o} className="text-black">{o}</option>)}
           </select>
         </label>
         <label className="block sm:col-span-2">
           {label(r.fields.theme)}
-          <select className={inputClass()} value={form.theme} onChange={(e) => update('theme', e.target.value)}>
+          <select id="aitalk-theme" name="theme" className={inputClass()} value={form.theme} onChange={(e) => update('theme', e.target.value)}>
             <option value={r.fields.themeAny} className="text-black">{r.fields.themeAny}</option>
             {themes.map((th) => {
               const v = `${th.number} · ${th.title}`
@@ -185,7 +193,7 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
         </label>
         <label className="block">
           {label(r.fields.groupSize, true)}
-          <input className={inputClass()} value={form.groupSize} inputMode="numeric" onChange={(e) => update('groupSize', e.target.value)} />
+          <input id="aitalk-group" name="group-size" className={inputClass()} value={form.groupSize} inputMode="numeric" onChange={(e) => update('groupSize', e.target.value)} />
         </label>
         <fieldset className="block sm:col-span-2">
           <legend className="p-0">{label(r.fields.date, true)}</legend>
@@ -206,7 +214,7 @@ export default function AiTalksRequestForm({ initialFormat }: { initialFormat?: 
         </fieldset>
         <label className="block sm:col-span-2">
           {label(r.fields.message, true)}
-          <textarea className={`${inputClass()} min-h-[120px]`} value={form.message} placeholder={r.fields.messagePlaceholder} maxLength={1500} onChange={(e) => update('message', e.target.value)} />
+          <textarea id="aitalk-message" name="message" className={`${inputClass()} min-h-[120px]`} value={form.message} placeholder={r.fields.messagePlaceholder} maxLength={1500} onChange={(e) => update('message', e.target.value)} />
         </label>
       </div>
 

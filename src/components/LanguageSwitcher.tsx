@@ -12,7 +12,7 @@ export default function LanguageSwitcher({ className = '' }: { className?: strin
       <button
         type="button"
         onClick={() => switchLocale('nl-BE')}
-        className={`rounded-md px-2.5 py-1 transition-colors ${
+        className={`inline-flex items-center justify-center min-h-6 min-w-6 rounded-md px-2.5 py-1 transition-colors ${
           locale === 'nl-BE' ? 'bg-cta text-white' : 'opacity-80 hover:opacity-100'
         }`}
         aria-pressed={locale === 'nl-BE'}
@@ -22,7 +22,7 @@ export default function LanguageSwitcher({ className = '' }: { className?: strin
       <button
         type="button"
         onClick={() => switchLocale('en')}
-        className={`rounded-md px-2.5 py-1 transition-colors ${
+        className={`inline-flex items-center justify-center min-h-6 min-w-6 rounded-md px-2.5 py-1 transition-colors ${
           locale === 'en' ? 'bg-cta text-white' : 'opacity-80 hover:opacity-100'
         }`}
         aria-pressed={locale === 'en'}

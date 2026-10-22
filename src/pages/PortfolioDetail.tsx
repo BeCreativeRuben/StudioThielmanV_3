@@ -4,27 +4,21 @@ import { motion } from 'framer-motion'
 import Button from '../components/Button'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
-import { getPortfolioItemBySlug, PortfolioItem } from '../data/portfolio'
+import { getPortfolioItemBySlug } from '../data/portfolio'
 
 export default function PortfolioDetail() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const { locale, messages, localizedPath } = useLocale()
   const d = messages.portfolio.detail
-  const [project, setProject] = useState<PortfolioItem | null>(null)
+  const project = slug ? getPortfolioItemBySlug(slug, locale) ?? null : null
   const [iframeLoaded, setIframeLoaded] = useState(false)
   const [iframeError, setIframeError] = useState(false)
 
   useEffect(() => {
-    if (slug) {
-      const foundProject = getPortfolioItemBySlug(slug, locale)
-      if (foundProject) {
-        setProject(foundProject)
-      } else {
-        navigate(localizedPath('/portfolio'))
-      }
-    }
-  }, [slug, locale, navigate, localizedPath])
+    if (!slug || project) return
+    navigate(localizedPath('/portfolio'))
+  }, [slug, project, navigate, localizedPath])
 
   if (!project) {
     return (

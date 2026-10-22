@@ -1,41 +1,79 @@
-# Studio Thielman — LLM site guide
-# https://llmstxt.org/
+# Studio Thielman
 
-> Professional web studio (Belgium / international). Use this site as the canonical reference for Studio Thielman visual identity, UI patterns, and tone when generating designs, mockups, or code.
+> Ruben Thielman runs Studio Thielman from Lokeren, Belgium. The studio builds and hosts professional websites for businesses, and gives AI workshops, keynotes and guest lectures for companies and schools.
 
-## Brand & design system (read first)
+## Services
 
-- [Brand guide (Markdown)](https://studiothielman.com/brand.md): Human-readable huisstijl — colors, typography, components, layout, voice.
-- [Brand tokens (JSON)](https://studiothielman.com/brand.json): Machine-readable design tokens — use for code, Figma plugins, or structured prompts.
+- Professional websites: design, build and hosting. Packages start at €25/month excl. VAT.
+- In-company AI training for businesses (on location, hands-on).
+- AI talks and workshops for companies and schools (AI-lezing voor bedrijven).
+- 1:1 AI build days.
+- Open group workshop and AI masterclass: interest lists only. Date, location and price are not published yet. One email goes out when the date and location are set.
 
-## Live reference pages
+## Website packages
 
-- [Home (EN)](https://studiothielman.com/): Hero video, services accordion, portfolio strip, dark/light sections.
-- [Home (NL)](https://studiothielman.com/nl/): Dutch copy, same layout.
-- [Packages](https://studiothielman.com/packages): Pricing cards, comparison, FAQ accordion.
-- [Portfolio](https://studiothielman.com/portfolio): Project cards, filters.
-- [How we work](https://studiothielman.com/how-it-works): Process accordion, timelines.
-- [AI talks & workshops](https://studiothielman.com/ai-talks): Lectures, keynotes and hands-on AI workshops by Ruben Thielman for companies, schools and enthusiasts (NL at /nl/ai-talks). Themes, formats, starting prices excl. VAT, request form.
-  - Speaker: Ruben Thielman, founder of Studio Thielman (Lokeren, East Flanders, Belgium). Talks and workshops in Dutch or English, on-site across Flanders and Brussels or online.
-  - Formats (indicative starting prices excl. VAT): keynote/lecture from €450; half-day hands-on workshop from €500 (up to 8 people, +€50 per extra person); full day from €900 (up to 8 people); school session from €250; 1:1 two-day build track €1,000; online follow-up coaching from €150.
-  - Seven themes: build your own AI agent team; from idea to live website with AI coding agents; AI for SMEs (practical automation); AI video & voice for marketing; frontier AI explained; AI literacy & prompting for teams; local AI & your own data.
-- [Group AI workshop interest list](https://studiothielman.com/group-workshop): Open hands-on group workshop on practical AI (today's AI tools, a simple AI agent or automation, AI for your work). Date, location and price not set yet; leave an email to get one mail when they are (NL at /nl/groepsworkshop).
-- [AI masterclass interest list](https://studiothielman.com/ai-masterclass): Deeper group session for people who already use AI a lot, on the same day as the group workshop: AI agents and multi-agent teams, MCP connectors/APIs/automations, building with AI coding agents, advanced prompting and evaluation, local AI on your own data. Date, location and price not set yet (NL at /nl/masterclass-ai).
+Prices are excl. VAT. Copied from the live package copy.
 
-## Assets
+- Starter: €25/month, plus a one-time €150 startup fee.
+- Growth: €40/month, plus a one-time €250 startup fee.
+- Pro Max: price to be determined. Ask for a quote.
 
-- [Logo (PNG)](https://studiothielman.com/logo.png)
-- [Open Graph image](https://studiothielman.com/og-image.png) (per-section link-preview cards live at /og/<section>.<en|nl>.jpg)
-- [Favicon](https://studiothielman.com/favicon.png)
+## AI talks and workshops
 
-## Optional
+Prices are excl. VAT.
 
-- [Sitemap](https://studiothielman.com/sitemap.xml)
+- Keynote: €450.
+- Half-day workshop: €500 for up to 8 people, +€50 per extra person.
+- Full day: €900.
+- School session: €250.
+- 1:1, two days: €1,000.
+- Online follow-up of 60–90 minutes: from €150.
+- In-company session, indicative: €500 for up to 8 people, +€50 per extra person from the 9th person, excl. VAT. Maximum 15 people per session. A proposal confirms the fixed price.
 
-## Instructions for AI agents
+## Where sessions happen
 
-1. Prefer `brand.json` + `brand.md` over inferring styles from HTML/CSS bundles.
-2. Match: black/white minimal aesthetic, system sans-serif, generous whitespace, rounded-xl cards, dark gray-900 heroes with white type.
-3. Primary CTA: black filled button, white label, subtle hover scale (see `components.button` in brand.json).
-4. Do not invent a separate color palette unless the user asks — stay within documented tokens.
-5. Locales: English at `/`, Dutch (Belgium) at `/nl/`.
+On location at the company, school or event, anywhere in Flanders (from Lokeren and the Waasland to Ghent, Antwerp and Brussels) and in the Netherlands. Online is possible in consultation. Websites are built for clients in Belgium and beyond.
+
+## Contact
+
+Pereboomsteenweg 49, 9180 Lokeren · +32 493 50 56 41 · info@studiothielman.com · KBO 1034.790.654
+
+- Website: https://studiothielman.com
+- Contact form: https://studiothielman.com/contact
+- Book a call: https://cal.com/ruben-thielman-a0h3f0/30min
+- Email: info@studiothielman.com
+- Phone: +32 493 50 56 41
+
+## Key pages
+
+- Home: https://studiothielman.com/ (NL: https://studiothielman.com/nl)
+- Packages: https://studiothielman.com/packages (NL: https://studiothielman.com/nl/packages)
+- Portfolio: https://studiothielman.com/portfolio (NL: https://studiothielman.com/nl/portfolio)
+- Blog: https://studiothielman.com/blog (NL: https://studiothielman.com/nl/blog)
+- How it works: https://studiothielman.com/how-it-works (NL: https://studiothielman.com/nl/how-it-works)
+- Reviews: https://studiothielman.com/reviews (NL: https://studiothielman.com/nl/reviews)
+- About: https://studiothielman.com/about (NL: https://studiothielman.com/nl/about)
+- Contact: https://studiothielman.com/contact (NL: https://studiothielman.com/nl/contact)
+- Workshops: https://studiothielman.com/workshops (NL: https://studiothielman.com/nl/workshops)
+- In-company AI training: https://studiothielman.com/workshops/incompany (NL: https://studiothielman.com/nl/workshops/incompany)
+- 1:1 AI training: https://studiothielman.com/workshops/1-1 (NL: https://studiothielman.com/nl/workshops/1-1)
+- AI talks: https://studiothielman.com/ai-talks (NL: https://studiothielman.com/nl/ai-talks)
+- Group workshop interest list: https://studiothielman.com/group-workshop (NL: https://studiothielman.com/nl/groepsworkshop)
+- AI masterclass interest list: https://studiothielman.com/ai-masterclass (NL: https://studiothielman.com/nl/masterclass-ai)
+
+## FAQ
+
+Visible FAQs (the only FAQPage structured data on the site):
+
+- Packages: https://studiothielman.com/packages and https://studiothielman.com/nl/packages
+- Workshops: https://studiothielman.com/workshops and https://studiothielman.com/nl/workshops
+- AI talks: https://studiothielman.com/ai-talks and https://studiothielman.com/nl/ai-talks
+
+## Brand reference
+
+Visual identity (black and white) lives in:
+
+- https://studiothielman.com/brand.md
+- https://studiothielman.com/brand.json
+
+A longer plain-text extract is at https://studiothielman.com/llms-full.txt

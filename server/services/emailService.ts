@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+import { withEmailFooterText } from './emailBrand.js'
 import {
   getAutoReplyTemplate,
   getChatNotificationTemplate,
@@ -25,12 +26,14 @@ interface SubmissionData {
   packageOther?: string
   hasExistingWebsite?: string
   existingWebsiteUrl?: string
+  locale?: 'nl' | 'en'
 }
 
 interface ChatMessageData {
   userName?: string
-  userEmail: string
+  userEmail?: string
   message: string
+  locale?: 'nl' | 'en'
 }
 
 export type EmailStepStatus = 'sent' | 'skipped' | 'failed'
@@ -102,7 +105,7 @@ async function sendEmail(params: {
     to: params.to,
     subject: params.subject,
     html: params.html,
-    text: params.text,
+    text: withEmailFooterText(params.text),
     replyTo: params.replyTo,
   })
 
@@ -113,8 +116,8 @@ async function sendEmail(params: {
   console.log('Resend email sent:', { id: data?.id, to: params.to, subject: params.subject })
 }
 
-async function sendAutoReply(email: string, userName?: string): Promise<void> {
-  const template = getAutoReplyTemplate(userName)
+async function sendAutoReply(email: string, userName?: string, lang: 'nl' | 'en' = 'en'): Promise<void> {
+  const template = getAutoReplyTemplate(userName, lang)
 
   await sendEmail({
     to: email,
@@ -189,7 +192,7 @@ export async function sendSubmissionNotification(data: SubmissionData): Promise<
   }
 
   try {
-    await sendAutoReply(data.email, data.name)
+    await sendAutoReply(data.email, data.name, data.locale === 'nl' ? 'nl' : 'en')
     result.autoReply = 'sent'
   } catch (error) {
     result.autoReply = 'failed'
@@ -214,15 +217,11 @@ export async function sendChatMessageNotification(data: ChatMessageData): Promis
     return result
   }
 
-  if (!data.userEmail) {
-    result.error = 'No visitor email provided'
-    return result
-  }
-
   const notifyEmail = process.env.RESEND_NOTIFY_EMAIL!
+  const visitorEmail = data.userEmail
   const template = getChatNotificationTemplate({
     userName: data.userName || 'Anonymous',
-    userEmail: data.userEmail,
+    userEmail: visitorEmail || 'not provided',
     message: data.message,
     receivedAt: formatSubmittedAt(),
   })
@@ -233,7 +232,7 @@ export async function sendChatMessageNotification(data: ChatMessageData): Promis
       subject: template.subject,
       text: template.text,
       html: template.html,
-      replyTo: data.userEmail,
+      replyTo: visitorEmail,
     })
     result.notification = 'sent'
     console.log('Chat notification email sent successfully')
@@ -244,8 +243,13 @@ export async function sendChatMessageNotification(data: ChatMessageData): Promis
     return result
   }
 
+  if (!visitorEmail) {
+    result.autoReply = 'skipped'
+    return result
+  }
+
   try {
-    await sendAutoReply(data.userEmail, data.userName)
+    await sendAutoReply(visitorEmail, data.userName, data.locale === 'nl' ? 'nl' : 'en')
     result.autoReply = 'sent'
   } catch (error) {
     result.autoReply = 'failed'

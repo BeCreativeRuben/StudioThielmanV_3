@@ -61,6 +61,14 @@ function extractSlugsFromBlock(block, { skipComingSoon = false, respectVisibleFr
   return slugs
 }
 
+function parsePortfolioSlugs(filePath) {
+  const source = normalize(readFileSync(join(process.cwd(), filePath), 'utf8'))
+  const start = source.indexOf('export const portfolioItems')
+  // Fall back to the whole file so a renamed export cannot drop case studies.
+  const block = start === -1 ? source : source.slice(start)
+  return extractSlugsFromBlock(block, { skipComingSoon: true })
+}
+
 function parseVisibleBlogSlugsFromFile(filePath) {
   const source = normalize(readFileSync(join(process.cwd(), filePath), 'utf8'))
   const markers = ['export const postsNl', 'export const postsEn', 'export const newBlogPosts', 'export const blogPosts']
@@ -91,9 +99,9 @@ const enPathOf = (path) => {
 function hasBothLanguages(en) {
   if (staticPaths.includes(en)) return true
   const blogSlug = en.match(/^\/blog\/([^/]+)$/)?.[1]
-  if (blogSlug) return enBlog.has(blogSlug) && nlBlog.has(blogSlug)
+  if (blogSlug) return blogEn.has(blogSlug) && blogNl.has(blogSlug)
   const portfolioSlug = en.match(/^\/portfolio\/([^/]+)$/)?.[1]
-  if (portfolioSlug) return enPortfolio.has(portfolioSlug) && nlPortfolio.has(portfolioSlug)
+  if (portfolioSlug) return portfolioEn.has(portfolioSlug) && portfolioNl.has(portfolioSlug)
   return false
 }
 
@@ -117,15 +125,8 @@ function urlEntry(path, changefreq, priority) {
   </url>`
 }
 
-function parsePortfolioSlugsFromFile(filePath) {
-  const source = normalize(readFileSync(join(process.cwd(), filePath), 'utf8'))
-  const start = source.search(/export const portfolioItems/)
-  const block = start === -1 ? '' : source.slice(start)
-  return extractSlugsFromBlock(block, { skipComingSoon: true })
-}
-
-const portfolioSlugsEn = parsePortfolioSlugsFromFile('src/data/portfolio/items.en.ts')
-const portfolioSlugsNl = parsePortfolioSlugsFromFile('src/data/portfolio/items.nl-BE.ts')
+const portfolioEn = new Set(parsePortfolioSlugs('src/data/portfolio/items.en.ts'))
+const portfolioNl = new Set(parsePortfolioSlugs('src/data/portfolio/items.nl-BE.ts'))
 const blogSlugsNl = [
   ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.nl-BE.ts'),
   ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.nl-BE.additional.ts'),
@@ -134,11 +135,8 @@ const blogSlugsEn = [
   ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.ts'),
   ...parseVisibleBlogSlugsFromFile('src/data/blog/posts.en.additional.ts'),
 ]
-
-const enBlog = new Set(blogSlugsEn)
-const nlBlog = new Set(blogSlugsNl)
-const enPortfolio = new Set(portfolioSlugsEn)
-const nlPortfolio = new Set(portfolioSlugsNl)
+const blogEn = new Set(blogSlugsEn)
+const blogNl = new Set(blogSlugsNl)
 
 /**
  * Permanent redirects for a URL whose only indexable version is the other language.
@@ -146,17 +144,17 @@ const nlPortfolio = new Set(portfolioSlugsNl)
  */
 function requiredOneLanguageRedirects() {
   const required = []
-  for (const slug of nlBlog) {
-    if (!enBlog.has(slug)) required.push({ source: `/blog/${slug}`, destination: `${NL_PREFIX}/blog/${slug}` })
+  for (const slug of blogNl) {
+    if (!blogEn.has(slug)) required.push({ source: `/blog/${slug}`, destination: `${NL_PREFIX}/blog/${slug}` })
   }
-  for (const slug of enBlog) {
-    if (!nlBlog.has(slug)) required.push({ source: `${NL_PREFIX}/blog/${slug}`, destination: `/blog/${slug}` })
+  for (const slug of blogEn) {
+    if (!blogNl.has(slug)) required.push({ source: `${NL_PREFIX}/blog/${slug}`, destination: `/blog/${slug}` })
   }
-  for (const slug of nlPortfolio) {
-    if (!enPortfolio.has(slug)) required.push({ source: `/portfolio/${slug}`, destination: `${NL_PREFIX}/portfolio/${slug}` })
+  for (const slug of portfolioNl) {
+    if (!portfolioEn.has(slug)) required.push({ source: `/portfolio/${slug}`, destination: `${NL_PREFIX}/portfolio/${slug}` })
   }
-  for (const slug of enPortfolio) {
-    if (!nlPortfolio.has(slug)) required.push({ source: `${NL_PREFIX}/portfolio/${slug}`, destination: `/portfolio/${slug}` })
+  for (const slug of portfolioEn) {
+    if (!portfolioNl.has(slug)) required.push({ source: `${NL_PREFIX}/portfolio/${slug}`, destination: `/portfolio/${slug}` })
   }
   return required
 }
@@ -179,8 +177,8 @@ if (missingRedirects.length) {
 const allPaths = [
   ...staticPaths,
   ...staticPaths.map(nlPath),
-  ...portfolioSlugsEn.map((slug) => `/portfolio/${slug}`),
-  ...portfolioSlugsNl.map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
+  ...[...portfolioEn].map((slug) => `/portfolio/${slug}`),
+  ...[...portfolioNl].map((slug) => `${NL_PREFIX}/portfolio/${slug}`),
   ...blogSlugsEn.map((slug) => `/blog/${slug}`),
   ...blogSlugsNl.map((slug) => `${NL_PREFIX}/blog/${slug}`),
 ]

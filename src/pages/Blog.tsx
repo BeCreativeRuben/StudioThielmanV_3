@@ -64,9 +64,13 @@ export default function Blog() {
                         <div className="w-full h-56 bg-gray-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                           {post.featuredImage ? (
                             <img
-                              src={post.featuredImage}
+                              src={post.featuredImage.replace(/w=\d+/, 'w=640').replace(/h=\d+/, 'h=360')}
                               alt={post.title}
+                              width={640}
+                              height={360}
                               className="w-full h-full object-cover"
+                              loading="lazy"
+                              decoding="async"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement
                                 target.style.display = 'none'
@@ -86,11 +90,12 @@ export default function Blog() {
                           <div className="text-xs text-text-secondary uppercase tracking-wider">{t('common.article')}</div>
                           <span className="text-xs text-text-secondary bg-gray-100 px-2 py-1 rounded">{post.date}</span>
                         </div>
-                        <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-cta transition-colors line-clamp-2">{post.title}</h3>
+                        <h2 className="text-xl font-bold text-primary mb-3 group-hover:text-cta transition-colors line-clamp-2">{post.title}</h2>
                         <p className="text-body-sm text-text-primary mb-4 flex-grow leading-relaxed line-clamp-3">{post.excerpt}</p>
 
                         <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-auto">
                           <span className="text-sm font-semibold text-primary group-hover:text-cta transition-colors flex items-center gap-1">
+                            <span className="sr-only">{post.title}: </span>
                             {t('common.cta.readMore')}
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

@@ -6,6 +6,14 @@ import { localizedPath, stripLocalePrefix } from '../i18n/paths'
 import { getMessages } from '../i18n/messages'
 import { SITE_URL } from './site'
 import { ogImageForPath } from './ogImages'
+import { fitMeta, pageTitle } from './text'
+
+function absoluteImage(src?: string): string | undefined {
+  if (!src) return undefined
+  if (src.startsWith('http')) return src
+  if (src.startsWith('/')) return `${SITE_URL}${src}`
+  return undefined
+}
 
 export interface PageSeoMeta {
   title: string
@@ -13,14 +21,11 @@ export interface PageSeoMeta {
   path: string
   noindex?: boolean
   ogImage?: string
+  ogType?: 'website' | 'article'
   locale: AppLocale
-  /** Set together, and only when that language version is an indexable 200 page. */
+  /** Set together, and only when that language version is an indexable page. */
   alternateEnPath?: string
   alternateNlPath?: string
-}
-
-function pageTitle(siteName: string, primary: string): string {
-  return `${primary} | ${siteName}`
 }
 
 /**
@@ -82,13 +87,14 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
     const slug = portfolioMatch[1]
     const project = getPortfolioItemBySlug(slug, locale)
     if (project && !project.comingSoon) {
+      const detailPath = `/portfolio/${slug}`
       return {
-        path: localizedPath(path, locale),
+        path: localizedPath(detailPath, locale),
         locale,
         ...alternates,
         title: pageTitle(siteName, project.title),
-        description: project.description,
-        ogImage: project.screenshots[0]?.startsWith('http') ? project.screenshots[0] : ogImageForPath(path, locale),
+        description: fitMeta(project.description, 155),
+        ogImage: absoluteImage(project.screenshots[0]) || ogImageForPath(path, locale),
       }
     }
   }
@@ -96,15 +102,19 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
   const blogMatch = path.match(/^\/blog\/([^/]+)$/)
   if (blogMatch) {
     const slug = blogMatch[1]
-    const post = getBlogPostBySlug(slug, locale === 'nl-BE' ? 'nl-BE' : 'en')
+    const enPost = getBlogPostBySlug(slug, 'en')
+    const nlPost = getBlogPostBySlug(slug, 'nl-BE')
+    const post = locale === 'nl-BE' ? nlPost : enPost
     if (post) {
+      const detailPath = `/blog/${slug}`
       return {
-        path: localizedPath(path, locale),
+        path: localizedPath(detailPath, locale),
         locale,
         ...alternates,
         title: pageTitle(siteName, post.title),
-        description: post.excerpt,
-        ogImage: post.featuredImage || ogImageForPath(path, locale),
+        description: fitMeta(post.excerpt, 155),
+        ogImage: absoluteImage(post.featuredImage) || ogImageForPath(path, locale),
+        ogType: 'article',
       }
     }
   }
@@ -115,7 +125,7 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
       locale,
       ...alternates,
       title: pageTitle(siteName, routeMeta.title),
-      description: routeMeta.description,
+      description: fitMeta(routeMeta.description, 155),
       ogImage: ogImageForPath(path, locale),
     }
   }
@@ -136,7 +146,7 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
       path: localizedPath(path, locale),
       locale,
       title: pageTitle(siteName, h.seo.title),
-      description: h.seo.description,
+      description: fitMeta(h.seo.description, 155),
       ogImage: '/images/portfolio/hackers-and-ravers/team.webp',
       noindex: true,
     }
@@ -145,8 +155,8 @@ export function resolvePageSeo(pathname: string): PageSeoMeta {
   return {
     path: localizedPath(path, locale),
     locale,
-    title: pageTitle(siteName, messages.seo.tagline),
-    description: messages.seo.defaultDescription,
+    title: pageTitle(siteName, messages.common.notFound?.title || 'Page not found'),
+    description: messages.common.notFound?.body || messages.seo.defaultDescription,
     noindex: true,
   }
 }

@@ -9,7 +9,8 @@ import {
   wrapEmailLayout,
 } from './emailBrand.js'
 
-export function getAutoReplyTemplate(userName?: string): { subject: string; html: string; text: string } {
+export function getAutoReplyTemplate(userName?: string, lang: 'nl' | 'en' = 'en'): { subject: string; html: string; text: string } {
+  if (lang === 'nl') return getAutoReplyTemplateNl(userName)
   const greeting = userName ? `Hi ${userName},` : 'Hi there,'
   const subject = 'Thanks for reaching out — Studio Thielman'
 
@@ -46,6 +47,7 @@ export function getAutoReplyTemplate(userName?: string): { subject: string; html
     heading: 'Thank you for reaching out',
     subheading: "We've received your details and will be in touch soon.",
     bodyHtml,
+    lang: 'en',
   })
 
   const text = `${greeting}
@@ -66,6 +68,70 @@ Ruben Thielman
 Founder & Developer, Studio Thielman
 
 ${EMAIL_BRAND.siteUrl}
+`
+
+  return { subject, html, text }
+}
+
+function getAutoReplyTemplateNl(userName?: string): { subject: string; html: string; text: string } {
+  const greeting = userName ? `Hoi ${userName},` : 'Hoi,'
+  const subject = 'Bedankt voor je bericht — Studio Thielman'
+
+  const bodyHtml = [
+    emailParagraph(`<strong>${escapeHtml(greeting)}</strong>`, { marginBottom: '16px' }),
+    emailParagraph(
+      'Bedankt dat je Studio Thielman contacteert. Ik kijk ernaar uit om meer te horen over je project en hoe we je online kunnen helpen groeien.'
+    ),
+    emailCallout(
+      'Antwoord binnen 24 uur',
+      'Je hoort binnen <strong>24 uur</strong> van me. Ik hou communicatie helder en persoonlijk.'
+    ),
+    emailParagraph('Om het eerste gesprek vlot te maken, helpt het als je dit al kunt delen:'),
+    emailList([
+      'Je doelen en visie voor het project',
+      'Pagina’s of functies die je al in gedachten hebt',
+      'Je ideale timing',
+      'Vragen die je meteen beantwoord wil zien',
+    ]),
+    emailParagraph(
+      'Geen probleem als nog niet alles vastligt — dat werken we samen uit.',
+      { marginBottom: '24px' }
+    ),
+    emailParagraph(
+      '<strong>Ruben Thielman</strong><br><span style="color:#666666;font-size:14px;">Oprichter &amp; developer</span>',
+      { marginBottom: '0' }
+    ),
+  ].join('')
+
+  const html = wrapEmailLayout({
+    title: subject,
+    preheader: 'We ontvingen je bericht en antwoorden binnen 24 uur.',
+    badge: 'Bericht ontvangen',
+    heading: 'Bedankt voor je bericht',
+    subheading: 'We hebben je gegevens ontvangen en nemen snel contact op.',
+    bodyHtml,
+    lang: 'nl',
+    footerCta: { label: 'Naar de website', href: 'https://studiothielman.com/nl' },
+  })
+
+  const text = `${greeting}
+
+Bedankt dat je Studio Thielman contacteert. Ik kijk ernaar uit om meer te horen over je project.
+
+Antwoord binnen 24 uur
+Je hoort binnen 24 uur van me.
+
+Ter voorbereiding:
+• Je doelen en visie voor het project
+• Pagina’s of functies die je in gedachten hebt
+• Je ideale timing
+• Vragen die je meteen beantwoord wil zien
+
+Met vriendelijke groet,
+Ruben Thielman
+Oprichter & developer, Studio Thielman
+
+https://studiothielman.com/nl
 `
 
   return { subject, html, text }

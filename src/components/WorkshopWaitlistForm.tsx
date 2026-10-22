@@ -127,14 +127,17 @@ export default function WorkshopWaitlistForm() {
           </label>
           <input
             id="waitlist-name"
+            name="name"
             type="text"
             autoComplete="name"
+            aria-invalid={fieldErrors.name || undefined}
+            aria-describedby={fieldErrors.name ? 'waitlist-name-error' : undefined}
             maxLength={100}
             value={form.name}
             onChange={(e) => update('name', e.target.value)}
             className={inputClass(Boolean(fieldErrors.name))}
           />
-          {fieldErrors.name && <p className="mt-1 text-sm text-red-600">{w.errors.required}</p>}
+          {fieldErrors.name && <p id="waitlist-name-error" className="mt-1 text-sm text-red-600">{w.errors.required}</p>}
         </div>
 
         <div data-waitlist-field="email">
@@ -143,14 +146,17 @@ export default function WorkshopWaitlistForm() {
           </label>
           <input
             id="waitlist-email"
+            name="email"
             type="email"
             autoComplete="email"
+            aria-invalid={fieldErrors.email || undefined}
+            aria-describedby={fieldErrors.email ? 'waitlist-email-error' : undefined}
             maxLength={254}
             value={form.email}
             onChange={(e) => update('email', e.target.value)}
             className={inputClass(Boolean(fieldErrors.email))}
           />
-          {fieldErrors.email && <p className="mt-1 text-sm text-red-600">{w.errors.email}</p>}
+          {fieldErrors.email && <p id="waitlist-email-error" className="mt-1 text-sm text-red-600">{w.errors.email}</p>}
         </div>
 
         <div>
@@ -159,6 +165,7 @@ export default function WorkshopWaitlistForm() {
           </label>
           <input
             id="waitlist-company"
+            name="organization"
             type="text"
             autoComplete="organization"
             maxLength={150}

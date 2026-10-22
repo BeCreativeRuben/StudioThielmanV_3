@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
+import { clearAnalyticsCookies, loadMailchimp } from '../utils/consent'
 
 type ConsentChoice = 'accept' | 'reject'
 
@@ -52,8 +53,7 @@ function updateGtagConsent(choice: ConsentChoice) {
 
 export default function CookieConsentBanner() {
   const { t } = useLocale()
-  const savedChoice = useMemo(() => getStoredChoice(), [])
-  const [isOpen, setIsOpen] = useState(savedChoice === null)
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     const onOpen = () => setIsOpen(true)
@@ -62,21 +62,31 @@ export default function CookieConsentBanner() {
   }, [])
 
   useEffect(() => {
-    if (savedChoice) {
-      updateGtagConsent(savedChoice)
+    const savedChoice = getStoredChoice()
+    if (savedChoice === 'accept') {
+      updateGtagConsent('accept')
+      loadMailchimp()
+      return
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (savedChoice === 'reject') {
+      updateGtagConsent('reject')
+      clearAnalyticsCookies()
+      return
+    }
+    setIsOpen(true)
   }, [])
 
   const acceptAll = () => {
     setStoredChoice('accept')
     updateGtagConsent('accept')
+    loadMailchimp()
     setIsOpen(false)
   }
 
   const rejectAll = () => {
     setStoredChoice('reject')
     updateGtagConsent('reject')
+    clearAnalyticsCookies()
     setIsOpen(false)
   }
 

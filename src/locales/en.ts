@@ -71,6 +71,13 @@ export const enMessages = {
       reject: 'Reject all',
       privacyLink: 'Privacy Policy',
     },
+    notFound: {
+      title: 'Page not found',
+      body: 'That page does not exist. Try the homepage, packages, or contact.',
+      home: 'Home',
+      packages: 'Packages',
+      contact: 'Contact',
+    },
     a11y: {
       toggleMenu: 'Toggle menu',
       logoAlt: 'Studio Thielman Logo',
@@ -95,7 +102,7 @@ export const enMessages = {
       'Professional websites for businesses worldwide. Custom web design, SEO, and AI integrations from €25/month. Book your free discovery call.',
     routes: {
       '/': {
-        title: 'Professional Websites Starting at €25/month',
+        title: 'Professional websites from €25/month',
         description:
           'Professional websites for growing businesses. Custom web design, SEO, and AI integrations from €25/month.',
       },
@@ -150,27 +157,27 @@ export const enMessages = {
         description: 'AI workshops for teams (in-company, half day) or 1:1 (two days, €1,000 excl. VAT). Group class coming soon. Hands-on, no demo theatre.',
       },
       '/workshops/incompany': {
-        title: 'In-Company AI Workshop for Teams',
-        description: 'Hands-on AI workshop for your team. Half day on location, max. 15 people, English or Dutch. Indicative price €500 for up to 8 people, excl. VAT.',
+        title: 'Incompany AI training',
+        description: 'Incompany AI training for companies. Half day on site, max. 15 people, English or Dutch. From €500 for up to 8 people, excl. VAT.',
       },
       '/workshops/1-1': {
-        title: '1:1 AI Workshop — Two Days, €1,000 excl. VAT',
-        description: 'Two-day 1:1 AI workshop: build your first app or workflow from scratch, then go deeper on brand and paid work. €1,000 excl. VAT, homework included.',
+        title: '1:1 AI workshop, two days',
+        description: 'Two-day 1:1 AI workshop: build your first app or workflow, then go deeper. €1,000 excl. VAT, homework included.',
       },
       '/ai-talks': {
-        title: 'AI Workshops & Talks for Companies and Schools',
+        title: 'AI workshops and talks',
         description:
-          'Hands-on AI workshops, keynotes and guest lectures for companies, SMEs and schools in Belgium. AI agents, ChatGPT, automation. By Ruben Thielman, from €450.',
+          'AI workshops, keynotes and guest lectures for companies and schools in Belgium. By Ruben Thielman, from €450 excl. VAT.',
       },
       '/group-workshop': {
         title: 'Group AI Workshop: Join the Interest List',
         description:
-          'Hands-on group workshop on practical AI with Ruben Thielman: today’s AI tools, your own simple AI agent or automation, AI for your work. Leave your email for one mail when date and location are set.',
+          'Group AI workshop interest list with Ruben Thielman. One email when the date and location are set.',
       },
       '/ai-masterclass': {
         title: 'AI Masterclass: Join the Interest List',
         description:
-          'The next step after the group AI workshop: build AI agents and multi-agent teams, connect AI to your tools with MCP and APIs, code with AI agents, run AI on your own data. Leave your email for one mail when date and location are set.',
+          'AI masterclass interest list: agents, MCP, APIs and building with AI. One email when the date and location are set.',
       },
     },
     structured: {

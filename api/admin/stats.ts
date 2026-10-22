@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { initializeDatabase, dbGet, dbAll } from '../../../server/database/postgres.js'
+import { initializeDatabase, dbGet } from '../../server/database/postgres.js'
 import { requireAuth } from '../_utils/auth.js'
+import { applyCors } from '../_utils/http.js'
 
 let dbInitPromise: Promise<void> | null = null
 
@@ -19,10 +20,7 @@ async function ensureDb() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  applyCors(req, res)
 
   // Handle preflight
   if (req.method === 'OPTIONS') {
@@ -69,9 +67,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   } catch (error: any) {
     // Catch any unexpected errors and return JSON
     console.error('Unexpected error in stats handler:', error)
-    return res.status(500).json({ 
-      error: 'An unexpected error occurred',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
-    })
+    return res.status(500).json({ error: 'An unexpected error occurred' })
   }
 }

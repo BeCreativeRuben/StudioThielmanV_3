@@ -6,9 +6,11 @@ import {
   emailFieldTable,
   emailParagraph,
   escapeHtml,
+  withEmailFooterText,
   wrapEmailLayout,
   EMAIL_BRAND,
 } from '../server/services/emailBrand.js'
+import { applyCors, clientIp, rateLimit } from './_utils/http.js'
 
 /**
  * Workshop group-class ("Groepsles") waitlist.
@@ -210,11 +212,16 @@ async function addToSegment(
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  applyCors(req, res)
   res.setHeader('Cache-Control', 'no-store')
 
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  if (!rateLimit(`waitlist:${clientIp(req)}`, 8, 15 * 60 * 1000)) {
+    return res.status(429).json({ error: 'Too many requests. Try again later.' })
   }
 
   const body = (typeof req.body === 'string' ? safeJson(req.body) : req.body) || {}
@@ -278,7 +285,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       replyTo: email,
       subject: tpl.subject,
       html: tpl.html,
-      text: tpl.text,
+      text: withEmailFooterText(tpl.text),
     })
     notification = error ? 'failed' : 'sent'
     if (error) console.error('Waitlist: notification failed', error.message)
@@ -300,7 +307,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       replyTo: notifyEmail,
       subject: tpl.subject,
       html: tpl.html,
-      text: tpl.text,
+      text: withEmailFooterText(tpl.text),
     })
     confirmation = error ? 'failed' : 'sent'
     if (error) console.error('Waitlist: confirmation failed', error.message)
