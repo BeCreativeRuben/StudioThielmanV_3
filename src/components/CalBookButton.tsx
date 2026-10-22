@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react'
 import { getCalLink } from '../config/cal'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useLocale } from '../i18n/LocaleProvider'
@@ -61,6 +61,18 @@ export default function CalBookButton({
       }
     }
     cal('modal', { calLink, config })
+  }
+
+  // A wrapper <button> around a button child is invalid HTML. The parser closes the
+  // outer button, so hydration cannot match. Attach the handler to the child instead.
+  if (isValidElement(children)) {
+    const child = children as ReactElement<{ onClick?: (event: unknown) => void }>
+    return cloneElement(child, {
+      onClick: (event: unknown) => {
+        child.props.onClick?.(event)
+        void open()
+      },
+    })
   }
 
   return (

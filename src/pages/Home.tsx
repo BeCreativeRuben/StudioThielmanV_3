@@ -118,7 +118,8 @@ function BlogCountdown() {
               <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                 <LocalizedLink to={`/blog/${latestPost.slug}`} aria-label={`${c.cta.readMore}: ${latestPost.title}`}>
                   <Button variant="primary">
-                    {c.cta.readMore}
+                    <span aria-hidden="true">{c.cta.readMore}</span>
+                    <span className="sr-only">{c.cta.readMore}: {latestPost.title}</span>
                   </Button>
                 </LocalizedLink>
                 <LocalizedLink to="/blog" className="text-sm text-text-secondary hover:text-primary transition-colors">
@@ -514,7 +515,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
+              initial={false}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
@@ -734,7 +735,10 @@ export default function Home() {
               </div>
               <div className="mt-8">
                 <LocalizedLink to="/about" aria-label={h.about.learnMoreLabel}>
-                  <Button variant="outline">{c.cta.learnMore}</Button>
+                  <Button variant="outline">
+                    <span aria-hidden="true">{c.cta.learnMore}</span>
+                    <span className="sr-only">{h.about.learnMoreLabel}</span>
+                  </Button>
                 </LocalizedLink>
               </div>
             </motion.div>
@@ -1030,7 +1034,8 @@ export default function Home() {
                 <div className="text-sm font-semibold text-primary mb-4">{track.meta}</div>
                 <LocalizedLink to={track.to} aria-label={'ctaLabel' in track ? track.ctaLabel : track.cta}>
                   <Button variant="outline" size="sm" className="w-full">
-                    {track.cta}
+                    <span aria-hidden="true">{track.cta}</span>
+                    <span className="sr-only">{'ctaLabel' in track ? track.ctaLabel : track.cta}</span>
                   </Button>
                 </LocalizedLink>
               </motion.div>
@@ -1248,7 +1253,7 @@ export default function Home() {
       </section>
 
       {/* Mid-Footer CTA */}
-      <section className="py-6 bg-accent overflow-hidden relative">
+      <section className="py-6 bg-accent overflow-hidden relative" aria-hidden="true">
         <div className="relative w-full overflow-hidden" data-marquee-container>
           <div className="flex text-5xl md:text-7xl font-bold text-text-secondary/30 uppercase tracking-wider marquee-container" aria-hidden="true">
             <div className="flex whitespace-nowrap items-center marquee-content">
