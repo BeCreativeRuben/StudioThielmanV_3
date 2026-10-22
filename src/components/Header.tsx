@@ -120,7 +120,7 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <LocalizedLink to="/" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
+          <LocalizedLink to="/" className="flex items-center gap-3 shrink-0" onClick={() => setMobileMenuOpen(false)}>
             <img
               src={logoImage.src}
               alt={t('common.a11y.logoAlt')}
@@ -128,7 +128,7 @@ export default function Header() {
               height={logoImage.height}
               className="h-12 w-auto"
             />
-            <span className={`font-bold text-xl tracking-tight hidden sm:block transition-colors duration-300 ${
+            <span className={`font-bold text-xl tracking-tight hidden xl:block whitespace-nowrap transition-colors duration-300 ${
               isScrolled ? 'text-primary' : 'text-white'
             }`}>
               {t('common.brand')}
@@ -138,7 +138,7 @@ export default function Header() {
           {/* Navigation Links - Desktop */}
           <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
             {navLinks.map((link) => {
-              const className = `inline-flex items-center min-h-6 text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
+              const className = `inline-flex items-center min-h-6 whitespace-nowrap text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
                 isActive(link.path)
                   ? isScrolled
                     ? 'text-primary font-semibold'
