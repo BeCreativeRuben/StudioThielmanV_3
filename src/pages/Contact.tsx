@@ -241,14 +241,14 @@ export default function Contact() {
   return (
     <div>
       <Helmet>
-        <link rel="preload" as="image" href={rubenPortrait.webp} {...{ fetchpriority: 'high' }} />
+        <link rel="preload" as="image" href={rubenPortrait.avif} type="image/avif" {...{ fetchpriority: 'high' }} />
       </Helmet>
       <section className="relative py-20 md:py-32 overflow-hidden -mt-20 pt-20">
         <div className="absolute left-0 right-0 w-full bg-gray-900" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }} />
         <div className="absolute left-0 right-0 w-full bg-gradient-to-r from-black/80 to-black/40 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }} />
         <motion.div
           className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
@@ -262,7 +262,7 @@ export default function Contact() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}

@@ -221,7 +221,9 @@ export default function Home() {
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
     const slow = connection?.saveData || connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g'
     if (reduce || slow) return
-    const start = () => setPlayHeroVideo(true)
+    const start = () => {
+      window.setTimeout(() => setPlayHeroVideo(true), 2500)
+    }
     if (document.readyState === 'complete') start()
     else window.addEventListener('load', start, { once: true })
     return () => window.removeEventListener('load', start)
@@ -475,7 +477,7 @@ export default function Home() {
       </div>
 
       <Helmet>
-        <link rel="preload" as="image" href={heroMedia.poster} {...{ fetchpriority: 'high' }} />
+        <link rel="preload" as="image" href={heroMedia.posterAvif} type="image/avif" {...{ fetchpriority: 'high' }} />
       </Helmet>
       {/* Hero Section with Video Background */}
       <section className="relative min-h-screen flex items-center overflow-hidden -mt-20 pt-20">
@@ -816,7 +818,11 @@ export default function Home() {
                         <img
                           src={item.screenshots[0]}
                           alt={item.title}
+                          width={1200}
+                          height={750}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                          decoding="async"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement
                             target.style.display = 'none'
