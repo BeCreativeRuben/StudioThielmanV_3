@@ -29,6 +29,7 @@ export const nlBEMessages = {
     },
     cta: {
       bookCall: 'Plan een gesprek',
+      clientPortal: 'Klantenportaal',
       viewPackages: 'Bekijk pakketten',
       getQuote: 'Offerte aanvragen',
       learnMore: 'Meer info',
@@ -81,6 +82,7 @@ export const nlBEMessages = {
     a11y: {
       toggleMenu: 'Menu openen',
       logoAlt: 'Studio Thielman logo',
+      opensInNewTab: '(opent in nieuw venster)',
     },
     brand: 'STUDIO THIELMAN',
     comingSoon: 'Binnenkort',
