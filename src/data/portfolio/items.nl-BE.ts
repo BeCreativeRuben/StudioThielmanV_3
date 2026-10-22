@@ -67,9 +67,9 @@ export const portfolioItemsNl: PortfolioItem[] = [
   },
   {
     slug: 'the-antwerp-pianist',
-    title: 'The Antwerp Pianist - Culturele residentie & evenementen',
+    title: 'The Antwerp Pianist',
     package: 'Pro Max',
-    description: 'Een culturele residentie in historisch Antwerpen waar muziek, kunst, literatuur en gastronomie samenkomen. De site brengt evenementen, lessen en het huis samen op één plek.',
+    description: 'Een culturele residentie in Huis Pollet op de Lijnwaadmarkt in Antwerpen, waar muziek, kunst, literatuur en gastronomie samenkomen.',
     longDescription: 'The Antwerp Pianist is een cultureel huis op de Lijnwaadmarkt in Antwerpen, met concerten, tentoonstellingen, pop-ups en lessen. We haalden de site weg van het oude platform naar een maatwerkoplossing met een live agenda, online ticketverkoop, info over lessen, zaalverhuur en nieuwsbriefinschrijving. De site deelt een centraal platform met Iedereen Speelt Piano, zodat evenementen en bestellingen op één plek beheerd worden.',
     clientType: 'Cultuur & evenementen',
     date: 'SEP 2026',
@@ -112,14 +112,14 @@ export const portfolioItemsNl: PortfolioItem[] = [
     title: 'ERPA — La Vie Nomade',
     package: 'Pro Max',
     description:
-      'Frequentie als veld — custom brand platform met gefaseerde lancering, ledenzone en verborgen interacties.',
+      'Een frequentiepraktijk in Sas van Gent, Nederland: vijf velden, Maison de Résonance, een kwartaalmagazine en stichting AEOHN.',
     longDescription:
-      'ERPA La Vie Nomade is een merk- en communityplatform rond klank, frequentie en heling — geworteld in Het Sas van Gent. Geen standaard bedrijfssite, maar een levend digitaal veld: traag, ademend, met verborgen lagen voor wie blijft luisteren.',
+      'ERPA La Vie Nomade is een frequentiepraktijk in Sas van Gent, Nederland. De site toont vijf velden, Maison de Résonance, een kwartaalmagazine en stichting AEOHN voor menselijk potentieel.',
     clientType: 'Brand platform · Community · Boekingen',
     date: 'APR 2026',
     liveUrl: 'https://lavienomade.com',
     keyFeatures: [],
-    screenshots: ['/images/portfolio/ERPA/Erpa Source Lovable edit.jpeg'],
+    screenshots: ['/images/portfolio/la-vie-nomade/hero-home.webp'],
     packageFitExplanation: '',
     results:
       'Een productie-klaar merkplatform dat verder groeit in vier fases — van fluistering tot volledige community met boekingen en magazine — zonder opnieuw te bouwen. De site voelt als ERPA: geen lawaai, wel resonantie.',
@@ -203,10 +203,10 @@ export const portfolioItemsNl: PortfolioItem[] = [
   },
   {
     slug: 'tr-car-detail',
-    title: 'TR Car Detail - Mobiele detailing & boekingen',
+    title: 'T&R Car Detail',
     package: 'Growth',
-    description: 'Een mobiele autodetailingdienst die klanten thuis bezoekt. De site werkt als virtueel visitekaartje en boekingssysteem in één.',
-    longDescription: 'TR Car Detail brengt professionele detailing naar de deur van de klant. Hun website is tegelijk een digitaal visitekaartje en een praktisch boekingskanaal: diensten uitleggen, vertrouwen opbouwen en het eenvoudig maken om contact op te nemen of een afspraak in te plannen. Elke sectie is afgestemd op helderheid en conversie op mobiel, waar de meeste bezoekers binnenkomen.',
+    description: 'Car detailing aan huis in Vlaanderen, vanuit Sint-Niklaas. Interieur, exterieur, polijsten en coating, online te boeken.',
+    longDescription: 'T&R Car Detail brengt professionele detailing naar de deur van de klant. Hun website is tegelijk een digitaal visitekaartje en een praktisch boekingskanaal: diensten uitleggen, vertrouwen opbouwen en het eenvoudig maken om contact op te nemen of een afspraak in te plannen. Elke sectie is afgestemd op helderheid en conversie op mobiel, waar de meeste bezoekers binnenkomen.',
     clientType: 'Automobieldiensten',
     date: 'APR 2026',
     liveUrl: 'https://www.trcardetail.be',
@@ -218,8 +218,8 @@ export const portfolioItemsNl: PortfolioItem[] = [
       'Contact- en afspraakflows',
       'Merkbpresentatie die vertrouwen opbouwt'
     ],
-    screenshots: ['/images/portfolio/trcardetail/about-story.webp'],
-    packageFitExplanation: 'TR Car Detail combineert presentatie met functionaliteit - precies waar Growth voor bedoeld is. Het boekingssysteem en gestructureerde dienstenpagina\'s gaan verder dan Starter, terwijl alles gericht en snel blijft voor een lokale dienstverlener.',
+    screenshots: ['/images/portfolio/trcardetail/hero-home.webp'],
+    packageFitExplanation: 'T&R Car Detail combineert presentatie met functionaliteit - precies waar Growth voor bedoeld is. Het boekingssysteem en gestructureerde dienstenpagina\'s gaan verder dan Starter, terwijl alles gericht en snel blijft voor een lokale dienstverlener.',
     results: 'Eén website die het bedrijf vertegenwoordigt en boekingen vastlegt van mobiele klanten'
   },
   {

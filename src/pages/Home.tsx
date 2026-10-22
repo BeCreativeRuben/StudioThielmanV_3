@@ -428,8 +428,12 @@ export default function Home() {
     // },
   ]
 
-  // Filter portfolio items to show only active (non-coming-soon) items, limit to 3 for homepage
-  const portfolioItems = getPortfolioItems(locale).filter(item => !item.comingSoon).slice(0, 3)
+  const showcaseSlugs = ['the-antwerp-pianist', 'tr-car-detail', 'la-vie-nomade']
+  const catalog = getPortfolioItems(locale)
+  const portfolioItems = showcaseSlugs.flatMap((slug) => {
+    const item = catalog.find((entry) => entry.slug === slug)
+    return item ? [item] : []
+  })
 
   return (
     <div className="relative">
@@ -833,37 +837,45 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <LocalizedLink to={`/portfolio/${item.slug}`}>
-                  <div className="group cursor-pointer">
-                    <div className="bg-accent rounded-lg h-64 mb-4 flex items-center justify-center overflow-hidden">
-                      {item.screenshots && item.screenshots.length > 0 ? (
-                        <img
-                          src={item.screenshots[0]}
-                          alt={item.title}
-                          width={1200}
-                          height={750}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                          decoding="async"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement
-                            target.style.display = 'none'
-                            const parent = target.parentElement
-                            if (parent) {
-                              parent.innerHTML = `<span class="text-text-secondary">${c.projectImage}</span>`
-                            }
-                          }}
-                        />
-                      ) : (
-                        <span className="text-text-secondary">{c.projectImage}</span>
-                      )}
-                    </div>
-                    <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">{c.caseStudy}</div>
-                    <h3 className="text-h3 text-primary mb-2 group-hover:text-cta transition-colors">{item.title}</h3>
-                    <p className="text-body text-text-primary mb-2">{item.description}</p>
-                    <div className="text-body-sm text-text-secondary">{item.date}</div>
+                <a
+                  href={item.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block"
+                >
+                  <div className="bg-accent rounded-lg h-64 mb-4 flex items-center justify-center overflow-hidden border border-gray-200">
+                    {item.screenshots && item.screenshots.length > 0 ? (
+                      <img
+                        src={item.screenshots[0]}
+                        alt={item.title}
+                        width={1400}
+                        height={875}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          target.style.display = 'none'
+                          const parent = target.parentElement
+                          if (parent) {
+                            parent.innerHTML = `<span class="text-text-secondary">${c.projectImage}</span>`
+                          }
+                        }}
+                      />
+                    ) : (
+                      <span className="text-text-secondary">{c.projectImage}</span>
+                    )}
                   </div>
-                </LocalizedLink>
+                  <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">
+                    {item.liveUrl.replace(/^https?:\/\/(?:www\.)?/, '').replace(/\/$/, '')}
+                  </div>
+                  <h3 className="text-h3 text-primary mb-2 group-hover:text-cta transition-colors">
+                    {item.title}
+                    <span className="sr-only"> {t('common.a11y.opensInNewTab')}</span>
+                  </h3>
+                  <p className="text-body text-text-primary mb-2">{item.description}</p>
+                  <div className="text-body-sm text-text-secondary">{item.date}</div>
+                </a>
               </motion.div>
             ))}
           </div>
