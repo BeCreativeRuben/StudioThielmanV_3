@@ -46,8 +46,8 @@ export default function Reviews() {
         >
           <div className="text-sm text-white/60 uppercase tracking-wider mb-4">{copy.hero.label}</div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{copy.hero.title}</h1>
-          <p className="text-xl text-white/80 max-w-2xl mx-auto mb-4">{copy.hero.subtitle}</p>
-          <p className="text-sm text-white/60">{countLabel}</p>
+          <p className="text-xl text-white/80 max-w-2xl mx-auto">{copy.hero.subtitle}</p>
+          {published.length > 0 ? <p className="text-sm text-white/60 mt-4">{countLabel}</p> : null}
         </motion.div>
       </section>
 
