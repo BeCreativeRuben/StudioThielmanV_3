@@ -190,7 +190,7 @@ function BlogCountdown() {
 
 export default function Home() {
   const location = useLocation()
-  const { locale, messages } = useLocale()
+  const { locale, messages, t } = useLocale()
   const h = messages.home
   const c = messages.common
   const [expandedService, setExpandedService] = useState(0)
@@ -764,21 +764,42 @@ export default function Home() {
                   decoding="async"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-8 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8 items-start">
                 <div>
                   <div className="text-5xl font-bold text-primary mb-2">50+</div>
                   <div className="text-body text-text-secondary">{h.about.projects}</div>
                 </div>
-                <LocalizedLink to="/reviews" className="group block hover:opacity-90 transition-opacity">
-                  <div className="text-5xl font-bold text-primary mb-2 group-hover:text-cta transition-colors">
-                    {getPublishedReviewCount()}
-                  </div>
-                  <div className="text-body text-text-secondary underline-offset-4 group-hover:underline">
-                    {getPublishedReviewCount() === 1
-                      ? `1 ${h.about.reviews}`
-                      : `${getPublishedReviewCount()} ${h.about.reviews}`}
-                  </div>
-                </LocalizedLink>
+                {getPublishedReviewCount() > 0 ? (
+                  <LocalizedLink to="/reviews" className="group block hover:opacity-90 transition-opacity">
+                    <div className="text-5xl font-bold text-primary mb-2 group-hover:text-cta transition-colors">
+                      {getPublishedReviewCount()}
+                    </div>
+                    <div className="text-body text-text-secondary underline-offset-4 group-hover:underline">
+                      {getPublishedReviewCount() === 1
+                        ? `1 ${h.about.reviews}`
+                        : `${getPublishedReviewCount()} ${h.about.reviews}`}
+                    </div>
+                  </LocalizedLink>
+                ) : (
+                  <figure>
+                    <blockquote className="text-body italic text-text-primary leading-relaxed">
+                      “{h.about.quote}”
+                    </blockquote>
+                    <figcaption className="mt-3 text-sm text-text-secondary">
+                      <span className="font-semibold text-primary">{h.about.quoteAttribution}</span>
+                      {' · '}
+                      <a
+                        href={h.about.quoteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-4 hover:text-primary"
+                      >
+                        {h.about.quoteLink}
+                        <span className="sr-only"> {t('common.a11y.opensInNewTab')}</span>
+                      </a>
+                    </figcaption>
+                  </figure>
+                )}
               </div>
               <BookCallLink>
                 <Button variant="primary" className="w-full">{c.cta.bookCall}</Button>
