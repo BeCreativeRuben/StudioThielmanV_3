@@ -213,7 +213,26 @@ export const privacySectionsNl: LegalSection[] = [
     ],
   },
   {
-    title: '13. Wijzigingen aan dit beleid',
+    title: '13. Directe prospectie per e-mail',
+    blocks: [
+      {
+        kind: 'p',
+        text: 'Af en toe sturen wij een korte e-mail naar bedrijven om onze diensten voor te stellen. Wij gebruiken daarvoor uitsluitend algemene bedrijfsadressen (zoals info@...) die het bedrijf zelf publiek maakt op de eigen website of op OpenStreetMap.',
+      },
+      {
+        kind: 'ul',
+        items: [
+          '<strong>Rechtsgrond:</strong> ons gerechtvaardigd belang om ons bedrijf bekend te maken (art. 6.1.f AVG/GDPR), binnen de Belgische regels voor e-mail aan rechtspersonen (B2B) via algemene, onpersoonlijke adressen.',
+          '<strong>Wat wij bewaren:</strong> bedrijfsnaam, adres, het algemene e-mailadres en de status van verzending en eventueel antwoord.',
+          '<strong>Bewaartermijn:</strong> gegevens van bedrijven die niet reageren, verwijderen wij na 12 maanden. Wie aangeeft geen berichten meer te willen, zetten wij blijvend op een stoplijst, zodat wij die nooit opnieuw contacteren.',
+          '<strong>Bezwaar:</strong> u kunt op elk moment bezwaar maken door op onze e-mail te antwoorden met "stop" of door te mailen naar info@studiothielman.com. Wij sturen u daarna niets meer.',
+          '<strong>Klacht:</strong> u hebt ook het recht een klacht in te dienen bij de Gegevensbeschermingsautoriteit (zie hierboven).',
+        ],
+      },
+    ],
+  },
+  {
+    title: '14. Wijzigingen aan dit beleid',
     blocks: [
       {
         kind: 'p',

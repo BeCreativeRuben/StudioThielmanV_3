@@ -5,7 +5,7 @@ export const legalEn = {
   label: 'LEGAL',
   privacy: {
     title: 'Privacy Policy',
-    lastUpdated: 'Last updated: January 2026',
+    lastUpdated: 'Last updated: October 2026',
     intro:
       'Your privacy is important to us. This policy explains how we collect, use, and protect your personal data.',
     sections: privacySectionsEn,

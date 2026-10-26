@@ -5,7 +5,7 @@ export const legalNl = {
   label: 'JURIDISCH',
   privacy: {
     title: 'Privacybeleid',
-    lastUpdated: 'Laatst bijgewerkt: januari 2026',
+    lastUpdated: 'Laatst bijgewerkt: oktober 2026',
     intro:
       'Je privacy is belangrijk voor ons. Dit beleid legt uit hoe we je persoonsgegevens verzamelen, gebruiken en beschermen (conform GDPR / AVG).',
     sections: privacySectionsNl,
