@@ -213,7 +213,26 @@ export const privacySectionsEn: LegalSection[] = [
     ],
   },
   {
-    title: '13. Changes to This Policy',
+    title: '13. Direct Prospecting by Email',
+    blocks: [
+      {
+        kind: 'p',
+        text: 'From time to time we send a short email to businesses to introduce our services. We only use general business addresses (such as info@...) that the business itself publishes on its own website or on OpenStreetMap.',
+      },
+      {
+        kind: 'ul',
+        items: [
+          '<strong>Legal basis:</strong> our legitimate interest in making our business known (Art. 6(1)(f) GDPR), within the Belgian rules on email to legal entities (B2B) at general, non-personal addresses.',
+          '<strong>What we store:</strong> business name, address, the general email address and the send and reply status.',
+          '<strong>Retention:</strong> data of businesses that do not respond is deleted after 12 months. If you tell us you no longer want to hear from us, we keep you on a permanent stop list so we never contact you again.',
+          '<strong>Right to object:</strong> you can object at any time by replying "stop" to our email or by writing to info@studiothielman.com. We will not send you anything after that.',
+          '<strong>Complaints:</strong> you also have the right to lodge a complaint with the Belgian Data Protection Authority (Gegevensbeschermingsautoriteit, see above).',
+        ],
+      },
+    ],
+  },
+  {
+    title: '14. Changes to This Policy',
     blocks: [
       {
         kind: 'p',
