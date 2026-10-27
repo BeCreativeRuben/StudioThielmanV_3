@@ -10,6 +10,8 @@ import PlanCard from '../components/services/PlanCard'
 import CtaBand from '../components/services/CtaBand'
 import SectionHeader from '../components/services/SectionHeader'
 import ServiceJsonLd from '../components/services/ServiceJsonLd'
+import ServiceSubNav from '../components/services/ServiceSubNav'
+import OtherServices from '../components/services/OtherServices'
 
 function packageQuery(name: string) {
   return `/contact?package=${encodeURIComponent(name)}#contact-form`
@@ -26,6 +28,8 @@ export default function Websites() {
     priceTbd: 'priceTbd' in tier ? Boolean(tier.priceTbd) : false,
   }))
 
+  const sn = messages.offerOverview.nav.websites
+  const cardTitle = (h: string) => messages.offerOverview.cards.find((c) => c.href === h)?.title ?? ''
   return (
     <div>
       <ServiceJsonLd
@@ -58,9 +62,13 @@ export default function Websites() {
         }
       />
 
-      <ProofStrip label={w.proof.label} title={w.proof.title} intro={w.proof.intro} names={w.proof.names} />
+      <ServiceSubNav current={cardTitle('/websites')} notes="Websites — subnav" items={[{ id: 'plannen', label: sn.plans }, { id: 'portfolio', label: sn.portfolio }, { id: 'faq', label: sn.faq }, { id: 'gesprek', label: sn.talk }]} />
 
-      <section id="plannen" className="py-20 bg-accent">
+      <div id="portfolio" className="scroll-mt-36">
+      <ProofStrip label={w.proof.label} title={w.proof.title} intro={w.proof.intro} names={w.proof.names} />
+      </div>
+
+      <section id="plannen" className="scroll-mt-36 py-20 bg-accent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label={w.plans.label} title={w.plans.title} intro={w.plans.intro} />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -84,7 +92,7 @@ export default function Websites() {
                   exclVatLabel={w.plans.exclVat}
                   cta={
                     pkg.priceTbd ? (
-                      <LocalizedLink to="/contact#contact-form">
+                      <LocalizedLink to={packageQuery('Pro Max')}>
                         <Button variant="outline" size="md" className="w-full">
                           {w.plans.contactPro}
                         </Button>
@@ -101,29 +109,19 @@ export default function Websites() {
               </motion.div>
             ))}
           </div>
-          <p className="text-center text-body-sm text-text-secondary mt-10">
-            <LocalizedLink to="/packages" className="underline hover:no-underline">
-              /packages
-            </LocalizedLink>
-            {' · '}
-            <LocalizedLink to="/platformen" className="underline hover:no-underline">
-              /platformen
-            </LocalizedLink>
-            {' · '}
-            <LocalizedLink to="/start-ups" className="underline hover:no-underline">
-              /start-ups
-            </LocalizedLink>
-          </p>
         </div>
       </section>
 
-      <section id="faq" className="py-20 bg-white">
+      <section id="faq" className="scroll-mt-36 py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label={w.faqSection.label} title={w.faqSection.title} intro={w.faqSection.subtitle} />
           <FaqAccordion items={w.faqs} />
         </div>
       </section>
 
+      <OtherServices current="/websites" />
+
+      <div id="gesprek" className="scroll-mt-36" />
       <CtaBand title={w.cta.title} subtitle={w.cta.subtitle}>
         <BookCallLink notes="Websites" metadata={{ source: 'websites-cta' }}>
           <Button variant="secondary" size="lg">{w.cta.button}</Button>

@@ -7,12 +7,16 @@ import ServiceHero from '../components/services/ServiceHero'
 import CtaBand from '../components/services/CtaBand'
 import SectionHeader from '../components/services/SectionHeader'
 import ServiceJsonLd from '../components/services/ServiceJsonLd'
+import ServiceSubNav from '../components/services/ServiceSubNav'
+import OtherServices from '../components/services/OtherServices'
 
 /** Tasteful teaser only — no prices or claims. */
 export default function AiAgents() {
   const { messages } = useLocale()
   const a = messages.aiAgents
 
+  const sn = messages.offerOverview.nav.aiAgents
+  const cardTitle = (h: string) => messages.offerOverview.cards.find((c) => c.href === h)?.title ?? ''
   return (
     <div>
       <ServiceJsonLd
@@ -40,7 +44,9 @@ export default function AiAgents() {
         }
       />
 
-      <section className="py-20 bg-white">
+      <ServiceSubNav current={cardTitle('/ai-agents')} notes="AiAgents — subnav" items={[{ id: 'aanpak', label: sn.approach }, { id: 'andere-diensten', label: sn.start }, { id: 'gesprek', label: sn.talk }]} />
+
+      <section id="aanpak" className="scroll-mt-36 py-20 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label={a.teaser.label} title={a.teaser.title} />
           <div className="space-y-4 mb-10">
@@ -66,18 +72,12 @@ export default function AiAgents() {
               </motion.li>
             ))}
           </ul>
-          <p className="mt-10 text-body-sm text-text-secondary">
-            <LocalizedLink to="/workshops" className="underline hover:no-underline">
-              /workshops
-            </LocalizedLink>
-            {' · '}
-            <LocalizedLink to="/platformen" className="underline hover:no-underline">
-              /platformen
-            </LocalizedLink>
-          </p>
         </div>
       </section>
 
+      <OtherServices current="/ai-agents" />
+
+      <div id="gesprek" className="scroll-mt-36" />
       <CtaBand title={a.cta.title} subtitle={a.cta.subtitle}>
         <BookCallLink notes="AI-agents teaser" metadata={{ source: 'ai-agents-cta' }}>
           <Button variant="secondary" size="lg">{a.cta.button}</Button>

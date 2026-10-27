@@ -10,11 +10,15 @@ import PlanCard from '../components/services/PlanCard'
 import CtaBand from '../components/services/CtaBand'
 import SectionHeader from '../components/services/SectionHeader'
 import ServiceJsonLd from '../components/services/ServiceJsonLd'
+import ServiceSubNav from '../components/services/ServiceSubNav'
+import OtherServices from '../components/services/OtherServices'
 
 export default function StartUps() {
   const { messages } = useLocale()
   const s = messages.startUps
 
+  const sn = messages.offerOverview.nav.startUps
+  const cardTitle = (h: string) => messages.offerOverview.cards.find((c) => c.href === h)?.title ?? ''
   return (
     <div>
       <ServiceJsonLd
@@ -47,9 +51,13 @@ export default function StartUps() {
         }
       />
 
-      <ProofStrip label={s.proof.label} title={s.proof.title} intro={s.proof.intro} names={s.proof.names} />
+      <ServiceSubNav current={cardTitle('/start-ups')} notes="StartUps — subnav" items={[{ id: 'aanpak', label: sn.approach }, { id: 'bewijs', label: sn.proof }, { id: 'faq', label: sn.faq }, { id: 'gesprek', label: sn.talk }]} />
 
-      <section id="aanpak" className="py-20 bg-accent">
+      <div id="bewijs" className="scroll-mt-36">
+      <ProofStrip label={s.proof.label} title={s.proof.title} intro={s.proof.intro} names={s.proof.names} />
+      </div>
+
+      <section id="aanpak" className="scroll-mt-36 py-20 bg-accent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label={s.plans.label} title={s.plans.title} intro={s.plans.intro} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -81,25 +89,19 @@ export default function StartUps() {
               </motion.div>
             ))}
           </div>
-          <p className="text-center text-body-sm text-text-secondary mt-10">
-            <LocalizedLink to="/websites" className="underline hover:no-underline">
-              /websites
-            </LocalizedLink>
-            {' · '}
-            <LocalizedLink to="/packages" className="underline hover:no-underline">
-              /packages
-            </LocalizedLink>
-          </p>
         </div>
       </section>
 
-      <section id="faq" className="py-20 bg-white">
+      <section id="faq" className="scroll-mt-36 py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label={s.faqSection.label} title={s.faqSection.title} />
           <FaqAccordion items={s.faqs} />
         </div>
       </section>
 
+      <OtherServices current="/start-ups" />
+
+      <div id="gesprek" className="scroll-mt-36" />
       <CtaBand title={s.cta.title} subtitle={s.cta.subtitle}>
         <BookCallLink notes="Start-ups" metadata={{ source: 'startups-cta' }}>
           <Button variant="secondary" size="lg">{s.cta.button}</Button>

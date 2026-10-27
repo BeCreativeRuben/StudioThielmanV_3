@@ -23,7 +23,7 @@ export default function NotFound() {
             <LocalizedLink to="/">
               <Button variant="secondary">{t('common.notFound.home')}</Button>
             </LocalizedLink>
-            <LocalizedLink to="/packages">
+            <LocalizedLink to="/websites#plannen">
               <Button variant="secondary">{t('common.notFound.packages')}</Button>
             </LocalizedLink>
             <LocalizedLink to="/contact">

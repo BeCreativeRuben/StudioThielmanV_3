@@ -10,11 +10,15 @@ import PlanCard from '../components/services/PlanCard'
 import CtaBand from '../components/services/CtaBand'
 import SectionHeader from '../components/services/SectionHeader'
 import ServiceJsonLd from '../components/services/ServiceJsonLd'
+import ServiceSubNav from '../components/services/ServiceSubNav'
+import OtherServices from '../components/services/OtherServices'
 
 export default function Workshops() {
   const { messages } = useLocale()
   const w = messages.workshopsPage
 
+  const sn = messages.offerOverview.nav.workshops
+  const cardTitle = (h: string) => messages.offerOverview.cards.find((c) => c.href === h)?.title ?? ''
   return (
     <div>
       <ServiceJsonLd
@@ -48,14 +52,18 @@ export default function Workshops() {
         }
       />
 
+      <ServiceSubNav current={cardTitle('/workshops')} notes="Workshops — subnav" items={[{ id: 'formats', label: sn.formats }, { id: 'reviews', label: sn.reviews }, { id: 'faq', label: sn.faq }, { id: 'gesprek', label: sn.talk }]} />
+
+      <div id="reviews" className="scroll-mt-36">
       <ProofStrip
         label={w.proof.label}
         title={w.proof.title}
         intro={w.proof.intro}
         quote={w.proof.quote}
       />
+      </div>
 
-      <section id="formats" className="py-20 bg-accent">
+      <section id="formats" className="scroll-mt-36 py-20 bg-accent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label={w.formats.label} title={w.formats.title} intro={w.formats.intro} />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -87,29 +95,19 @@ export default function Workshops() {
               </motion.div>
             ))}
           </div>
-          <p className="text-center text-body-sm text-text-secondary mt-10">
-            <LocalizedLink to="/ai-talks" className="underline hover:no-underline">
-              {w.cta.detailLink}
-            </LocalizedLink>
-            {' · '}
-            <LocalizedLink to="/group-workshop" className="underline hover:no-underline">
-              /group-workshop
-            </LocalizedLink>
-            {' · '}
-            <LocalizedLink to="/ai-masterclass" className="underline hover:no-underline">
-              /ai-masterclass
-            </LocalizedLink>
-          </p>
         </div>
       </section>
 
-      <section id="faq" className="py-20 bg-white">
+      <section id="faq" className="scroll-mt-36 py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label={w.faqSection.label} title={w.faqSection.title} />
           <FaqAccordion items={w.faqs} />
         </div>
       </section>
 
+      <OtherServices current="/workshops" />
+
+      <div id="gesprek" className="scroll-mt-36" />
       <CtaBand title={w.cta.title} subtitle={w.cta.subtitle}>
         <BookCallLink notes="Workshops" metadata={{ source: 'workshops-cta' }}>
           <Button variant="secondary" size="lg">{w.cta.button}</Button>

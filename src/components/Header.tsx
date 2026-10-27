@@ -91,12 +91,13 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [location.pathname])
   
-  const { t, pathWithoutLocale } = useLocale()
+  const { t, pathWithoutLocale, messages } = useLocale()
+  const serviceNav = messages.offerOverview.nav
+  const serviceCards = messages.offerOverview.cards
+  const onServicePage = serviceCards.some((c) => c.href === pathWithoutLocale)
 
   const navLinks: { path: string; label: string; newTab?: boolean }[] = [
     { path: '/', label: t('common.nav.home') },
-    { path: '/websites', label: t('common.nav.websites') },
-    { path: '/workshops', label: t('common.nav.workshops') },
     { path: '/portfolio', label: t('common.nav.portfolio') },
     { path: '/about', label: t('common.nav.about') },
   ]
@@ -135,9 +136,9 @@ export default function Header() {
           </LocalizedLink>
           
           {/* Navigation Links - Desktop */}
-          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
-            {navLinks.map((link) => {
-              const className = `inline-flex items-center min-h-6 whitespace-nowrap text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
+          <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+            {navLinks.map((link, idx) => {
+              const className = `${idx === 0 ? 'order-0' : 'order-2'} inline-flex items-center min-h-6 whitespace-nowrap text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
                 isActive(link.path)
                   ? isScrolled
                     ? 'text-primary font-semibold'
@@ -156,6 +157,29 @@ export default function Header() {
                 </LocalizedLink>
               )
             })}
+            <div className="relative group order-1">
+              <LocalizedLink
+                to="/#diensten"
+                aria-haspopup="true"
+                className={`inline-flex items-center gap-1 min-h-6 whitespace-nowrap text-sm font-medium uppercase tracking-wider transition-colors duration-300 ${
+                  isScrolled ? (onServicePage ? 'text-primary font-semibold' : 'text-text-primary hover:text-primary') : onServicePage ? 'text-white font-semibold' : 'text-white/80 hover:text-white'
+                }`}
+              >
+                {serviceNav.services}
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </LocalizedLink>
+              <div className="absolute left-1/2 -translate-x-1/2 top-full pt-4 hidden group-hover:block group-focus-within:block">
+                <div className="w-[34rem] grid grid-cols-2 gap-1 p-3 rounded-xl bg-white shadow-2xl border border-gray-200">
+                  {serviceCards.map((card) => (
+                    <LocalizedLink key={card.href} to={card.href} className="block p-3 rounded-lg hover:bg-accent normal-case tracking-normal">
+                      <span className="block text-sm font-semibold text-primary">{card.title}</span>
+                      <span className="block text-xs text-text-secondary mt-1 whitespace-normal">{card.meta}</span>
+                    </LocalizedLink>
+                  ))}
+                  <LocalizedLink to="/#diensten" className="block p-3 rounded-lg bg-accent text-sm font-semibold text-primary">{serviceNav.allServices} →</LocalizedLink>
+                </div>
+              </div>
+            </div>
           </div>
           
           {/* Language + CTA - Desktop */}
@@ -216,7 +240,7 @@ export default function Header() {
           {mobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, maxHeight: 0 }}
-              animate={{ opacity: 1, maxHeight: 640 }}
+              animate={{ opacity: 1, maxHeight: 1000 }}
               exit={{ opacity: 0, maxHeight: 0 }}
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               className={`lg:hidden overflow-hidden border-t transition-colors duration-300 ${
@@ -256,6 +280,16 @@ export default function Header() {
                     </LocalizedLink>
                   )
                 })}
+                <div className="px-4">
+                  <p className={`text-xs uppercase tracking-wider mb-2 ${isScrolled ? 'text-text-secondary' : 'text-white/50'}`}>{serviceNav.services}</p>
+                  <div className="grid grid-cols-1 gap-1">
+                    {serviceCards.map((card) => (
+                      <LocalizedLink key={card.href} to={card.href} onClick={() => setMobileMenuOpen(false)} className={`flex items-center min-h-11 pl-3 text-sm font-medium ${isScrolled ? 'text-text-primary' : 'text-white/90'} ${isActive(card.href) ? 'font-semibold' : ''}`}>
+                        {card.title}
+                      </LocalizedLink>
+                    ))}
+                  </div>
+                </div>
                 <div className="px-4 pt-2 space-y-3">
                   <ClientPortalLink isScrolled={isScrolled} fullWidth onClick={() => setMobileMenuOpen(false)} />
                   <BookCallLink onClick={() => setMobileMenuOpen(false)}>

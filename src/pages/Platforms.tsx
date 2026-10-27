@@ -10,11 +10,15 @@ import PlanCard from '../components/services/PlanCard'
 import CtaBand from '../components/services/CtaBand'
 import SectionHeader from '../components/services/SectionHeader'
 import ServiceJsonLd from '../components/services/ServiceJsonLd'
+import ServiceSubNav from '../components/services/ServiceSubNav'
+import OtherServices from '../components/services/OtherServices'
 
 export default function Platforms() {
   const { messages } = useLocale()
   const p = messages.platforms
 
+  const sn = messages.offerOverview.nav.platforms
+  const cardTitle = (h: string) => messages.offerOverview.cards.find((c) => c.href === h)?.title ?? ''
   return (
     <div>
       <ServiceJsonLd
@@ -43,9 +47,13 @@ export default function Platforms() {
         }
       />
 
-      <ProofStrip label={p.proof.label} title={p.proof.title} intro={p.proof.intro} names={p.proof.names} />
+      <ServiceSubNav current={cardTitle('/platformen')} notes="Platforms — subnav" items={[{ id: 'aanpak', label: sn.approach }, { id: 'portfolio', label: sn.portfolio }, { id: 'faq', label: sn.faq }, { id: 'gesprek', label: sn.talk }]} />
 
-      <section id="aanpak" className="py-20 bg-accent">
+      <div id="portfolio" className="scroll-mt-36">
+      <ProofStrip label={p.proof.label} title={p.proof.title} intro={p.proof.intro} names={p.proof.names} />
+      </div>
+
+      <section id="aanpak" className="scroll-mt-36 py-20 bg-accent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label={p.plans.label} title={p.plans.title} intro={p.plans.intro} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -84,25 +92,19 @@ export default function Platforms() {
               </motion.div>
             ))}
           </div>
-          <p className="text-center text-body-sm text-text-secondary mt-10">
-            <LocalizedLink to="/websites" className="underline hover:no-underline">
-              /websites
-            </LocalizedLink>
-            {' · '}
-            <LocalizedLink to="/portfolio" className="underline hover:no-underline">
-              /portfolio
-            </LocalizedLink>
-          </p>
         </div>
       </section>
 
-      <section id="faq" className="py-20 bg-white">
+      <section id="faq" className="scroll-mt-36 py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label={p.faqSection.label} title={p.faqSection.title} />
           <FaqAccordion items={p.faqs} />
         </div>
       </section>
 
+      <OtherServices current="/platformen" />
+
+      <div id="gesprek" className="scroll-mt-36" />
       <CtaBand title={p.cta.title} subtitle={p.cta.subtitle}>
         <BookCallLink notes="Platformen" metadata={{ source: 'platforms-cta' }}>
           <Button variant="secondary" size="lg">{p.cta.button}</Button>

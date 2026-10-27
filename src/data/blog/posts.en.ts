@@ -144,7 +144,7 @@ export const postsEn: BlogPost[] = [
     ],
     cta: {
       text: 'Want to know which package fits your business? View our packages or book a free call.',
-      link: '/packages',
+      link: '/websites#plannen',
     },
   },
   {
@@ -263,7 +263,7 @@ export const postsEn: BlogPost[] = [
     ],
     cta: {
       text: 'Compare our packages and choose what fits you.',
-      link: '/packages',
+      link: '/websites#plannen',
     },
   },
   {
