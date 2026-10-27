@@ -11,6 +11,7 @@ import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import NewTabLocalizedLink from '../components/NewTabLocalizedLink'
 import BookCallLink from '../components/BookCallLink'
+import ServiceCard from '../components/services/ServiceCard'
 import { getPublishedReviewCount } from '../data/reviews'
 import { BUSINESS } from '../seo/site'
 import { Helmet } from 'react-helmet-async'
@@ -191,6 +192,7 @@ function BlogCountdown() {
 export default function Home() {
   const location = useLocation()
   const { locale, messages, t } = useLocale()
+  const offer = messages.offerOverview
   const h = messages.home
   const c = messages.common
   const [expandedService, setExpandedService] = useState(0)
@@ -894,6 +896,61 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Offer overview — Wat wij doen */}
+      <section id="diensten" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12 md:mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="text-sm text-text-secondary uppercase tracking-wider mb-4">{offer.label}</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-primary mb-4">{offer.title}</h2>
+            <p className="text-body-lg text-text-primary max-w-2xl mx-auto">{offer.intro}</p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {offer.cards.map((card) => (
+              <ServiceCard
+                key={card.href}
+                href={card.href}
+                tag={card.tag}
+                title={card.title}
+                description={card.description}
+                meta={card.meta}
+                linkLabel={card.linkLabel}
+                badge={(card as { badge?: string }).badge}
+              />
+            ))}
+            <div className="group h-full flex flex-col p-6 md:p-8 rounded-xl border border-dashed border-gray-300 bg-accent">
+              <span className="block text-xs uppercase tracking-wider text-text-secondary mb-2">{offer.unsure.tag}</span>
+              <h3 className="text-xl md:text-2xl font-semibold text-primary mb-3">{offer.unsure.title}</h3>
+              <p className="text-body text-text-primary mb-4 flex-grow">{offer.unsure.description}</p>
+              <p className="text-body-sm text-text-secondary mb-4">{offer.unsure.meta}</p>
+              <BookCallLink notes="Home — wat wij doen" metadata={{ source: 'home-offer-unsure' }}>
+                <span className="text-sm font-semibold text-primary cursor-pointer">{offer.unsure.linkLabel}</span>
+              </BookCallLink>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-gray-900" id="bewijs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+            <div className="shrink-0 text-center md:text-left">
+              <div className="text-5xl md:text-6xl font-semibold text-white">{offer.proofStrip.num}</div>
+              <div className="text-sm uppercase tracking-wider text-white/60 mt-2">{offer.proofStrip.lbl}</div>
+            </div>
+            <div className="text-white/80 text-body">
+              <p className="mb-2">{offer.proofStrip.names}</p>
+              <p className="text-sm text-white/45">{offer.proofStrip.extra}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Services Section */}
       <section id="services" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -915,8 +972,8 @@ export default function Home() {
               <p className="text-body-lg text-text-primary mb-8">
                 {h.services.intro2}
               </p>
-              <LocalizedLink to="/packages">
-                <Button variant="primary">{c.cta.getQuote}</Button>
+              <LocalizedLink to="/websites">
+                <Button variant="primary">{c.cta.viewPackages}</Button>
               </LocalizedLink>
             </motion.div>
 

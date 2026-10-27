@@ -1,8 +1,8 @@
 export const homeEn = {
   hero: {
-    title: 'Innovative web solutions for modern business',
+    title: 'Websites, workshops and platforms that work for SMEs',
     subtitle:
-      "Whether you're a startup, an established business, or an enterprise, we're here to help you reach new heights online.",
+      'We build clear sites that lead to contact or booking, run hands-on AI workshops on your own tasks, and deliver custom platforms when a template is no longer enough. Based in Lokeren, Belgium.',
     connect: 'Connect with us',
   },
   chat: {

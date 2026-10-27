@@ -95,11 +95,10 @@ export default function Header() {
 
   const navLinks: { path: string; label: string; newTab?: boolean }[] = [
     { path: '/', label: t('common.nav.home') },
-    { path: '/packages', label: t('common.nav.packages') },
+    { path: '/websites', label: t('common.nav.websites') },
+    { path: '/workshops', label: t('common.nav.workshops') },
     { path: '/portfolio', label: t('common.nav.portfolio') },
-    { path: '/how-it-works', label: t('common.nav.howItWorks') },
     { path: '/about', label: t('common.nav.about') },
-    { path: '/ai-talks', label: t('common.nav.workshops'), newTab: true },
   ]
 
   const isActive = (path: string) => pathWithoutLocale === path

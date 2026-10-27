@@ -5,6 +5,11 @@
 import { registerPage } from './routePages'
 import Home from './pages/Home'
 import Packages from './pages/Packages'
+import Websites from './pages/Websites'
+import Workshops from './pages/Workshops'
+import StartUps from './pages/StartUps'
+import Platforms from './pages/Platforms'
+import AiAgents from './pages/AiAgents'
 import Portfolio from './pages/Portfolio'
 import PortfolioDetail from './pages/PortfolioDetail'
 import Blog from './pages/Blog'
@@ -25,6 +30,11 @@ import NotFound from './pages/NotFound'
 
 registerPage('home', Home)
 registerPage('packages', Packages)
+registerPage('websites', Websites)
+registerPage('workshops', Workshops)
+registerPage('startUps', StartUps)
+registerPage('platforms', Platforms)
+registerPage('aiAgents', AiAgents)
 registerPage('portfolio', Portfolio)
 registerPage('portfolioDetail', PortfolioDetail)
 registerPage('blog', Blog)

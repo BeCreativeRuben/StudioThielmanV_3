@@ -28,6 +28,11 @@ function MainLayout({ children }: { children: ReactNode }) {
 const publicRoutes = [
   { path: '/', Page: pages.home },
   { path: '/packages', Page: pages.packages },
+  { path: '/websites', Page: pages.websites },
+  { path: '/workshops', Page: pages.workshops },
+  { path: '/start-ups', Page: pages.startUps },
+  { path: '/platformen', Page: pages.platforms },
+  { path: '/ai-agents', Page: pages.aiAgents },
   { path: '/portfolio', Page: pages.portfolio },
   { path: '/portfolio/:slug', Page: pages.portfolioDetail },
   { path: '/blog', Page: pages.blog },
