@@ -4,7 +4,7 @@
  */
 import './ssrPages'
 import { renderToString } from 'react-dom/server'
-import { StaticRouter } from 'react-router-dom/server'
+import { StaticRouter } from 'react-router-dom/dist/server.js'
 import { HelmetProvider, type HelmetServerState } from 'react-helmet-async'
 import { LocaleProvider } from './i18n/LocaleProvider'
 import AppRoutes from './AppRoutes'
