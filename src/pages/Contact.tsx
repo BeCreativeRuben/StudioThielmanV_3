@@ -228,7 +228,7 @@ export default function Contact() {
               <LocalizedLink to="/">
                 <Button variant="outline">{c.success.home}</Button>
               </LocalizedLink>
-              <LocalizedLink to="/packages">
+              <LocalizedLink to="/websites#plannen">
                 <Button variant="cta">{c.success.packages}</Button>
               </LocalizedLink>
             </div>

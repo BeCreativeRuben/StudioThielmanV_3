@@ -7,6 +7,11 @@ import type { AppLocale } from '../i18n/config'
 export const OG_IMAGE_SECTIONS: Record<string, string> = {
   '/': 'home',
   '/packages': 'packages',
+  '/websites': 'packages',
+  '/workshops': 'ai-talks',
+  '/start-ups': 'packages',
+  '/platformen': 'portfolio',
+  '/ai-agents': 'ai-talks',
   '/portfolio': 'portfolio',
   '/blog': 'blog',
   '/current-projects': 'current-projects',

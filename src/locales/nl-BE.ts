@@ -12,12 +12,19 @@ import { aiTalksNl } from './content/aiTalks.nl-BE'
 import { groupWorkshopNl } from './content/groupWorkshop.nl-BE'
 import { masterclassNl } from './content/masterclass.nl-BE'
 import { reviewsNl } from './content/reviews.nl-BE'
+import { websitesNl } from './content/websites.nl-BE'
+import { workshopsPageNl } from './content/workshopsPage.nl-BE'
+import { startUpsNl } from './content/startUps.nl-BE'
+import { platformsNl } from './content/platforms.nl-BE'
+import { aiAgentsNl } from './content/aiAgents.nl-BE'
+import { offerOverviewNl } from './content/offerOverview.nl-BE'
 
 export const nlBEMessages = {
   common: {
     nav: {
       home: 'Home',
       packages: 'Pakketten',
+      websites: 'Websites',
       portfolio: 'Portfolio',
       blog: 'Blog',
       howItWorks: 'Werkwijze',
@@ -25,6 +32,10 @@ export const nlBEMessages = {
       reviews: 'Reviews',
       contact: 'Contact',
       workshops: 'Workshops',
+      startUps: 'Start-ups',
+      platforms: 'Platformen',
+      aiAgents: 'AI-agents',
+      whatWeDo: 'Wat wij doen',
     },
     cta: {
       bookCall: 'Plan een gesprek',
@@ -55,8 +66,12 @@ export const nlBEMessages = {
       branding: 'Branding',
       seo: 'SEO',
       ecommerce: 'E-commerce',
+      websites: 'Websites',
       workshops: 'Workshops',
       aiTalks: 'AI-lezingen',
+      startUps: 'Start-ups',
+      platforms: 'Platformen',
+      aiAgents: 'AI-agents',
       copyright: '© {{year}} Studio Thielman. Alle rechten voorbehouden.',
       companyNumber: 'KBO',
       privacy: 'Privacybeleid',
@@ -103,14 +118,39 @@ export const nlBEMessages = {
       'Professionele websites voor Belgische KMO\'s. Custom webdesign, SEO en AI-integraties vanaf €25/maand. Boek je gratis kennismakingsgesprek.',
     routes: {
       '/': {
-        title: 'Professionele websites vanaf €25/maand',
+        title: 'Website laten maken Lokeren',
         description:
-          'Websites op maat voor Vlaamse en Belgische ondernemers. Webdesign, SEO en AI vanaf €25/maand.',
+          'Website laten maken voor KMO’s in Lokeren & Oost-Vlaanderen. Websites, AI-workshops en platforms vanaf €25/maand. Boek gratis gesprek.',
       },
       '/packages': {
         title: 'Websitepakketten & prijzen',
         description:
           'Vergelijk Starter, Growth en Pro Max. Transparante prijzen vanaf €25/maand voor Belgische bedrijven.',
+      },
+      '/websites': {
+        title: 'Website laten maken voor KMO’s | Prijzen',
+        description:
+          'Website laten maken in Lokeren/Oost-Vlaanderen. Starter €25/m + €150, Growth €40/m + €250 excl. btw. Bewijs eerst, dan prijs.',
+      },
+      '/workshops': {
+        title: 'AI workshop bedrijven | Incompany',
+        description:
+          'AI workshop voor bedrijven: hands-on incompany vanaf €500, 1:1 €1.000 excl. btw. Geen demo-theater. Prompt-pack + 7-dagenplan.',
+      },
+      '/start-ups': {
+        title: 'Website voor start-up | Snel online',
+        description:
+          'Website voor je start-up: lean starten met Starter (€25/m + €150). Heldere CTA, live in 1–2 weken na input.',
+      },
+      '/platformen': {
+        title: 'Platform op maat | Maatwerk software',
+        description:
+          'Platform op maat voor tickets, inschrijvingen en admin. Maatwerk software i.p.v. generiek CRM. Offerte na scope.',
+      },
+      '/ai-agents': {
+        title: 'Lokale AI agents voor bedrijven',
+        description:
+          'Lokale AI agents voor de interne werking van je bedrijf — privé en on-prem. Teaser; plan een gesprek of start met een workshop.',
       },
       '/portfolio': {
         title: 'Portfolio & cases',
@@ -189,4 +229,10 @@ export const nlBEMessages = {
   groupWorkshop: groupWorkshopNl,
   masterclass: masterclassNl,
   reviews: reviewsNl,
+  websites: websitesNl,
+  workshopsPage: workshopsPageNl,
+  startUps: startUpsNl,
+  platforms: platformsNl,
+  aiAgents: aiAgentsNl,
+  offerOverview: offerOverviewNl,
 }

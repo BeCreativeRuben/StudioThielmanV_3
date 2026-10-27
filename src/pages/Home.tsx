@@ -1,199 +1,30 @@
 import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../components/Button'
 import { getPortfolioItems } from '../data/portfolio'
-import { CURRENT_PROJECTS_LAST_UPDATED, getCurrentProjects } from '../data/currentProjects'
-import { formatProjectsLastUpdated } from '../utils/formatLastUpdated'
-import { getLatestBlogPost } from '../data/blog'
 import { getApiUrl } from '../utils/api'
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
-import NewTabLocalizedLink from '../components/NewTabLocalizedLink'
 import BookCallLink from '../components/BookCallLink'
-import { getPublishedReviewCount } from '../data/reviews'
+import ServiceCard from '../components/services/ServiceCard'
+import SectionHeader from '../components/services/SectionHeader'
+import CtaBand from '../components/services/CtaBand'
+import FaqAccordion from '../components/FaqAccordion'
+import { getPublishedReviews } from '../data/reviews'
 import { BUSINESS } from '../seo/site'
 import { Helmet } from 'react-helmet-async'
-import { heroMedia, officeImage, rubenPortrait } from '../images/media'
-
-// Service Images - Using Unsplash placeholders that match each service theme
-const serviceImages = {
-  webDesign: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=640&h=320&fit=crop&q=70',
-  branding: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=640&h=320&fit=crop&q=70',
-  seo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&h=320&fit=crop&q=70',
-  ecommerce: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=640&h=320&fit=crop&q=70',
-  ai: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=640&h=320&fit=crop&q=70',
-  cms: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=640&h=320&fit=crop&q=70',
-  workshops: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=640&h=320&fit=crop&q=70',
-}
-
-const serviceImageKeys = ['webDesign', 'branding', 'seo', 'ecommerce', 'ai', 'cms', 'workshops'] as const
-
-// Blog Countdown Component
-function BlogCountdown() {
-  const { locale, messages } = useLocale()
-  const h = messages.home
-  const c = messages.common
-  const blogLocale = locale === 'nl-BE' ? 'nl-BE' : 'en'
-
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    total: 0
-  })
-
-  useEffect(() => {
-    // Target: 18/01/2026 at 14:00 UTC+1 (13:00 UTC)
-    const targetDate = new Date('2026-01-18T13:00:00Z')
-    
-    const updateTimer = () => {
-      const now = new Date().getTime()
-      const distance = targetDate.getTime() - now
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000),
-          total: distance
-        })
-      } else {
-        setTimeLeft({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-          total: 0
-        })
-      }
-    }
-
-    updateTimer()
-    const interval = setInterval(updateTimer, 1000)
-
-    return () => clearInterval(interval)
-  }, [])
-
-  const timeUnits = [
-    { label: h.blog.days, value: timeLeft.days },
-    { label: h.blog.hours, value: timeLeft.hours },
-    { label: h.blog.minutes, value: timeLeft.minutes },
-    { label: h.blog.seconds, value: timeLeft.seconds },
-  ]
-
-  if (timeLeft.total <= 0) {
-    const latestPost = getLatestBlogPost(blogLocale)
-    
-    if (latestPost) {
-      return (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
-            {latestPost.featuredImage && (
-              <div className="w-full h-64 bg-gray-100 overflow-hidden">
-                <img
-                  src={latestPost.featuredImage}
-                  alt={latestPost.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement
-                    target.style.display = 'none'
-                  }}
-                />
-              </div>
-            )}
-            <div className="p-8">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs text-text-secondary uppercase tracking-wider bg-accent px-3 py-1 rounded-full">{h.blog.latestArticle}</span>
-                <span className="text-xs text-text-secondary">{latestPost.date}</span>
-              </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">{latestPost.title}</h3>
-              <p className="text-body text-text-primary mb-6 line-clamp-3">{latestPost.excerpt}</p>
-              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                <LocalizedLink to={`/blog/${latestPost.slug}`} aria-label={`${c.cta.readMore}: ${latestPost.title}`}>
-                  <Button variant="primary">
-                    <span aria-hidden="true">{c.cta.readMore}</span>
-                    <span className="sr-only">{c.cta.readMore}: {latestPost.title}</span>
-                  </Button>
-                </LocalizedLink>
-                <LocalizedLink to="/blog" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  {c.nav.blog} →
-                </LocalizedLink>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )
-    }
-    
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className="max-w-2xl mx-auto text-center"
-      >
-        <div className="bg-accent border border-gray-200 rounded-lg p-8">
-          <h3 className="text-2xl font-bold text-primary mb-2">{h.blog.blogLive}</h3>
-          <p className="text-body text-text-primary">{h.blog.subtitle}</p>
-        </div>
-      </motion.div>
-    )
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
-      className="max-w-3xl mx-auto"
-    >
-      <div className="bg-accent border border-gray-200 rounded-lg p-8 md:p-10">
-        <div className="text-center mb-8">
-          <h3 className="text-2xl md:text-3xl font-bold text-primary mb-3">
-            {h.blog.title}
-          </h3>
-          <p className="text-body text-text-primary">
-            {h.blog.subtitle}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {timeUnits.map((unit) => (
-            <div
-              key={unit.label}
-              className="text-center"
-            >
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                  {String(unit.value).padStart(2, '0')}
-                </div>
-                <div className="text-xs text-text-secondary uppercase tracking-wider">
-                  {unit.label}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  )
-}
+import { heroMedia, rubenPortrait } from '../images/media'
 
 export default function Home() {
-  const location = useLocation()
   const { locale, messages, t } = useLocale()
+  const offer = messages.offerOverview
+  const hl = offer.highlights
+  const reviewItems = [
+    { id: 'aeriez', text: hl.workshops.quote, author: hl.workshops.attribution },
+    ...getPublishedReviews().map((r) => ({ id: r.id, text: r.quote[locale], author: r.authorContext ? `${r.authorName} — ${r.authorContext}` : r.authorName })),
+  ]
   const h = messages.home
   const c = messages.common
-  const [expandedService, setExpandedService] = useState(0)
   const [showChatWidget, setShowChatWidget] = useState(false)
   const [showHelpMessage, setShowHelpMessage] = useState(false)
   const [message, setMessage] = useState('')
@@ -238,86 +69,6 @@ export default function Home() {
 
     return () => clearTimeout(timer)
   }, [])
-
-  // Handle hash navigation to services
-  useEffect(() => {
-    const handleHashNavigation = () => {
-      const hash = location.hash || window.location.hash
-      if (hash) {
-        let serviceIndex = -1
-        let serviceId = ''
-        if (hash === '#service-custom-web') {
-          serviceIndex = 0
-          serviceId = 'custom-web'
-        } else if (hash === '#service-branding') {
-          serviceIndex = 1
-          serviceId = 'branding'
-        } else if (hash === '#service-seo') {
-          serviceIndex = 2
-          serviceId = 'seo'
-        } else if (hash === '#service-ecommerce') {
-          serviceIndex = 3
-          serviceId = 'ecommerce'
-        }
-
-        if (serviceIndex !== -1) {
-          const serviceItem = h.services.items[serviceIndex]
-          const isComingSoon = serviceItem && 'comingSoon' in serviceItem && serviceItem.comingSoon
-          if (isComingSoon) {
-            setTimeout(() => {
-              const element = document.getElementById(`service-${serviceId}`)
-              if (element) {
-                const headerOffset = 100
-                const elementPosition = element.getBoundingClientRect().top
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset
-                window.scrollTo({
-                  top: offsetPosition,
-                  behavior: 'smooth'
-                })
-              }
-            }, 100)
-            return
-          }
-          
-          // First expand the service
-          setExpandedService(serviceIndex)
-          
-          // Then scroll to it after a delay to ensure it's expanded
-          setTimeout(() => {
-            const element = document.getElementById(`service-${serviceId}`)
-            if (element) {
-              const headerOffset = 100
-              const elementPosition = element.getBoundingClientRect().top
-              const offsetPosition = elementPosition + window.pageYOffset - headerOffset
-              window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-              })
-            }
-          }, 500) // Delay to ensure accordion is fully expanded
-        }
-      }
-    }
-
-    // Check hash on mount and when location changes (with delay to ensure DOM is ready)
-    const timeoutId = setTimeout(handleHashNavigation, 300)
-
-    // Also listen for hash changes in the URL
-    window.addEventListener('hashchange', handleHashNavigation)
-
-    return () => {
-      clearTimeout(timeoutId)
-      window.removeEventListener('hashchange', handleHashNavigation)
-    }
-  }, [location.hash, locale, h.services.items])
-
-  const values = h.values.items
-
-  const services = h.services.items.map((item, index) => ({
-    ...item,
-    image: serviceImages[serviceImageKeys[index]],
-    comingSoon: 'comingSoon' in item ? item.comingSoon : false,
-  }))
 
   // Function to handle sending message
   const handleSendMessage = async () => {
@@ -536,9 +287,9 @@ export default function Home() {
                 <BookCallLink>
                   <Button size="lg" variant="cta">{c.cta.bookCall}</Button>
                 </BookCallLink>
-                <LocalizedLink to="/packages">
-                  <Button size="lg" variant="secondary">{c.cta.viewPackages}</Button>
-                </LocalizedLink>
+                <a href="#diensten">
+                  <Button size="lg" variant="secondary">{offer.heroSecondary}</Button>
+                </a>
               </div>
               {/* Social Media Section */}
               <div className="mt-8 mb-8 md:mb-0">
@@ -717,611 +468,189 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* About Section */}
-      <section className="py-20 bg-white">
+      {/* Offer overview — Wat wij doen */}
+      <section id="diensten" className="py-20 bg-white scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.about.label}</div>
-              <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-                {h.about.title}
-              </h2>
-              <div className="space-y-4 text-lg text-text-primary leading-relaxed">
-                <p>
-                  {h.about.p1}
-                </p>
-                <p>
-                  {h.about.p2}
-                </p>
-              </div>
-              <div className="mt-8">
-                <LocalizedLink to="/about" aria-label={h.about.learnMoreLabel}>
-                  <Button variant="outline">
-                    <span aria-hidden="true">{c.cta.learnMore}</span>
-                    <span className="sr-only">{h.about.learnMoreLabel}</span>
-                  </Button>
-                </LocalizedLink>
-              </div>
-            </motion.div>
-
-            {/* Right Content - Image and Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="rounded-lg h-96 mb-8 overflow-hidden">
-                <img
-                  src={officeImage.src}
-                  alt={h.about.officeAlt}
-                  width={officeImage.width}
-                  height={officeImage.height}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8 items-start">
-                <div>
-                  <div className="text-5xl font-bold text-primary mb-2">50+</div>
-                  <div className="text-body text-text-secondary">{h.about.projects}</div>
-                </div>
-                {getPublishedReviewCount() > 0 ? (
-                  <LocalizedLink to="/reviews" className="group block hover:opacity-90 transition-opacity">
-                    <div className="text-5xl font-bold text-primary mb-2 group-hover:text-cta transition-colors">
-                      {getPublishedReviewCount()}
-                    </div>
-                    <div className="text-body text-text-secondary underline-offset-4 group-hover:underline">
-                      {getPublishedReviewCount() === 1
-                        ? `1 ${h.about.reviews}`
-                        : `${getPublishedReviewCount()} ${h.about.reviews}`}
-                    </div>
-                  </LocalizedLink>
-                ) : (
-                  <figure>
-                    <blockquote className="text-body italic text-text-primary leading-relaxed">
-                      “{h.about.quote}”
-                    </blockquote>
-                    <figcaption className="mt-3 text-sm text-text-secondary">
-                      <span className="font-semibold text-primary">{h.about.quoteAttribution}</span>
-                      {' · '}
-                      <a
-                        href={h.about.quoteUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline underline-offset-4 hover:text-primary"
-                      >
-                        {h.about.quoteLink}
-                        <span className="sr-only"> {t('common.a11y.opensInNewTab')}</span>
-                      </a>
-                    </figcaption>
-                  </figure>
-                )}
-              </div>
-              <BookCallLink>
-                <Button variant="primary" className="w-full">{c.cta.bookCall}</Button>
-              </BookCallLink>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Portfolio Showcase Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.portfolio.label}</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-12">
-              {h.portfolio.title}
-            </h2>
-          </motion.div>
-          
+          <SectionHeader label={offer.label} title={offer.title} intro={offer.intro} />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {portfolioItems.map((item, index) => (
-              <motion.div
-                key={item.slug}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <a
-                  href={item.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block"
-                >
-                  <div className="bg-accent rounded-lg h-64 mb-4 flex items-center justify-center overflow-hidden border border-gray-200">
-                    {item.screenshots && item.screenshots.length > 0 ? (
-                      <img
-                        src={item.screenshots[0]}
-                        alt={item.title}
-                        width={1400}
-                        height={875}
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                        decoding="async"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement
-                          target.style.display = 'none'
-                          const parent = target.parentElement
-                          if (parent) {
-                            parent.innerHTML = `<span class="text-text-secondary">${c.projectImage}</span>`
-                          }
-                        }}
-                      />
-                    ) : (
-                      <span className="text-text-secondary">{c.projectImage}</span>
-                    )}
-                  </div>
-                  <div className="text-sm text-text-secondary uppercase tracking-wider mb-2">
-                    {item.liveUrl.replace(/^https?:\/\/(?:www\.)?/, '').replace(/\/$/, '')}
-                  </div>
-                  <h3 className="text-h3 text-primary mb-2 group-hover:text-cta transition-colors">
-                    {item.title}
-                    <span className="sr-only"> {t('common.a11y.opensInNewTab')}</span>
-                  </h3>
-                  <p className="text-body text-text-primary mb-2">{item.description}</p>
-                  <div className="text-body-sm text-text-secondary">{item.date}</div>
-                </a>
-              </motion.div>
+            {offer.cards.map((card) => (
+              <ServiceCard
+                key={card.href}
+                href={card.href}
+                tag={card.tag}
+                title={card.title}
+                description={card.description}
+                meta={card.meta}
+                linkLabel={card.linkLabel}
+                badge={(card as { badge?: string }).badge}
+              />
             ))}
-          </div>
-          
-          <motion.div
-            className="text-center mt-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            <LocalizedLink to="/portfolio">
-              <Button variant="primary" size="lg">{c.cta.discoverMore}</Button>
-            </LocalizedLink>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section id="services" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Left Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.services.label}</div>
-              <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-                {h.services.title}
-              </h2>
-              <p className="text-body-lg text-text-primary mb-4">
-                {h.services.intro1}
-              </p>
-              <p className="text-body-lg text-text-primary mb-8">
-                {h.services.intro2}
-              </p>
-              <LocalizedLink to="/packages">
-                <Button variant="primary">{c.cta.getQuote}</Button>
-              </LocalizedLink>
-            </motion.div>
-
-            {/* Right Content - Accordion */}
-            <div className="space-y-4">
-              {services.map((service, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <div
-                    id={`service-${index === 0 ? 'custom-web' : index === 1 ? 'branding' : index === 2 ? 'seo' : index === 3 ? 'ecommerce' : index === 6 ? 'workshops' : `service-${index}`}`}
-                    className={`border border-border rounded-lg overflow-hidden transition-all duration-300 ${
-                      expandedService === index ? 'shadow-lg' : ''
-                    }`}
-                  >
-                    <button
-                      onClick={() => !service.comingSoon && setExpandedService(expandedService === index ? -1 : index)}
-                      className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-accent transition-colors"
-                      disabled={service.comingSoon}
-                    >
-                      <span className="text-h4 text-primary font-semibold flex items-center gap-3">
-                        ({String(index + 1).padStart(2, '0')}) {service.title}
-                        {service.comingSoon && (
-                          <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full font-medium">
-                            {c.comingSoon}
-                          </span>
-                        )}
-                      </span>
-                      {!service.comingSoon && (
-                        <svg
-                          className={`w-6 h-6 text-primary transition-transform ${
-                            expandedService === index ? 'rotate-180' : ''
-                          }`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      )}
-                    </button>
-                    <AnimatePresence>
-                      {expandedService === index && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: 'easeInOut' }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-6 pb-6">
-                        <div className="bg-accent rounded-lg h-48 mb-4 overflow-hidden">
-                          <img
-                            src={service.image}
-                            alt={service.title}
-                            width={640}
-                            height={320}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        </div>
-                        <p className="text-body text-text-primary mb-4 leading-relaxed">{service.description}</p>
-                        
-                        {service.benefits && (
-                          <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
-                            <div className="text-sm font-semibold text-primary mb-1">{c.keyBenefit}</div>
-                            <div className="text-body-sm text-text-primary">{service.benefits}</div>
-                          </div>
-                        )}
-                        
-                        {service.features.length > 0 && (
-                          <div className="mb-4">
-                            <div className="text-sm font-semibold text-primary mb-3">{c.whatsIncluded}</div>
-                            <ul className="space-y-2">
-                              {service.features.map((feature, idx) => (
-                                <li key={idx} className="text-body-sm text-text-primary flex items-start">
-                                  <span className="text-cta mr-2 mt-1 font-bold flex-shrink-0">✓</span>
-                                  <span>{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        <div className="flex gap-3">
-                          {index === 6 ? (
-                            <NewTabLocalizedLink to="/ai-talks">
-                              <Button variant="outline" size="sm">
-                                {c.cta.learnMore}
-                              </Button>
-                            </NewTabLocalizedLink>
-                          ) : (
-                            <LocalizedLink to="/packages">
-                              <Button variant="outline" size="sm">
-                                {c.viewPackagesArrow}
-                              </Button>
-                            </LocalizedLink>
-                          )}
-                          {index === 6 ? (
-                            <BookCallLink notes={h.workshopsTeaser.bookingNote} metadata={{ source: 'home-services-workshops' }}>
-                              <Button variant="primary" size="sm">{c.cta.bookCall}</Button>
-                            </BookCallLink>
-                          ) : (
-                            <LocalizedLink to="/contact#contact-form">
-                              <Button variant="primary" size="sm">{c.cta.getStarted}</Button>
-                            </LocalizedLink>
-                          )}
-                        </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Workshops Teaser */}
-      <section id="workshops" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.workshopsTeaser.label}</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-              {h.workshopsTeaser.title}
-            </h2>
-            <p className="text-body-lg text-text-primary max-w-2xl mx-auto">
-              {h.workshopsTeaser.subtitle}
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {h.workshopsTeaser.tracks.map((track, index) => (
-              <motion.div
-                key={track.key}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300 flex flex-col"
-              >
-                <div className="flex items-start justify-between mb-4 gap-3">
-                  <h3 className="text-xl font-bold text-primary flex-1">{track.title}</h3>
-                  {track.badge && (
-                    <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-700">
-                      {track.badge}
-                    </span>
-                  )}
-                </div>
-                <p className="text-body-sm text-text-primary mb-4 flex-grow">{track.description}</p>
-                <div className="text-sm font-semibold text-primary mb-4">{track.meta}</div>
-                {track.to.startsWith('/ai-talks') ? (
-                  <NewTabLocalizedLink to={track.to} className="block">
-                    <Button variant="outline" size="sm" className="w-full">
-                      <span aria-hidden="true">{track.cta}</span>
-                      <span className="sr-only">{track.ctaLabel}</span>
-                    </Button>
-                  </NewTabLocalizedLink>
-                ) : (
-                  <LocalizedLink to={track.to} aria-label={track.ctaLabel}>
-                    <Button variant="outline" size="sm" className="w-full">
-                      <span aria-hidden="true">{track.cta}</span>
-                    </Button>
-                  </LocalizedLink>
-                )}
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            className="text-center mt-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <p className="text-body text-text-secondary italic max-w-2xl mx-auto mb-2">
-              {h.workshopsTeaser.proof}
-            </p>
-            <a
-              href="https://www.linkedin.com/feed/update/urn:li:activity:7492876931240087554/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block text-sm font-semibold text-[#0A66C2] hover:underline mb-8"
-            >
-              {h.workshopsTeaser.proofLink} →
-            </a>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <NewTabLocalizedLink to="/ai-talks">
-                <Button variant="primary" size="lg">{h.workshopsTeaser.viewAll}</Button>
-              </NewTabLocalizedLink>
-              <BookCallLink notes={h.workshopsTeaser.bookingNote} metadata={{ source: 'home-workshops' }}>
-                <Button variant="outline" size="lg">{c.cta.bookCall}</Button>
+            <div className="group h-full flex flex-col p-6 md:p-8 rounded-xl border border-dashed border-gray-300 bg-accent">
+              <span className="block text-xs uppercase tracking-wider text-text-secondary mb-2">{offer.unsure.tag}</span>
+              <h3 className="text-xl md:text-2xl font-semibold text-primary mb-3">{offer.unsure.title}</h3>
+              <p className="text-body text-text-primary mb-4 flex-grow">{offer.unsure.description}</p>
+              <p className="text-body-sm text-text-secondary mb-4">{offer.unsure.meta}</p>
+              <BookCallLink notes="Home — wat wij doen" metadata={{ source: 'home-offer-unsure' }}>
+                <span className="text-sm font-semibold text-primary cursor-pointer">{offer.unsure.linkLabel}</span>
               </BookCallLink>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Values Section */}
-      <section className="py-20 bg-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              {h.values.title}
-            </h2>
-            <div className="w-20 h-1 bg-cta mx-auto"></div>
-          </motion.div>
+      {/* Proof strip */}
+      <section className="py-16 bg-gray-900" id="bewijs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+            <div className="shrink-0 text-center md:text-left">
+              <div className="text-5xl md:text-6xl font-semibold text-white">{offer.proofStrip.num}</div>
+              <div className="text-sm uppercase tracking-wider text-white/60 mt-2">{offer.proofStrip.lbl}</div>
+            </div>
+            <div className="text-white/80 text-body">
+              <p className="mb-2">{offer.proofStrip.names}</p>
+              <p className="text-sm text-white/45">{offer.proofStrip.extra}</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {values.map((value, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group"
-              >
-                <div className="bg-white/5 border-l-4 border-cta/50 hover:border-cta rounded-lg p-6 hover:bg-white/10 transition-all duration-300">
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cta transition-colors">
-                    {value.title}
-                  </h3>
-                  <p className="text-body text-white/80 leading-relaxed">
-                    {value.description}
-                  </p>
-                </div>
-              </motion.div>
+      {/* Highlight: websites */}
+      <section id="websites" className="py-20 bg-accent scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="text-sm text-text-secondary uppercase tracking-wider mb-4">{hl.websites.label}</p>
+            <h2 className="text-3xl md:text-4xl font-semibold text-primary mb-4">{hl.websites.title}</h2>
+            <p className="text-body-lg text-text-primary mb-8">{hl.websites.intro}</p>
+            <LocalizedLink to="/websites#plannen"><Button variant="primary" size="lg">{hl.websites.link}</Button></LocalizedLink>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {hl.websites.plans.map((plan, i) => (
+              <LocalizedLink key={plan.name} to="/websites#plannen" className={`block p-6 rounded-xl border bg-white hover:shadow-lg transition-shadow ${i === 1 ? 'border-primary' : 'border-gray-200'}`}>
+                <h3 className="text-lg font-semibold text-primary mb-2">{plan.name}</h3>
+                <p className="text-2xl font-semibold text-primary mb-1">{plan.price}</p>
+                <p className="text-body-sm text-text-secondary">{plan.note}</p>
+              </LocalizedLink>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Blog/Expert Insights Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.blog.label}</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-              {h.blog.title}
-            </h2>
-            <p className="text-body-lg text-text-primary mb-8">
-              {h.blog.subtitle}
-            </p>
-          </motion.div>
-          
-          {/* Countdown Timer */}
-          <BlogCountdown />
+      {/* Highlight: workshops */}
+      <section id="workshops" className="py-20 bg-white scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="text-sm text-text-secondary uppercase tracking-wider mb-4">{hl.workshops.label}</p>
+            <h2 className="text-3xl md:text-4xl font-semibold text-primary mb-4">{hl.workshops.title}</h2>
+            <p className="text-body-lg text-text-primary mb-8">{hl.workshops.intro}</p>
+            <LocalizedLink to="/workshops#formats"><Button variant="primary" size="lg">{hl.workshops.link}</Button></LocalizedLink>
+          </div>
+          <figure className="p-8 rounded-xl bg-gray-900 text-white">
+            <blockquote className="text-2xl md:text-3xl font-semibold leading-snug mb-4">“{hl.workshops.quote}”</blockquote>
+            <figcaption className="text-white/60 text-sm uppercase tracking-wider">{hl.workshops.attribution}</figcaption>
+          </figure>
         </div>
       </section>
 
-      {/* Current Projects Preview */}
-      <section className="py-20 bg-white">
+      {/* Highlight: start-ups + platformen */}
+      <section className="py-20 bg-accent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div id="start-ups" className="p-8 rounded-xl bg-white border border-gray-200 flex flex-col scroll-mt-24">
+            <p className="text-sm text-text-secondary uppercase tracking-wider mb-4">{hl.startUps.label}</p>
+            <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">{hl.startUps.title}</h2>
+            <p className="text-body text-text-primary mb-4">{hl.startUps.intro}</p>
+            <ul className="mb-6 space-y-2 flex-grow">
+              {hl.startUps.points.map((pt) => (<li key={pt} className="text-body text-text-primary">✓ {pt}</li>))}
+            </ul>
+            <LocalizedLink to="/start-ups"><Button variant="secondary">{hl.startUps.link}</Button></LocalizedLink>
+          </div>
+          <div id="platformen" className="p-8 rounded-xl bg-white border border-gray-200 flex flex-col scroll-mt-24">
+            <p className="text-sm text-text-secondary uppercase tracking-wider mb-4">{hl.platforms.label}</p>
+            <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">{hl.platforms.title}</h2>
+            <p className="text-body text-text-primary mb-4">{hl.platforms.intro}</p>
+            <div className="flex flex-wrap gap-2 mb-6 flex-grow content-start">
+              {hl.platforms.clients.map((cl) => (<span key={cl} className="px-3 py-1 rounded-full bg-accent text-sm text-primary">{cl}</span>))}
+            </div>
+            <LocalizedLink to="/platformen"><Button variant="secondary">{hl.platforms.link}</Button></LocalizedLink>
+          </div>
+        </div>
+      </section>
+
+      {/* Highlight: AI agents teaser */}
+      <section id="ai-agents" className="py-16 bg-white scroll-mt-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center p-8 rounded-xl border border-dashed border-gray-300">
+          <p className="text-sm text-text-secondary uppercase tracking-wider mb-4">{hl.aiAgents.label}</p>
+          <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">{hl.aiAgents.title}</h2>
+          <p className="text-body text-text-primary mb-6">{hl.aiAgents.intro}</p>
+          <LocalizedLink to="/ai-agents"><Button variant="secondary">{hl.aiAgents.link}</Button></LocalizedLink>
+        </div>
+      </section>
+
+      {/* Selected portfolio */}
+      <section className="py-20 bg-accent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <div className="text-sm text-text-secondary uppercase tracking-wider mb-4">{h.wip.label}</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-              {h.wip.title}
-            </h2>
-            <p className="text-body-lg text-text-primary max-w-2xl mx-auto">
-              {h.wip.subtitle}
-            </p>
-            <p className="text-sm text-text-secondary mt-3">
-              {h.wip.lastUpdated}{' '}
-              <time dateTime={CURRENT_PROJECTS_LAST_UPDATED}>
-                {formatProjectsLastUpdated(CURRENT_PROJECTS_LAST_UPDATED, locale)}
-              </time>
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {getCurrentProjects(locale).slice(0, 3).map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-xl font-bold text-primary flex-1">{project.title}</h3>
-                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                    project.status === 'completed'
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : project.status === 'in-progress'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : project.status === 'planning'
-                          ? 'bg-blue-100 text-blue-800'
-                          : project.status === 'testing'
-                            ? 'bg-purple-100 text-purple-800'
-                            : 'bg-green-100 text-green-800'
-                  }`}>
-                    {project.status === 'completed'
-                      ? '✅'
-                      : project.status === 'in-progress'
-                        ? h.wip.status.inProgress
-                        : project.status === 'planning'
-                          ? h.wip.status.planning
-                          : project.status === 'testing'
-                            ? h.wip.status.testing
-                            : h.wip.status.default}
-                  </span>
+          <SectionHeader label={offer.portfolio.label} title={offer.portfolio.title} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {portfolioItems.map((item) => (
+              <a key={item.slug} href={item.liveUrl} target="_blank" rel="noopener noreferrer" className="group block">
+                <div className="bg-white rounded-lg h-64 mb-4 overflow-hidden border border-gray-200">
+                  {item.screenshots && item.screenshots.length > 0 ? (
+                    <img src={item.screenshots[0]} alt={item.title} width={1400} height={875} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" />
+                  ) : null}
                 </div>
-                <p className="text-body-sm text-text-primary mb-4">{project.description}</p>
-                
-                {/* Progress Bar */}
-                <div className="mb-4">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-text-secondary">{c.progress}</span>
-                    <span className="text-xs font-semibold text-primary">{project.progress}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-primary to-cta rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${project.progress}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: 0.3 }}
-                    />
-                  </div>
-                </div>
-
-                {/* Quick Stats */}
-                <div className="flex items-center gap-4 text-xs text-text-secondary mb-4">
-                  <span>📅 {project.startDate}</span>
-                  {project.technologies.length > 0 && (
-                    <span>🔧 {project.technologies.length} tech</span>
-                  )}
-                </div>
-
-                <LocalizedLink to="/current-projects">
-                  <Button variant="outline" size="sm" className="w-full">
-                    {h.wip.viewDetails}
-                  </Button>
-                </LocalizedLink>
-              </motion.div>
+                <h3 className="text-h3 text-primary mb-2 group-hover:text-cta transition-colors">
+                  {item.title}
+                  <span className="sr-only"> {t('common.a11y.opensInNewTab')}</span>
+                </h3>
+                <p className="text-body text-text-primary">{item.description}</p>
+              </a>
             ))}
           </div>
-
-          <motion.div
-            className="text-center mt-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <LocalizedLink to="/current-projects">
-              <Button variant="primary" size="lg">
-                {h.wip.viewAll}
-              </Button>
-            </LocalizedLink>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Mid-Footer CTA */}
-      <section className="py-6 bg-accent overflow-hidden relative" aria-hidden="true">
-        <div className="relative w-full overflow-hidden" data-marquee-container>
-          <div className="flex text-5xl md:text-7xl font-bold text-text-secondary/30 uppercase tracking-wider marquee-container" aria-hidden="true">
-            <div className="flex whitespace-nowrap items-center marquee-content">
-              <span className="px-20">{h.marquee}</span>
-              <span className="px-20">{h.marquee}</span>
-              <span className="px-20">{h.marquee}</span>
-              <span className="px-20">{h.marquee}</span>
-            </div>
-            <div className="flex whitespace-nowrap items-center marquee-content" aria-hidden="true">
-              <span className="px-20">{h.marquee}</span>
-              <span className="px-20">{h.marquee}</span>
-              <span className="px-20">{h.marquee}</span>
-              <span className="px-20">{h.marquee}</span>
-            </div>
+          <div className="text-center mt-12">
+            <LocalizedLink to="/portfolio"><Button variant="primary" size="lg">{offer.portfolio.more}</Button></LocalizedLink>
           </div>
         </div>
       </section>
+
+      {/* Reviews */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader label={offer.reviews.label} title={offer.reviews.title} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {reviewItems.map((r) => (
+              <figure key={r.id} className="p-6 rounded-xl border border-gray-200 bg-white">
+                <blockquote className="text-body-lg text-text-primary mb-4">“{r.text}”</blockquote>
+                <figcaption className="text-sm text-text-secondary uppercase tracking-wider">{r.author}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <LocalizedLink to="/reviews"><Button variant="secondary">{offer.reviews.more}</Button></LocalizedLink>
+          </div>
+        </div>
+      </section>
+
+      {/* Cross-service FAQ */}
+      <section className="py-20 bg-accent">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader label={offer.faq.label} title={offer.faq.title} />
+          <FaqAccordion items={offer.faq.items} />
+        </div>
+      </section>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: offer.faq.items.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })),
+        })}</script>
+      </Helmet>
+
+      <span id="cta" />
+      <CtaBand title={offer.cta.title} subtitle={offer.cta.subtitle}>
+        <BookCallLink notes="Home — CTA band" metadata={{ source: 'home-cta-band' }}>
+          <Button size="lg" variant="cta">{offer.cta.button}</Button>
+        </BookCallLink>
+        <LocalizedLink to="/contact#contact-form"><Button size="lg" variant="secondary">{c.contactDirectly}</Button></LocalizedLink>
+      </CtaBand>
     </div>
   )
 }

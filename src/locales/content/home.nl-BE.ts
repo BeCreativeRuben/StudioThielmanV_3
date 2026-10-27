@@ -1,8 +1,8 @@
 export const homeNl = {
   hero: {
-    title: 'Innovatieve weboplossingen voor moderne ondernemingen',
+    title: 'Websites, workshops en platforms die voor KMO’s werken',
     subtitle:
-      'Of je nu een starter bent, een gevestigde KMO of een groeiend bedrijf: wij helpen je online hoger te scoren in België en daarbuiten.',
+      'Wij bouwen heldere sites die naar contact of boeking leiden, geven hands-on AI-workshops op jullie eigen taken, en leveren maatwerkplatformen wanneer een template niet meer volstaat. Gevestigd in Lokeren.',
     connect: 'Volg ons',
   },
   chat: {

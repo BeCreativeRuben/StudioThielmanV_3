@@ -32,6 +32,11 @@ function createRoute(id: string, loader: Loader) {
 export const pages = {
   home: createRoute('home', () => import('./pages/Home')),
   packages: createRoute('packages', () => import('./pages/Packages')),
+  websites: createRoute('websites', () => import('./pages/Websites')),
+  workshops: createRoute('workshops', () => import('./pages/Workshops')),
+  startUps: createRoute('startUps', () => import('./pages/StartUps')),
+  platforms: createRoute('platforms', () => import('./pages/Platforms')),
+  aiAgents: createRoute('aiAgents', () => import('./pages/AiAgents')),
   portfolio: createRoute('portfolio', () => import('./pages/Portfolio')),
   portfolioDetail: createRoute('portfolioDetail', () => import('./pages/PortfolioDetail')),
   blog: createRoute('blog', () => import('./pages/Blog')),
@@ -57,6 +62,11 @@ export function pageIdForPath(pathname: string): PageId {
   const path = stripLocalePrefix(pathname.split('?')[0].split('#')[0])
   if (path === '/') return 'home'
   if (path === '/packages') return 'packages'
+  if (path === '/websites') return 'websites'
+  if (path === '/workshops') return 'workshops'
+  if (path === '/start-ups') return 'startUps'
+  if (path === '/platformen') return 'platforms'
+  if (path === '/ai-agents') return 'aiAgents'
   if (path === '/portfolio') return 'portfolio'
   if (path.startsWith('/portfolio/')) return 'portfolioDetail'
   if (path === '/blog') return 'blog'

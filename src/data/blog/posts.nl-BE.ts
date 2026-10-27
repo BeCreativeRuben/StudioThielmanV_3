@@ -143,7 +143,7 @@ export const postsNl: BlogPost[] = [
     ],
     cta: {
       text: 'Wil je weten welk pakket bij jouw zaak past? Bekijk onze packages of plan een gratis gesprek.',
-      link: '/packages',
+      link: '/websites#plannen',
     },
   },
   {
@@ -262,7 +262,7 @@ export const postsNl: BlogPost[] = [
     ],
     cta: {
       text: 'Vergelijk onze pakketten en kies wat bij je past.',
-      link: '/packages',
+      link: '/websites#plannen',
     },
   },
   {

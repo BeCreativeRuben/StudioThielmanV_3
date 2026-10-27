@@ -11,6 +11,11 @@ const EN_FROM_NL = Object.fromEntries(Object.entries(NL_SLUGS).map(([en, nl]) =>
 const staticPaths = [
   '/',
   '/packages',
+  '/websites',
+  '/workshops',
+  '/start-ups',
+  '/platformen',
+  '/ai-agents',
   '/portfolio',
   '/blog',
   '/current-projects',

@@ -4,7 +4,7 @@
  */
 import './ssrPages'
 import { renderToString } from 'react-dom/server'
-import { StaticRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { HelmetProvider, type HelmetServerState } from 'react-helmet-async'
 import { LocaleProvider } from './i18n/LocaleProvider'
 import AppRoutes from './AppRoutes'
@@ -14,11 +14,11 @@ export function renderRoute(url: string) {
 
   const body = renderToString(
     <HelmetProvider context={helmetContext}>
-      <StaticRouter location={url}>
+      <MemoryRouter initialEntries={[url]} initialIndex={0}>
         <LocaleProvider>
           <AppRoutes />
         </LocaleProvider>
-      </StaticRouter>
+      </MemoryRouter>
     </HelmetProvider>
   )
 

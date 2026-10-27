@@ -1,7 +1,6 @@
 import { useLocale } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { BUSINESS } from '../seo/site'
-import NewTabLocalizedLink from './NewTabLocalizedLink'
 
 export default function Footer() {
   const { t } = useLocale()
@@ -54,8 +53,13 @@ export default function Footer() {
                 </LocalizedLink>
               </li>
               <li>
+                <LocalizedLink to="/websites" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
+                  {t('common.footer.websites')}
+                </LocalizedLink>
+              </li>
+              <li>
                 <LocalizedLink to="/packages" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
-                  {t('common.footer.services')}
+                  {t('common.nav.packages')}
                 </LocalizedLink>
               </li>
               <li>
@@ -86,29 +90,29 @@ export default function Footer() {
             <h4 className="text-h4 text-white font-semibold mb-4">{t('common.footer.services')}</h4>
             <ul className="space-y-3">
               <li>
-                <LocalizedLink to="/#service-custom-web" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
-                  {t('common.footer.customWeb')}
+                <LocalizedLink to="/websites" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
+                  {t('common.footer.websites')}
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/#service-branding" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
-                  {t('common.footer.branding')}
-                </LocalizedLink>
-              </li>
-              <li>
-                <LocalizedLink to="/#service-seo" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
-                  {t('common.footer.seo')}
-                </LocalizedLink>
-              </li>
-              <li>
-                <LocalizedLink to="/#service-ecommerce" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
-                  {t('common.footer.ecommerce')}
-                </LocalizedLink>
-              </li>
-              <li>
-                <NewTabLocalizedLink to="/ai-talks" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
+                <LocalizedLink to="/workshops" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
                   {t('common.footer.workshops')}
-                </NewTabLocalizedLink>
+                </LocalizedLink>
+              </li>
+              <li>
+                <LocalizedLink to="/start-ups" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
+                  {t('common.footer.startUps')}
+                </LocalizedLink>
+              </li>
+              <li>
+                <LocalizedLink to="/platformen" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
+                  {t('common.footer.platforms')}
+                </LocalizedLink>
+              </li>
+              <li>
+                <LocalizedLink to="/ai-agents" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
+                  {t('common.footer.aiAgents')}
+                </LocalizedLink>
               </li>
               <li>
                 <LocalizedLink to="/ai-talks" className="inline-flex items-center min-h-6 py-1 text-body text-white/80 hover:text-white transition-colors">
