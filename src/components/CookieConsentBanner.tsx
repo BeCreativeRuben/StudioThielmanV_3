@@ -33,12 +33,16 @@ function updateGtagConsent(choice: ConsentChoice) {
           ad_storage: 'granted',
           ad_user_data: 'granted',
           ad_personalization: 'granted',
+          functionality_storage: 'granted',
+          personalization_storage: 'granted',
         }
       : {
           analytics_storage: 'denied',
           ad_storage: 'denied',
           ad_user_data: 'denied',
           ad_personalization: 'denied',
+          functionality_storage: 'denied',
+          personalization_storage: 'denied',
         }
 
   const gtag = (window as any).gtag as undefined | ((...args: any[]) => void)

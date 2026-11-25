@@ -42,13 +42,17 @@
 
       var analyticsDefault = (stConsentChoice === 'reject') ? 'denied' : 'granted';
       var adsDefault = (stConsentChoice === 'accept') ? 'granted' : 'denied';
+      // Functional/preferences storage (used by the Tinrate embed extras). Opt-in, same as ads.
+      var prefsDefault = (stConsentChoice === 'accept') ? 'granted' : 'denied';
 
       gtag('consent', 'default', {
-        // Default: analytics allowed (unless user previously rejected); ads denied (unless user accepted)
+        // Default: analytics allowed (unless user previously rejected); ads and preferences denied (unless user accepted)
         'analytics_storage': analyticsDefault,
         'ad_storage': adsDefault,
         'ad_user_data': adsDefault,
         'ad_personalization': adsDefault,
+        'functionality_storage': prefsDefault,
+        'personalization_storage': prefsDefault,
         // Allow banner to update quickly on first load
         'wait_for_update': 500
       });
@@ -57,6 +61,19 @@
     <script>
       gtag('js', new Date());
       gtag('config', 'G-RVLESW1G3L');
+    </script>
+
+    <!-- Tinrate pill: always visible; extras wait for preferences consent (functionality + personalization storage). -->
+    <script>
+      (function () {
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "https://business.tinrate.com/embed/pill.js";
+        s.setAttribute("data-tinrate-embed", "zTvzwgbZsXM0");
+        s.setAttribute("data-tinrate-show", "always");
+        s.setAttribute("data-tinrate-consent", "preferences");
+        (document.head || document.documentElement).appendChild(s);
+      })();
     </script>
   </head>
   <body>
