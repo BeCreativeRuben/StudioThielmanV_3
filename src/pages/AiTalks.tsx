@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import AiTalksHeader from '../components/aiTalks/AiTalksHeader'
 import AiTalksFooter from '../components/aiTalks/AiTalksFooter'
@@ -36,9 +36,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function AiTalks() {
   const { locale, messages, localizedPath } = useLocale()
   const a = messages.aiTalks
-  // Cookie banner is client-only so the prerendered HTML never ships a banner that then disappears.
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
   const [formatChoice, setFormatChoice] = useState<{ value?: string; nonce: number }>({ nonce: 0 })
 
   const choosePackage = (key: string) => {
@@ -614,7 +611,7 @@ export default function AiTalks() {
       </main>
 
       <AiTalksFooter />
-      {mounted && <CookieConsentBanner />}
+      <CookieConsentBanner />
     </div>
   )
 }

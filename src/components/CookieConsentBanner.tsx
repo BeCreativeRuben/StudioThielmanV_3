@@ -55,12 +55,21 @@ function updateGtagConsent(choice: ConsentChoice) {
   dataLayer.push(['consent', 'update', update])
 }
 
+/**
+ * The banner is part of the prerendered HTML so first-time visitors see it with the first paint
+ * (no late pop-in). For visitors who already chose, the inline script in index.html marks <html>
+ * with `st-consent-chosen` before paint, which hides it via CSS until this component removes it.
+ */
 export default function CookieConsentBanner() {
   const { t } = useLocale()
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
 
   useEffect(() => {
-    const onOpen = () => setIsOpen(true)
+    const onOpen = () => {
+      // Re-opened from "cookie preferences": make sure the pre-paint hide rule no longer applies.
+      document.documentElement.classList.remove('st-consent-chosen')
+      setIsOpen(true)
+    }
     window.addEventListener(OPEN_EVENT_NAME, onOpen)
     return () => window.removeEventListener(OPEN_EVENT_NAME, onOpen)
   }, [])
@@ -70,18 +79,24 @@ export default function CookieConsentBanner() {
     if (savedChoice === 'accept') {
       updateGtagConsent('accept')
       loadMailchimp()
+      setIsOpen(false)
       return
     }
     if (savedChoice === 'reject') {
       updateGtagConsent('reject')
       clearAnalyticsCookies()
+      setIsOpen(false)
       return
     }
-    setIsOpen(true)
   }, [])
+
+  const markChosen = () => {
+    document.documentElement.classList.add('st-consent-chosen')
+  }
 
   const acceptAll = () => {
     setStoredChoice('accept')
+    markChosen()
     updateGtagConsent('accept')
     loadMailchimp()
     setIsOpen(false)
@@ -89,6 +104,7 @@ export default function CookieConsentBanner() {
 
   const rejectAll = () => {
     setStoredChoice('reject')
+    markChosen()
     updateGtagConsent('reject')
     clearAnalyticsCookies()
     setIsOpen(false)
@@ -97,7 +113,7 @@ export default function CookieConsentBanner() {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[60] px-4 pb-4">
+    <div className="st-cookie-banner fixed inset-x-0 bottom-0 z-[60] px-4 pb-4">
       <div className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-white shadow-2xl">
         <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-sm text-gray-700">

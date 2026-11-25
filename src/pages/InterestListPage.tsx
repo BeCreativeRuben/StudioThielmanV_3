@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import AiTalksFooter from '../components/aiTalks/AiTalksFooter'
 import CookieConsentBanner from '../components/CookieConsentBanner'
@@ -192,8 +192,6 @@ export default function InterestListPage({ kind }: { kind: InterestListKind }) {
   const { locale, messages, localizedPath, t } = useLocale()
   const cfg = INTEREST_LISTS[kind]
   const g = cfg.content(messages)
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
 
   const pageUrl = `${SITE_URL}${localizedPath(cfg.path)}`
   const graphLd = {
@@ -352,7 +350,7 @@ export default function InterestListPage({ kind }: { kind: InterestListKind }) {
       </main>
 
       <AiTalksFooter hideWorkshops />
-      {mounted && <CookieConsentBanner />}
+      <CookieConsentBanner />
     </div>
   )
 }

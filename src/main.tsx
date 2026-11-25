@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { startTransition } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
 import App from './App.tsx'
@@ -17,7 +17,10 @@ preloadPath(window.location.pathname).then(() => {
   )
 
   if (rootEl.hasChildNodes()) {
-    hydrateRoot(rootEl, app)
+    // Hydrate as a transition so React yields to the browser between chunks instead of one long task.
+    startTransition(() => {
+      hydrateRoot(rootEl, app)
+    })
   } else {
     createRoot(rootEl).render(app)
   }

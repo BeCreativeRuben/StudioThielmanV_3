@@ -31,6 +31,9 @@
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link rel="dns-prefetch" href="https://business.tinrate.com" />
 
+    <style>html.st-consent-chosen .st-cookie-banner{display:none}</style>
+    <noscript><style>.st-cookie-banner{display:none}</style></noscript>
+
     <!-- Google Consent Mode v2 (advanced) + GA4 -->
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -40,6 +43,10 @@
       // before React can run consent updates.
       var stConsentChoice = null;
       try { stConsentChoice = localStorage.getItem('st_cookie_consent_v1'); } catch (e) {}
+      // Hide the prerendered cookie banner before first paint for visitors who already chose.
+      if (stConsentChoice === 'accept' || stConsentChoice === 'reject') {
+        document.documentElement.classList.add('st-consent-chosen');
+      }
 
       var analyticsDefault = (stConsentChoice === 'reject') ? 'denied' : 'granted';
       var adsDefault = (stConsentChoice === 'accept') ? 'granted' : 'denied';
