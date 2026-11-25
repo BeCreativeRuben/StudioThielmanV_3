@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import BookCallLink from '../components/BookCallLink'
 import Button from '../components/Button'
 import { useLocale } from '../i18n/LocaleProvider'

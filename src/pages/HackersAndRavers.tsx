@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { useLocale } from '../i18n/LocaleProvider'
 
 const MEDIA_BASE = '/images/portfolio/hackers-and-ravers'

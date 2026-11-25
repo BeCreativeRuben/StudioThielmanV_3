@@ -27,8 +27,9 @@
     
     <title>Studio Thielman | Professional Websites Starting at €25/month</title>
 
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://business.tinrate.com" />
 
     <!-- Google Consent Mode v2 (advanced) + GA4 -->
     <script>
@@ -57,22 +58,43 @@
         'wait_for_update': 500
       });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVLESW1G3L"></script>
     <script>
+      // Commands queue in dataLayer; gtag.js picks them up when it loads after the page (see below).
       gtag('js', new Date());
       gtag('config', 'G-RVLESW1G3L');
     </script>
 
-    <!-- Tinrate pill: always visible; extras wait for preferences consent (functionality + personalization storage). -->
+    <!--
+      Third parties load after the page has rendered (window load + idle, max ~2.5s) so they never
+      compete with the first paint. Consent defaults above are already in dataLayer before either loads.
+      Tinrate pill: always visible; extras wait for preferences consent (functionality + personalization storage).
+    -->
     <script>
       (function () {
-        var s = document.createElement("script");
-        s.async = true;
-        s.src = "https://business.tinrate.com/embed/pill.js";
-        s.setAttribute("data-tinrate-embed", "zTvzwgbZsXM0");
-        s.setAttribute("data-tinrate-show", "always");
-        s.setAttribute("data-tinrate-consent", "preferences");
-        (document.head || document.documentElement).appendChild(s);
+        var started = false;
+        function add(src, attrs) {
+          var s = document.createElement("script");
+          s.async = true;
+          s.src = src;
+          for (var k in attrs) s.setAttribute(k, attrs[k]);
+          (document.head || document.documentElement).appendChild(s);
+        }
+        function loadThirdParties() {
+          if (started) return;
+          started = true;
+          add("https://www.googletagmanager.com/gtag/js?id=G-RVLESW1G3L", {});
+          add("https://business.tinrate.com/embed/pill.js", {
+            "data-tinrate-embed": "zTvzwgbZsXM0",
+            "data-tinrate-show": "always",
+            "data-tinrate-consent": "preferences"
+          });
+        }
+        function schedule() {
+          if ("requestIdleCallback" in window) window.requestIdleCallback(loadThirdParties, { timeout: 2500 });
+          else window.setTimeout(loadThirdParties, 1200);
+        }
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
   </head>

@@ -10,6 +10,7 @@
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import Beasties from 'beasties'
 
 const root = process.cwd()
 const dist = join(root, 'dist')
@@ -113,13 +114,27 @@ if (paths.some((path) => path === '/admin' || path.includes('hackers-and-ravers'
   process.exit(1)
 }
 
-function writeHtml(outPath, rendered) {
+// Inline the CSS each prerendered page needs for its first paint and load the full stylesheet
+// without blocking render, so FCP/LCP no longer wait on a separate CSS request.
+const beasties = new Beasties({
+  path: dist,
+  publicPath: '/',
+  preload: 'swap',
+  pruneSource: false,
+  reduceInlineStyles: false,
+  mergeStylesheets: true,
+  inlineFonts: false,
+  logLevel: 'warn',
+})
+
+async function writeHtml(outPath, rendered) {
   const { head, htmlAttributes, body } = rendered
   let html = template
   for (const re of STRIP) html = html.replace(re, '')
   html = html.replace('<meta name="viewport" content="width=device-width, initial-scale=1.0" />', (m) => `${m}\n    ${head}`)
   if (htmlAttributes) html = html.replace(/<html[^>]*>/, `<html ${htmlAttributes}>`)
   if (body) html = html.replace('<div id="root"></div>', `<div id="root">${body}</div>`)
+  if (body) html = await beasties.process(html)
   mkdirSync(dirname(outPath), { recursive: true })
   writeFileSync(outPath, html)
 }
@@ -127,11 +142,11 @@ function writeHtml(outPath, rendered) {
 let count = 0
 for (const path of [...new Set(paths)]) {
   const out = path === '/' ? join(dist, 'index.html') : join(dist, path.slice(1), 'index.html')
-  writeHtml(out, renderRoute(path))
+  await writeHtml(out, renderRoute(path))
   count++
 }
 
-writeHtml(join(dist, '404.html'), renderRoute('/this-page-does-not-exist'))
+await writeHtml(join(dist, '404.html'), renderRoute('/this-page-does-not-exist'))
 
 rmSync(join(root, 'dist-ssr'), { recursive: true, force: true })
 console.log(`Prerendered ${count} routes plus dist/404.html.`)

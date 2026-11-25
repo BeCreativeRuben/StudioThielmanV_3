@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import LegalDocument from '../components/LegalDocument'
 import { useLocale } from '../i18n/LocaleProvider'
 

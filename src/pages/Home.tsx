@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import Button from '../components/Button'
 import { getPortfolioItems } from '../data/portfolio'
 import { CURRENT_PROJECTS_LAST_UPDATED, getCurrentProjects } from '../data/currentProjects'
@@ -102,6 +102,8 @@ function BlogCountdown() {
                   src={latestPost.featuredImage}
                   alt={latestPost.title}
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement
                     target.style.display = 'none'

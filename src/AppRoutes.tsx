@@ -1,5 +1,6 @@
 import { Suspense, type ReactNode } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { LazyMotion, domAnimation } from 'framer-motion'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
@@ -43,6 +44,7 @@ const publicRoutes = [
 
 export default function AppRoutes() {
   return (
+    <LazyMotion features={domAnimation}>
     <Suspense fallback={<div className="min-h-screen bg-white" />}>
       <ScrollToTop />
       <SeoRouteSync />
@@ -83,5 +85,6 @@ export default function AppRoutes() {
         <Route path="*" element={<MainLayout><NotFoundPage /></MainLayout>} />
       </Routes>
     </Suspense>
+    </LazyMotion>
   )
 }
