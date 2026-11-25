@@ -17,10 +17,8 @@ export default function Blog() {
         <motion.div className="absolute left-0 right-0 w-full bg-gray-900" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }} />
         <motion.div className="absolute left-0 right-0 w-full bg-gradient-to-r from-black/80 to-black/40 z-0" style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }} />
         <motion.div
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center intro-fade-up"
+          initial={false}
         >
           <motion.div className="text-sm text-white/60 uppercase tracking-wider mb-4">{copy.hero.label}</motion.div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{copy.hero.title}</h1>

@@ -78,10 +78,8 @@ export default function HackersAndRavers() {
           style={{ top: '-80px', bottom: 0, height: 'calc(100% + 80px)', minHeight: 'calc(100vh + 80px)' }}
         />
         <motion.div
-          className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center intro-fade-up"
+          initial={false}
         >
           <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
             <span className="bg-white/10 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-white/20">

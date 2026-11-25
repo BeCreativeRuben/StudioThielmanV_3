@@ -16,6 +16,36 @@ body {
   line-height: 1.6;
 }
 
+/* Header slide-in: plain CSS so it starts with the first paint instead of waiting for JS hydration. */
+.header-intro {
+  animation: header-intro 0.3s ease-out;
+}
+
+@keyframes header-intro {
+  from {
+    transform: translateY(-100px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Page-hero intro: CSS instead of a JS animation, so hero text is visible at first paint (LCP) without waiting for hydration. */
+.intro-fade-up {
+  animation: intro-fade-up 0.6s ease-out;
+}
+
+@keyframes intro-fade-up {
+  from {
+    opacity: 0.01;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Seamless marquee animation */
 .marquee-container {
   display: flex;
@@ -37,7 +67,9 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-container {
+  .marquee-container,
+  .header-intro,
+  .intro-fade-up {
     animation: none !important;
   }
 

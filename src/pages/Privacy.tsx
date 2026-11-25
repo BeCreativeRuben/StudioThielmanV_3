@@ -8,9 +8,8 @@ export default function Privacy() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      className="intro-fade-up"
+      initial={false}
     >
       <section className="relative py-20 md:py-32 overflow-hidden -mt-20 pt-20">
         <div
